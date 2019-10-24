@@ -1,0 +1,58 @@
+@startgantt
+
+project starts the 2019/10/10
+
+2019/10/24 are closed
+2019/11/7 are closed
+2019/11/21 are closed
+2019/12/5 are closed
+2019/12/19 are closed
+
+
+[<size:13>""Serializacja""] lasts 14 days
+[<size:13>""Serializacja""] -> [<size:13>""Aplikacja okienkowa""]
+
+[<size:12>""Połączenie algorytmu i gry""] -> [<size:13>""Aplikacja okienkowa""]
+[<size:13>""Aplikacja okienkowa""] lasts 13 days
+[<size:13>""Aplikacja okienkowa""] starts at 2019/11/7
+
+
+[<size:12>""Połączenie algorytmu i gry""] lasts 13 days
+[<size:13>""Algorytm""] lasts 14 days
+[<size:13>""Algorytm""] -> [<size:12>""Połączenie algorytmu i gry""]
+
+[<size:13>""Pierwsza gra""] -> [<size:12>""Połączenie algorytmu i gry""]
+[<size:13>""Pierwsza gra""] lasts 14 days
+
+[<size:13>""Usprawnienia, poprawki""] lasts 14 days
+[<size:13>""Usprawnienia, poprawki""] starts at 2019/12/5
+
+
+[<size:13>""Zapis do pliku""] lasts 13 days
+[<size:13>""Zapis do pliku""] starts at 2019/11/7
+[<size:13>""Zapis do pliku""] -> [<size:13>""Pełna wizualizacja""]
+
+[<size:13>""Druga gra""] -> [<size:13>""Usprawnienia, poprawki""]
+[<size:13>""Pełna wizualizacja""] -> [<size:13>""Usprawnienia, poprawki""]
+[<size:13>""Aplikacja okienkowa""] -> [<size:13>""Usprawnienia, poprawki""]
+
+
+
+[<size:12>""Zaawansowana wizualizacja""] lasts 13 days
+[<size:12>""Zaawansowana wizualizacja""] starts at 2019/11/7
+
+[<size:13>""Podstawowa wizualizacja""] lasts 13 days
+[<size:13>""Podstawowa wizualizacja""] starts at 2019/10/24
+[<size:13>""Podstawowa wizualizacja""] -> [<size:12>""Zaawansowana wizualizacja""]
+
+
+[<size:13>""Pełna wizualizacja""] lasts 13 days
+[<size:13>""Pełna wizualizacja""] starts at 2019/11/21
+[<size:12>""Zaawansowana wizualizacja""] -> [<size:13>""Pełna wizualizacja""]
+
+
+[<size:13>""Druga gra""] lasts 13 days
+[<size:13>""Druga gra""] starts at 2019/11/21
+
+
+@endgantt
