@@ -16,7 +16,6 @@ class MonteCarloTreeSearch:
             promising_node = self._selection(root)
             self._expansion(promising_node)
 
-            leaf_to_explore = None
             if promising_node.has_children():
                 leaf_to_explore = NodeUtils.get_random_child(promising_node)
             else:
@@ -40,7 +39,7 @@ class MonteCarloTreeSearch:
         """
         tmp_node = node
         while tmp_node.has_children() != 0:
-            tmp_node = UCT.find_best_node_with_UCT(tmp_node)
+            tmp_node = UCT.find_best_child_with_UCT(tmp_node)
 
         self.print_debug("Selection from {} led to {}".format(node.id, tmp_node.id))
         return tmp_node
