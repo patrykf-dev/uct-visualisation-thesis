@@ -1,3 +1,4 @@
+from src.uct.game_data import GameData
 from src.uct.mc_node_details import MonteCarloNodeDetails
 
 
@@ -6,8 +7,8 @@ class Node:
 
     def __init__(self):
         self.id = -1
-        self.game_data = None
-        self.node_details = None
+        self.game_data = GameData()
+        self.details = MonteCarloNodeDetails()
         self.children = None
         self.parent = None
         raise Exception("Public constructor shouldn't ever be called, use create_root instead")
@@ -16,6 +17,9 @@ class Node:
         child = Node._create_instance(game_data)
         child.parent = self
         self.children.append(child)
+
+    def has_children(self):
+        return self.children.size > 0
 
     @staticmethod
     def create_root(game_data):
@@ -26,7 +30,7 @@ class Node:
         node = Node()
         node.id = Node.generate_next_id()
         node.game_data = game_data
-        node.node_details = MonteCarloNodeDetails()
+        node.details = MonteCarloNodeDetails()
         node.children = []
         node.parent = None
         return node
