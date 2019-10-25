@@ -1,5 +1,5 @@
-from src.tictactoe.game_data import TicTacToeGameData, TicTacToeBoard
 import src.uct.enums as Enums
+from src.tictactoe.game_data import TicTacToeGameData, TicTacToeBoard
 from src.uct.mc_tree_search import MonteCarloTreeSearch
 
 

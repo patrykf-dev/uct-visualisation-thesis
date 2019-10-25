@@ -1,5 +1,6 @@
+from abc import ABC
+
 from src.uct.enums import GamePhase
-from abc import ABC, abstractmethod
 
 
 class GameData(ABC):

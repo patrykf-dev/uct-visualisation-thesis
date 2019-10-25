@@ -1,7 +1,7 @@
-from src.uct.node import Node
 import src.uct.enums as Enums
 import src.uct.node_utils as NodeUtils
 import src.uct.uct_calculation as UCT
+from src.uct.node import Node
 
 
 class MonteCarloTreeSearch:
@@ -70,10 +70,10 @@ class MonteCarloTreeSearch:
         opponent_win_phase = Enums.get_opponent_win(tmp_state.current_player)
 
         if tmp_phase == opponent_win_phase:
-            # TODO: leaf win score
+            # TODO: do we do anything here?
             return tmp_phase
         elif tmp_phase == Enums.GamePhase.DRAW:
-            # TODO: leaf win score
+            # TODO: do we do anything here?
             return tmp_phase
 
         self.print_debug("Simulating from node {}...".format(leaf.id))

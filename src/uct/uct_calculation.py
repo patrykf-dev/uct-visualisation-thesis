@@ -1,4 +1,3 @@
-from src.uct.node import Node
 from math import sqrt, log
 
 _HUGE_VALUE = 1000000
