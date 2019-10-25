@@ -6,12 +6,14 @@ class Node:
     _node_counter = 0
 
     def __init__(self):
+        """
+        Public constructor shouldn't ever be called, use create_root instead
+        """
         self.id = -1
         self.game_data = GameData()
         self.details = MonteCarloNodeDetails()
         self.children = None
         self.parent = None
-        raise Exception("Public constructor shouldn't ever be called, use create_root instead")
 
     def add_child(self, game_data):
         child = Node._create_instance(game_data)

@@ -13,6 +13,7 @@ class TicTacToeBoard:
             for j in range(self.size):
                 new_values[i][j] = self.board_values[i][j]
         new_board.size = self.size
+        new_board.board_values = new_values
         return new_board
 
     def move_valid(self, x, y):
@@ -86,9 +87,9 @@ class TicTacToeBoard:
                 if not col_equal and not row_equal:
                     break
 
-            if col_winner:
+            if col_winner and col_winner != 0:
                 return Enums.get_player_win(col_winner)
-            if row_equal:
+            if row_equal and row_winner != 0:
                 return Enums.get_player_win(row_winner)
 
         return Enums.GamePhase.IN_PROGRESS

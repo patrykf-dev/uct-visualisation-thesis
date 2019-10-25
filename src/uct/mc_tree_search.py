@@ -11,6 +11,7 @@ class MonteCarloTreeSearch:
 
     def find_next_move(self, game_data):
         root = Node.create_root(game_data)
+        self.print_debug(game_data.board.get_string_formatted())
         while self.iterations < 500:
             self.print_debug("\n=======Iteration {} =======".format(self.iterations))
             promising_node = self._selection(root)
@@ -94,10 +95,10 @@ class MonteCarloTreeSearch:
 
         tmp_node = leaf
         while tmp_node is not None:
-            tmp_node.node_details.visits_count = tmp_node.node_details.visits_count + 1
+            tmp_node.details.visits_count = tmp_node.details.visits_count + 1
             tmp_current_player = tmp_node.game_data.current_player
             if playout_result == Enums.get_player_win(tmp_current_player):
-                tmp_node.node_details.add_score(1)
+                tmp_node.details.add_score(1)
             tmp_node = tmp_node.parent
 
     def print_debug(self, log):

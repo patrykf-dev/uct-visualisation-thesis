@@ -5,8 +5,8 @@ _HUGE_VALUE = 1000000
 
 
 def find_best_child_with_UCT(node):
-    parent_visit = node.node_details.visits_count
-    return max(node.children, lambda n: _UCT_value(n, parent_visit))[0]
+    parent_visit = node.details.visits_count
+    return max(node.children, key=lambda n: _UCT_value(n, parent_visit))
 
 
 def _UCT_value(node, parent_visit):
