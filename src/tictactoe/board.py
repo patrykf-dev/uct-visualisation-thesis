@@ -1,3 +1,6 @@
+import src.uct.enums as Enums
+
+
 class TicTacToeBoard:
     def __init__(self, size):
         self.size = size
@@ -36,5 +39,56 @@ class TicTacToeBoard:
         return rc
 
     def check_status(self):
-        # TODO
-        pass
+        result = self.check_rows_and_columns()
+        if result != Enums.GamePhase.IN_PROGRESS:
+            return result
+        result = self.check_diags()
+        if result != Enums.GamePhase.IN_PROGRESS:
+            return result
+        if len(self.get_empty_positions()) == 0:
+            return Enums.GamePhase.DRAW
+        else:
+            return Enums.GamePhase.IN_PROGRESS
+
+    def check_diags(self):
+        winner = self.board_values[0][0]
+        for i in range(self.size):
+            if self.board_values[i][i] != winner:
+                winner = 0
+                break
+        if winner != 0:
+            return Enums.get_player_win(winner)
+
+        winner = self.board_values[0][self.size - 1]
+        for i in range(self.size):
+            if self.board_values[i][self.size - i - 1] != winner:
+                winner = 0
+                break
+        if winner != 0:
+            return Enums.get_player_win(winner)
+
+        return Enums.GamePhase.IN_PROGRESS
+
+    def check_rows_and_columns(self):
+        for i in range(self.size):
+            col_equal = True
+            col_winner = self.board_values[0][i]
+            row_equal = True
+            row_winner = self.board_values[i][0]
+            if row_winner == 0 and col_winner == 0:
+                continue
+
+            for j in range(self.size):
+                if self.board_values[i][j] != row_winner:
+                    row_equal = False
+                if self.board_values[j][i] != col_winner:
+                    col_winner = False
+                if not col_equal and not row_equal:
+                    break
+
+            if col_winner:
+                return Enums.get_player_win(col_winner)
+            if row_equal:
+                return Enums.get_player_win(row_winner)
+
+        return Enums.GamePhase.IN_PROGRESS
