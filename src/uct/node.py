@@ -19,7 +19,7 @@ class Node:
         self.children.append(child)
 
     def has_children(self):
-        return self.children.size > 0
+        return len(self.children) > 0
 
     @staticmethod
     def create_root(game_data):

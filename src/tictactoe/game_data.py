@@ -23,7 +23,7 @@ class TicTacToeGameData(GameData):
 
     def random_move(self):
         positions = self.board.get_empty_positions()
-        random_pos_index = RandomUtils.get_random_int(0, positions.size)
+        random_pos_index = RandomUtils.get_random_int(0, len(positions))
         pos = positions[random_pos_index]
         self.switch_current_player()
         self.board.perform_move(self.current_player, pos[0], pos[1])

@@ -6,7 +6,7 @@ def get_random_child(node):
     if not node.has_children():
         raise Exception("Node does not have any child nodes")
     else:
-        child_index = RandomUtils.get_random_int(0, node.children.size)
+        child_index = RandomUtils.get_random_int(0, len(node.children))
         return node.children[child_index]
 
 
