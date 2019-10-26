@@ -1,6 +1,5 @@
-from src.uct.game_data import GameData
 import src.uct.random_utils as RandomUtils
-from src.tictactoe.board import TicTacToeBoard
+from src.uct.game_data import GameData
 
 
 class TicTacToeGameData(GameData):

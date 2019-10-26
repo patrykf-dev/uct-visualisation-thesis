@@ -12,7 +12,7 @@ class Node:
         self.id = -1
         self.game_data = GameData()
         self.details = MonteCarloNodeDetails()
-        self.children = None
+        self.children = []
         self.parent = None
 
     def add_child(self, game_data):
