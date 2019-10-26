@@ -1,5 +1,4 @@
 from src.uct.node import Node
-from src.uct.mc_node_details import MonteCarloNodeDetails
 from src.serialization.serializator_binary import BinarySerializator
 
 
@@ -26,6 +25,17 @@ def create_node(name, move_name):
         n.details.visits_count_pre_modified = 4
         n.details.win_score = 4.5
     return n
+
+
+def deserialization_test():
+    serializator = BinarySerializator()
+    node = serializator.get_node_from_file("serialization_test")
+    d = node.details
+    print("Root: [{}] : ([{}], {}, {}, {})".format(d.state_name, d.move, d.visits_count, d.visits_count_pre_modified,
+                                                  d.average_prize))
+    d = node.children[0].details
+    print("First child: [{}] : ([{}], {}, {}, {})".format(d.state_name, d.move, d.visits_count, d.visits_count_pre_modified,
+                                                  d.average_prize))
 
 
 serialization_test()

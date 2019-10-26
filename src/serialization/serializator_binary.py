@@ -1,17 +1,24 @@
 import src.serialization.codec_binary as BinaryCodec
 from src.serialization.serializator_base import BaseSerializator
+from src.uct.mc_node_details import MonteCarloNodeDetails
+from src.uct.node import Node
 
 
 class BinarySerializator(BaseSerializator):
     def save_node_to_file(self, node, file_name):
         bin_arrays = []
-        self.encode_node(bin_arrays, node)
+        self._encode_node(bin_arrays, node)
 
         with open("../trees/" + file_name + ".tree", 'wb+') as f:
             for bin_array in bin_arrays:
                 f.write(bin_array)
 
-    def encode_node(self, bin_list, node):
+    def get_node_from_file(self, file_name):
+        with open("../trees/" + file_name + ".tree", "rb") as f:
+            node, _ = self._decode_node(f)
+        return node
+
+    def _encode_node(self, bin_list, node):
         BinaryCodec.write_string(bin_list, node.details.state_name)
         BinaryCodec.write_integer(bin_list, len(node.children))
         for child in node.children:
@@ -21,7 +28,22 @@ class BinarySerializator(BaseSerializator):
                 BinaryCodec.write_integer(bin_list, s.visits_count)
                 BinaryCodec.write_integer(bin_list, s.visits_count_pre_modified)
                 BinaryCodec.write_float(bin_list, s.average_prize)
-            self.encode_node(bin_list, child)
+            self._encode_node(bin_list, child)
 
-    def get_node_from_file(self, file_name):
-        pass
+    def _decode_node(self, file):
+        rc = Node()
+        state_name = BinaryCodec.read_string(file)
+
+        children_count = BinaryCodec.read_integer(file)
+        for i in range(children_count):
+            details = MonteCarloNodeDetails()
+            details.move = BinaryCodec.read_string(file)
+            details.visits_count = BinaryCodec.read_integer(file)
+            details.visits_count_pre_modified = BinaryCodec.read_integer(file)
+            details.average_prize = BinaryCodec.read_float(file)
+            child, child_state_name = self._decode_node(file)
+            details.state_name = child_state_name
+            child.details = details
+            rc.children.append(child)
+
+        return rc, state_name
