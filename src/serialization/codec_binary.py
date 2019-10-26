@@ -41,8 +41,6 @@ def _encode_string(content):
 
 
 def _encode_float(value):
-    # TODO: ensure it's written on 8 bytes, currently _FLOAT_SIZE not used
-    # TODO: returns 0.0
     value_bytes = bitstring.BitArray(floatle=value, length=64).tobytes()
     return value_bytes
 

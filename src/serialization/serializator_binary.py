@@ -33,6 +33,7 @@ class BinarySerializator(BaseSerializator):
     def _decode_node(self, file):
         rc = Node()
         state_name = BinaryCodec.read_string(file)
+        rc.details.state_name = state_name
 
         children_count = BinaryCodec.read_integer(file)
         for i in range(children_count):

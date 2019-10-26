@@ -23,7 +23,7 @@ def create_node(name, move_name):
         n.details.move = move_name
         n.details.visits_count = 3
         n.details.visits_count_pre_modified = 4
-        n.details.win_score = 4.5
+        n.details.average_prize = 4.5
     return n
 
 
@@ -37,5 +37,10 @@ def deserialization_test():
     print("First child: [{}] : ([{}], {}, {}, {})".format(d.state_name, d.move, d.visits_count, d.visits_count_pre_modified,
                                                   d.average_prize))
 
+    d = node.children[1].details
+    print("Second child: [{}] : ([{}], {}, {}, {})".format(d.state_name, d.move, d.visits_count, d.visits_count_pre_modified,
+                                                  d.average_prize))
+
 
 serialization_test()
+deserialization_test()
