@@ -47,6 +47,21 @@ def machine_vs_machine():
             print("Game end... {}".format(game_state.board.check_status()))
             break
 
+def machine_vs_machine():
+    game_state = TicTacToeState(TicTacToeBoard(7))
+    while True:
+        mcts = MonteCarloTreeSearch(game_state)
+        next_move, next_game_state = mcts.calculate_next_move()
+
+        game_state = next_game_state
+        print("\nCurrent player: {}".format(game_state.current_player))
+        print(game_state.board.get_string_formatted())
+
+        if game_state.board.check_status() != Enums.GamePhase.IN_PROGRESS:
+            print("Game end... {}".format(game_state.board.check_status()))
+            break
+
+
 def read_player_decision(game_data):
     while True:
         print("\n")
