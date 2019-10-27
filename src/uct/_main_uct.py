@@ -11,8 +11,8 @@ def player_vs_player():
         game_data.board.perform_move(game_data.current_player, x, y)
         print(game_data.board.get_string_formatted())
         game_data.switch_current_player()
-        if game_data.board.check_status() != Enums.GamePhase.IN_PROGRESS:
-            print("Game end... {}".format(game_data.board.check_status()))
+        if game_data.phase != Enums.GamePhase.IN_PROGRESS:
+            print("Game end... {}".format(game_data.phase))
             break
 
 
@@ -29,8 +29,8 @@ def player_vs_machine():
         print(game_state.board.get_string_formatted())
         game_state.switch_current_player()
 
-        if game_state.board.check_status() != Enums.GamePhase.IN_PROGRESS:
-            print("Game end... {}".format(game_state.board.check_status()))
+        if game_state.phase != Enums.GamePhase.IN_PROGRESS:
+            print("Game end... {}".format(game_state.phase))
             break
 
 def machine_vs_machine():
@@ -57,8 +57,8 @@ def machine_vs_machine():
         print("\nCurrent player: {}".format(game_state.current_player))
         print(game_state.board.get_string_formatted())
 
-        if game_state.board.check_status() != Enums.GamePhase.IN_PROGRESS:
-            print("Game end... {}".format(game_state.board.check_status()))
+        if game_state.phase != Enums.GamePhase.IN_PROGRESS:
+            print("Game end... {}".format(game_state.phase))
             break
 
 

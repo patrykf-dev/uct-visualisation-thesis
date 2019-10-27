@@ -23,8 +23,7 @@ class TicTacToeState(BaseGameState):
         random_pos_index = RandomUtils.get_random_int(0, len(positions))
         pos = positions[random_pos_index]
         self.switch_current_player()
-        self.board.perform_move(self.current_player, pos[0], pos[1])
-        self.phase = self.board.check_status()
+        self.phase = self.board.perform_move(self.current_player, pos[0], pos[1])
 
     def deep_copy(self):
         rc = TicTacToeState(None)
@@ -34,6 +33,7 @@ class TicTacToeState(BaseGameState):
         return rc
 
     def apply_moves(self, moves):
+        final_phase = self.phase
         for move in moves:
-            self.board.perform_move(move.player, move.x, move.y)
-        self.phase = self.board.check_status()
+            final_phase = self.board.perform_move(move.player, move.x, move.y)
+        self.phase = final_phase

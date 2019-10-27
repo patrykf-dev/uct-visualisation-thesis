@@ -5,6 +5,7 @@ class TicTacToeBoard:
     def __init__(self, size):
         self.size = size
         self.board_values = [[0 for i in range(size)] for j in range(size)]
+        self._empty_spots = size * size
 
     def deep_copy(self):
         new_board = TicTacToeBoard(self.size)
@@ -14,6 +15,7 @@ class TicTacToeBoard:
                 new_values[i][j] = self.board_values[i][j]
         new_board.size = self.size
         new_board.board_values = new_values
+        new_board._empty_spots = self._empty_spots
         return new_board
 
     def move_valid(self, x, y):
@@ -21,6 +23,8 @@ class TicTacToeBoard:
 
     def perform_move(self, player, x, y):
         self.board_values[y][x] = player
+        self._empty_spots = self._empty_spots - 1
+        return self._get_status_after_move(x, y)
 
     def get_empty_positions(self):
         rc = []
@@ -39,20 +43,22 @@ class TicTacToeBoard:
                 rc += "\n"
         return rc
 
-    def check_status(self):
-        result = self.check_rows_and_columns()
-        if result != Enums.GamePhase.IN_PROGRESS:
-            return result
-        result = self.check_diags()
-        if result != Enums.GamePhase.IN_PROGRESS:
-            return result
-        if len(self.get_empty_positions()) == 0:
+    def _get_status_after_move(self, x, y):
+        if self._empty_spots == 0:
             return Enums.GamePhase.DRAW
-        else:
+        result = self._check_row_and_column_after_move(x, y)
+        if result != Enums.GamePhase.IN_PROGRESS:
+            return result
+        result = self._check_diags_after_move(x, y)
+        if result != Enums.GamePhase.IN_PROGRESS:
+            return result
+        return Enums.GamePhase.IN_PROGRESS
+
+    def _check_diags_after_move(self, x, y):
+        if x != y and y != self.size - x - 1:
             return Enums.GamePhase.IN_PROGRESS
 
-    def check_diags(self):
-        winner = self.board_values[0][0]
+        winner = self.board_values[y][x]
         for i in range(self.size):
             if self.board_values[i][i] != winner:
                 winner = 0
@@ -60,7 +66,7 @@ class TicTacToeBoard:
         if winner != 0:
             return Enums.get_player_win(winner)
 
-        winner = self.board_values[0][self.size - 1]
+        winner = self.board_values[y][x]
         for i in range(self.size):
             if self.board_values[i][self.size - i - 1] != winner:
                 winner = 0
@@ -70,26 +76,19 @@ class TicTacToeBoard:
 
         return Enums.GamePhase.IN_PROGRESS
 
-    def check_rows_and_columns(self):
+    def _check_row_and_column_after_move(self, x, y):
+        winner = self.board_values[y][x]
+        col_equal = True
+        row_equal = True
         for i in range(self.size):
-            col_equal = True
-            col_winner = self.board_values[0][i]
-            row_equal = True
-            row_winner = self.board_values[i][0]
-            if row_winner == 0 and col_winner == 0:
-                continue
+            if self.board_values[x][i] != winner:
+                row_equal = False
+            if self.board_values[i][y] != winner:
+                col_equal = False
+            if not col_equal and not row_equal:
+                break
 
-            for j in range(self.size):
-                if self.board_values[i][j] != row_winner:
-                    row_equal = False
-                if self.board_values[j][i] != col_winner:
-                    col_winner = False
-                if not col_equal and not row_equal:
-                    break
-
-            if col_winner and col_winner != 0:
-                return Enums.get_player_win(col_winner)
-            if row_equal and row_winner != 0:
-                return Enums.get_player_win(row_winner)
+        if row_equal or col_equal:
+            return Enums.get_player_win(winner)
 
         return Enums.GamePhase.IN_PROGRESS
