@@ -1,5 +1,6 @@
 import src.uct.enums as Enums
-from src.tictactoe.game_data import TicTacToeGameData, TicTacToeBoard
+from src.tictactoe.game_data import TicTacToeGameData
+from src.tictactoe.board import TicTacToeBoard
 from src.uct.mc_tree_search import MonteCarloTreeSearch
 
 
@@ -31,6 +32,19 @@ def player_vs_machine():
             print("Game end... {}".format(game_data.board.check_status()))
             break
 
+def machine_vs_machine():
+    game_state = TicTacToeGameData(TicTacToeBoard(7))
+    while True:
+        mcts = MonteCarloTreeSearch()
+        next_game_state = mcts.find_next_move(game_state)
+
+        game_state = next_game_state
+        print("\nCurrent player: {}".format(game_state.current_player))
+        print(game_state.board.get_string_formatted())
+
+        if game_state.board.check_status() != Enums.GamePhase.IN_PROGRESS:
+            print("Game end... {}".format(game_state.board.check_status()))
+            break
 
 def read_player_decision(game_data):
     while True:
@@ -43,4 +57,4 @@ def read_player_decision(game_data):
 
 
 # CALL MAIN METHOD
-player_vs_machine()
+machine_vs_machine()
