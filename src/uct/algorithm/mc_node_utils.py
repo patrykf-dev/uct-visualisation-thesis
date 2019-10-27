@@ -1,4 +1,4 @@
-import src.uct.random_utils as RandomUtils
+import src.utils.random_utils as RandomUtils
 
 
 def get_random_child(node):

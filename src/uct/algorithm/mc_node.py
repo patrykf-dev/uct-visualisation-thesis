@@ -1,7 +1,7 @@
-from src.uct.mc_node_details import MonteCarloNodeDetails
+from src.uct.algorithm.mc_node_details import MonteCarloNodeDetails
 
 
-class Node:
+class MonteCarloNode:
     _node_counter = 0
 
     def __init__(self):
@@ -15,7 +15,7 @@ class Node:
         self.parent = None
 
     def add_child(self, move):
-        child = Node._create_instance(move)
+        child = MonteCarloNode._create_instance(move)
         child.parent = self
         self.children.append(child)
 
@@ -24,12 +24,12 @@ class Node:
 
     @staticmethod
     def create_root():
-        return Node._create_instance(None)
+        return MonteCarloNode._create_instance(None)
 
     @staticmethod
     def _create_instance(move):
-        node = Node()
-        node.id = Node.generate_next_id()
+        node = MonteCarloNode()
+        node.id = MonteCarloNode.generate_next_id()
         node.move = move
         node.details = MonteCarloNodeDetails()
         node.children = []
@@ -38,5 +38,5 @@ class Node:
 
     @staticmethod
     def generate_next_id():
-        Node._node_counter = Node._node_counter + 1
-        return Node._node_counter
+        MonteCarloNode._node_counter = MonteCarloNode._node_counter + 1
+        return MonteCarloNode._node_counter

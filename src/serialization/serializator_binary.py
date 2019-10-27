@@ -1,7 +1,7 @@
 import src.serialization.codec_binary as BinaryCodec
 from src.serialization.serializator_base import BaseSerializator
-from src.uct.mc_node_details import MonteCarloNodeDetails
-from src.uct.node import Node
+from src.uct.algorithm.mc_node_details import MonteCarloNodeDetails
+from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 class BinarySerializator(BaseSerializator):
@@ -31,7 +31,7 @@ class BinarySerializator(BaseSerializator):
             self._encode_node(bin_list, child)
 
     def _decode_node(self, file):
-        rc = Node()
+        rc = MonteCarloNode()
         state_name = BinaryCodec.read_string(file)
         rc.details.state_name = state_name
 

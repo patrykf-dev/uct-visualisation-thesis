@@ -1,7 +1,7 @@
-import src.uct.enums as Enums
 from src.tictactoe.ttt_state import TicTacToeState
 from src.tictactoe.board import TicTacToeBoard
-from src.uct.mc_tree_search import MonteCarloTreeSearch
+from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
+import src.uct.algorithm.enums as Enums
 
 
 def player_vs_player():

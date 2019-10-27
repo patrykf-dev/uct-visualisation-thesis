@@ -1,5 +1,5 @@
 from src.serialization.serializator_csv import CsvSerializator
-from src.uct.node import Node
+from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 def serialization_test():
@@ -17,7 +17,7 @@ def serialization_test():
 
 
 def create_node(name, move_name):
-    n = Node()
+    n = MonteCarloNode()
     n.details.state_name = name
     if len(move_name) > 0:
         n.details.move = move_name

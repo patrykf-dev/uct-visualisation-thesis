@@ -1,4 +1,4 @@
-import src.uct.enums as Enums
+import src.uct.algorithm.enums as Enums
 
 
 class TicTacToeBoard:

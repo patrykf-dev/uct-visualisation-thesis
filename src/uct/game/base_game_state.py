@@ -1,6 +1,6 @@
 import abc
 
-from src.uct.enums import GamePhase
+from src.uct.algorithm.enums import GamePhase
 
 
 class BaseGameState(abc.ABC):

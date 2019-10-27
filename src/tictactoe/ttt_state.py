@@ -1,7 +1,7 @@
-import src.uct.random_utils as RandomUtils
-from src.uct.base_game_state import BaseGameState
+import src.utils.random_utils as RandomUtils
+import src.uct.algorithm.enums as Enums
+from src.uct.game.base_game_state import BaseGameState
 from src.tictactoe.ttt_move import TicTacToeMove
-import src.uct.enums as Enums
 
 
 class TicTacToeState(BaseGameState):

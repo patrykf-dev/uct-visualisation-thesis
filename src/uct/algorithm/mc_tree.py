@@ -1,9 +1,9 @@
-from src.uct.node import Node
+from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 class MonteCarloTree:
     def __init__(self, game_state):
-        self.root = Node.create_root()
+        self.root = MonteCarloNode.create_root()
         self.game_state = game_state
 
     def retrieve_node_game_state(self, node):

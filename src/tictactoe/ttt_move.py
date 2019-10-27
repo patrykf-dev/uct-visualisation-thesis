@@ -1,4 +1,4 @@
-from src.uct.base_game_move import BaseGameMove
+from src.uct.game.base_game_move import BaseGameMove
 
 
 class TicTacToeMove(BaseGameMove):

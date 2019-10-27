@@ -1,7 +1,7 @@
-import src.uct.enums as Enums
-import src.uct.node_utils as NodeUtils
-import src.uct.uct_calculation as UCT
-from src.uct.mc_tree import MonteCarloTree
+import src.uct.algorithm.mc_node_utils as NodeUtils
+import src.uct.algorithm.uct_calculation as UCT
+import src.uct.algorithm.enums as Enums
+from src.uct.algorithm.mc_tree import MonteCarloTree
 
 
 class MonteCarloTreeSearch:

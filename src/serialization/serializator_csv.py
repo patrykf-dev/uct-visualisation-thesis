@@ -1,7 +1,7 @@
 import csv
 
 from src.serialization.serializator_base import BaseSerializator
-from src.uct.node import Node
+from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 class CsvSerializator(BaseSerializator):
@@ -30,7 +30,7 @@ class CsvSerializator(BaseSerializator):
 
     def _decode_node(self, reader):
         row = next(reader)
-        node = Node()
+        node = MonteCarloNode()
         d = node.details
         d.move_name = row[0]
         d.visits_count = int(row[1])
