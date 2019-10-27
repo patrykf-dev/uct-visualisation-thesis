@@ -9,11 +9,15 @@ class BaseGameState(abc.ABC):
         self.current_player = 1
 
     @abc.abstractmethod
-    def get_all_possible_states(self):
+    def get_all_possible_moves(self):
         pass
 
     @abc.abstractmethod
     def perform_random_move(self):
+        pass
+
+    @abc.abstractmethod
+    def apply_moves(self, moves):
         pass
 
     @abc.abstractmethod

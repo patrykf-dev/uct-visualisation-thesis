@@ -1,5 +1,7 @@
 import src.uct.random_utils as RandomUtils
 from src.uct.base_game_state import BaseGameState
+from src.tictactoe.ttt_move import TicTacToeMove
+import src.uct.enums as Enums
 
 
 class TicTacToeState(BaseGameState):
@@ -7,17 +9,13 @@ class TicTacToeState(BaseGameState):
         super().__init__()
         self.board = board
 
-    def get_all_possible_states(self):
+    def get_all_possible_moves(self):
         positions = self.board.get_empty_positions()
         rc = []
         for position in positions:
-            new_board = self.board.deep_copy()
-            new_state = TicTacToeState(new_board)
-            new_state.current_player = self.current_player
-            new_state.switch_current_player()
-            new_board.perform_move(new_state.current_player, position[0], position[1])
-            new_state.phase = new_board.check_status()
-            rc.append(new_state)
+            move = TicTacToeMove(position[0], position[1])
+            move.player = Enums.get_opponent(self.current_player)
+            rc.append(move)
         return rc
 
     def perform_random_move(self):
@@ -34,3 +32,8 @@ class TicTacToeState(BaseGameState):
         rc.current_player = self.current_player
         rc.board = self.board.deep_copy()
         return rc
+
+    def apply_moves(self, moves):
+        for move in moves:
+            self.board.perform_move(move.player, move.x, move.y)
+        self.phase = self.board.check_status()

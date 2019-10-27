@@ -38,7 +38,7 @@ class BinarySerializator(BaseSerializator):
         children_count = BinaryCodec.read_integer(file)
         for i in range(children_count):
             details = MonteCarloNodeDetails()
-            details.move = BinaryCodec.read_string(file)
+            details.move_name = BinaryCodec.read_string(file)
             details.visits_count = BinaryCodec.read_integer(file)
             details.visits_count_pre_modified = BinaryCodec.read_integer(file)
             details.average_prize = BinaryCodec.read_float(file)

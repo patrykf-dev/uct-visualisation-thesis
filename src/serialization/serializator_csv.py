@@ -23,7 +23,7 @@ class CsvSerializator(BaseSerializator):
 
     def _encode_node(self, writer, node):
         s = node.details
-        row = [s.move, s.visits_count, s.visits_count_pre_modified, s.average_prize, s.state_name, len(node.children)]
+        row = [s.move_name, s.visits_count, s.visits_count_pre_modified, s.average_prize, s.state_name, len(node.children)]
         writer.writerow(row)
         for child in node.children:
             self._encode_node(writer, child)
@@ -32,7 +32,7 @@ class CsvSerializator(BaseSerializator):
         row = next(reader)
         node = Node()
         d = node.details
-        d.move = row[0]
+        d.move_name = row[0]
         d.visits_count = int(row[1])
         d.visits_count_pre_modified = int(row[2])
         d.average_prize = float(row[3])

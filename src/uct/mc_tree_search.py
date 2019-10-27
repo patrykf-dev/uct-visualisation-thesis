@@ -1,20 +1,19 @@
 import src.uct.enums as Enums
 import src.uct.node_utils as NodeUtils
 import src.uct.uct_calculation as UCT
-from src.uct.node import Node
+from src.uct.mc_tree import MonteCarloTree
 
 
 class MonteCarloTreeSearch:
-    def __init__(self):
+    def __init__(self, game_state):
         self.iterations = 0
         self.debug_print_allowed = False
+        self.tree = MonteCarloTree(game_state)
 
-    def find_next_move(self, game_data):
-        root = Node.create_root(game_data)
-        self.print_debug(game_data.board.get_string_formatted())
+    def calculate_next_move(self):
         while self.iterations < 500:
-            self.print_debug("\n=======Iteration {} =======".format(self.iterations))
-            promising_node = self._selection(root)
+            self._print_debug("\n=======Iteration {} =======".format(self.iterations))
+            promising_node = self._selection(self.tree.root)
             self._expansion(promising_node)
 
             if promising_node.has_children():
@@ -27,9 +26,13 @@ class MonteCarloTreeSearch:
 
             self.iterations = self.iterations + 1
 
-        best_child = NodeUtils.get_child_with_max_score(root)
-        self.print_debug("Best node is {}".format(best_child.id))
-        return best_child.game_state
+        best_child = NodeUtils.get_child_with_max_score(self.tree.root)
+        self._print_debug("Best node is {}".format(best_child.id))
+
+        result_game_state = self.tree.retrieve_node_game_state(best_child)
+        result_game_state.switch_current_player()
+        result_move = best_child.move
+        return result_move, result_game_state
 
     def _selection(self, node):
         """
@@ -42,7 +45,7 @@ class MonteCarloTreeSearch:
         while tmp_node.has_children() != 0:
             tmp_node = UCT.find_best_child_with_UCT(tmp_node)
 
-        self.print_debug("Selection from {} led to {}".format(node.id, tmp_node.id))
+        self._print_debug("Selection from {} led to {}".format(node.id, tmp_node.id))
         return tmp_node
 
     def _expansion(self, node):
@@ -51,13 +54,14 @@ class MonteCarloTreeSearch:
         Unless L ends the game, create one (or more) child nodes and choose node C from one of them.
         :param node: node from which to start expanding
         """
-        if node.game_state.phase != Enums.GamePhase.IN_PROGRESS:
-            self.print_debug("Cannot expand from node {}".format(node.id))
+        node_state = self.tree.retrieve_node_game_state(node)
+        if node_state.phase != Enums.GamePhase.IN_PROGRESS:
+            self._print_debug("Cannot expand from node {}".format(node.id))
 
-        self.print_debug("Expanding from node {}".format(node.id))
-        possible_states = node.game_state.get_all_possible_states()
-        for state in possible_states:
-            node.add_child(state)
+        self._print_debug("Expanding from node {}".format(node.id))
+        possible_moves = node_state.get_all_possible_moves()
+        for move in possible_moves:
+            node.add_child(move)
 
     def _simulation(self, leaf):
         """
@@ -65,8 +69,9 @@ class MonteCarloTreeSearch:
         Complete one random playout from node C.
         :param leaf: leaf from which to process a random playout
         """
-        tmp_state = leaf.game_state.deep_copy()
-        tmp_phase = leaf.game_state.phase
+        leaf_state = self.tree.retrieve_node_game_state(leaf)
+        tmp_state = leaf_state.deep_copy()
+        tmp_phase = leaf_state.phase
         opponent_win_phase = Enums.get_opponent_win(tmp_state.current_player)
 
         if tmp_phase == opponent_win_phase:
@@ -76,7 +81,7 @@ class MonteCarloTreeSearch:
             # TODO: do we do anything here?
             return tmp_phase
 
-        self.print_debug("Simulating from node {}...".format(leaf.id))
+        self._print_debug("Simulating from node {}...".format(leaf.id))
 
         while tmp_phase == Enums.GamePhase.IN_PROGRESS:
             tmp_state.perform_random_move()
@@ -91,16 +96,17 @@ class MonteCarloTreeSearch:
         :param leaf: leaf from which to start backpropagating
         :param playout_result: result of random playout simulated from :leaf:
         """
-        self.print_debug("Backpropagating from node {}".format(leaf.id))
+        self._print_debug("Backpropagating from node {}".format(leaf.id))
 
         tmp_node = leaf
-        while tmp_node is not None:
-            tmp_node.details.visits_count = tmp_node.details.visits_count + 1
-            tmp_current_player = tmp_node.game_state.current_player
+        while tmp_node != self.tree.root:
+            tmp_node.details.mark_visit()
+            tmp_current_player = tmp_node.move.player
             if playout_result == Enums.get_player_win(tmp_current_player):
                 tmp_node.details.add_score(1)
             tmp_node = tmp_node.parent
+        self.tree.root.details.mark_visit()
 
-    def print_debug(self, log):
+    def _print_debug(self, log):
         if self.debug_print_allowed:
             print(log)
