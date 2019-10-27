@@ -1,5 +1,5 @@
+from src.serialization.serializator_csv import CsvSerializator
 from src.uct.node import Node
-from src.serialization.serializator_binary import BinarySerializator
 
 
 def serialization_test():
@@ -12,7 +12,7 @@ def serialization_test():
     aa.children = [bb, cc]
     cc.children = [dd, ee]
 
-    serializator = BinarySerializator()
+    serializator = CsvSerializator()
     serializator.save_node_to_file(aa, "serialization_test")
 
 
@@ -28,7 +28,7 @@ def create_node(name, move_name):
 
 
 def deserialization_test():
-    serializator = BinarySerializator()
+    serializator = CsvSerializator()
     node = serializator.get_node_from_file("serialization_test")
     d = node.details
     print("Root: [{}] : ([{}], {}, {}, {})".format(d.state_name, d.move, d.visits_count, d.visits_count_pre_modified,
