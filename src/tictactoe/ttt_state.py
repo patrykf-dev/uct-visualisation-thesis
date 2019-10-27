@@ -1,8 +1,8 @@
 import src.uct.random_utils as RandomUtils
-from src.uct.game_data import GameData
+from src.uct.base_game_state import BaseGameState
 
 
-class TicTacToeGameData(GameData):
+class TicTacToeState(BaseGameState):
     def __init__(self, board):
         super().__init__()
         self.board = board
@@ -12,7 +12,7 @@ class TicTacToeGameData(GameData):
         rc = []
         for position in positions:
             new_board = self.board.deep_copy()
-            new_state = TicTacToeGameData(new_board)
+            new_state = TicTacToeState(new_board)
             new_state.current_player = self.current_player
             new_state.switch_current_player()
             new_board.perform_move(new_state.current_player, position[0], position[1])
@@ -20,7 +20,7 @@ class TicTacToeGameData(GameData):
             rc.append(new_state)
         return rc
 
-    def random_move(self):
+    def perform_random_move(self):
         positions = self.board.get_empty_positions()
         random_pos_index = RandomUtils.get_random_int(0, len(positions))
         pos = positions[random_pos_index]
@@ -29,7 +29,7 @@ class TicTacToeGameData(GameData):
         self.phase = self.board.check_status()
 
     def deep_copy(self):
-        rc = TicTacToeGameData(None)
+        rc = TicTacToeState(None)
         rc.phase = self.phase
         rc.current_player = self.current_player
         rc.board = self.board.deep_copy()

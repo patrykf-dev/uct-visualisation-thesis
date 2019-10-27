@@ -1,19 +1,22 @@
-from abc import ABC
+import abc
 
 from src.uct.enums import GamePhase
 
 
-class GameData(ABC):
+class BaseGameState(abc.ABC):
     def __init__(self):
         self.phase = GamePhase.IN_PROGRESS
         self.current_player = 1
 
+    @abc.abstractmethod
     def get_all_possible_states(self):
         pass
 
-    def random_move(self):
+    @abc.abstractmethod
+    def perform_random_move(self):
         pass
 
+    @abc.abstractmethod
     def deep_copy(self):
         pass
 

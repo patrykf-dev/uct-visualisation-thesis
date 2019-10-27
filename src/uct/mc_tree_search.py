@@ -29,7 +29,7 @@ class MonteCarloTreeSearch:
 
         best_child = NodeUtils.get_child_with_max_score(root)
         self.print_debug("Best node is {}".format(best_child.id))
-        return best_child.game_data
+        return best_child.game_state
 
     def _selection(self, node):
         """
@@ -51,11 +51,11 @@ class MonteCarloTreeSearch:
         Unless L ends the game, create one (or more) child nodes and choose node C from one of them.
         :param node: node from which to start expanding
         """
-        if node.game_data.phase != Enums.GamePhase.IN_PROGRESS:
+        if node.game_state.phase != Enums.GamePhase.IN_PROGRESS:
             self.print_debug("Cannot expand from node {}".format(node.id))
 
         self.print_debug("Expanding from node {}".format(node.id))
-        possible_states = node.game_data.get_all_possible_states()
+        possible_states = node.game_state.get_all_possible_states()
         for state in possible_states:
             node.add_child(state)
 
@@ -65,8 +65,8 @@ class MonteCarloTreeSearch:
         Complete one random playout from node C.
         :param leaf: leaf from which to process a random playout
         """
-        tmp_state = leaf.game_data.deep_copy()
-        tmp_phase = leaf.game_data.phase
+        tmp_state = leaf.game_state.deep_copy()
+        tmp_phase = leaf.game_state.phase
         opponent_win_phase = Enums.get_opponent_win(tmp_state.current_player)
 
         if tmp_phase == opponent_win_phase:
@@ -79,7 +79,7 @@ class MonteCarloTreeSearch:
         self.print_debug("Simulating from node {}...".format(leaf.id))
 
         while tmp_phase == Enums.GamePhase.IN_PROGRESS:
-            tmp_state.random_move()
+            tmp_state.perform_random_move()
             tmp_phase = tmp_state.phase
 
         return tmp_phase
@@ -96,7 +96,7 @@ class MonteCarloTreeSearch:
         tmp_node = leaf
         while tmp_node is not None:
             tmp_node.details.visits_count = tmp_node.details.visits_count + 1
-            tmp_current_player = tmp_node.game_data.current_player
+            tmp_current_player = tmp_node.game_state.current_player
             if playout_result == Enums.get_player_win(tmp_current_player):
                 tmp_node.details.add_score(1)
             tmp_node = tmp_node.parent

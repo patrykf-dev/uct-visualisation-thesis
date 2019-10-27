@@ -1,4 +1,4 @@
-from src.uct.game_data import GameData
+from src.uct.base_game_state import BaseGameState
 from src.uct.mc_node_details import MonteCarloNodeDetails
 
 
@@ -10,7 +10,7 @@ class Node:
         Public constructor shouldn't ever be called, use create_root instead
         """
         self.id = -1
-        self.game_data = GameData()
+        self.game_state = None
         self.details = MonteCarloNodeDetails()
         self.children = []
         self.parent = None
@@ -31,7 +31,7 @@ class Node:
     def _create_instance(game_data):
         node = Node()
         node.id = Node.generate_next_id()
-        node.game_data = game_data
+        node.game_state = game_data
         node.details = MonteCarloNodeDetails()
         node.children = []
         node.parent = None

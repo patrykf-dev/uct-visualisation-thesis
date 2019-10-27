@@ -1,11 +1,11 @@
 import src.uct.enums as Enums
-from src.tictactoe.game_data import TicTacToeGameData
+from src.tictactoe.ttt_state import TicTacToeState
 from src.tictactoe.board import TicTacToeBoard
 from src.uct.mc_tree_search import MonteCarloTreeSearch
 
 
 def player_vs_player():
-    game_data = TicTacToeGameData(TicTacToeBoard(3))
+    game_data = TicTacToeState(TicTacToeBoard(3))
     while True:
         x, y = read_player_decision(game_data)
         game_data.board.perform_move(game_data.current_player, x, y)
@@ -17,7 +17,7 @@ def player_vs_player():
 
 
 def player_vs_machine():
-    game_data = TicTacToeGameData(TicTacToeBoard(3))
+    game_data = TicTacToeState(TicTacToeBoard(3))
     while True:
         x, y = read_player_decision(game_data)
         game_data.board.perform_move(game_data.current_player, x, y)
