@@ -3,5 +3,6 @@ import random
 random.seed(a=123456)
 
 
-def get_random_int(int_from, int_to):
-    return random.randint(int_from, int_to - 1)
+def get_random_int(value_from, value_to):
+    span = value_to - value_from
+    return int(span * random.random() + value_from)

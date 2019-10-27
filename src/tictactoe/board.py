@@ -1,18 +1,15 @@
 import src.uct.algorithm.enums as Enums
-
+import src.utils.array_utils as ArrayUtils
 
 class TicTacToeBoard:
     def __init__(self, size):
         self.size = size
-        self.board_values = [[0 for i in range(size)] for j in range(size)]
+        self.board_values = ArrayUtils.generate_2d_zeros_array(self.size, self.size)
         self._empty_spots = size * size
 
     def deep_copy(self):
         new_board = TicTacToeBoard(self.size)
-        new_values = [[0 for i in range(self.size)] for j in range(self.size)]
-        for i in range(self.size):
-            for j in range(self.size):
-                new_values[i][j] = self.board_values[i][j]
+        new_values = ArrayUtils.get_2d_array_deep_copy(self.board_values)
         new_board.size = self.size
         new_board.board_values = new_values
         new_board._empty_spots = self._empty_spots
@@ -27,11 +24,13 @@ class TicTacToeBoard:
         return self._get_status_after_move(x, y)
 
     def get_empty_positions(self):
-        rc = []
+        rc = [None] * self._empty_spots
+        cnt = 0
         for i in range(self.size):
             for j in range(self.size):
                 if self.board_values[i][j] == 0:
-                    rc.append((j, i))
+                    rc[cnt] = (j, i)
+                    cnt = cnt + 1
         return rc
 
     def get_string_formatted(self):

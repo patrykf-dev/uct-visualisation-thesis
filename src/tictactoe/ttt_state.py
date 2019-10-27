@@ -1,7 +1,7 @@
-import src.utils.random_utils as RandomUtils
 import src.uct.algorithm.enums as Enums
-from src.uct.game.base_game_state import BaseGameState
+import src.utils.random_utils as RandomUtils
 from src.tictactoe.ttt_move import TicTacToeMove
+from src.uct.game.base_game_state import BaseGameState
 
 
 class TicTacToeState(BaseGameState):
@@ -11,11 +11,12 @@ class TicTacToeState(BaseGameState):
 
     def get_all_possible_moves(self):
         positions = self.board.get_empty_positions()
-        rc = []
-        for position in positions:
-            move = TicTacToeMove(position[0], position[1])
+        rc = [None] * len(positions)
+        for i in range(len(positions)):
+            pos = positions[i]
+            move = TicTacToeMove(pos[0], pos[1])
             move.player = Enums.get_opponent(self.current_player)
-            rc.append(move)
+            rc[i] = move
         return rc
 
     def perform_random_move(self):
