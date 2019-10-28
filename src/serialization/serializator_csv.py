@@ -5,25 +5,27 @@ from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 class CsvSerializator(BaseSerializator):
-    """
-    Serialization scheme is:
-    move, visits, visits_pre, avg_prize, state_name, children_count
-    """
+    def __init__(self):
+        super().__init__()
+        self.extension = "csv"
 
     def save_node_to_file(self, node, file_name):
-        with open("../trees/" + file_name + ".csv", "w", newline='') as file:
+        path = self.get_file_path(file_name)
+        with open(path, "w+", newline='') as file:
             writer = csv.writer(file, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
             self._encode_node(writer, node)
 
     def get_node_from_file(self, file_name):
-        with open("../trees/" + file_name + ".csv", newline='') as csvfile:
+        path = self.get_file_path(file_name)
+        with open(path, newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='|')
             node = self._decode_node(reader)
         return node
 
     def _encode_node(self, writer, node):
         s = node.details
-        row = [s.move_name, s.visits_count, s.visits_count_pre_modified, s.average_prize, s.state_name, len(node.children)]
+        row = [s.move_name, s.visits_count, s.visits_count_pre_modified, s.average_prize, s.state_name,
+               len(node.children)]
         writer.writerow(row)
         for child in node.children:
             self._encode_node(writer, child)

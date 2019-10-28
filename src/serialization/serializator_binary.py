@@ -5,16 +5,22 @@ from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 class BinarySerializator(BaseSerializator):
+    def __init__(self):
+        super().__init__()
+        self.extension = "tree"
+
     def save_node_to_file(self, node, file_name):
         bin_arrays = []
         self._encode_node(bin_arrays, node)
 
-        with open("../trees/" + file_name + ".tree", 'wb+') as file:
+        path = self.get_file_path(file_name)
+        with open(path, 'wb+') as file:
             for bin_array in bin_arrays:
                 file.write(bin_array)
 
     def get_node_from_file(self, file_name):
-        with open("../trees/" + file_name + ".tree", "rb") as file:
+        path = self.get_file_path(file_name)
+        with open(path, "rb") as file:
             node, _ = self._decode_node(file)
         return node
 
