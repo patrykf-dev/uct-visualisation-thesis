@@ -1,5 +1,6 @@
 from itertools import chain
 from random import randint
+from copy import deepcopy
 
 from src.uct.game.base_game_state import BaseGameState
 
@@ -26,7 +27,7 @@ class ChessState(BaseGameState):
         return all_possible_moves[random_number]
 
     def deep_copy(self):
-        pass
+        return deepcopy(self.board)
 
     def apply_moves(self, moves):
         pass
