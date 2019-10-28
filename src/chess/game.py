@@ -3,10 +3,10 @@ import pygame
 import sys
 from pygame.locals import *
 
-from board import Board
-from enums import MoveStatus, GameStatus
-from figures import *
-from utilities import PastMove
+from src.chess.board import Board
+from src.chess.enums import MoveStatus, GameStatus
+from src.chess.figures import *
+from src.chess.utilities import PastMove
 
 WIDTH = 600
 HEIGHT = 600

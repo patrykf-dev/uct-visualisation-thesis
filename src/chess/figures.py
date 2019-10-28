@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from enums import FigureType, Color, MoveType
-from utilities import MoveObject
+from src.chess.enums import FigureType, Color, MoveType
+from src.chess.utilities import MoveObject
 
 
 class Figure(ABC):
@@ -17,7 +17,7 @@ class Figure(ABC):
 
     @staticmethod
     def is_move_valid(move_pos):
-        from game import TILE_NUMBER
+        from src.chess.game import TILE_NUMBER
         return 0 <= move_pos[0] <= TILE_NUMBER - 1 and 0 <= move_pos[1] <= TILE_NUMBER - 1
 
     def move(self, new_position):
@@ -69,7 +69,7 @@ class Pawn(Figure):
         self.can_be_captured_en_passant = val
 
     def check_moves(self, figures, threat_for_king=False):
-        from game import TILE_NUMBER
+        from src.chess.game import TILE_NUMBER
         possible_moves = []
 
         # setting variables
@@ -98,7 +98,7 @@ class Pawn(Figure):
         return possible_moves
 
     def check_captures(self, figures, threat_for_king=False):
-        from game import TILE_NUMBER
+        from src.chess.game import TILE_NUMBER
 
         if self.color == Color.WHITE:
             last_line = TILE_NUMBER - 1

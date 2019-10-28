@@ -7,9 +7,9 @@ from pygame.locals import *
 import sys
 import time
 
-from game import Game
-from figures import *
-from enums import GameStatus
+from src.chess.game import Game
+from src.chess.figures import *
+from src.chess.enums import GameStatus
 
 
 class Move:

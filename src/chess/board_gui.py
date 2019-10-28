@@ -1,5 +1,5 @@
 import numpy as np
-from enums import MoveStatus
+from src.chess.enums import MoveStatus
 
 
 class Board:
@@ -12,7 +12,7 @@ class Board:
         self.grid = self.color_board()
 
     def color_board(self):
-        from game import TILE_HEIGHT, TILE_WIDTH, TILE_NUMBER
+        from src.chess.game import TILE_HEIGHT, TILE_WIDTH, TILE_NUMBER
         self.grid = np.full((TILE_NUMBER, TILE_NUMBER), None)
         grid = [[(i * TILE_WIDTH, j * TILE_HEIGHT) for i in range(TILE_NUMBER)] for j in range(TILE_NUMBER)]
         for i, row in enumerate(grid[::-1]):
