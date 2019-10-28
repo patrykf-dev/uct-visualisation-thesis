@@ -30,4 +30,6 @@ class ChessState(BaseGameState):
         return deepcopy(self.board)
 
     def apply_moves(self, moves):
-        pass
+        for move in moves:
+            self.board.decide_move_action(move.position_from)
+            self.board.decide_move_action(move.posision_to)
