@@ -2,7 +2,7 @@ import numpy as np
 from src.chess.enums import MoveStatus
 
 
-class Board:
+class BoardGUI:
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super().__new__(cls)

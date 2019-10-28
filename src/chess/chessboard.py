@@ -1,7 +1,7 @@
 from src.chess.enums import MoveStatus, GameStatus
 from src.chess.figures import *
 from src.chess.utilities import PastMove
-from src.chess.board_gui import Board
+from src.chess.board_gui import BoardGUI
 
 
 class Chessboard:
@@ -33,12 +33,12 @@ class Chessboard:
         self.move_was_executed = False
         self.game_status = GameStatus.IN_PROGRESS
         self.past_moves = []
-        self.board = Board()
+        self.board_gui = BoardGUI()
 
     def select_figure(self, grid_pos):
         figure = Figure.get_figure(self.figures, grid_pos)
         if figure and figure.color == self.move_color:
-            self.board.grid[grid_pos].select()
+            self.board_gui.grid[grid_pos].select()
             self.move_status = MoveStatus.FIGURE_SELECTED
             self.selected_tile = grid_pos
             self.possible_moves = figure.check_moves(self.figures)
@@ -51,8 +51,8 @@ class Chessboard:
             return
         tile_1 = self.past_moves[-1].position
         tile_2 = self.past_moves[-1].old_position
-        self.board.grid[tile_1].deselect()
-        self.board.grid[tile_2].deselect()
+        self.board_gui.grid[tile_1].deselect()
+        self.board_gui.grid[tile_2].deselect()
 
     def is_king_selected_to_move_in_check(self):
         figure = Figure.get_figure(self.figures, self.selected_tile)
@@ -61,8 +61,8 @@ class Chessboard:
     def deselect_figure(self):
         if self.selected_tile:
             if not self.check:
-                self.board.grid[self.get_king_position(self.move_color)].deselect()
-            self.board.grid[self.selected_tile].deselect(when_checked=self.is_king_selected_to_move_in_check())
+                self.board_gui.grid[self.get_king_position(self.move_color)].deselect()
+            self.board_gui.grid[self.selected_tile].deselect(when_checked=self.is_king_selected_to_move_in_check())
         self.selected_tile = None
         self.possible_moves = []
         self.move_status = MoveStatus.FIGURE_NOT_SELECTED
@@ -165,12 +165,12 @@ class Chessboard:
                 self.deselect_last_moved()
                 if self.check:
                     king_pos = self.get_king_position(self.get_opposite_color())
-                    self.board.grid[king_pos].set_color_when_checked()
+                    self.board_gui.grid[king_pos].set_color_when_checked()
                 selected_tile = self.selected_tile
                 self.add_past_move(move.position, figures_count_before_move, selected_tile)
                 self.deselect_figure()
-                self.board.grid[selected_tile].set_color_when_moved()
-                self.board.grid[move.position].set_color_when_moved()
+                self.board_gui.grid[selected_tile].set_color_when_moved()
+                self.board_gui.grid[move.position].set_color_when_moved()
                 self.change_turn()
                 self.move_was_executed = True
                 self.check_and_set_game_status()

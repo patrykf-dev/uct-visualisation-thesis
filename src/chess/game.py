@@ -42,7 +42,7 @@ class Game:
             self.screen.blit(tile_image, tile_pos)
 
     def draw_board(self):
-        for i, row in enumerate(self.chessboard.board.grid):
+        for i, row in enumerate(self.chessboard.board_gui.grid):
             for j, tile in enumerate(row):
                 pygame.draw.rect(self.window, tile.color, (tile.start_position[0], tile.start_position[1],
                                                            tile.tile_width, tile.tile_height))
