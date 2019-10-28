@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from src.chess.enums import FigureType, Color, MoveType
-from src.chess.utilities import MoveObject
+from src.chess.algorithm_relay.chess_move import ChessMove
 
 
 class Figure(ABC):
@@ -52,9 +52,9 @@ class FigureWithLinearMovement(Figure):
                 figure = self.get_figure(figures, position_being_checked)
                 if figure:
                     if figure.color != self.color or threat_for_king:
-                        possible_moves.append(MoveObject(position_being_checked, MoveType.NORMAL))
+                        possible_moves.append(ChessMove(position_being_checked, self.figure_type, MoveType.NORMAL))
                     break
-                possible_moves.append(MoveObject(position_being_checked, MoveType.NORMAL))
+                possible_moves.append(ChessMove(position_being_checked, self.figure_type, MoveType.NORMAL))
                 position_being_checked = tuple(map(sum, zip(position_being_checked, direction)))
         return possible_moves
 
@@ -87,12 +87,13 @@ class Pawn(Figure):
             print('! Pawn should not be allowed to stay in the end line')
         else:
             pos = step_forward(self.position[0], 1), self.position[1]
-            if not Figure.get_figure(figures, pos):
-                possible_moves.append(MoveObject(pos, MoveType.NORMAL if pos[0] != last_line else MoveType.PROMOTION))
+            figure = Figure.get_figure(figures, pos)
+            if not figure:
+                possible_moves.append(ChessMove(pos, self.figure_type, MoveType.NORMAL if pos[0] != last_line else MoveType.PROMOTION))
                 # double move at the beginning
                 double_move = step_forward(self.position[0], 2), self.position[1]
                 if self.position[0] == start_line and not Figure.get_figure(figures, double_move):
-                    possible_moves.append(MoveObject(double_move, MoveType.PAWN_DOUBLE_MOVE))
+                    possible_moves.append(ChessMove(double_move, self.figure_type, MoveType.PAWN_DOUBLE_MOVE))
             # diagonal captures
             possible_moves.extend(self.check_captures(figures, threat_for_king))
         return possible_moves
@@ -140,10 +141,10 @@ class Pawn(Figure):
             move_type = move_diagonally(_pos, color)
             if move_type:
                 if move_type == MoveType.NORMAL or move_type == MoveType.PROMOTION:
-                    possible_captures.append(MoveObject(_pos, move_type))
+                    possible_captures.append(ChessMove(_pos, self.figure_type, move_type))
                 elif move_type == MoveType.EN_PASSANT:
                     possible_captures.append(
-                        MoveObject(_pos, move_type, {'opponent-pawn-pos': (self.position[0], pos_height)}))
+                        ChessMove(_pos, self.figure_type, move_type, {'opponent-pawn-pos': (self.position[0], pos_height)}))
 
         possible_captures = []
         if self.position[1] > 0:
@@ -176,14 +177,14 @@ class Knight(Figure):
                 toret.append(move)
             return toret
 
-        possible_moves = [MoveObject((self.position[0] + 2, self.position[1] - 1), MoveType.NORMAL),
-                          MoveObject((self.position[0] + 2, self.position[1] + 1), MoveType.NORMAL),
-                          MoveObject((self.position[0] - 2, self.position[1] + 1), MoveType.NORMAL),
-                          MoveObject((self.position[0] - 2, self.position[1] - 1), MoveType.NORMAL),
-                          MoveObject((self.position[0] + 1, self.position[1] - 2), MoveType.NORMAL),
-                          MoveObject((self.position[0] + 1, self.position[1] + 2), MoveType.NORMAL),
-                          MoveObject((self.position[0] - 1, self.position[1] + 2), MoveType.NORMAL),
-                          MoveObject((self.position[0] - 1, self.position[1] - 2), MoveType.NORMAL)]
+        possible_moves = [ChessMove((self.position[0] + 2, self.position[1] - 1), self.figure_type, MoveType.NORMAL),
+                          ChessMove((self.position[0] + 2, self.position[1] + 1), self.figure_type, MoveType.NORMAL),
+                          ChessMove((self.position[0] - 2, self.position[1] + 1), self.figure_type, MoveType.NORMAL),
+                          ChessMove((self.position[0] - 2, self.position[1] - 1), self.figure_type, MoveType.NORMAL),
+                          ChessMove((self.position[0] + 1, self.position[1] - 2), self.figure_type, MoveType.NORMAL),
+                          ChessMove((self.position[0] + 1, self.position[1] + 2), self.figure_type, MoveType.NORMAL),
+                          ChessMove((self.position[0] - 1, self.position[1] + 2), self.figure_type, MoveType.NORMAL),
+                          ChessMove((self.position[0] - 1, self.position[1] - 2), self.figure_type, MoveType.NORMAL)]
         return wipe_out_bad_moves(possible_moves)
 
 
@@ -292,8 +293,8 @@ class King(Figure):
                 move_type == MoveType.CASTLE_SHORT else figure_offset_2_position
             final_rook_pos = figure_offset_2_position if \
                 move_type == MoveType.CASTLE_SHORT else figure_offset_3_position
-            possible_moves.append(MoveObject(final_king_pos, move_type,
-                                             {'rook-end-pos': final_rook_pos, 'rook': figure_rook}))
+            possible_moves.append(ChessMove(final_king_pos, self.figure_type, move_type,
+                                            {'rook-end-pos': final_rook_pos, 'rook': figure_rook}))
 
         possible_moves = []
         if self.is_able_to_castle:
@@ -335,7 +336,7 @@ class King(Figure):
             self.move(previous_position)
             if self.is_the_other_king_around(position_being_checked, figures):
                 continue
-            possible_moves.append(MoveObject(position_being_checked, MoveType.NORMAL))
+            possible_moves.append(ChessMove(position_being_checked, self.figure_type, MoveType.NORMAL))
         if self.is_able_to_castle and not self.is_check_on_position_given(self.position, figures):
             possible_moves.extend(self.possibility_to_castle(self.position, figures))
         return possible_moves

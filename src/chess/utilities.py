@@ -1,13 +1,3 @@
-class MoveObject:
-    def __init__(self, pos, move_type, help_dict=None):
-        self.position = pos
-        self.move_type = move_type
-        self.help_dict = help_dict
-
-    def __str__(self):
-        return f'{self.position}, {self.move_type}'
-
-
 class PastMove:
     def __init__(self, position, was_check, figure_moved, was_capture, old_position):
         self.position = position
