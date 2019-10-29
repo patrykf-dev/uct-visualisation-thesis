@@ -85,9 +85,6 @@ class Game:
                 self.draw_board()
                 # self.draw_figures()
                 self.draw_moves()
-            else:
-                pass
-                # print(event)
         pygame.display.update()
 
 

@@ -1,4 +1,5 @@
 import numpy as np
+
 from src.chess.enums import MoveStatus
 
 
@@ -9,9 +10,9 @@ class BoardGUI:
         return cls.instance
 
     def __init__(self):
-        self.grid = self.color_board()
+        self.grid = self.create_grid()
 
-    def color_board(self):
+    def create_grid(self):
         from src.chess.game import TILE_HEIGHT, TILE_WIDTH, TILE_NUMBER
         self.grid = np.full((TILE_NUMBER, TILE_NUMBER), None)
         grid = [[(i * TILE_WIDTH, j * TILE_HEIGHT) for i in range(TILE_NUMBER)] for j in range(TILE_NUMBER)]
@@ -21,9 +22,20 @@ class BoardGUI:
                     tile_color = (255, 195, 77)
                 else:
                     tile_color = (230, 115, 0)
-                # i - row; j - column
                 self.grid[i, j] = Tile(tile_color, tile, TILE_WIDTH, TILE_HEIGHT)
         return self.grid
+
+    def mark_tile_selected(self, tile):
+        self.grid[tile].select()
+
+    def mark_tile_deselected(self, tile, when_checked=False):
+        self.grid[tile].deselect(when_checked)
+
+    def mark_tile_checked(self, tile):
+        self.grid[tile].set_color_when_checked()
+
+    def mark_tile_moved(self, tile):
+        self.grid[tile].set_color_when_moved()
 
 
 class Tile:

@@ -1,7 +1,7 @@
+from src.chess.board_gui import BoardGUI
 from src.chess.enums import MoveStatus, GameStatus
 from src.chess.figures import *
 from src.chess.utilities import PastMove
-from src.chess.board_gui import BoardGUI
 
 
 class Chessboard:
@@ -38,7 +38,7 @@ class Chessboard:
     def select_figure(self, grid_pos):
         figure = Figure.get_figure(self.figures, grid_pos)
         if figure and figure.color == self.move_color:
-            self.board_gui.grid[grid_pos].select()
+            self.board_gui.mark_tile_selected(grid_pos)
             self.move_status = MoveStatus.FIGURE_SELECTED
             self.selected_tile = grid_pos
             self.possible_moves = figure.check_moves(self.figures)
@@ -51,8 +51,8 @@ class Chessboard:
             return
         tile_1 = self.past_moves[-1].position
         tile_2 = self.past_moves[-1].old_position
-        self.board_gui.grid[tile_1].deselect()
-        self.board_gui.grid[tile_2].deselect()
+        self.board_gui.mark_tile_deselected(tile_1)
+        self.board_gui.mark_tile_deselected(tile_2)
 
     def is_king_selected_to_move_in_check(self):
         figure = Figure.get_figure(self.figures, self.selected_tile)
@@ -61,8 +61,8 @@ class Chessboard:
     def deselect_figure(self):
         if self.selected_tile:
             if not self.check:
-                self.board_gui.grid[self.get_king_position(self.move_color)].deselect()
-            self.board_gui.grid[self.selected_tile].deselect(when_checked=self.is_king_selected_to_move_in_check())
+                self.board_gui.mark_tile_deselected(self.get_king_position(self.move_color))
+            self.board_gui.mark_tile_deselected(self.selected_tile, when_checked=self.is_king_selected_to_move_in_check())
         self.selected_tile = None
         self.possible_moves = []
         self.move_status = MoveStatus.FIGURE_NOT_SELECTED
@@ -151,7 +151,6 @@ class Chessboard:
         if self.move_status == MoveStatus.FIGURE_NOT_SELECTED:
             self.select_figure(grid_pos)
 
-        # make move / deselect / change selection
         else:
             positions_list = [x.position for x in self.possible_moves]
             move_index = positions_list.index(grid_pos) if grid_pos in positions_list else -1
@@ -165,12 +164,12 @@ class Chessboard:
                 self.deselect_last_moved()
                 if self.check:
                     king_pos = self.get_king_position(self.get_opposite_color())
-                    self.board_gui.grid[king_pos].set_color_when_checked()
+                    self.board_gui.mark_tile_checked(king_pos)
                 selected_tile = self.selected_tile
                 self.add_past_move(move.position, figures_count_before_move, selected_tile)
                 self.deselect_figure()
-                self.board_gui.grid[selected_tile].set_color_when_moved()
-                self.board_gui.grid[move.position].set_color_when_moved()
+                self.board_gui.mark_tile_moved(selected_tile)
+                self.board_gui.mark_tile_moved(move.position)
                 self.change_turn()
                 self.move_was_executed = True
                 self.check_and_set_game_status()
