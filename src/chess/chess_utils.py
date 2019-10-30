@@ -1,5 +1,6 @@
 from itertools import chain
 
+from src.chess.enums import GameStatus
 from src.chess.figures import *
 
 
@@ -19,6 +20,25 @@ def do_castling(move, figure_moved):
     rook.move(move.help_dict['rook-end-pos'])
     figure_moved.set_is_able_to_castle(False)
     rook.set_is_able_to_castle(False)
+
+
+def is_fifty_move_rule(board):
+    if len(board.past_moves) < 100:
+        return False
+    for past_move in board.past_moves[::-1][:100]:
+        if past_move.was_capture or past_move.figure_moved.figure_type == FigureType.PAWN:
+            return False
+    return True
+
+
+def is_there_a_draw(board):
+    if not are_the_figures_left_capable_of_checkmate(board):
+        board.game_status = GameStatus.DRAW
+        return True
+    if is_fifty_move_rule(board):
+        board.game_status = GameStatus.FIFTY_MOVE_RULE
+        return True
+    return False
 
 
 def get_all_possible_moves(board):

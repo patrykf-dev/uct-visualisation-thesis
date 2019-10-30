@@ -129,40 +129,21 @@ class Chessboard:
         figures_count_before_move = len(self.figures)
         self.do_move(move)
         self.check_for_check(self.get_opposite_color())
-        self.deselect_last_moved()
+        self.deselect_last_moved()  # TODO GUI
         if self.check:
             king_pos = ChessUtils.get_king_position(self, self.get_opposite_color())
-            self.board_gui.mark_tile_checked(king_pos)
+            self.board_gui.mark_tile_checked(king_pos)  # TODO GUI
         selected_tile = self.selected_tile
         self.add_past_move(move.position_to, figures_count_before_move, selected_tile)
         self.deselect_figure()
-        self.board_gui.mark_tile_moved(selected_tile)
-        self.board_gui.mark_tile_moved(move.position_to)
+        self.board_gui.mark_tile_moved(selected_tile)  # TODO GUI
+        self.board_gui.mark_tile_moved(move.position_to)  # TODO GUI
         self.switch_current_player()
         self.update_game_status()
-
-    def is_fifty_move_rule(self):
-        if len(self.past_moves) < 100:
-            return False
-        for past_move in self.past_moves[::-1][:100]:
-            if past_move.was_capture or past_move.figure_moved.figure_type == FigureType.PAWN:
-                return False
-        return True
-
-    def is_there_a_draw(self):
-        if not ChessUtils.are_the_figures_left_capable_of_checkmate(self):
-            self.game_status = GameStatus.DRAW
-            return True
-        if self.is_fifty_move_rule():
-            self.game_status = GameStatus.FIFTY_MOVE_RULE
-            return True
-        return False
 
     def perform_raw_move(self, pos_from, pos_to):
         self.react_to_tile_click(pos_from)
         self.react_to_tile_click(pos_to)
-        self.switch_current_player()
-        self.update_game_status()
 
     def update_game_status(self):
         move_is_possible = ChessUtils.is_there_any_possible_move(self)
@@ -173,5 +154,5 @@ class Chessboard:
             else:
                 self.game_status = GameStatus.STALEMATE
             print(f'!!!\tGAME ENDED: {self.game_status}')
-        elif self.is_there_a_draw():
+        elif ChessUtils.is_there_a_draw(self):
             print(f'!!!\tGAME ENDED: {self.game_status}')
