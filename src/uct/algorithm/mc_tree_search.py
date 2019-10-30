@@ -11,7 +11,7 @@ class MonteCarloTreeSearch:
         self.tree = MonteCarloTree(game_state)
 
     def calculate_next_move(self):
-        while self.iterations < 500:
+        while self.iterations < 1:
             self._print_debug("\n=======Iteration {} =======".format(self.iterations))
             promising_node = self._selection(self.tree.root)
             self._expansion(promising_node)
@@ -109,4 +109,4 @@ class MonteCarloTreeSearch:
 
     def _print_debug(self, log):
         if self.debug_print_allowed:
-            print(log)
+            print("\tMCTS:" + log)

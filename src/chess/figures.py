@@ -169,9 +169,9 @@ class Knight(Figure):
         def wipe_out_bad_moves(moves):
             toret = []
             for move in moves:
-                if not self.is_move_valid(move.position):
+                if not self.is_move_valid(move.position_to):
                     continue
-                figure = Figure.get_figure(figures, move.position)
+                figure = Figure.get_figure(figures, move.position_to)
                 if figure and figure.color == self.color:
                     continue
                 toret.append(move)
@@ -240,10 +240,10 @@ class King(Figure):
             # pawns have different capture rules
             if figure.figure_type == FigureType.PAWN:
                 # opponent_moves.update(figure.check_captures((i, j), board, True))
-                opponent_moves.update(x.position for x in figure.check_captures(figures, True))
+                opponent_moves.update(x.position_to for x in figure.check_captures(figures, True))
             # to avoid recursion
             elif figure.figure_type != FigureType.KING:
-                opponent_moves.update(x.position for x in figure.check_moves(figures, True))
+                opponent_moves.update(x.position_to for x in figure.check_moves(figures, True))
         return position in opponent_moves
 
     def possibility_to_castle(self, position, figures):

@@ -15,11 +15,6 @@ class Color(Enum):
     BLACK = 1
 
 
-class MoveStatus(Enum):
-    FIGURE_SELECTED = 0,
-    FIGURE_NOT_SELECTED = 1
-
-
 class MoveType(Enum):
     NORMAL = 0,
     PAWN_DOUBLE_MOVE = 1,

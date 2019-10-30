@@ -1,7 +1,5 @@
 import numpy as np
 
-from src.chess.enums import MoveStatus
-
 
 class BoardGUI:
     def __new__(cls):
@@ -45,15 +43,15 @@ class Tile:
         self.start_position = start_position
         self.tile_width = tile_width
         self.tile_height = tile_height
-        self.chosen = MoveStatus.FIGURE_NOT_SELECTED
+        self.chosen = False
 
     def select(self):
         self.color = (75, 225, 35)
-        self.chosen = MoveStatus.FIGURE_SELECTED
+        self.chosen = True
 
     def deselect(self, when_checked=False):
         self.color = self.primary_color if not when_checked else (230, 30, 50)
-        self.chosen = MoveStatus.FIGURE_NOT_SELECTED
+        self.chosen = False
 
     def set_color_when_checked(self):
         self.color = (230, 30, 50)
