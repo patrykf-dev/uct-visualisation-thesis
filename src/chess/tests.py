@@ -44,7 +44,7 @@ class TestChess(unittest.TestCase):
                 sys.exit(0)
             elif event.type == pygame.MOUSEBUTTONUP:
                 grid_pos = self.game.grid_click_to_tile(event.pos)
-                self.game.chessboard.react_to_move_action(grid_pos[::-1])
+                self.game.chessboard.react_to_tile_click(grid_pos[::-1])
                 self.game.draw_board()
                 self.game.draw_moves()
                 if sleep_time:

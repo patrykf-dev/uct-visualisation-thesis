@@ -63,3 +63,14 @@ def reduce_move_range_when_check(board, figure, moves):
 def get_king_position(board, color):
     king = next((x for x in board.figures if x.figure_type == FigureType.KING and x.color == color), None)
     return king.position if king else None
+
+
+def is_there_any_possible_move(board):
+    for figure in board.figures:
+        if figure.color != board.current_player:
+            continue
+        possible_moves = figure.check_moves(board.figures)
+        possible_moves_reduced = reduce_move_range_when_check(board, figure, possible_moves)
+        if possible_moves_reduced:
+            return True
+    return False

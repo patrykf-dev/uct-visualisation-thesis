@@ -118,6 +118,8 @@ class Chessboard:
             new_figure = Knight
         elif figure_type_chosen == "b":
             new_figure = Bishop
+        else:
+            new_figure = Queen
         self.figures.append(new_figure(self.current_player, pos))
 
     def do_move(self, move):
@@ -139,48 +141,42 @@ class Chessboard:
             PastMove(position, self.check, figure, len(self.figures) < figures_count_before_move, old_position))
 
     # grid_pos - matrix order (y, x)
-    def react_to_move_action(self, grid_pos):
-        # choose figure
+    def react_to_tile_click(self, grid_pos):
         if not self.if_figure_selected:
             self.select_figure(grid_pos)
             return False
         else:
             positions_list = [x.position_to for x in self.possible_moves]
             move_index = positions_list.index(grid_pos) if grid_pos in positions_list else -1
-            if move_index != -1:
-                Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player)
-                move = self.possible_moves[move_index]
-                figures_count_before_move = len(self.figures)
-                self.do_move(move)
-                self.check_for_check(self.get_opposite_color())
-                self.deselect_last_moved()
-                if self.check:
-                    king_pos = ChessUtils.get_king_position(self, self.get_opposite_color())
-                    self.board_gui.mark_tile_checked(king_pos)
-                selected_tile = self.selected_tile
-                self.add_past_move(move.position_to, figures_count_before_move, selected_tile)
-                self.deselect_figure()
-                self.board_gui.mark_tile_moved(selected_tile)
-                self.board_gui.mark_tile_moved(move.position_to)
-                self.switch_current_player()
-                self.update_game_status()
+            clicked_possible_move = move_index != -1
+            if clicked_possible_move:
+                self.perform_legal_move(move_index)
                 return True
             else:
-                # figure select exchange
                 if self.selected_tile:
                     self.deselect_figure()
                 self.select_figure(grid_pos)
                 return False
 
-    def is_there_any_possible_move(self):
-        for figure in self.figures:
-            if figure.color != self.current_player:
-                continue
-            possible_moves = figure.check_moves(self.figures)
-            possible_moves_reduced = ChessUtils.reduce_move_range_when_check(self, figure, possible_moves)
-            if possible_moves_reduced:
-                return True
-        return False
+    def perform_legal_move(self, move_index):
+        Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player)
+        move = self.possible_moves[move_index]
+        figures_count_before_move = len(self.figures)
+        self.do_move(move)
+        self.check_for_check(self.get_opposite_color())
+        self.deselect_last_moved()
+        if self.check:
+            king_pos = ChessUtils.get_king_position(self, self.get_opposite_color())
+            self.board_gui.mark_tile_checked(king_pos)
+        selected_tile = self.selected_tile
+        self.add_past_move(move.position_to, figures_count_before_move, selected_tile)
+        self.deselect_figure()
+
+        self.board_gui.mark_tile_moved(selected_tile)
+        self.board_gui.mark_tile_moved(move.position_to)
+
+        self.switch_current_player()
+        self.update_game_status()
 
     def are_the_figures_left_capable_of_checkmate(self):
         figures_left_count = len(self.figures)
@@ -217,13 +213,13 @@ class Chessboard:
         return False
 
     def perform_raw_move(self, pos_from, pos_to):
-        self.react_to_move_action(pos_from)
-        self.react_to_move_action(pos_to)
+        self.react_to_tile_click(pos_from)
+        self.react_to_tile_click(pos_to)
         self.switch_current_player()
         self.update_game_status()
 
     def update_game_status(self):
-        move_is_possible = self.is_there_any_possible_move()
+        move_is_possible = ChessUtils.is_there_any_possible_move(self)
         if not move_is_possible:
             if self.check:
                 self.game_status = \

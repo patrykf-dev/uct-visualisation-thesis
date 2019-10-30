@@ -80,7 +80,7 @@ class Game:
     def react_to_player_move(self):
         pos = pygame.mouse.get_pos()
         grid_pos = self.grid_click_to_tile(pos)
-        player_moved = self.chessboard.react_to_move_action(grid_pos[::-1])
+        player_moved = self.chessboard.react_to_tile_click(grid_pos[::-1])
         self.draw_board()
         self.draw_moves()
         pygame.display.update()
