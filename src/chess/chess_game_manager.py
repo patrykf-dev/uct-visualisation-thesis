@@ -21,20 +21,17 @@ class ChessGameManager:
     def react_to_tile_click(self, grid_pos):
         if not self.if_figure_selected:
             self.select_figure(grid_pos)
-            print(f"\tSelecting figure: {grid_pos}")
             return False
         else:
             positions_list = [x.position_to for x in self.board.possible_moves]
             move_index = positions_list.index(grid_pos) if grid_pos in positions_list else -1
             clicked_possible_move = move_index != -1
             if clicked_possible_move:
-                print(f"\tMoving figure: {grid_pos}")
                 self.deselect_last_moved()
                 self.board.perform_legal_move(self.board.possible_moves[move_index])
                 self.reset_selected_tile()
                 return True
             else:
-                print(f"\tExchanging selected figure: {grid_pos}")
                 if self.selected_tile:
                     self.deselect_figure()
                 self.select_figure(grid_pos)
@@ -42,8 +39,7 @@ class ChessGameManager:
 
     def select_figure(self, grid_pos):
         figure = Figure.get_figure(self.board.figures, grid_pos)
-        print(f"\tselect_figure: {figure}")
-        if figure and figure.color == self.board.current_player:
+        if figure and figure.color == self.board.current_player_color:
             self.board_gui.mark_tile_selected(grid_pos)
             self.if_figure_selected = True
             self.selected_tile = grid_pos
@@ -63,7 +59,7 @@ class ChessGameManager:
     def deselect_figure(self):
         if self.selected_tile:
             if not self.board.check:
-                self.board_gui.mark_tile_deselected(ChessUtils.get_king_position(self.board, self.board.current_player))
+                self.board_gui.mark_tile_deselected(ChessUtils.get_king_position(self.board, self.board.current_player_color))
             is_king_selected = ChessUtils.is_king_selected_to_move_in_check(self.board, self.selected_tile)
             self.board_gui.mark_tile_deselected(self.selected_tile, when_checked=is_king_selected)
         self.reset_selected_tile()

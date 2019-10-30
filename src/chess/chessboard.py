@@ -26,7 +26,7 @@ class Chessboard:
     def __init__(self):
         self.possible_moves = []
         self.check = False
-        self.current_player = Color.WHITE
+        self.current_player_color = Color.WHITE
         self.figures = self.init_figures()
         self.game_status = GameStatus.IN_PROGRESS
         self.past_moves = []
@@ -34,7 +34,7 @@ class Chessboard:
 
     def deep_copy(self):
         rc = Chessboard()
-        rc.current_player = self.current_player
+        rc.current_player_color = self.current_player_color
         rc.check = self.check
         rc.game_status = self.game_status
 
@@ -68,7 +68,7 @@ class Chessboard:
             PastMove(position, self.check, figure, len(self.figures) < figures_count_before_move, old_position))
 
     def perform_legal_move(self, move):
-        Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player)
+        Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player_color)
         figures_count_before_move = len(self.figures)
         self.do_move(move, move.position_from)
         self.check_for_check(self.get_opposite_color())
@@ -86,7 +86,7 @@ class Chessboard:
         if not move_is_possible:
             if self.check:
                 self.game_status = \
-                    GameStatus.CHECKMATE_WHITE if self.current_player == Color.BLACK else GameStatus.CHECKMATE_BLACK
+                    GameStatus.CHECKMATE_WHITE if self.current_player_color == Color.BLACK else GameStatus.CHECKMATE_BLACK
             else:
                 self.game_status = GameStatus.STALEMATE
             print(f'!!!\tGAME ENDED: {self.game_status}')
@@ -94,7 +94,7 @@ class Chessboard:
             print(f'!!!\tGAME ENDED: {self.game_status}')
 
     def get_opposite_color(self):
-        return Color.WHITE if self.current_player == Color.BLACK else Color.BLACK
+        return Color.WHITE if self.current_player_color == Color.BLACK else Color.BLACK
 
     def switch_current_player(self):
-        self.current_player = self.get_opposite_color()
+        self.current_player_color = self.get_opposite_color()

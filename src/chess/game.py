@@ -78,44 +78,29 @@ class Game:
                 moves_projected = self.tile_to_grid(x.position_to for x in self.game_manager.board.possible_moves)
                 self.draw_circles(moves_projected)
 
-    def react_to_player_move(self):
+    def react_to_player_click(self):
         pos = pygame.mouse.get_pos()
         grid_pos = self.grid_click_to_tile(pos)
         player_moved = self.game_manager.react_to_tile_click(grid_pos)
         self.redraw_board()
-        print(f"You clicked {grid_pos}")
         if player_moved:
-            pos_to = (4, 0)
-            pos_from = (6, 0)
-            move = ChessMove(pos_to, pos_from, MoveType.NORMAL)
             self.game_manager.deselect_last_moved()
+
+            game_state = ChessState(self.game_manager.board)
+            mcts = MonteCarloTreeSearch(game_state)
+            move, _ = mcts.calculate_next_move()
+
+            print(f"Algorithm decided to go {move.position_from} -> {move.position_to} for player {move.player}")
             self.game_manager.board.perform_legal_move(move)
             self.game_manager.reset_selected_tile()
             self.redraw_board()
-
-    def perform_uct_move(self):
-        game_state = ChessState(self.game_manager.board)
-        game_state.current_player = 2
-        mcts = MonteCarloTreeSearch(game_state)
-        mcts.debug_print_allowed = True
-        uct_move, _ = mcts.calculate_next_move()
-        print(f"Algorithm decided to move {uct_move.position_from} -> {uct_move.position_to}")
-        self.game_manager.board.perform_raw_move(uct_move.position_from, uct_move.position_to)
-        self.draw_board()
-        self.draw_moves()
-        pygame.display.update()
 
     def process_input(self, events):
         for event in events:
             if event.type == QUIT:
                 sys.exit(0)
             elif event.type == pygame.MOUSEBUTTONUP:
-                self.react_to_player_move()
-                # move = ChessMove((0, 4), (0, 6), MoveType.NORMAL)
-                # self.game_manager.board.perform_legal_move(move, (0, 4))
-
-                # if player_moved:
-                #     self.perform_uct_move()
+                self.react_to_player_click()
             pygame.display.update()
 
     def redraw_board(self):
