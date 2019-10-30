@@ -30,7 +30,7 @@ class Chessboard:
         self.figures = self.init_figures()
         self.game_status = GameStatus.IN_PROGRESS
         self.past_moves = []
-        self.on_tile_marked = Event(self)
+        self.notify_tile_marked = Event(self)
 
     def deep_copy(self):
         rc = Chessboard()
@@ -67,21 +67,17 @@ class Chessboard:
         self.past_moves.append(
             PastMove(position, self.check, figure, len(self.figures) < figures_count_before_move, old_position))
 
-    def perform_legal_move(self, move, selected_tile):
+    def perform_legal_move(self, move):
         Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player)
         figures_count_before_move = len(self.figures)
-        self.do_move(move, selected_tile)
+        self.do_move(move, move.position_from)
         self.check_for_check(self.get_opposite_color())
         if self.check:
             king_pos = ChessUtils.get_king_position(self, self.get_opposite_color())
-            # self.board_gui.mark_tile_checked(king_pos)
-            self.on_tile_marked(king_pos, TileMarkType.CHECKED)
-        self.add_past_move(move.position_to, figures_count_before_move, selected_tile)
-        # self.board_gui.mark_tile_moved(selected_tile)
-        # self.board_gui.mark_tile_moved(move.position_to)
-        print(f"{move.position_from} -> {move.position_to}")
-        self.on_tile_marked(move.position_from, TileMarkType.MOVED)
-        self.on_tile_marked(move.position_to, TileMarkType.MOVED)
+            self.notify_tile_marked(king_pos, TileMarkType.CHECKED)
+        self.add_past_move(move.position_to, figures_count_before_move, move.position_from)
+        self.notify_tile_marked(move.position_from, TileMarkType.MOVED)
+        self.notify_tile_marked(move.position_to, TileMarkType.MOVED)
         self.switch_current_player()
         self.update_game_status()
 

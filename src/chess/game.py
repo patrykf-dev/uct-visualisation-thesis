@@ -6,7 +6,7 @@ from pygame.locals import *
 
 from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_game_manager import ChessGameManager
-from src.chess.chessboard import Figure
+from src.chess.chessboard import Figure, ChessMove, MoveType
 from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
 
 WIDTH = 600
@@ -59,7 +59,7 @@ class Game:
     def grid_click_to_tile(self, pos):
         if pos[1] == 0:
             pos = pos[0], 1
-        return pos[0] // self.TILE_WIDTH, (self.HEIGHT - pos[1]) // self.TILE_HEIGHT
+        return (pos[0] // self.TILE_WIDTH, (self.HEIGHT - pos[1]) // self.TILE_HEIGHT)[::-1]
 
     # positions - matrix order (y, x)
     # returns GUI order
@@ -81,12 +81,17 @@ class Game:
     def react_to_player_move(self):
         pos = pygame.mouse.get_pos()
         grid_pos = self.grid_click_to_tile(pos)
-        player_moved = self.game_manager.react_to_tile_click(grid_pos[::-1])
-        self.draw_board()
-        self.draw_moves()
-        pygame.display.update()
+        player_moved = self.game_manager.react_to_tile_click(grid_pos)
+        self.redraw_board()
         print(f"You clicked {grid_pos}")
-        return player_moved
+        if player_moved:
+            pos_to = (4, 0)
+            pos_from = (6, 0)
+            move = ChessMove(pos_to, pos_from, MoveType.NORMAL)
+            self.game_manager.deselect_last_moved()
+            self.game_manager.board.perform_legal_move(move)
+            self.game_manager.reset_selected_tile()
+            self.redraw_board()
 
     def perform_uct_move(self):
         game_state = ChessState(self.game_manager.board)
@@ -105,10 +110,18 @@ class Game:
             if event.type == QUIT:
                 sys.exit(0)
             elif event.type == pygame.MOUSEBUTTONUP:
-                player_moved = game.react_to_player_move()
+                self.react_to_player_move()
+                # move = ChessMove((0, 4), (0, 6), MoveType.NORMAL)
+                # self.game_manager.board.perform_legal_move(move, (0, 4))
+
                 # if player_moved:
-                #     game.perform_uct_move()
+                #     self.perform_uct_move()
             pygame.display.update()
+
+    def redraw_board(self):
+        self.draw_board()
+        self.draw_moves()
+        pygame.display.update()
 
 
 if __name__ == "__main__":

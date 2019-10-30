@@ -48,7 +48,7 @@ def get_all_possible_moves(board):
         if figure.color == board.current_player:
             continue
         possible_moves = figure.check_moves(board.figures)
-        possible_moves_reduced = reduce_move_range_when_check(figure, possible_moves)
+        possible_moves_reduced = reduce_move_range_when_check(board, figure, possible_moves)
 
         for move in possible_moves_reduced:
             if board.current_player == Color.WHITE:
@@ -119,7 +119,7 @@ def do_promotion(board, move, figure_moved):
         new_figure = Bishop
     else:
         new_figure = Queen
-    self.figures.append(new_figure(self.current_player, pos))
+    board.figures.append(new_figure(board.current_player, pos))
 
 
 def are_the_figures_left_capable_of_checkmate(board):

@@ -2,6 +2,7 @@ import src.utils.random_utils as RandomUtils
 from src.chess.enums import GameStatus as ChessPhase, Color
 from src.uct.algorithm.enums import GamePhase as AbstractPhase
 from src.uct.game.base_game_state import BaseGameState
+import src.chess.chess_utils as ChessUtils
 
 
 class ChessState(BaseGameState):
@@ -11,7 +12,7 @@ class ChessState(BaseGameState):
         self.current_player = board.current_player
 
     def get_all_possible_moves(self):
-        return self.board.get_all_possible_moves()
+        return ChessUtils.get_all_possible_moves(self.board)
 
     def perform_random_move(self):
         all_possible_moves = self.board.get_all_possible_moves()

@@ -10,7 +10,7 @@ class ChessGameManager:
         self.if_figure_selected = False
         self.selected_tile = None
         self.board_gui = BoardGUI()
-        self.board.on_tile_marked += self.on_tile_marked
+        self.board.notify_tile_marked += self.on_tile_marked
 
     def on_tile_marked(self, sender, pos, tile_mark_type):
         if tile_mark_type == TileMarkType.CHECKED:
@@ -21,17 +21,20 @@ class ChessGameManager:
     def react_to_tile_click(self, grid_pos):
         if not self.if_figure_selected:
             self.select_figure(grid_pos)
+            print(f"\tSelecting figure: {grid_pos}")
             return False
         else:
             positions_list = [x.position_to for x in self.board.possible_moves]
             move_index = positions_list.index(grid_pos) if grid_pos in positions_list else -1
             clicked_possible_move = move_index != -1
             if clicked_possible_move:
+                print(f"\tMoving figure: {grid_pos}")
                 self.deselect_last_moved()
-                self.board.perform_legal_move(self.board.possible_moves[move_index], self.selected_tile)
+                self.board.perform_legal_move(self.board.possible_moves[move_index])
                 self.reset_selected_tile()
                 return True
             else:
+                print(f"\tExchanging selected figure: {grid_pos}")
                 if self.selected_tile:
                     self.deselect_figure()
                 self.select_figure(grid_pos)
@@ -39,6 +42,7 @@ class ChessGameManager:
 
     def select_figure(self, grid_pos):
         figure = Figure.get_figure(self.board.figures, grid_pos)
+        print(f"\tselect_figure: {figure}")
         if figure and figure.color == self.board.current_player:
             self.board_gui.mark_tile_selected(grid_pos)
             self.if_figure_selected = True
