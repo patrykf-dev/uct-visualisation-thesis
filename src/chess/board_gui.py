@@ -1,3 +1,5 @@
+from enum import Enum
+
 import numpy as np
 
 
@@ -31,25 +33,33 @@ class BoardGUI:
         self.grid[tile].set_color_when_moved()
 
 
+class TileMarkType(Enum):
+    SELECTED = 0,
+    DESELECTED = 1,
+    MOVED = 2,
+    CHECKED = 3
+
+
 class Tile:
+    SELECTED_COLOR = (75, 225, 35)
+    CHECKED_COLOR = (230, 30, 50)
+    LAST_MOVED_COLOR = (160, 160, 160)
+
     def __init__(self, color, start_position, tile_width, tile_height):
         self.primary_color = color
         self.color = color
         self.start_position = start_position
         self.tile_width = tile_width
         self.tile_height = tile_height
-        self.chosen = False
 
     def select(self):
-        self.color = (75, 225, 35)
-        self.chosen = True
+        self.color = Tile.SELECTED_COLOR
 
     def deselect(self, when_checked=False):
-        self.color = self.primary_color if not when_checked else (230, 30, 50)
-        self.chosen = False
+        self.color = self.primary_color if not when_checked else Tile.CHECKED_COLOR
 
     def set_color_when_checked(self):
-        self.color = (230, 30, 50)
+        self.color = Tile.CHECKED_COLOR
 
     def set_color_when_moved(self):
-        self.color = (252, 229, 52) if self.primary_color == (255, 195, 77) else (241, 205, 0)
+        self.color = Tile.LAST_MOVED_COLOR

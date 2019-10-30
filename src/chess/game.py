@@ -5,7 +5,8 @@ import pygame
 from pygame.locals import *
 
 from src.chess.algorithm_relay.chess_state import ChessState
-from src.chess.chessboard import Chessboard, Figure
+from src.chess.chess_game_manager import ChessGameManager
+from src.chess.chessboard import Figure
 from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
 
 WIDTH = 600
@@ -33,7 +34,7 @@ class Game:
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption('Chess')
         self.screen = pygame.display.get_surface()
-        self.chessboard = Chessboard()
+        self.game_manager = ChessGameManager()
 
     def get_image(self, image_file):
         tile_image = pygame.image.load(os.path.join(self.ICONS_FOLDER, image_file))
@@ -45,11 +46,11 @@ class Game:
             self.screen.blit(tile_image, tile_pos)
 
     def draw_board(self):
-        for i, row in enumerate(self.chessboard.board_gui.grid):
+        for i, row in enumerate(self.game_manager.board_gui.grid):
             for j, tile in enumerate(row):
                 pygame.draw.rect(self.window, tile.color, (tile.start_position[0], tile.start_position[1],
                                                            tile.tile_width, tile.tile_height))
-                tile_figure = Figure.get_figure(self.chessboard.figures, (i, j))
+                tile_figure = Figure.get_figure(self.game_manager.board.figures, (i, j))
                 if tile_figure:
                     self.draw_figure(tile_figure, tile.start_position)
 
@@ -72,15 +73,15 @@ class Game:
                                (move[0] + self.TILE_WIDTH // 2, self.HEIGHT - move[1] - self.TILE_HEIGHT // 2), 12)
 
     def draw_moves(self):
-        if self.chessboard.selected_tile:
-            if self.chessboard.possible_moves:
-                moves_projected = self.tile_to_grid(x.position_to for x in self.chessboard.possible_moves)
+        if self.game_manager.selected_tile:
+            if self.game_manager.board.possible_moves:
+                moves_projected = self.tile_to_grid(x.position_to for x in self.game_manager.board.possible_moves)
                 self.draw_circles(moves_projected)
 
     def react_to_player_move(self):
         pos = pygame.mouse.get_pos()
         grid_pos = self.grid_click_to_tile(pos)
-        player_moved = self.chessboard.react_to_tile_click(grid_pos[::-1])
+        player_moved = self.game_manager.react_to_tile_click(grid_pos[::-1])
         self.draw_board()
         self.draw_moves()
         pygame.display.update()
@@ -88,13 +89,13 @@ class Game:
         return player_moved
 
     def perform_uct_move(self):
-        game_state = ChessState(self.chessboard)
+        game_state = ChessState(self.game_manager.board)
         game_state.current_player = 2
         mcts = MonteCarloTreeSearch(game_state)
         mcts.debug_print_allowed = True
         uct_move, _ = mcts.calculate_next_move()
         print(f"Algorithm decided to move {uct_move.position_from} -> {uct_move.position_to}")
-        self.chessboard.perform_raw_move(uct_move.position_from, uct_move.position_to)
+        self.game_manager.board.perform_raw_move(uct_move.position_from, uct_move.position_to)
         self.draw_board()
         self.draw_moves()
         pygame.display.update()

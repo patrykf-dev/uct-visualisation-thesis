@@ -79,8 +79,8 @@ def reduce_move_range_when_check(board, figure, moves):
     return reduced_moves
 
 
-def is_king_selected_to_move_in_check(board):
-    figure = Figure.get_figure(board.figures, board.selected_tile)
+def is_king_selected_to_move_in_check(board, selected_tile):
+    figure = Figure.get_figure(board.figures, selected_tile)
     return figure and figure.figure_type == FigureType.KING and figure.color == board.current_player and board.check
 
 
