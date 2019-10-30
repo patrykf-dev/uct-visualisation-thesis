@@ -1,18 +1,13 @@
 import copy
 
+import src.chess.chess_utils as ChessUtils
 from src.chess.board_gui import BoardGUI
 from src.chess.enums import GameStatus
 from src.chess.figures import *
 from src.chess.utilities import PastMove
-from itertools import chain
 
 
 class Chessboard:
-    def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super().__new__(cls)
-        return cls.instance
-
     @staticmethod
     def init_figures():
         figures = [Rook(Color.WHITE, (0, 0)), Knight(Color.WHITE, (0, 1)), Bishop(Color.WHITE, (0, 2)),
@@ -39,7 +34,7 @@ class Chessboard:
 
     def deep_copy(self):
         rc = Chessboard()
-        rc.move_status = self.move_status
+        rc.if_figure_selected = self.if_figure_selected
         rc.current_player = self.current_player
         rc.selected_tile = self.selected_tile
         rc.check = self.check
@@ -57,7 +52,7 @@ class Chessboard:
             self.if_figure_selected = True
             self.selected_tile = grid_pos
             self.possible_moves = figure.check_moves(self.figures)
-            self.possible_moves = self.reduce_move_range_when_check(figure, self.possible_moves)
+            self.possible_moves = ChessUtils.reduce_move_range_when_check(self, figure, self.possible_moves)
         else:
             self.deselect_figure()
 
@@ -76,7 +71,7 @@ class Chessboard:
     def deselect_figure(self):
         if self.selected_tile:
             if not self.check:
-                self.board_gui.mark_tile_deselected(self.get_king_position(self.current_player))
+                self.board_gui.mark_tile_deselected(ChessUtils.get_king_position(self, self.current_player))
             self.board_gui.mark_tile_deselected(self.selected_tile,
                                                 when_checked=self.is_king_selected_to_move_in_check())
         self.selected_tile = None
@@ -89,13 +84,9 @@ class Chessboard:
     def switch_current_player(self):
         self.current_player = self.get_opposite_color()
 
-    def get_king_position(self, color):
-        king = next((x for x in self.figures if x.figure_type == FigureType.KING and x.color == color), None)
-        return king.position if king else None
-
     # sprawdzamy czy my szachujemy
     def check_for_check(self, color_that_causes_check):
-        king_pos = self.get_king_position(color_that_causes_check)
+        king_pos = ChessUtils.get_king_position(self, color_that_causes_check)
         # zakladamy ze jest krol na mapie
         king = Figure.get_figure(self.figures, king_pos)
         self.check = king.is_check_on_position_given(king_pos, self.figures)
@@ -108,14 +99,6 @@ class Chessboard:
         if potential_figure:
             Figure.remove_figure(self.figures, potential_figure)
         figure_moved.move(move.position_to)
-
-    def do_pawn_double_move(self, move, figure_moved):
-        figure_moved.set_can_be_captured_en_passant(True)
-        figure_moved.move(move.position_to)
-
-    def do_en_passant_move(self, move, figure_moved):
-        figure_moved.move(move.position_to)
-        Figure.remove_figure_on_position(self.figures, move.help_dict['opponent-pawn-pos'])
 
     def do_promotion(self, move, figure_moved):
         # TODO: Grzesiek, extract it from game logic
@@ -137,25 +120,18 @@ class Chessboard:
             new_figure = Bishop
         self.figures.append(new_figure(self.current_player, pos))
 
-    def do_castling(self, move, figure_moved):
-        figure_moved.move(move.position)
-        rook = move.help_dict['rook']
-        rook.move(move.help_dict['rook-end-pos'])
-        figure_moved.set_is_able_to_castle(False)
-        rook.set_is_able_to_castle(False)
-
     def do_move(self, move):
         figure_moved = Figure.get_figure(self.figures, self.selected_tile)
         if move.move_type == MoveType.NORMAL:
             self.do_normal_move(move, figure_moved)
         elif move.move_type == MoveType.PAWN_DOUBLE_MOVE:
-            self.do_pawn_double_move(move, figure_moved)
+            ChessUtils.do_pawn_double_move(move, figure_moved)
         elif move.move_type == MoveType.EN_PASSANT:
-            self.do_en_passant_move(move, figure_moved)
+            ChessUtils.do_en_passant_move(self, move, figure_moved)
         elif move.move_type == MoveType.PROMOTION:
             self.do_promotion(move, figure_moved)
         elif move.move_type == MoveType.CASTLE_SHORT or move.move_type == MoveType.CASTLE_LONG:
-            self.do_castling(move, figure_moved)
+            ChessUtils.do_castling(move, figure_moved)
 
     def add_past_move(self, position, figures_count_before_move, old_position):
         figure = Figure.get_figure(self.figures, position)
@@ -179,7 +155,7 @@ class Chessboard:
                 self.check_for_check(self.get_opposite_color())
                 self.deselect_last_moved()
                 if self.check:
-                    king_pos = self.get_king_position(self.get_opposite_color())
+                    king_pos = ChessUtils.get_king_position(self, self.get_opposite_color())
                     self.board_gui.mark_tile_checked(king_pos)
                 selected_tile = self.selected_tile
                 self.add_past_move(move.position_to, figures_count_before_move, selected_tile)
@@ -187,7 +163,7 @@ class Chessboard:
                 self.board_gui.mark_tile_moved(selected_tile)
                 self.board_gui.mark_tile_moved(move.position_to)
                 self.switch_current_player()
-                self.check_and_set_game_status()
+                self.update_game_status()
                 return True
             else:
                 # figure select exchange
@@ -201,27 +177,10 @@ class Chessboard:
             if figure.color != self.current_player:
                 continue
             possible_moves = figure.check_moves(self.figures)
-            possible_moves_reduced = self.reduce_move_range_when_check(figure, possible_moves)
+            possible_moves_reduced = ChessUtils.reduce_move_range_when_check(self, figure, possible_moves)
             if possible_moves_reduced:
                 return True
         return False
-
-    def reduce_move_range_when_check(self, figure, moves):
-        reduced_moves = []
-        for move in moves:
-            previous_position = figure.position
-            potential_figure = Figure.get_figure(self.figures, move.position_to)
-            if potential_figure:
-                Figure.remove_figure(self.figures, potential_figure)
-            figure.move(move.position_to)
-            king_pos = self.get_king_position(self.current_player)
-            king = Figure.get_figure(self.figures, king_pos)
-            if not king.is_check_on_position_given(king_pos, self.figures):
-                reduced_moves.append(move)
-            figure.move(previous_position)
-            if potential_figure:
-                self.figures.append(potential_figure)
-        return reduced_moves
 
     def are_the_figures_left_capable_of_checkmate(self):
         figures_left_count = len(self.figures)
@@ -260,31 +219,10 @@ class Chessboard:
     def perform_raw_move(self, pos_from, pos_to):
         self.react_to_move_action(pos_from)
         self.react_to_move_action(pos_to)
-        # figure = Figure.get_figure(self.figures, pos_from)
-        # figure.move(pos_to)
         self.switch_current_player()
-        self.check_and_set_game_status()
+        self.update_game_status()
 
-    def get_all_possible_moves(self):
-        all_possible_moves = []
-        print(f"Current move color: {self.current_player}")
-        for figure in self.figures:
-            if figure.color == self.current_player:
-                continue
-            possible_moves = figure.check_moves(self.figures)
-            possible_moves_reduced = self.reduce_move_range_when_check(figure, possible_moves)
-
-            for move in possible_moves_reduced:
-                if self.current_player == Color.WHITE:
-                    move.player = 2
-                else:
-                    move.player = 1
-
-            if possible_moves_reduced:
-                all_possible_moves.append(possible_moves_reduced)
-        return list(chain.from_iterable(all_possible_moves))
-
-    def check_and_set_game_status(self):
+    def update_game_status(self):
         move_is_possible = self.is_there_any_possible_move()
         if not move_is_possible:
             if self.check:
@@ -292,10 +230,6 @@ class Chessboard:
                     GameStatus.CHECKMATE_WHITE if self.current_player == Color.BLACK else GameStatus.CHECKMATE_BLACK
             else:
                 self.game_status = GameStatus.STALEMATE
-            print('=' * 50)
             print(f'!!!\tGAME ENDED: {self.game_status}')
-            print('=' * 50)
         elif self.is_there_a_draw():
-            print('=' * 50)
             print(f'!!!\tGAME ENDED: {self.game_status}')
-            print('=' * 50)
