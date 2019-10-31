@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from src.chess.algorithm_relay.chess_move import ChessMove
 from src.chess.enums import FigureType, Color, MoveType
+from src.chess.figures_collection import ChessFiguresCollection
 
 
 class Figure(ABC):
@@ -13,41 +14,32 @@ class Figure(ABC):
         super().__init__()
 
     @abstractmethod
-    def check_moves(self, figures, threat_for_king=False):
+    def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         pass
 
     @staticmethod
     def is_move_valid(move_pos):
         return 0 <= move_pos[0] <= 7 and 0 <= move_pos[1] <= 7
 
-    def move(self, new_position):
-        self.position = new_position
+    @staticmethod
+    def get_figure(figures: ChessFiguresCollection, position):
+        return figures.get_figure_at(position)
 
     @staticmethod
-    def get_figure(figures, position):
-        for figure in figures:
-            if figure.position == position:
-                return figure
-        return None
+    def remove_figure_on_position(figures: ChessFiguresCollection, position):
+        figures.remove_figure_at(position)
 
     @staticmethod
-    def remove_figure_on_position(figures, position):
-        removed_figure = next((x for x in figures if x.position == position), None)
-        if removed_figure:
-            figures.remove(removed_figure)
-
-    @staticmethod
-    def remove_figure(figures, figure):
-        if figure:
-            figures.remove(figure)
+    def remove_figure(figures: ChessFiguresCollection, figure):
+        figures.remove(figure)
 
 
 class FigureWithLinearMovement(Figure):
     @abstractmethod
-    def check_moves(self, figures, threat_for_king=False):
+    def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         pass
 
-    def check_moves_linear(self, figures, directions, threat_for_king=False):
+    def check_moves_linear(self, figures: ChessFiguresCollection, directions, threat_for_king=False):
         possible_moves = []
         for direction in directions:
             pos_being_checked = (self.position[0] + direction[0], self.position[1] + direction[1])
@@ -86,7 +78,7 @@ class Pawn(Figure):
     def set_can_be_captured_en_passant(self, val):
         self.can_be_captured_en_passant = val
 
-    def check_moves(self, figures, threat_for_king=False):
+    def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         possible_moves = []
         move_setup = Pawn.MOVE_SETUPS[self.color]
 
@@ -109,7 +101,7 @@ class Pawn(Figure):
             possible_moves.extend(self.check_captures(figures, threat_for_king))
         return possible_moves
 
-    def check_captures(self, figures, threat_for_king=False):
+    def check_captures(self, figures: ChessFiguresCollection, threat_for_king=False):
         def move_diagonally(_pos, color):
             move_setup = Pawn.MOVE_SETUPS[self.color]
             opposite_color = Color.BLACK if color == Color.WHITE else Color.WHITE
@@ -156,8 +148,8 @@ class Pawn(Figure):
         return possible_captures
 
     @staticmethod
-    def clear_en_passant_capture_ability_for_one_team(figures, color):
-        for figure in figures:
+    def clear_en_passant_capture_ability_for_one_team(figures: ChessFiguresCollection, color):
+        for figure in figures.figures_list:
             if figure.figure_type == FigureType.PAWN and color == figure.color:
                 figure.set_can_be_captured_en_passant(False)
 
@@ -167,7 +159,7 @@ class Knight(Figure):
         image_file = 'knight-white.png' if color == Color.WHITE else 'knight-black.png'
         super().__init__(color, FigureType.KNIGHT, image_file, position)
 
-    def check_moves(self, figures, threat_for_king=False):
+    def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         def wipe_out_bad_moves(moves):
             toret = []
             for move in moves:
@@ -207,7 +199,7 @@ class Rook(FigureWithLinearMovement):
         image_file = 'rook-white.png' if color == Color.WHITE else 'rook-black.png'
         super().__init__(color, FigureType.ROOK, image_file, position)
 
-    def check_moves(self, figures, threat_for_king=False):
+    def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         directions = [(1, 0), (-1, 0), (0, -1), (0, 1)]
         return self.check_moves_linear(figures, directions, threat_for_king)
 
@@ -233,8 +225,8 @@ class King(Figure):
         super().__init__(color, FigureType.KING, image_file, position)
 
     # check if at least one of all possible rival's moves coincide with 'position';
-    def is_check_on_position_given(self, position, figures):
-        for figure in figures:
+    def is_check_on_position_given(self, position, figures: ChessFiguresCollection):
+        for figure in figures.figures_list:
             # only look for checks from the opposite color
             if figure.color == self.color:
                 continue
@@ -250,7 +242,7 @@ class King(Figure):
                         return True
         return False
 
-    def possibility_to_castle(self, position, figures):
+    def possibility_to_castle(self, position, figures: ChessFiguresCollection):
         def possibility_to_castle_one_side(move_type):
             if move_type == MoveType.CASTLE_SHORT:
                 rook_position = (0, 7) if self.color == Color.WHITE else (7, 7)
@@ -306,7 +298,7 @@ class King(Figure):
             possibility_to_castle_one_side(MoveType.CASTLE_LONG)
         return possible_moves
 
-    def is_the_other_king_around(self, _pos, figures):
+    def is_the_other_king_around(self, _pos, figures: ChessFiguresCollection):
         directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
         for _direction in directions:
             _position_being_checked = tuple(map(sum, zip(_pos, _direction)))
@@ -318,7 +310,7 @@ class King(Figure):
                     return True
         return False
 
-    def check_moves(self, figures, threat_for_king=False):
+    def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
         possible_moves = []
         for direction in directions:
@@ -333,11 +325,11 @@ class King(Figure):
                     print('! Two kings cannot stand next to each other')
                     continue
             previous_position = self.position
-            self.move((999, 999))
+            figures.temporarily_disable(self)  # TODO: must fix that nonsense
             if self.is_check_on_position_given(position_being_checked, figures):
-                self.move(previous_position)
+                figures.restore(self, previous_position)
                 continue
-            self.move(previous_position)
+            figures.restore(self, previous_position)
             if self.is_the_other_king_around(position_being_checked, figures):
                 continue
             possible_moves.append(ChessMove(position_being_checked, self.position, MoveType.NORMAL))

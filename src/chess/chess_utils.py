@@ -1,24 +1,25 @@
-from itertools import chain
-
 from src.chess.chessboard import Chessboard
 from src.chess.enums import GameStatus
 from src.chess.figures import *
 
 
-def do_pawn_double_move(move: ChessMove, figure_moved):
+def do_pawn_double_move(board: Chessboard, move: ChessMove, figure_moved):
     figure_moved.set_can_be_captured_en_passant(True)
-    figure_moved.move(move.position_to)
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)
 
 
 def do_en_passant_move(board: Chessboard, move: ChessMove, figure_moved: Figure):
-    figure_moved.move(move.position_to)
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)
     Figure.remove_figure_on_position(board.figures, move.help_dict['opponent-pawn-pos'])
 
 
-def do_castling(move: ChessMove, figure_moved: Figure):
-    figure_moved.move(move.position_to)  # TODO to or from?
+def do_castling(board: Chessboard, move: ChessMove, figure_moved: Figure):
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)  # TODO to or from?
     rook = move.help_dict['rook']
-    rook.move(move.help_dict['rook-end-pos'])
+    board.figures.move_figure_to(rook, move.help_dict['rook-end-pos'])
     figure_moved.set_is_able_to_castle(False)
     rook.set_is_able_to_castle(False)
 
@@ -44,7 +45,7 @@ def is_there_a_draw(board: Chessboard):
 
 def get_all_possible_moves(board: Chessboard):
     all_possible_moves = []
-    for figure in board.figures:
+    for figure in board.figures.figures_list:
         if figure.color != board.current_player_color:
             continue
 
@@ -63,18 +64,21 @@ def get_all_possible_moves(board: Chessboard):
 def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
     reduced_moves = []
     for move in moves:
+        # TODO: optimize
         previous_position = figure.position
         potential_figure = Figure.get_figure(board.figures, move.position_to)
         if potential_figure:
             Figure.remove_figure(board.figures, potential_figure)
-        figure.move(move.position_to)
+        # figure.move(move.position_to)
+        board.figures.move_figure_to(figure, move.position_to)
         king_pos = get_king_position(board, board.current_player_color)
         king = Figure.get_figure(board.figures, king_pos)
         if not king.is_check_on_position_given(king_pos, board.figures):
             reduced_moves.append(move)
-        figure.move(previous_position)
+        # figure.move(previous_position)
+        board.figures.move_figure_to(figure, previous_position)
         if potential_figure:
-            board.figures.append(potential_figure)
+            board.figures.add_figure(potential_figure)
     return reduced_moves
 
 
@@ -84,8 +88,7 @@ def is_king_selected_to_move_in_check(board: Chessboard, selected_tile):
 
 
 def get_king_position(board: Chessboard, color: Color):
-    king = next((x for x in board.figures if x.figure_type == FigureType.KING and x.color == color), None)
-    return king.position if king else None
+    return board.figures.get_king_position(color)
 
 
 def do_normal_move(board: Chessboard, move, figure_moved: Figure):
@@ -95,7 +98,8 @@ def do_normal_move(board: Chessboard, move, figure_moved: Figure):
     potential_figure = Figure.get_figure(board.figures, move.position_to)
     if potential_figure:
         Figure.remove_figure(board.figures, potential_figure)
-    figure_moved.move(move.position_to)
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)
 
 
 def do_promotion(board: Chessboard, move, figure_moved: Figure):
@@ -118,16 +122,16 @@ def do_promotion(board: Chessboard, move, figure_moved: Figure):
         new_figure = Bishop
     else:
         new_figure = Queen
-    board.figures.append(new_figure(board.current_player_color, pos))
+    board.figures.add_figure(new_figure(board.current_player_color, pos))
 
 
 def are_the_figures_left_capable_of_checkmate(board: Chessboard):
-    figures_left_count = len(board.figures)
+    figures_left_count = len(board.figures.figures_list)
     if figures_left_count > 4:
         return True
     if figures_left_count == 2:
         return False
-    figures_except_kings = list(filter(lambda x: x.figure_type != FigureType.KING, board.figures))
+    figures_except_kings = list(filter(lambda x: x.figure_type != FigureType.KING, board.figures.figures_list))
     if len(figures_except_kings) == 1:
         return not (figures_except_kings[0].figure_type == FigureType.KNIGHT or figures_except_kings[
             0].figure_type == FigureType.BISHOP)
@@ -140,7 +144,7 @@ def are_the_figures_left_capable_of_checkmate(board: Chessboard):
 
 
 def is_there_any_possible_move(board: Chessboard):
-    for figure in board.figures:
+    for figure in board.figures.figures_list:
         if figure.color != board.current_player_color:
             continue
         possible_moves = figure.check_moves(board.figures)
