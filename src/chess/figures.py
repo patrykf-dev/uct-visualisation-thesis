@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-from src.chess.enums import FigureType, Color, MoveType
+
 from src.chess.algorithm_relay.chess_move import ChessMove
+from src.chess.enums import FigureType, Color, MoveType
 
 
 class Figure(ABC):
@@ -17,15 +18,17 @@ class Figure(ABC):
 
     @staticmethod
     def is_move_valid(move_pos):
-        from src.chess.game import TILE_NUMBER
-        return 0 <= move_pos[0] <= TILE_NUMBER - 1 and 0 <= move_pos[1] <= TILE_NUMBER - 1
+        return 0 <= move_pos[0] <= 7 and 0 <= move_pos[1] <= 7
 
     def move(self, new_position):
         self.position = new_position
 
     @staticmethod
     def get_figure(figures, position):
-        return next((x for x in figures if x.position == position), None)
+        for figure in figures:
+            if figure.position == position:
+                return figure
+        return None
 
     @staticmethod
     def remove_figure_on_position(figures, position):
@@ -47,19 +50,34 @@ class FigureWithLinearMovement(Figure):
     def check_moves_linear(self, figures, directions, threat_for_king=False):
         possible_moves = []
         for direction in directions:
-            position_being_checked = tuple(map(sum, zip(self.position, direction)))
-            while self.is_move_valid(position_being_checked):
-                figure = self.get_figure(figures, position_being_checked)
+            pos_being_checked = (self.position[0] + direction[0], self.position[1] + direction[1])
+            while self.is_move_valid(pos_being_checked):
+                figure = self.get_figure(figures, pos_being_checked)
                 if figure:
                     if figure.color != self.color or threat_for_king:
-                        possible_moves.append(ChessMove(position_being_checked, self.position, MoveType.NORMAL))
+                        possible_moves.append(ChessMove(pos_being_checked, self.position, MoveType.NORMAL))
                     break
-                possible_moves.append(ChessMove(position_being_checked, self.position, MoveType.NORMAL))
-                position_being_checked = tuple(map(sum, zip(position_being_checked, direction)))
+                possible_moves.append(ChessMove(pos_being_checked, self.position, MoveType.NORMAL))
+                pos_being_checked = (pos_being_checked[0] + direction[0], pos_being_checked[1] + direction[1])
         return possible_moves
 
 
 class Pawn(Figure):
+    MOVE_SETUPS = {
+        Color.WHITE: {
+            "start_line": 1,
+            "last_line": 7,
+            "step_forward": lambda x, step: x + step,
+            "step_backward": lambda x, step: x - step
+        },
+        Color.BLACK: {
+            "start_line": 6,
+            "last_line": 0,
+            "step_forward": lambda x, step: x - step,
+            "step_backward": lambda x, step: x + step
+        }
+    }
+
     def __init__(self, color, position):
         self.can_be_captured_en_passant = False
         image_file = 'pawn-white.png' if color == Color.WHITE else 'pawn-black.png'
@@ -69,48 +87,31 @@ class Pawn(Figure):
         self.can_be_captured_en_passant = val
 
     def check_moves(self, figures, threat_for_king=False):
-        from src.chess.game import TILE_NUMBER
         possible_moves = []
-
-        # setting variables
-        if self.color == Color.WHITE:
-            start_line = 1
-            last_line = TILE_NUMBER - 1
-            step_forward = lambda x, step: x + step
-        else:
-            start_line = TILE_NUMBER - 2
-            last_line = 0
-            step_forward = lambda x, step: x - step
+        move_setup = Pawn.MOVE_SETUPS[self.color]
 
         # pawn at the end - should not happen
-        if self.position[0] == last_line:
+        if self.position[0] == move_setup["last_line"]:
             print('! Pawn should not be allowed to stay in the end line')
         else:
-            pos = step_forward(self.position[0], 1), self.position[1]
+            pos = move_setup["step_forward"](self.position[0], 1), self.position[1]
             figure = Figure.get_figure(figures, pos)
             if not figure:
-                possible_moves.append(ChessMove(pos, self.position, MoveType.NORMAL if pos[0] != last_line else MoveType.PROMOTION))
+                if pos[0] != move_setup["last_line"]:
+                    move = ChessMove(pos, self.position, MoveType.NORMAL)
+                else:
+                    move = ChessMove(pos, self.position, MoveType.PROMOTION)
+                possible_moves.append(move)
                 # double move at the beginning
-                double_move = step_forward(self.position[0], 2), self.position[1]
-                if self.position[0] == start_line and not Figure.get_figure(figures, double_move):
+                double_move = move_setup["step_forward"](self.position[0], 2), self.position[1]
+                if self.position[0] == move_setup["start_line"] and not Figure.get_figure(figures, double_move):
                     possible_moves.append(ChessMove(double_move, self.position, MoveType.PAWN_DOUBLE_MOVE))
-            # diagonal captures
             possible_moves.extend(self.check_captures(figures, threat_for_king))
         return possible_moves
 
     def check_captures(self, figures, threat_for_king=False):
-        from src.chess.game import TILE_NUMBER
-
-        if self.color == Color.WHITE:
-            last_line = TILE_NUMBER - 1
-            step_forward = lambda x, step: x + step
-            step_backward = lambda x, step: x - step
-        else:
-            last_line = 0
-            step_forward = lambda x, step: x - step
-            step_backward = lambda x, step: x + step
-
         def move_diagonally(_pos, color):
+            move_setup = Pawn.MOVE_SETUPS[self.color]
             opposite_color = Color.BLACK if color == Color.WHITE else Color.WHITE
             if not self.is_move_valid(_pos):
                 return None
@@ -119,37 +120,38 @@ class Pawn(Figure):
                 if figure.color == opposite_color or threat_for_king:
                     if figure.figure_type == FigureType.KING and figure.color == opposite_color:
                         print('! Capture of a king should not be possible')
-                    return MoveType.NORMAL if _pos[0] != last_line else MoveType.PROMOTION
+                    return MoveType.NORMAL if _pos[0] != move_setup["last_line"] else MoveType.PROMOTION
             elif threat_for_king:
-                return MoveType.NORMAL if _pos[0] != last_line else MoveType.PROMOTION
+                return MoveType.NORMAL if _pos[0] != move_setup["last_line"] else MoveType.PROMOTION
             # capture en passant
             else:
-                opponent_pawn_pos = (step_backward(_pos[0], 1), _pos[1])
+                opponent_pawn_pos = (move_setup["step_backward"](_pos[0], 1), _pos[1])
                 figure = Figure.get_figure(figures, opponent_pawn_pos)
                 if not figure:
                     return None
-                if self.position[0] == step_backward(last_line, 3) and \
+                if self.position[0] == move_setup["step_backward"](move_setup["last_line"], 3) and \
                         figure.figure_type == FigureType.PAWN and \
                         figure.color == opposite_color and \
                         figure.can_be_captured_en_passant:
-                    print('capture en passant possible')
                     return MoveType.EN_PASSANT
             return None
 
         def check_capture_on_one_side(pos_height, color):
-            _pos = step_forward(self.position[0], 1), pos_height
+            move_setup = Pawn.MOVE_SETUPS[self.color]
+            _pos = move_setup["step_forward"](self.position[0], 1), pos_height
             move_type = move_diagonally(_pos, color)
             if move_type:
                 if move_type == MoveType.NORMAL or move_type == MoveType.PROMOTION:
                     possible_captures.append(ChessMove(_pos, self.position, move_type))
                 elif move_type == MoveType.EN_PASSANT:
                     possible_captures.append(
-                        ChessMove(_pos, self.position, move_type, {'opponent-pawn-pos': (self.position[0], pos_height)}))
+                        ChessMove(_pos, self.position, move_type,
+                                  {'opponent-pawn-pos': (self.position[0], pos_height)}))
 
         possible_captures = []
         if self.position[1] > 0:
             check_capture_on_one_side(self.position[1] - 1, self.color)
-        if self.position[1] < TILE_NUMBER - 1:
+        if self.position[1] < 7:
             check_capture_on_one_side(self.position[1] + 1, self.color)
         return possible_captures
 
@@ -232,19 +234,21 @@ class King(Figure):
 
     # check if at least one of all possible rival's moves coincide with 'position';
     def is_check_on_position_given(self, position, figures):
-        opponent_moves = set()
         for figure in figures:
             # only look for checks from the opposite color
             if figure.color == self.color:
                 continue
             # pawns have different capture rules
             if figure.figure_type == FigureType.PAWN:
-                # opponent_moves.update(figure.check_captures((i, j), board, True))
-                opponent_moves.update(x.position_to for x in figure.check_captures(figures, True))
+                for x in figure.check_captures(figures, True):
+                    if x.position_to == position:
+                        return True
             # to avoid recursion
             elif figure.figure_type != FigureType.KING:
-                opponent_moves.update(x.position_to for x in figure.check_moves(figures, True))
-        return position in opponent_moves
+                for x in figure.check_moves(figures, True):
+                    if x.position_to == position:
+                        return True
+        return False
 
     def possibility_to_castle(self, position, figures):
         def possibility_to_castle_one_side(move_type):

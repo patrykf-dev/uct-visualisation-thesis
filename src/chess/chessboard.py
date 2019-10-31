@@ -10,8 +10,17 @@ from src.chess.utilities import PastMove
 
 
 class Chessboard:
+    def __init__(self):
+        self.possible_moves = []
+        self.check = False
+        self.current_player_color = Color.WHITE
+        self.figures = Chessboard.create_figures()
+        self.game_status = GameStatus.IN_PROGRESS
+        self.past_moves = []
+        self.notify_tile_marked = Event(self)
+
     @staticmethod
-    def init_figures():
+    def create_figures():
         figures = [Rook(Color.WHITE, (0, 0)), Knight(Color.WHITE, (0, 1)), Bishop(Color.WHITE, (0, 2)),
                    Queen(Color.WHITE, (0, 3)), King(Color.WHITE, (0, 4)), Bishop(Color.WHITE, (0, 5)),
                    Knight(Color.WHITE, (0, 6)), Rook(Color.WHITE, (0, 7)), Rook(Color.BLACK, (7, 0)),
@@ -22,15 +31,6 @@ class Chessboard:
             figures.append(Pawn(Color.WHITE, (1, i)))
             figures.append(Pawn(Color.BLACK, (6, i)))
         return figures
-
-    def __init__(self):
-        self.possible_moves = []
-        self.check = False
-        self.current_player_color = Color.WHITE
-        self.figures = self.init_figures()
-        self.game_status = GameStatus.IN_PROGRESS
-        self.past_moves = []
-        self.notify_tile_marked = Event(self)
 
     def deep_copy(self):
         rc = Chessboard()

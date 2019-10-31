@@ -1,17 +1,18 @@
+import src.uct.algorithm.enums as Enums
 import src.uct.algorithm.mc_node_utils as NodeUtils
 import src.uct.algorithm.uct_calculation as UCT
-import src.uct.algorithm.enums as Enums
 from src.uct.algorithm.mc_tree import MonteCarloTree
 
 
 class MonteCarloTreeSearch:
-    def __init__(self, game_state):
+    def __init__(self, game_state, max_iterations=10):
         self.iterations = 0
         self.debug_print_allowed = False
         self.tree = MonteCarloTree(game_state)
+        self.max_iterations = max_iterations
 
     def calculate_next_move(self):
-        while self.iterations < 10:
+        while self.iterations < self.max_iterations:
             self._print_debug("\n=======Iteration {} =======".format(self.iterations))
             promising_node = self._selection(self.tree.root)
             self._expansion(promising_node)
@@ -23,7 +24,6 @@ class MonteCarloTreeSearch:
 
             playout_result = self._simulation(leaf_to_explore)
             self._backpropagation(leaf_to_explore, playout_result)
-
             self.iterations = self.iterations + 1
 
         best_child = NodeUtils.get_child_with_max_score(self.tree.root)

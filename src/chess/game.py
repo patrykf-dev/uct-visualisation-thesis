@@ -6,7 +6,7 @@ from pygame.locals import *
 
 from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_game_manager import ChessGameManager
-from src.chess.chessboard import Figure, ChessMove, MoveType
+from src.chess.chessboard import Figure
 from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
 
 WIDTH = 600
@@ -54,16 +54,20 @@ class Game:
                 if tile_figure:
                     self.draw_figure(tile_figure, tile.start_position)
 
-    # pos - GUI order (x, y)
-    # returns GUI order
     def grid_click_to_tile(self, pos):
+        """
+        :param pos: GUI order (x, y)
+        :return: GUI order
+        """
         if pos[1] == 0:
             pos = pos[0], 1
         return (pos[0] // self.TILE_WIDTH, (self.HEIGHT - pos[1]) // self.TILE_HEIGHT)[::-1]
 
-    # positions - matrix order (y, x)
-    # returns GUI order
     def tile_to_grid(self, positions):
+        """
+        :param positions: matrix order (y, x)
+        :return: returns GUI order
+        """
         return [(x[1] * self.TILE_WIDTH, x[0] * self.TILE_HEIGHT) for x in positions]
 
     # moves_projected - GUI order

@@ -47,15 +47,17 @@ def get_all_possible_moves(board: Chessboard):
     for figure in board.figures:
         if figure.color != board.current_player_color:
             continue
-        possible_moves = figure.check_moves(board.figures)
-        possible_moves_reduced = reduce_move_range_when_check(board, figure, possible_moves)
 
-        for move in possible_moves_reduced:
+        figure_moves = figure.check_moves(board.figures)
+        possible_moves = reduce_move_range_when_check(board, figure, figure_moves)
+
+        for move in possible_moves:
             move.player = get_player_from_color(board.current_player_color)
 
-        if possible_moves_reduced:
-            all_possible_moves.append(possible_moves_reduced)
-    return list(chain.from_iterable(all_possible_moves))
+        if possible_moves:
+            all_possible_moves.extend(possible_moves)
+
+    return all_possible_moves
 
 
 def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
@@ -81,7 +83,7 @@ def is_king_selected_to_move_in_check(board: Chessboard, selected_tile):
     return figure and figure.figure_type == FigureType.KING and figure.color == board.current_player_color and board.check
 
 
-def get_king_position(board: Chessboard, color : Color):
+def get_king_position(board: Chessboard, color: Color):
     king = next((x for x in board.figures if x.figure_type == FigureType.KING and x.color == color), None)
     return king.position if king else None
 
