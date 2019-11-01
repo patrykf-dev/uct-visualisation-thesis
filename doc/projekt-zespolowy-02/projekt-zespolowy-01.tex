@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{titling}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+% Margins in document
+\usepackage[left=1.5cm, right=1.5cm, top=3cm]{geometry}
+
+% Avoid  colons before tables' empty captions and change caption
+\usepackage{caption}
+\captionsetup[table]{name=Tab.}
+\captionsetup[figure]{name=Rys.}
+
+% Don't know why, it starts from 2
+\addtocounter{table}{-1}
+
+% Rename tables' suffix
+\renewcommand{\tablename}{Tab.}
+
+% Graphicx setup
+\usepackage{graphicx}
+\graphicspath{{grafiki/}{../grafiki/}}
+
+% No separator between items
+\usepackage{enumitem}
+\setlist{nolistsep}
+
+% Pagebreak before every \section
+\let\oldsection\section
+\renewcommand\section{\clearpage\oldsection}
+
+% Vhistory setup
+\usepackage[owncaptions]{vhistory}
+\renewcommand{\vhhistoryname}{Historia zmian}
+\renewcommand{\vhversionname}{Wersja}
+\renewcommand{\vhdatename}{Data}
+\renewcommand{\vhauthorname}{Autor(zy)}
+\renewcommand{\vhchangename}{Zmiany}
+
+% Bigger padding in tabulars
+\usepackage{array}
+\setlength\extrarowheight{3pt}
+
+% Itemize in tabulars (avoid big margins with minipage)
+\newcommand{\tabbeditemize}[1]{
+	\begin{minipage}[t]{0.4\textwidth}
+		\begin{itemize}[topsep=0mm,partopsep=0mm,leftmargin=4mm]
+			#1
+		\end{itemize}
+\end{minipage}}
+
+
+% DOCUMENT
+\title{
+	Wizualizacja drzewa stanów algorytmu UCT \\
+	\large Plan projektu}
+
+\author{Patryk Fijałkowski \\ Grzegorz Kacprowicz}
+\begin{document}
+	\begin{titlingpage}
+		\maketitle
+		\vspace{3cm}
+		\begin{abstract}
+			Dokument opisuje ...
+		\end{abstract}
+	\end{titlingpage}
+
+	\begin{versionhistory}
+		\vhEntry{1.0}{2.11.2019}{PF|GK}{stworzenie pierwszej wersji dokumentu}
+	\end{versionhistory}
+	
+	\tableofcontents
+	
+	\section{Architektura aplikacji}
+	\section{Moduły aplikacji}
+	\section{Komunikacja}
+	\section{Główne komponenty aplikacji}
+	\section{Interfejs użytkownika}
+	\section{Wybrane technologie}
+\end{document}
