@@ -1,0 +1,78 @@
+@startuml
+enum GamePhase {
+    ""IN_PROGRESS""
+    ""PLAYER1_WON""
+    ""PLAYER2_WON""
+    ""DRAW""
+}
+
+
+class MonteCarloTreeSearch {
+    {method} + ""calculate_next_move(game_state)""
+    {method} - ""_selection()""
+    {method} - ""_expansion()""
+    {method} - ""_simulation()""
+    {method} - ""_backpropagation()""
+}
+
+abstract class BaseGameMove {
+    {field} ""int player""
+}
+
+abstract class BaseGameState {
+    {field} ""int current_player""
+    {field} ""GamePhase phase""
+    {method} + ""get_all_possible_moves()""
+    {method} + ""perform_random_move()""
+    {method} + ""apply_moves(moves)""
+    {method} + ""deep_copy()""
+}
+
+class MonteCarloTree {
+    {field} ""MonteCarloNode root""
+    {field} ""BaseGameState game_state""
+}
+
+class MonteCarloNode {
+    {field} ""int id""
+    {field} ""BaseGameMove move""
+    {field} ""MonteCarloNodeDetails details""
+    {field} ""MonteCarloNodeVisualisationDetails vis_details""
+    {field} ""MonteCarloNode[] children""
+    {field} ""MonteCarloNode parent""
+}
+
+
+class MonteCarloNodeDetails {
+    {field} ""String state_name""
+    {field} ""String move_name""
+    {field} ""int visits_count""
+    {field} ""int visits_count_pre""
+    {field} ""int win_score""
+    {field} ""float average_prize""
+}
+
+class MonteCarloNodeVisualisationDetails {
+    {field} ""float x""
+    {field} ""float y""
+    {field} ""bool display""
+    {field} ""Color color""
+}
+
+class TreeVisualiser {
+  {method} + ""visualise_tree()""
+}
+
+
+MonteCarloTree o-- MonteCarloNode
+MonteCarloNode o-- MonteCarloNodeDetails
+MonteCarloNode o-- MonteCarloNodeVisualisationDetails
+
+
+MonteCarloNode <-- TreeVisualiser
+
+MonteCarloTree <-- MonteCarloTreeSearch 
+BaseGameMove <-- MonteCarloTreeSearch
+BaseGameState <-- MonteCarloTreeSearch
+GamePhase <-- BaseGameState
+@enduml
