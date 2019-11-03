@@ -49,6 +49,11 @@
 		\end{itemize}
 \end{minipage}}
 
+% Code command
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{1}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
+
 
 % DOCUMENT
 \title{
@@ -160,15 +165,29 @@
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=\textwidth]{umldiagram}
-		\caption{Diagram klas głównych komponentów}
-		\label{rys:gantt}
+		\caption{Diagram klas dla modułów ``Algorytm'' i ``Wizualizacja"}
+		\label{rys:umldiagrammain}
 	\end{figure}
-	Najważniejsze komponenty:
+	
+	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'' i ``Wizualizacja''. Zgodnie z założeniami moduły są niezależne, ale klasa \code{MonteCarloNode} jest używana przez oba z nich, dlatego zdecydowaliśmy się umieścić te klasy na jednym diagramie. \\
 	\begin{itemize}
-		\item MonteCarloTreeSearch, BaseGameMove, BaseGameState
-		\item MonteCarloNode, MonteCarloNodeDetails, MonteCarloVisualisationDetails
-		\item BaseSerializator, BinarySerializator, CsvSerializator
+		\item \textbf{MonteCarloTreeSearch} - klasa odpowiadająca za wykonywanie algorytmu Monte Carlo Tree Search. Metoda \code{calculate\textunderscore next\textunderscore move} odpowiada za wykonanie kolejnych iteracji algorytmu.
+		\item \textbf{BaseGameMove} - klasa opisująca ruch w grze.
+		\item \textbf{BaseGameState} - klasa opisująca stan gry.
+		\item \textbf{MonteCarloNode} - klasa reprezentująca wierzchołki drzewa.
+		\item \textbf{MonteCarloNodeDetails} - klasa zawierająca informacje istotne dla przebiegu algorytmu. 
+		\item \textbf{MonteCarloVisualisationDetails} - klasa zawierająca informacje związane z wizualizacją danego wierzchołka.
 	\end{itemize}
+	
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.7\textwidth]{umldiagram_serialization}
+		\caption{Diagram klas dla modułu ``Serializacja"}
+		\label{rys:umldiagramserialization}
+	\end{figure}
+
+	\noindent Rysunek \ref{rys:umldiagramserialization} ukazuje diagram klas najważniejszych komponentów związanych z modułem ``Serializacja''. Każda z klas \code{BinarySerializator} oraz \code{CsvSerializator} dziedziczą z klasy bazowej 2 metody, umożliwiającej serializację oraz deserializację drzew.
 	
 	\section{Interfejs użytkownika}
 	Szkic głównego okna z opisem...

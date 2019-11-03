@@ -1,0 +1,17 @@
+@startuml
+
+class CsvSerializator {
+}
+
+class BinarySerializator {
+}
+
+abstract class BaseSerializator {
+    {field} ""String extension""
+    {method} + ""save_node_to_file(node, file_name)""
+    {method} + ""get_node_from_file(file_name)""
+}
+
+BaseSerializator <|- CsvSerializator
+BaseSerializator <|- BinarySerializator
+@enduml
