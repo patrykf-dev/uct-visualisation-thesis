@@ -1,4 +1,6 @@
 class DrawTree(object):
+    MAX_DEPTH = 0
+
     def __init__(self, tree, parent=None, depth=0, number=1):
         self.x = -1.
         self.y = depth
@@ -42,9 +44,6 @@ class DrawTree(object):
     def __str__(self):
         return f"({self.x}, {self.y}, {self.tree.node})"
 
-    def __repr__(self):
-        return self.__str__()
-
 
 def buchheim(tree):
     dt = firstwalk(DrawTree(tree))
@@ -54,18 +53,15 @@ def buchheim(tree):
     return dt
 
 
-def third_walk(tree, n):
-    tree.x += n
-    for c in tree.children:
-        third_walk(c, n)
+def firstwalk(v, distance=1):
+    if v.y > DrawTree.MAX_DEPTH:
+        DrawTree.MAX_DEPTH = v.y
 
-
-def firstwalk(v, distance=1.):
     if len(v.children) == 0:
         if v.lmost_sibling:
             v.x = v.lbrother().x + distance
         else:
-            v.x = 0.
+            v.x = 0
     else:
         default_ancestor = v.children[0]
         for w in v.children:
@@ -75,7 +71,6 @@ def firstwalk(v, distance=1.):
 
         midpoint = (v.children[0].x + v.children[-1].x) / 2
 
-
         w = v.lbrother()
         if w:
             v.x = w.x + distance
@@ -83,6 +78,25 @@ def firstwalk(v, distance=1.):
         else:
             v.x = midpoint
     return v
+
+
+def second_walk(v, m=0, depth=0, min=None):
+    v.x += m
+    v.y = DrawTree.MAX_DEPTH - depth
+
+    if min is None or v.x < min:
+        min = v.x
+
+    for w in v.children:
+        min = second_walk(w, m + v.mod, depth + 1, min)
+
+    return min
+
+
+def third_walk(tree, n):
+    tree.x += n
+    for c in tree.children:
+        third_walk(c, n)
 
 
 def apportion(v, default_ancestor, distance):
@@ -124,7 +138,6 @@ def apportion(v, default_ancestor, distance):
 
 def move_subtree(wl, wr, shift):
     subtrees = wr.number - wl.number
-    # print wl, wr, wr.number, wl.number, shift, subtrees, shift/subtrees
     wr.change -= shift / subtrees
     wr.shift += shift
     wl.change += shift / subtrees
@@ -142,23 +155,7 @@ def execute_shifts(v):
 
 
 def ancestor(vil, v, default_ancestor):
-    # the relevant text is at the bottom of page 7 of
-    # "Improving Walker's Algorithm to Run in Linear Time" by Buchheim et al, (2002)
-    # http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.16.8757&rep=rep1&type=pdf
     if vil.ancestor in v.parent.children:
         return vil.ancestor
     else:
         return default_ancestor
-
-
-def second_walk(v, m=0, depth=0, min=None):
-    v.x += m
-    v.y = depth
-
-    if min is None or v.x < min:
-        min = v.x
-
-    for w in v.children:
-        min = second_walk(w, m + v.mod, depth + 1, min)
-
-    return min

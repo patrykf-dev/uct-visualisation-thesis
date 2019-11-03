@@ -9,13 +9,13 @@ y = []
 
 def display_tree(tree: Walkers.DrawTree):
     x_parent = tree.x
-    y_parent = 6 - tree.y
+    y_parent = tree.y
     x.append(tree.x)
-    y.append(6 - tree.y)
+    y.append(tree.y)
     print(tree)
     for child in tree.children:
         display_tree(child)
-        plt.plot([x_parent, child.x], [y_parent, 6- child.y], "ro-")
+        plt.plot([x_parent, child.x], [y_parent, child.y], "r-")
 
 
 example_tree = Tree.get_tree()
