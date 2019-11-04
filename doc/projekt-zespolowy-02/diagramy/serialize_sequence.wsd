@@ -1,0 +1,10 @@
+@startuml
+User -> Menu: Play
+Menu -> Game: Play
+loop user continues playing
+User -> Game: Make move
+Game --> User: Make opponent's move
+end
+User -> Serialization: Serialize tree
+Serialization --> User: Return file
+@enduml

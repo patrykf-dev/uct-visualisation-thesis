@@ -1,0 +1,10 @@
+@startuml
+User -> Menu: Set "Player vs PC"
+User -> Menu: Play
+Menu -> Game: Play
+loop game in progress
+User -> Game: Make move
+Game --> User: Make opponent's move
+end
+Game --> User: Show endgame status
+@enduml
