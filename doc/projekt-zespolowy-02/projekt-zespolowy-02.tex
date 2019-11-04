@@ -49,6 +49,11 @@
 		\end{itemize}
 \end{minipage}}
 
+% Code command
+\usepackage{xcolor}
+\definecolor{light-gray}{gray}{1}
+\newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
+
 
 % DOCUMENT
 \title{
@@ -76,16 +81,113 @@
 	
 	
 	\section{Moduły aplikacji}
-	Szczegółowy opis każdego z modułów w subsection...
+	\subsection{Wizualizacja}
+	Kluczowy moduł aplikacji. Udostępnia funkcjonalność wizualizacji dostarczonych drzew. Dla czytelnych wizualizacji, poczyniliśmy następujące założenia: \\
+	
+	\begin{enumerate}
+		\item Wierzchołki drzewa nie mogą się przecinać.
+		\item Wierzchołki będą ustawione od góry w rzędach, a przynależność do
+		rzędów będzie zależała od odległości wierzchołków od korzenia.
+		\item Wierzchołki mają być narysowane możliwie najwęziej. 
+		\item Rodzic wierzchołka ma być wycentrowany względem swoich potomków.
+		\item Drzewa izomorficzne mają być wizualizowane tak samo, niezależnie od głębokości.
+		\item Potomkowie każdego z wierzchołków mają być od siebie równo oddalone. \\
+	\end{enumerate}
+
+	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, pochodzi z pracy ``\textit{Improving Walker's Algorithm to Run in Linear Time}'' autorstwa C. Buchheim, M. Junger, S. Leipert. \\
+	
+	\noindent Opisywany moduł udostępni również funkcjonalność przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić użytkownikowi dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach.
+	
+	\subsection{Algorytm}
+	Jednym z kluczowych modułów jest moduł odpowiadający za algorytm Monte Carlo Tree Search. Będzie on udostępniał funkcjonalność wyznaczenia kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
+	
+	\noindent Gry, które ten moduł będzie obsługiwał muszą spełniać założenia algorytmu UCT. W rozdziale trzecim opisane jest dokładniej, jakie funkcjonalności należy zapewnić, by moduł ``Algorytm'' mógł wyznaczać kolejne ruchy danej gry.
+	
+	\clearpage
+	
+	\subsection{Serializacja}
+	Serializacja jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub csv. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy zserializować jego korzeń.\\
+	
+	\noindent \textbf{\large Serializacja binarna} \\
+	W serializacji binarnej przyjmujemy opisany niżej schemat.\\
+
+	\begin{itemize}
+		\item \textbf{liczba całkowita} - wartość liczby zakodowanej w U2 na 4 bajtach. Bajty liczby w kolejności little endian.
+		\item \textbf{napis}:
+		\begin{itemize}
+			\item liczba bajtów w napisie \textit{(liczba całkowita)}
+			\item zawartość napisu kodowana w UTF8
+		\end{itemize}
+		\item \textbf{liczba zmiennoprzecinkowa} - wartość liczby zakodowanej w IEEE754 na 64 bitach w kolejności little endian.
+		\item \textbf{wierzchołek:}
+		\begin{itemize}
+			\item nazwa stanu \textit{(napis)}
+			\item $m$ - liczba węzłów potomnych \textit{(liczba całkowita)}
+			\item $m$ powtórzeń następującego bytu:
+			\begin{itemize}
+				\item nazwa ruchu \textit{(napis)}
+				\item licznik odwiedzin \textit{(liczba całkowita)}
+				\item dodatkowy licznik odwiedzin \textit{(liczba całkowita)}
+				\item średnia wypłata \textit{(liczba zmiennoprzecinkowa)}
+				\item węzeł potomny \textit{(wierzchołek)} \\
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	
+	
+	\noindent \textbf{\large Serializacja do plików csv} \\
+	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Jeśli wierzchołek $v$ ma $k$ potomków, to $k$ wierszy w pliku pod wierszem opisującym wierzchołek $v$ opisuje potomków $v$. Każdy wierzchołek serializujemy do wiersza postaci:
+	\begin{center}
+		\textbf{R, O, O2, W, S, D}
+	\end{center}
+	Oznaczenia:
+	\begin{itemize}
+		\item R - nazwa ruchu
+		\item O - licznik odwiedzin
+		\item O2 - dodatkowy licznik odwiedzin
+		\item W - średnia wypłata
+		\item S - nawa stanu
+		\item D - liczba wierzchołków potomnych
+	\end{itemize}
+	
+	
+	\subsection{Gry}
+	Aplikacja będzie udostępniała 2 gry planszowe, umożliwiające przetestowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały 3 tryby rozgrywki, opisane poniżej. \\
+	
+	\begin{itemize}
+		\item \textbf{Człowiek kontra człowiek:} decyzje obojga graczy są podejmowane przez użytkownika aplikacji.
+		\item \textbf{Człowiek kontra maszyna:} decyzje jednego z graczy są podejmowane przez użytkownika, natomiast drugi gracz podejmuje decyzje najoptymalniejsze z punktu widzenia algorytmu UCT.
+		\item \textbf{Maszyna kontra maszyna:} decyzje obojga graczy są podejmowane przez algorytm. \\ 
+	\end{itemize}
 	
 	
 	\section{Główne komponenty aplikacji}
-	Najważniejsze komponenty:
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=\textwidth]{umldiagram}
+		\caption{Diagram klas dla modułów ``Algorytm'' i ``Wizualizacja"}
+		\label{rys:umldiagrammain}
+	\end{figure}
+	
+	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'' i ``Wizualizacja''. Zgodnie z założeniami moduły są niezależne, ale klasa \code{MonteCarloNode} jest używana przez oba z nich, dlatego zdecydowaliśmy się umieścić te klasy na jednym diagramie. \\
 	\begin{itemize}
-		\item MonteCarloTreeSearch, BaseGameMove, BaseGameState
-		\item BaseSerializator, BinarySerializator, CsvSerializator
-		\item MonteCarloNode, MonteCarloNodeDetails, MonteCarloVisualisationDetails
+		\item \textbf{MonteCarloTreeSearch} - klasa odpowiadająca za wykonywanie algorytmu Monte Carlo Tree Search. Metoda \code{calculate\textunderscore next\textunderscore move} odpowiada za wykonanie kolejnych iteracji algorytmu.
+		\item \textbf{BaseGameMove} - klasa opisująca ruch w grze.
+		\item \textbf{BaseGameState} - klasa opisująca stan gry.
+		\item \textbf{MonteCarloNode} - klasa reprezentująca wierzchołki drzewa.
+		\item \textbf{MonteCarloNodeDetails} - klasa zawierająca informacje istotne dla przebiegu algorytmu. 
+		\item \textbf{MonteCarloVisualisationDetails} - klasa zawierająca informacje związane z wizualizacją danego wierzchołka.
 	\end{itemize}
+	
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.7\textwidth]{umldiagram_serialization}
+		\caption{Diagram klas dla modułu ``Serializacja"}
+		\label{rys:umldiagramserialization}
+	\end{figure}
+
+	\noindent Rysunek \ref{rys:umldiagramserialization} ukazuje diagram klas najważniejszych komponentów związanych z modułem ``Serializacja''. Każda z klas \code{BinarySerializator} oraz \code{CsvSerializator} dziedziczą z klasy bazowej 2 metody, umożliwiającej serializację oraz deserializację drzew.
 	
 	\section{Interfejs użytkownika}
 	Menu:
