@@ -205,14 +205,14 @@
 	\noindent Diagram ukazuje również, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu ``Algorytm'', który pobiera stan rozgrywki z modułu ``Gra''.
 	
 	\clearpage
-	\subsection{Diagram sekwencji serializacji}
+	\subsection{Diagram sekwencji eksportu drzewa}
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{serialize_sequence}
-		\caption{Diagram sekwencji serializacji}
+		\caption{Diagram sekwencji eksportu drzewa}
 		\label{rys:sequenceserialize}
 	\end{figure}
-	BBB fh ab bsdhjf hb hds hjafd b fdhbsj hsd jfj adfjsabjdsfh hfsdjf hbasdjfhsbd fjdbsa jhbsjaf bds hfb jfb hadfsdj b hjbs
+	Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Warty zauważenia jest fakt, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia ``człowiek vs PC'', jednak w przypadku ``PC vs PC'' istnieje taka sama funkcjonalność i diagram byłby analogiczny.
 	
 	\clearpage
 	\subsection{Diagram sekwencji wizualizacji}
@@ -222,8 +222,7 @@
 		\caption{Diagram sekwencji wizualizacji}
 		\label{rys:sequencevisualise}
 	\end{figure}
-	BBB fh ab bsdhjf hb hds hjafd b fdhbsj hsd jfj adfjsabjdsfh hfsdjf hbasdjfhsbd fjdbsa jhbsjaf bds hfb jfb hadfsdj b hjbs
-	
+	Diagram \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki, tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Ten drugi sposób wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia.
 	
 	\section{Interfejs użytkownika}
 	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien. Ma on na celu ułatwić poruszanie się po aplikacji i być wygodnym dla użytkowników końcowych.
