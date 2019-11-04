@@ -188,7 +188,7 @@
 		\label{rys:statediagram}
 	\end{figure}
 
-	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki ``człowiek kontra maszyna''. Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu ``Rozgrywka'', zawierającego cztery wewnętrzne stany. Będac w stanie ``Rozgrywka'', aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
+	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie ``człowiek kontra maszyna''. Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu ``Rozgrywka'', zawierającego cztery wewnętrzne stany. Będac w stanie ``Rozgrywka'', aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
 	
 	\noindent Istotna z punktu widzenia użytkownika jest możliwość serializowania wygenerowanego drzewa lub jego wizualizacja zaraz po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany ``Serializacja wygenerowanego drzewa'' oraz ``Wyświetlanie wygenerowanego drzewa''.
 	\clearpage
@@ -200,7 +200,9 @@
 		\caption{Diagram sekwencji rozgrywki}
 		\label{rys:sequencegame}
 	\end{figure}
-	BBB fh ab bsdhjf hb hds hjafd b fdhbsj hsd jfj adfjsabjdsfh hfsdjf hbasdjfhsbd fjdbsa jhbsjaf bds hfb jfb hadfsdj b hjbs
+	\noindent Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie ``człowiek kontra maszyna''. Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły ``Aplikacja główna'', ``Gra'' i ``Algorytm''. Zgodnie z założeniami, ``Aplikacja główna'' jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
+	
+	\noindent Diagram ukazuje również, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu ``Algorytm'', który pobiera stan rozgrywki z modułu ``Gra''.
 	
 	\clearpage
 	\subsection{Diagram sekwencji serializacji}
