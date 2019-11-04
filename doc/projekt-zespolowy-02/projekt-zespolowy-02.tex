@@ -226,43 +226,59 @@
 	
 	
 	\section{Interfejs użytkownika}
-	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien. Ma on na celu ułatwić poruszanie się po aplikacji i być wygodnym dla użytkowników końcowych.
+	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module ``Aplikacja główna''. Zadaniem graficznego interfejsu jest umożliwienie testowania poszczególnych modułów użytkownikom końcowym.
+	
 	\subsection{Menu główne}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale=0.8]{menu-eps}
+		\includegraphics[width=0.4\textwidth]{menu-eps}
+		\caption{Okno menu głównego}
+		\label{rys:main_menu}
 	\end{figure}
-	Menu główne będzie głównym oknem aplikacji i będzie to pierwsza rzecz, którą zobaczy użytkownik po uruchomieniu programu. Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.
-	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej tego przycisku znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji, w tym m. in.:
+
+	\noindent Ukazane na rysunku \ref{rys:main_menu} menu główne będzie głównym oknem aplikacji i będzie to pierwsza rzecz, którą zobaczy użytkownik po uruchomieniu programu. Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej tego przycisku znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji, w tym między innymi:\\
+	
 	\begin{itemize}
 		\item wybór gry - rozwijalna lista, w której znajdować się będą zaimplementowane gry (nasz projekt przewiduje dwa tytuły)
 		\item liczba iteracji (rozgrywek), jaką komputer będzie wykonywał przed wykonaniem ruchu
 		\item maksymalny czas na wykonanie ruchu - czas, po którym komputer będzie przerywał obliczenia i wykona ruch
 		\item tryb rozgrywki:
 		\subitem - Player vs PC
-		\subitem - PC vs PC
+		\subitem - PC vs PC\\
 	\end{itemize}
-	Analiza drzewa wymagać będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania pliku binarnego (.tree).
+
+	\noindent Analiza drzewa będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania pliku z zserializowanym drzewem (.tree, .csv).
+	
+	\clearpage
 	\subsection{Analiza drzewa}
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.8]{analyze-eps}
+		\caption{Okno analizy drzewa}
+		\label{rys:analyze_tree}
 	\end{figure}
-	W tym oknie będziemy mogli oglądać wczytane lub wygenerowane drzewo. Kluczową funkcją będzie tutaj możliwość dynamicznego przybliżania i oddalania go wraz z możliwością klikania poszczególnych węzłów w celu pozyskania stanu rozgrywki w danym momencie. Widoczna będzie także informacja o tym, ile razy algorytm odwiedził dany węzeł i ile razy doprowadził on do wygranej.
+	
+	\noindent W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać wczytane lub wygenerowane drzewo. Kluczową funkcją będzie tutaj możliwość dynamicznego przybliżania i oddalania go wraz z możliwością klikania poszczególnych węzłów w celu pozyskania stanu rozgrywki w danym momencie. Widoczna będzie także informacja o tym, ile razy algorytm odwiedził dany węzeł, ile razy doprowadził on do wygranej oraz średnią nagrodę za ruch w danym węźle.
+	
+	\clearpage
+	
 	\subsection{Rozgrywka}
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale=0.8]{game-eps}
+		\includegraphics[width=0.7\textwidth]{game-eps}
+		\caption{Okno rozgrywki}
+		\label{rys:game_view}
 	\end{figure}
-	Widok rozgrywki będzie podzielony na dwie części. Gra zawierać się będzie w wyżej pokazanym oknie po lewej stronie. To tutaj użytkownik za pomocą przygotowanego do gier GUI będzie mógł wykonać ruch. Po prawej zaś będą różne opcje związane z aktualnym stanem rozgrywki, m. in.:
+
+	\noindent Widok rozgrywki będzie podzielony na dwie części. Gra zawierać się będzie w wyżej pokazanym oknie po lewej stronie. To tutaj użytkownik za pomocą przygotowanego do gier GUI będzie mógł wykonać ruch. Po prawej zaś będą różne opcje związane z aktualnym stanem rozgrywki, między innymi:\\
 	\begin{itemize}
-		\item informacja o tym, czy gra się toczy, lub czy sie zakończyła
+		\item informacja o tym, czy gra się toczy, lub czy się zakończyła
 		\item wykonaj kolejny ruch - wyłącznie w trybie rozgrywki PC vs PC. Użytkownik będzie miał możliwość kontrolowania wykonywanych przez komputer ruchów, aby samemu móc powodować postęp w rozgrywce.
-		\item przeanalizuj powstałe drzewo - będzie to przycisk otwierajacy drugie okno z opisaną już poprzednio analizą drzewa
-		\item porównaj powstałe drzewo z ostatnim - to samo co wyżej, jednak z wyrażnym zaznaczeniem zmian, które zaistniały w nowym drzewie względem starego
+		\item przeanalizuj powstałe drzewo - będzie to przycisk otwierający drugie okno z opisaną już poprzednio analizą drzewa
+		\item porównaj powstałe drzewo z ostatnim - to samo co wyżej, jednak z wyraźnym zaznaczeniem zmian, które zaistniały w nowym drzewie względem starego
 		\item wyeksportuj drzewo do pliku (csv, png lub binarnego)
 	\end{itemize}
-	Nie zabraknie również opcji resetu gry.
+	
 	
 	\section{Wybrane technologie}
 	Wybraną przez nas technologią do napisania aplikacji tj.: gier, algorytmu i wizualizacji jest język programowania \textbf{Python} w stabilnej wersji 3.7. Do implementacji gier będziemy posługiwać się biblioteką \textbf{PyGame} (w wersji stabilnej). Wizualizacja będzie wykorzystywać w znacznym stopniu bibliotekę \textbf{VisPy} (OpenGL), w której najbardziej przydatną dla nas funkcją będzie możliwość pisania kodu w języku \textbf{C++} i stosunkowo łatwa integracja z głównym językiem projektu - Pythonem. Wykorzystana przez nas wersja tej biblioteki również będzie wersją stabilną.\\
@@ -278,8 +294,5 @@
 	\begin{itemize}
 		\item łatwość pisania kodu i przemyślane API,
 		\item popularność i dobrą dokumentację.\\
-	\end{itemize}
-	Program ma w założeniu działać na komputerze osobistym, który posiada kartę graficzną.\\
-	Aplikacja działa na systemach operacyjnych Windows i Linux.
-	
+	\end{itemize}	
 \end{document}
