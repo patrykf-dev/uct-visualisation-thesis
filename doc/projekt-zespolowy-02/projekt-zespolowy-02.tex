@@ -170,23 +170,16 @@
 	\section{Główne komponenty aplikacji}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\textwidth]{umldiagram}
-		\caption{Diagram klas dla modułów ``Algorytm'' i ``Wizualizacja"}
+		\includegraphics[width=0.9\textwidth]{umldiagram}
+		\caption{Diagram klas głównych modułów}
 		\label{rys:umldiagrammain}
 	\end{figure}
 	
-	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'' i ``Wizualizacja''. TODO \\
+	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'', ``Wizualizacja'' i ``Serializacja''. Opis wierzchołka drzewa jest częścią wspólną dla każdego z tych modułów. Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}. \\
 	
-	\noindent Zgodnie z diagramem, klasa \code{MonteCarloNode} jest używana przez \code{TreeVisualiser}, \code{BaseSerializator} oraz pośrednio przez \code{MonteCarloTreeSearch}. Opis wierzchołka drzewa jest częścią wspólną dla modułów ``Algorytm'', ``Wizualizacja'' i ``Serializacja''.\\
+	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Daje to użytkownikowi możliwość testowania również innych gier poprzez zaimplementowanie tych dwóch klas i ich metod. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}. \\
 	
-	\begin{itemize}
-		\item \textbf{MonteCarloTreeSearch} - klasa odpowiadająca za wykonywanie algorytmu Monte Carlo Tree Search. Metoda \code{calculate\textunderscore next\textunderscore move} odpowiada za wykonanie kolejnych iteracji algorytmu.
-		\item \textbf{BaseGameMove} - klasa opisująca ruch w grze.
-		\item \textbf{BaseGameState} - klasa opisująca stan gry.
-		\item \textbf{MonteCarloNode} - klasa reprezentująca wierzchołki drzewa.
-		\item \textbf{MonteCarloNodeDetails} - klasa zawierająca informacje istotne dla przebiegu algorytmu. 
-		\item \textbf{MonteCarloVisualisationDetails} - klasa zawierająca informacje związane z wizualizacją danego wierzchołka.
-	\end{itemize}
+	\noindent \code{TreeVisualiser} jest głównym komponentem modułu ``Wizualizacja''. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
 	
 	\section{Interfejs użytkownika}
 	Menu:

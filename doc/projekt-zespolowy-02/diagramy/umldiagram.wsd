@@ -70,6 +70,7 @@ class TreeVisualiser {
 }
 
 
+MonteCarloTree o-- BaseGameState
 MonteCarloTree o-- MonteCarloNode
 MonteCarloNode o-- MonteCarloNodeDetails
 MonteCarloNode o-- MonteCarloNodeVisualisationDetails
@@ -78,7 +79,7 @@ MonteCarloNode o-- MonteCarloNodeVisualisationDetails
 TreeVisualiser --> MonteCarloNode
 BaseSerializator --> MonteCarloNode
 MonteCarloTree <-- MonteCarloTreeSearch 
-BaseGameMove <-- MonteCarloTreeSearch
 BaseGameState <-- MonteCarloTreeSearch
 GamePhase <-- BaseGameState
+BaseGameMove <-- MonteCarloTreeSearch
 @enduml
