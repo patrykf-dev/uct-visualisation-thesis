@@ -183,12 +183,14 @@
 	\subsection{Diagram stanów}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.6\textwidth]{statediagram}
+		\includegraphics[width=0.7\textwidth]{statediagram}
 		\caption{Diagram stanów aplikacji}
 		\label{rys:statediagram}
 	\end{figure}
 
-	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki ``człowiek kontra maszyna''. TODO	
+	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki ``człowiek kontra maszyna''. Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu ``Rozgrywka'', zawierającego cztery wewnętrzne stany. Będac w stanie ``Rozgrywka'', aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
+	
+	\noindent Istotna z punktu widzenia użytkownika jest możliwość serializowania wygenerowanego drzewa lub jego wizualizacja zaraz po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany ``Serializacja wygenerowanego drzewa'' oraz ``Wyświetlanie wygenerowanego drzewa''.
 	\clearpage
 	
 	\subsection{Diagram sekwencji rozgrywki}
