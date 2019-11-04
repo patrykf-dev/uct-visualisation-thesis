@@ -93,17 +93,17 @@
 		\item Wierzchołki mają być narysowane możliwie najwęziej.  \\
 	\end{enumerate}
 
-	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{``Improving Walker's Algorithm to Run in Linear Time'' - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universitat zu Koln, Institut fur Informatik}.
+	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{``Improving Walker's Algorithm to Run in Linear Time'' - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik}.
 	
 	\subsection{Algorytm}
-	Moduł ``Algorytm'' odpowiada za TODO algorytm Monte Carlo Tree Search. Będzie on udostępniał funkcjonalność wyznaczenia kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
+	Moduł ``Algorytm'' jest implementacją algorytmu Monte Carlo Tree Search, korzystającą z usprawnienia UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania. \\
 	
-	\noindent Gry, które ten moduł będzie obsługiwał muszą spełniać poniższe założenia: \\
-	
+	\noindent Aby gra była poprawnie obsłużona przez moduł ``algorytm'', musi spełniać następujące założenia: \\
+		
 	\begin{enumerate}
-		\item Gra jest rozgrywana przez dwóch graczy.
+		\item Rozgrywka jest prowadzona naprzemiennie przez dwóch graczy.
 		\item Każdy ruch ma jednoznaczny wpływ na dalszą rozgrywkę (rozgrywka jest deterministyczna).
-		\item Każdy gracz ma ciągły dostęp do pełnej informacji o stanie gry. \\
+		\item Każdy z graczy ma stały dostęp do pełnej informacji o aktualnym stanie gry. \\
 	\end{enumerate} 
 	
 	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł ``Algorytm'' mógł wyznaczać kolejne ruchy danej gry.
@@ -150,7 +150,7 @@
 	
 	
 	\noindent \textbf{\large Serializacja do plików csv} \\
-	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Jeśli wierzchołek $v$ ma $k$ potomków, to $k$ wierszy w pliku pod wierszem opisującym wierzchołek $v$ opisuje potomków $v$. Każdy wierzchołek serializujemy do wiersza postaci:
+	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Jeśli wierzchołek $v$ ma $k$ potomków, to pod wierszem opisującym wierzchołek $v$ będzie $k$ wierszy opisujących jego potomków. Każdy wierzchołek serializujemy do wiersza postaci:
 	\begin{center}
 		\textbf{R, O, O2, W, S, D}
 	\end{center}
@@ -159,13 +159,13 @@
 		\item R - nazwa ruchu
 		\item O - licznik odwiedzin
 		\item O2 - dodatkowy licznik odwiedzin
-		\item W - średnia wypłata
+		\item W - średnia wypłata algorytmu za ruch
 		\item S - nawa stanu
 		\item D - liczba wierzchołków potomnych
 	\end{itemize}
 
 	\subsection{Aplikacja główna}
-	``Aplikacja główna'' jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Aplikacja okienkowa ma TODO
+	``Aplikacja główna'' jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Obszerny opis projektu aplikacji okienkowej znajduje się w rozdziale czwartym.
 	
 	\section{Główne komponenty aplikacji}
 	\begin{figure}[h]
