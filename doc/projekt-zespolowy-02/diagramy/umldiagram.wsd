@@ -59,20 +59,27 @@ class MonteCarloNodeVisualisationDetails {
     {field} ""Color color""
 }
 
+abstract class BaseSerializator {
+    {field} ""String extension""
+    {method} + ""save_node_to_file(node, file_name)""
+    {method} + ""get_node_from_file(file_name)""
+}
+
 class TreeVisualiser {
   {method} + ""visualise_tree()""
 }
 
 
+MonteCarloTree o-- BaseGameState
 MonteCarloTree o-- MonteCarloNode
 MonteCarloNode o-- MonteCarloNodeDetails
 MonteCarloNode o-- MonteCarloNodeVisualisationDetails
 
 
-MonteCarloNode <-- TreeVisualiser
-
+TreeVisualiser --> MonteCarloNode
+BaseSerializator --> MonteCarloNode
 MonteCarloTree <-- MonteCarloTreeSearch 
-BaseGameMove <-- MonteCarloTreeSearch
 BaseGameState <-- MonteCarloTreeSearch
 GamePhase <-- BaseGameState
+BaseGameMove <-- MonteCarloTreeSearch
 @enduml

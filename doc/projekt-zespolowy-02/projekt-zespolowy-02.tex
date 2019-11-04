@@ -73,33 +73,46 @@
 	\begin{versionhistory}
 		\vhEntry{1.0}{3.11.2019}{PF|GK}{stworzenie pierwszej wersji dokumentu}
 	\end{versionhistory}
-	
 	\tableofcontents
 	
 	\section{Architektura aplikacji}
 	Aplikacja będzie podzielona na pięć oddzielnych modułów: algorytm, serializacja, wizualizacja, gra pierwsza i gra druga, które będą funkcjonować w obrębie aplikacji głównej. Cele każdego z modułów i zadania powierzone im są przedstawione poniżej.
 	
 	\subsection{Wizualizacja}
-	Kluczowy moduł aplikacji. Udostępnia funkcjonalność wizualizacji dostarczonych drzew. Dla czytelnych wizualizacji, poczyniliśmy następujące założenia: \\
+	Moduł ``wizualizacja'' udostępnia funkcjonalność wizualizacji dostarczonych drzew. Użytkownik będzie miał również możliwość przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach. \\
+	
+	\noindent Dla czytelnych wizualizacji, poczyniliśmy następujące założenia: \\
 	
 	\begin{enumerate}
-		\item Wierzchołki drzewa nie mogą się przecinać.
+		\item Krawędzie drzewa nie mogą się przecinać.
 		\item Wierzchołki będą ustawione od góry w rzędach, a przynależność do
 		rzędów będzie zależała od odległości wierzchołków od korzenia.
-		\item Wierzchołki mają być narysowane możliwie najwęziej. 
-		\item Rodzic wierzchołka ma być wycentrowany względem swoich potomków.
-		\item Drzewa izomorficzne mają być wizualizowane tak samo, niezależnie od głębokości.
-		\item Potomkowie każdego z wierzchołków mają być od siebie równo oddalone. \\
+		\item Wierzchołki mają być narysowane możliwie najwęziej.  \\
 	\end{enumerate}
 
-	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, pochodzi z pracy ``\textit{Improving Walker's Algorithm to Run in Linear Time}'' autorstwa C. Buchheim, M. Junger, S. Leipert. \\
-	
-	\noindent Opisywany moduł udostępni również funkcjonalność przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić użytkownikowi dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach.
+	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{``Improving Walker's Algorithm to Run in Linear Time'' - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik}.
 	
 	\subsection{Algorytm}
-	Jednym z kluczowych modułów jest moduł odpowiadający za algorytm Monte Carlo Tree Search. Będzie on udostępniał funkcjonalność wyznaczenia kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
+	Moduł ``Algorytm'' jest implementacją algorytmu Monte Carlo Tree Search, korzystającą z usprawnienia UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania. \\
 	
-	\noindent Gry, które ten moduł będzie obsługiwał muszą spełniać założenia algorytmu UCT. W rozdziale trzecim opisane jest dokładniej, jakie funkcjonalności należy zapewnić, by moduł ``Algorytm'' mógł wyznaczać kolejne ruchy danej gry.
+	\noindent Aby gra była poprawnie obsłużona przez moduł ``algorytm'', musi spełniać następujące założenia: \\
+		
+	\begin{enumerate}
+		\item Rozgrywka jest prowadzona naprzemiennie przez dwóch graczy.
+		\item Każdy ruch ma jednoznaczny wpływ na dalszą rozgrywkę (rozgrywka jest deterministyczna).
+		\item Każdy z graczy ma stały dostęp do pełnej informacji o aktualnym stanie gry. \\
+	\end{enumerate} 
+	
+	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł ``Algorytm'' mógł wyznaczać kolejne ruchy danej gry.
+	
+	\subsection{Gry}
+	Aplikacja będzie udostępniała 2 gry planszowe, umożliwiające przetestowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały 3 tryby rozgrywki, opisane poniżej. \\
+	
+	\begin{itemize}
+		\item \textbf{Człowiek kontra człowiek:} decyzje obojga graczy są podejmowane przez użytkownika aplikacji.
+		\item \textbf{Człowiek kontra maszyna:} decyzje jednego z graczy są podejmowane przez użytkownika, natomiast drugi gracz podejmuje decyzje najoptymalniejsze z punktu widzenia algorytmu UCT.
+		\item \textbf{Maszyna kontra maszyna:} decyzje obojga graczy są podejmowane przez algorytm. \\ 
+	\end{itemize}
 	
 	\clearpage
 	
@@ -134,7 +147,7 @@
 	
 	
 	\noindent \textbf{\large Serializacja do plików csv} \\
-	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Jeśli wierzchołek $v$ ma $k$ potomków, to $k$ wierszy w pliku pod wierszem opisującym wierzchołek $v$ opisuje potomków $v$. Każdy wierzchołek serializujemy do wiersza postaci:
+	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Jeśli wierzchołek $v$ ma $k$ potomków, to pod wierszem opisującym wierzchołek $v$ będzie $k$ wierszy opisujących jego potomków. Każdy wierzchołek serializujemy do wiersza postaci:
 	\begin{center}
 		\textbf{R, O, O2, W, S, D}
 	\end{center}
@@ -143,49 +156,39 @@
 		\item R - nazwa ruchu
 		\item O - licznik odwiedzin
 		\item O2 - dodatkowy licznik odwiedzin
-		\item W - średnia wypłata
+		\item W - średnia wypłata algorytmu za ruch
 		\item S - nawa stanu
 		\item D - liczba wierzchołków potomnych
 	\end{itemize}
-	
-	
-	\subsection{Gry}
-	Aplikacja będzie udostępniała 2 gry planszowe, umożliwiające przetestowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały 3 tryby rozgrywki, opisane poniżej. \\
-	
-	\begin{itemize}
-		\item \textbf{Człowiek kontra człowiek:} decyzje obojga graczy są podejmowane przez użytkownika aplikacji.
-		\item \textbf{Człowiek kontra maszyna:} decyzje jednego z graczy są podejmowane przez użytkownika, natomiast drugi gracz podejmuje decyzje najoptymalniejsze z punktu widzenia algorytmu UCT.
-		\item \textbf{Maszyna kontra maszyna:} decyzje obojga graczy są podejmowane przez algorytm. \\ 
-	\end{itemize}
-	
+
+	\subsection{Aplikacja główna}
+	``Aplikacja główna'' jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Obszerny opis projektu aplikacji okienkowej znajduje się w rozdziale czwartym.
 	
 	\section{Główne komponenty aplikacji}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=\textwidth]{umldiagram}
-		\caption{Diagram klas dla modułów ``Algorytm'' i ``Wizualizacja"}
+		\includegraphics[width=0.9\textwidth]{umldiagram}
+		\caption{Diagram klas głównych modułów}
 		\label{rys:umldiagrammain}
 	\end{figure}
 	
-	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'' i ``Wizualizacja''. Zgodnie z założeniami moduły są niezależne, ale klasa \code{MonteCarloNode} jest używana przez oba z nich, dlatego zdecydowaliśmy się umieścić te klasy na jednym diagramie. \\
-	\begin{itemize}
-		\item \textbf{MonteCarloTreeSearch} - klasa odpowiadająca za wykonywanie algorytmu Monte Carlo Tree Search. Metoda \code{calculate\textunderscore next\textunderscore move} odpowiada za wykonanie kolejnych iteracji algorytmu.
-		\item \textbf{BaseGameMove} - klasa opisująca ruch w grze.
-		\item \textbf{BaseGameState} - klasa opisująca stan gry.
-		\item \textbf{MonteCarloNode} - klasa reprezentująca wierzchołki drzewa.
-		\item \textbf{MonteCarloNodeDetails} - klasa zawierająca informacje istotne dla przebiegu algorytmu. 
-		\item \textbf{MonteCarloVisualisationDetails} - klasa zawierająca informacje związane z wizualizacją danego wierzchołka.
-	\end{itemize}
+	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'', ``Wizualizacja'' i ``Serializacja''. Opis wierzchołka drzewa jest częścią wspólną dla każdego z tych modułów. Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}. \\
 	
+	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Daje to użytkownikowi możliwość testowania również innych gier poprzez zaimplementowanie tych dwóch klas i ich metod. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}. \\
 	
-	\begin{figure}[h!]
+	\noindent \code{TreeVisualiser} jest głównym komponentem modułu ``Wizualizacja''. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
+	
+	\clearpage
+	
+	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.7\textwidth]{umldiagram_serialization}
-		\caption{Diagram klas dla modułu ``Serializacja"}
-		\label{rys:umldiagramserialization}
+		\includegraphics[width=0.6\textwidth]{statediagram}
+		\caption{Diagram stanów aplikacji}
+		\label{rys:statediagram}
 	\end{figure}
 
-	\noindent Rysunek \ref{rys:umldiagramserialization} ukazuje diagram klas najważniejszych komponentów związanych z modułem ``Serializacja''. Każda z klas \code{BinarySerializator} oraz \code{CsvSerializator} dziedziczą z klasy bazowej 2 metody, umożliwiającej serializację oraz deserializację drzew.
+	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki ``człowiek kontra maszyna''. TODO
+	
 	
 	\section{Interfejs użytkownika}
 	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien. Ma on na celu ułatwić poruszanie się po aplikacji i być wygodnym dla użytkowników końcowych.

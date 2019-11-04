@@ -1,0 +1,21 @@
+@startuml
+
+[*] -down-> Rozgrywka: rozpoczęcie rozgrywki
+
+
+state Rozgrywka {
+    state "Oczekiwanie na ruch gracza" as S1
+    state "Oczekiwanie na wyznaczenie\nruchu przez algorytm" as S2
+    state "Wyświetlanie wygenerowanego\ndrzewa" as S3
+    state "Serializacja wygenerowanego\ndrzewa" as S4
+    [*] -down-> S1
+    S4: Odwołanie do modułu ""Serializacja""
+    S3: Odwołanie do modułu ""Wizualizacja""
+    S2: Odwołanie do modułu ""Algorytm""
+    S1 -down-> S2: gracz wykonuje ruch
+    S2 -down-> S1
+    S2 -down-> S3: użytkownik prosi o wizualizację 
+    S2 -down-> S4: użytkownik prosi o serializację 
+}
+Rozgrywka -down-> [*]: zakończenie rozgrywki
+@enduml
