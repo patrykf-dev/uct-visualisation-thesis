@@ -166,11 +166,11 @@
 	``Aplikacja główna'' jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Obszerny opis projektu aplikacji okienkowej znajduje się w rozdziale czwartym.
 	
 	\section{Główne komponenty aplikacji}
-	\subsection{Diagram klas}
+	\subsection{Diagram klas głównych komponentów}
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{umldiagram}
-		\caption{Diagram klas głównych modułów}
+		\caption{Diagram klas głównych komponentów}
 		\label{rys:umldiagrammain}
 	\end{figure}
 	
@@ -181,7 +181,7 @@
 	\noindent \code{TreeVisualiser} jest głównym komponentem modułu ``Wizualizacja''. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
 	
 	\clearpage
-	\subsection{Diagram stanów}
+	\subsection{Diagram stanów aplikacji}
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.7\textwidth]{statediagram}
@@ -213,7 +213,7 @@
 		\caption{Diagram sekwencji eksportu drzewa}
 		\label{rys:sequenceserialize}
 	\end{figure}
-	\noindent Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Warty zauważenia jest fakt, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia ``człowiek vs PC'', jednak w przypadku ``PC vs PC'' istnieje taka sama funkcjonalność i diagram byłby analogiczny.
+	\noindent Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Warty zauważenia jest fakt, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia ``człowiek kontra maszyna'', jednak w przypadku ``maszyna kontra maszyna'' istnieje taka sama funkcjonalność i diagram byłby analogiczny.
 	
 	\clearpage
 	\subsection{Diagram sekwencji wizualizacji}
@@ -243,8 +243,9 @@
 		\item liczba iteracji (rozgrywek), jaką komputer będzie wykonywał przed wykonaniem ruchu
 		\item maksymalny czas na wykonanie ruchu - czas, po którym komputer będzie przerywał obliczenia i wykona ruch
 		\item tryb rozgrywki:
-		\subitem - Player vs PC
-		\subitem - PC vs PC\\
+		\subitem - człowiek kontra człowiek
+		\subitem - człowiek kontra maszyna
+		\subitem - maszyna kontra maszyna\\
 	\end{itemize}
 
 	\noindent Analiza drzewa będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania pliku z zserializowanym drzewem (.tree, .csv).
@@ -270,10 +271,11 @@
 		\label{rys:game_view}
 	\end{figure}
 
-	\noindent Widok rozgrywki będzie podzielony na dwie części. Gra zawierać się będzie w wyżej pokazanym oknie po lewej stronie. To tutaj użytkownik za pomocą przygotowanego do gier GUI będzie mógł wykonać ruch. Po prawej zaś będą różne opcje związane z aktualnym stanem rozgrywki, między innymi:\\
+	\noindent Widok rozgrywki będzie podzielony na dwie części. Gra zawierać się będzie w wyżej pokazanym oknie po lewej stronie. To tutaj użytkownik za pomocą przygotowanego do gier GUI będzie mógł wykonać ruch. W prawej części okna znajdować się będą opcje związane z aktualnym stanem rozgrywki, między innymi:\\
+	
 	\begin{itemize}
-		\item informacja o tym, czy gra się toczy, lub czy się zakończyła
-		\item wykonaj kolejny ruch - wyłącznie w trybie rozgrywki PC vs PC. Użytkownik będzie miał możliwość kontrolowania wykonywanych przez komputer ruchów, aby samemu móc powodować postęp w rozgrywce.
+		\item informacja o aktualnym stanie gry
+		\item wykonaj kolejny ruch - wyłącznie w trybie rozgrywki maszyna kontra maszyna. Użytkownik będzie miał możliwość kontrolowania wykonywanych przez komputer ruchów, aby samemu móc powodować postęp w rozgrywce.
 		\item przeanalizuj powstałe drzewo - będzie to przycisk otwierający drugie okno z opisaną już poprzednio analizą drzewa
 		\item porównaj powstałe drzewo z ostatnim - to samo co wyżej, jednak z wyraźnym zaznaczeniem zmian, które zaistniały w nowym drzewie względem starego
 		\item wyeksportuj drzewo do pliku (csv, png lub binarnego)
@@ -281,7 +283,7 @@
 	
 	
 	\section{Wybrane technologie}
-	Wybraną przez nas technologią do napisania aplikacji tj.: gier, algorytmu i wizualizacji jest język programowania \textbf{Python} w stabilnej wersji 3.7. Do implementacji gier będziemy posługiwać się biblioteką \textbf{PyGame} (w wersji stabilnej). Wizualizacja będzie wykorzystywać w znacznym stopniu bibliotekę \textbf{VisPy} (OpenGL), w której najbardziej przydatną dla nas funkcją będzie możliwość pisania kodu w języku \textbf{C++} i stosunkowo łatwa integracja z głównym językiem projektu - Pythonem. Wykorzystana przez nas wersja tej biblioteki również będzie wersją stabilną.\\
+	Wybraną przez nas technologią do napisania aplikacji, to jest: gier, algorytmu i wizualizacji jest język programowania \textbf{Python} w stabilnej wersji 3.7. Do implementacji gier będziemy posługiwać się biblioteką \textbf{PyGame} (w wersji stabilnej). Wizualizacja będzie wykorzystywać w znacznym stopniu bibliotekę \textbf{VisPy} (OpenGL), w której najbardziej przydatną dla nas funkcją będzie możliwość pisania kodu w języku \textbf{C++} i stosunkowo łatwa integracja z głównym językiem projektu - Pythonem. Wykorzystana przez nas wersja tej biblioteki również będzie wersją stabilną.\\
 	
 	\noindent Python został przez nas wybrany ze względu na swoją wszechstronność. Posiada on bardzo szeroki zakres bibliotek, co pozwoli nam napisać zdecydowaną większość kodu w jednym języku i przyspieszyć wymianę informacji między komponentami (np. kodem gier a kodem algorytmu MCTS).\\
 	
@@ -290,7 +292,8 @@
 		\item współpracę z GPU, co będzie niezbędne podczas wizualizacji setek tysięcy wierzchołków grafu,
 		\item obszerną dokumentację.\\
 	\end{itemize}
-	Wybór na PyGame padł ze względu na:
+
+	\noindent Wybór na PyGame padł ze względu na:
 	\begin{itemize}
 		\item łatwość pisania kodu i przemyślane API,
 		\item popularność i dobrą dokumentację.\\
