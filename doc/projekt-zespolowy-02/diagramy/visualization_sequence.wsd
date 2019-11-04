@@ -1,16 +1,22 @@
 @startuml
-alt user choses analysis from menu
-User -> Menu: Load tree file
-User -> Menu: Analyze tree
-Menu -> "Analyze tree": Analyze tree
-else
-User -> Menu: Play
-Menu -> Game: Play
-loop user continues playing
-User -> Game: Make move
-Game --> User: Make opponent's move
+actor Użytkownik
+alt użytkownik wczytuje drzewo podczas rozgrywki
+Użytkownik -> "Aplikacja główna": Włącz grę
+"Aplikacja główna" -> Gra: Włącz grę
+loop użytkownik kontynuuje grę
+Użytkownik -> "Aplikacja główna": Wykonaj ruch
+"Aplikacja główna" -> Gra: Wykonaj ruch
+Gra -> Algorytm: Wykonaj ruch
+Algorytm --> Gra: Wykonaj ruch przeciwnika
+Gra --> "Aplikacja główna": Wykonaj ruch przeciwnika
+"Aplikacja główna" --> Użytkownik: Pokaż ruch wykonany przez przeciwnika
 end
-User -> "Analyze tree": Analyze tree
+Użytkownik -> "Aplikacja główna": Analizuj drzewo
+"Aplikacja główna" -> Wizualizacja: Analizuj drzewo
+else użytkownik wczytuje drzewo z aplikacji głównej
+Użytkownik -> "Aplikacja główna": Wczytaj plik drzewa
+"Aplikacja główna" -> Serializacja: Zdeserializuj drzewo
+Serializacja --> Wizualizacja: Wyświetl drzewo
 end
-"Analyze tree" --> User: Return tree analysis window
+Wizualizacja --> Użytkownik: Pokaż okno analizy drzewa
 @enduml

@@ -1,10 +1,16 @@
 @startuml
-User -> Menu: Play
-Menu -> Game: Play
-loop user continues playing
-User -> Game: Make move
-Game --> User: Make opponent's move
+actor Użytkownik
+Użytkownik -> "Aplikacja główna": Włącz grę
+"Aplikacja główna" -> Gra: Włącz grę
+loop użytkownik kontynuuje grę
+Użytkownik -> "Aplikacja główna": Wykonaj ruch
+"Aplikacja główna" -> Gra: Wykonaj ruch
+Gra -> Algorytm: Wykonaj ruch
+Algorytm --> Gra: Wykonaj ruch przeciwnika
+Gra --> "Aplikacja główna": Wykonaj ruch przeciwnika
+"Aplikacja główna" --> Użytkownik: Pokaż ruch wykonany przez przeciwnika
 end
-User -> Serialization: Serialize tree
-Serialization --> User: Return file
+Użytkownik -> "Aplikacja główna": Zapisz drzewo do pliku
+"Aplikacja główna" -> Serializacja: Zapisz drzewo do pliku
+Serializacja --> Użytkownik: Zwróć plik
 @enduml
