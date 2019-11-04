@@ -74,12 +74,7 @@
 		\vhEntry{1.0}{3.11.2019}{PF|GK}{stworzenie pierwszej wersji dokumentu}
 	\end{versionhistory}
 	
-	\tableofcontents
-	
-	\section{Architektura aplikacji}
-	Aplikacja będzie podzielona na 5 oddzielnych modułów: algorytm, serializacja, wizualizacja, gra 1, gra 2... Ten odpowiedzialny za to, tamten za to... Takie rozwiązanie jest dobre bo...
-	
-	
+	\tableofcontents	
 	\section{Moduły aplikacji}
 	\subsection{Wizualizacja}
 	Moduł ``wizualizacja'' udostępnia funkcjonalność wizualizacji dostarczonych drzew. Użytkownik będzie miał również możliwość przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach. \\
@@ -180,6 +175,18 @@
 	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Daje to użytkownikowi możliwość testowania również innych gier poprzez zaimplementowanie tych dwóch klas i ich metod. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}. \\
 	
 	\noindent \code{TreeVisualiser} jest głównym komponentem modułu ``Wizualizacja''. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
+	
+	\clearpage
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.6\textwidth]{statediagram}
+		\caption{Diagram stanów aplikacji}
+		\label{rys:statediagram}
+	\end{figure}
+
+	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki ``człowiek kontra maszyna''. TODO
+	
 	
 	\section{Interfejs użytkownika}
 	Menu:
