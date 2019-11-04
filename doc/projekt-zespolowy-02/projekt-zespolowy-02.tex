@@ -165,6 +165,7 @@
 	``Aplikacja główna'' jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Obszerny opis projektu aplikacji okienkowej znajduje się w rozdziale czwartym.
 	
 	\section{Główne komponenty aplikacji}
+	\subsection{Diagram klas}
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{umldiagram}
@@ -179,7 +180,7 @@
 	\noindent \code{TreeVisualiser} jest głównym komponentem modułu ``Wizualizacja''. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
 	
 	\clearpage
-	
+	\subsection{Diagram stanów}
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.6\textwidth]{statediagram}
@@ -187,7 +188,37 @@
 		\label{rys:statediagram}
 	\end{figure}
 
-	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki ``człowiek kontra maszyna''. TODO
+	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki ``człowiek kontra maszyna''. TODO	
+	\clearpage
+	
+	\subsection{Diagram sekwencji rozgrywki}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{play_with_pc_sequence}
+		\caption{Diagram sekwencji rozgrywki}
+		\label{rys:sequencegame}
+	\end{figure}
+	BBB fh ab bsdhjf hb hds hjafd b fdhbsj hsd jfj adfjsabjdsfh hfsdjf hbasdjfhsbd fjdbsa jhbsjaf bds hfb jfb hadfsdj b hjbs
+	
+	\clearpage
+	\subsection{Diagram sekwencji serializacji}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{serialize_sequence}
+		\caption{Diagram sekwencji serializacji}
+		\label{rys:sequenceserialize}
+	\end{figure}
+	BBB fh ab bsdhjf hb hds hjafd b fdhbsj hsd jfj adfjsabjdsfh hfsdjf hbasdjfhsbd fjdbsa jhbsjaf bds hfb jfb hadfsdj b hjbs
+	
+	\clearpage
+	\subsection{Diagram sekwencji wizualizacji}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.8\textwidth]{visualization_sequence}
+		\caption{Diagram sekwencji wizualizacji}
+		\label{rys:sequencevisualise}
+	\end{figure}
+	BBB fh ab bsdhjf hb hds hjafd b fdhbsj hsd jfj adfjsabjdsfh hfsdjf hbasdjfhsbd fjdbsa jhbsjaf bds hfb jfb hadfsdj b hjbs
 	
 	
 	\section{Interfejs użytkownika}
