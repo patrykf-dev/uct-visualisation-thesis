@@ -82,26 +82,40 @@
 	
 	\section{Moduły aplikacji}
 	\subsection{Wizualizacja}
-	Kluczowy moduł aplikacji. Udostępnia funkcjonalność wizualizacji dostarczonych drzew. Dla czytelnych wizualizacji, poczyniliśmy następujące założenia: \\
+	Moduł ``wizualizacja'' udostępnia funkcjonalność wizualizacji dostarczonych drzew. Użytkownik będzie miał również możliwość przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach. \\
+	
+	\noindent Dla czytelnych wizualizacji, poczyniliśmy następujące założenia: \\
 	
 	\begin{enumerate}
-		\item Wierzchołki drzewa nie mogą się przecinać.
+		\item Krawędzie drzewa nie mogą się przecinać.
 		\item Wierzchołki będą ustawione od góry w rzędach, a przynależność do
 		rzędów będzie zależała od odległości wierzchołków od korzenia.
-		\item Wierzchołki mają być narysowane możliwie najwęziej. 
-		\item Rodzic wierzchołka ma być wycentrowany względem swoich potomków.
-		\item Drzewa izomorficzne mają być wizualizowane tak samo, niezależnie od głębokości.
-		\item Potomkowie każdego z wierzchołków mają być od siebie równo oddalone. \\
+		\item Wierzchołki mają być narysowane możliwie najwęziej.  \\
 	\end{enumerate}
 
-	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, pochodzi z pracy ``\textit{Improving Walker's Algorithm to Run in Linear Time}'' autorstwa C. Buchheim, M. Junger, S. Leipert. \\
-	
-	\noindent Opisywany moduł udostępni również funkcjonalność przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić użytkownikowi dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach.
+	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{``Improving Walker's Algorithm to Run in Linear Time'' - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universitat zu Koln, Institut fur Informatik}.
 	
 	\subsection{Algorytm}
-	Jednym z kluczowych modułów jest moduł odpowiadający za algorytm Monte Carlo Tree Search. Będzie on udostępniał funkcjonalność wyznaczenia kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
+	Moduł ``Algorytm'' odpowiada za TODO algorytm Monte Carlo Tree Search. Będzie on udostępniał funkcjonalność wyznaczenia kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
 	
-	\noindent Gry, które ten moduł będzie obsługiwał muszą spełniać założenia algorytmu UCT. W rozdziale trzecim opisane jest dokładniej, jakie funkcjonalności należy zapewnić, by moduł ``Algorytm'' mógł wyznaczać kolejne ruchy danej gry.
+	\noindent Gry, które ten moduł będzie obsługiwał muszą spełniać poniższe założenia: \\
+	
+	\begin{enumerate}
+		\item Gra jest rozgrywana przez dwóch graczy.
+		\item Każdy ruch ma jednoznaczny wpływ na dalszą rozgrywkę (rozgrywka jest deterministyczna).
+		\item Każdy gracz ma ciągły dostęp do pełnej informacji o stanie gry. \\
+	\end{enumerate} 
+	
+	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł ``Algorytm'' mógł wyznaczać kolejne ruchy danej gry.
+	
+	\subsection{Gry}
+	Aplikacja będzie udostępniała 2 gry planszowe, umożliwiające przetestowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały 3 tryby rozgrywki, opisane poniżej. \\
+	
+	\begin{itemize}
+		\item \textbf{Człowiek kontra człowiek:} decyzje obojga graczy są podejmowane przez użytkownika aplikacji.
+		\item \textbf{Człowiek kontra maszyna:} decyzje jednego z graczy są podejmowane przez użytkownika, natomiast drugi gracz podejmuje decyzje najoptymalniejsze z punktu widzenia algorytmu UCT.
+		\item \textbf{Maszyna kontra maszyna:} decyzje obojga graczy są podejmowane przez algorytm. \\ 
+	\end{itemize}
 	
 	\clearpage
 	
@@ -149,17 +163,9 @@
 		\item S - nawa stanu
 		\item D - liczba wierzchołków potomnych
 	\end{itemize}
-	
-	
-	\subsection{Gry}
-	Aplikacja będzie udostępniała 2 gry planszowe, umożliwiające przetestowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały 3 tryby rozgrywki, opisane poniżej. \\
-	
-	\begin{itemize}
-		\item \textbf{Człowiek kontra człowiek:} decyzje obojga graczy są podejmowane przez użytkownika aplikacji.
-		\item \textbf{Człowiek kontra maszyna:} decyzje jednego z graczy są podejmowane przez użytkownika, natomiast drugi gracz podejmuje decyzje najoptymalniejsze z punktu widzenia algorytmu UCT.
-		\item \textbf{Maszyna kontra maszyna:} decyzje obojga graczy są podejmowane przez algorytm. \\ 
-	\end{itemize}
-	
+
+	\subsection{Aplikacja główna}
+	``Aplikacja główna'' jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Aplikacja okienkowa ma TODO
 	
 	\section{Główne komponenty aplikacji}
 	\begin{figure}[h]
@@ -169,7 +175,10 @@
 		\label{rys:umldiagrammain}
 	\end{figure}
 	
-	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'' i ``Wizualizacja''. Zgodnie z założeniami moduły są niezależne, ale klasa \code{MonteCarloNode} jest używana przez oba z nich, dlatego zdecydowaliśmy się umieścić te klasy na jednym diagramie. \\
+	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'' i ``Wizualizacja''. TODO \\
+	
+	\noindent Zgodnie z diagramem, klasa \code{MonteCarloNode} jest używana przez \code{TreeVisualiser}, \code{BaseSerializator} oraz pośrednio przez \code{MonteCarloTreeSearch}. Opis wierzchołka drzewa jest częścią wspólną dla modułów ``Algorytm'', ``Wizualizacja'' i ``Serializacja''.\\
+	
 	\begin{itemize}
 		\item \textbf{MonteCarloTreeSearch} - klasa odpowiadająca za wykonywanie algorytmu Monte Carlo Tree Search. Metoda \code{calculate\textunderscore next\textunderscore move} odpowiada za wykonanie kolejnych iteracji algorytmu.
 		\item \textbf{BaseGameMove} - klasa opisująca ruch w grze.
@@ -178,16 +187,6 @@
 		\item \textbf{MonteCarloNodeDetails} - klasa zawierająca informacje istotne dla przebiegu algorytmu. 
 		\item \textbf{MonteCarloVisualisationDetails} - klasa zawierająca informacje związane z wizualizacją danego wierzchołka.
 	\end{itemize}
-	
-	
-	\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.7\textwidth]{umldiagram_serialization}
-		\caption{Diagram klas dla modułu ``Serializacja"}
-		\label{rys:umldiagramserialization}
-	\end{figure}
-
-	\noindent Rysunek \ref{rys:umldiagramserialization} ukazuje diagram klas najważniejszych komponentów związanych z modułem ``Serializacja''. Każda z klas \code{BinarySerializator} oraz \code{CsvSerializator} dziedziczą z klasy bazowej 2 metody, umożliwiającej serializację oraz deserializację drzew.
 	
 	\section{Interfejs użytkownika}
 	Menu:
