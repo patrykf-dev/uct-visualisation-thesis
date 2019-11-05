@@ -306,7 +306,9 @@ def find_next_move(current_state):
 
 	\noindent Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Gdy żądanie jest z poziomu rozgrywki, komponent \modulename{Aplikacja główna} komunikuje się z komponentem \modulename{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi w nowym oknie. \\
 	
-	 \noindent Drugi sposób (żądanie analizy drzewa z menu głównego) wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia - wymaga to komunikacji modułu \modulename{Wizualizacja} i \modulename{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanym drzewem.
+	 \noindent Drugi sposób (żądanie analizy drzewa z menu głównego) wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia - wymaga to komunikacji modułu \modulename{Wizualizacja} i \modulename{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanym drzewem.\\
+	 
+	 \noindent Interakcja wyżej wymienionych komponentów wygląda tak samo również w przypadku, gdy użytkownik poprosi o przeanalizowanie większej ilości drzew za jednym razem.
 	
 	\section{Interfejs użytkownika}
 	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module \modulename{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie uruchomienia poszczególnych modułów użytkownikom końcowym.
@@ -332,11 +334,11 @@ def find_next_move(current_state):
 		\subitem - maszyna kontra maszyna,\\
 	\end{itemize}
 
-	\noindent Analiza drzewa będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania pliku z zserializowanym drzewem (.tree, .csv).
+	\noindent Analiza drzewa (lub drzew) będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania wybranych plików (.tree, .csv).
 	
 	\clearpage
 	\subsection{Analiza drzewa}
-	W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać wczytane lub wygenerowane drzewo. 
+	W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać wczytane lub wygenerowane drzewa. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.8]{tree-eps-improved}
@@ -344,7 +346,9 @@ def find_next_move(current_state):
 		\label{rys:analyze_tree}
 	\end{figure}
 	
-	\noindent Kluczową funkcją będzie tutaj możliwość dynamicznego przybliżania i oddalania go wraz z możliwością klikania poszczególnych węzłów w celu pozyskania stanu rozgrywki w danym momencie. Widoczna będzie także informacja o tym, ile razy algorytm odwiedził dany węzeł, ile razy doprowadził on do wygranej oraz średnią nagrodę za ruch w danym węźle.
+	\noindent Kluczową funkcją będzie tutaj możliwość dynamicznego przybliżania i oddalania go (za pomocą przycisków plusa i minusa na ekranie lub scrolla) wraz z możliwością klikania poszczególnych węzłów w celu pozyskania stanu rozgrywki w danym momencie. Widoczna będzie także informacja o tym, ile razy algorytm odwiedził dany węzeł, ile razy doprowadził on do wygranej oraz średnią nagrodę za ruch w danym węźle. Możliwe będzie też wycentrowanie oglądanego drzewa.\\
+	
+	\noindent W przypadku wczytania większej ilości drzew będzie możliwość przełączania ich za pomocą przycisków ze strzałkami w lewo i w prawo. Zaznaczane wtedy będą różnice w węzłach i krawędziach względem poprzedniego drzewa.
 	
 	\clearpage
 	
@@ -362,8 +366,7 @@ def find_next_move(current_state):
 	\begin{itemize}
 		\item informacja o aktualnym stanie gry.
 		\item wykonaj kolejny ruch - wyłącznie w trybie rozgrywki maszyna kontra maszyna. Użytkownik będzie miał możliwość kontrolowania wykonywanych przez komputer ruchów, aby samemu móc powodować postęp w rozgrywce.
-		\item przeanalizuj powstałe drzewo - będzie to przycisk otwierający drugie okno z opisaną już poprzednio analizą drzewa.
-		\item porównaj powstałe drzewo z ostatnim - to samo co wyżej, jednak z wyraźnym zaznaczeniem zmian, które zaistniały w nowym drzewie względem starego.
+		\item przeanalizuj wygenerowane drzewa - będzie to przycisk otwierający drugie okno z opisaną wcześniej analizą drzewa. Nad przyciskiem znajduje się parametr mówiący ile ruchów wstecz użytkownik ma zamiar analizować. Jedno drzewo będzie odpowiadać jednemu ruchowi komputera, a jako pierwsze wyświetli się drzewo przedstawiające stan z ostatniego ruchu i reszta będzie odpowiednio w kolejności chronologicznej (od końca).
 		\item wyeksportuj drzewo do pliku (csv, png lub binarnego).
 	\end{itemize}
 	
