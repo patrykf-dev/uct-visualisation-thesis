@@ -234,7 +234,7 @@
 	
 	\clearpage
 	\subsection{Diagram sekwencji eksportu drzewa}
-	Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa.
+	Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na rysunku \ref{rys:sequencegame}. 
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{serialize_sequence}
@@ -242,11 +242,13 @@
 		\label{rys:sequenceserialize}
 	\end{figure}
 
-	\noindent Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia \modulename{człowiek kontra maszyna}, jednak w przypadku \modulename{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
+	\noindent Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do specjalnego folderu na tego typu pliki i posiada datę wygenerowania.\\
+	
+	\noindent Jest to diagram dla ustawienia \modulename{człowiek kontra maszyna}, jednak w przypadku \modulename{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
 	
 	\clearpage
 	\subsection{Diagram sekwencji wizualizacji}
-	Diagram \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji.
+	Rysunek \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{visualization_sequence}
