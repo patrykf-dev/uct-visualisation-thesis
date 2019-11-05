@@ -2,7 +2,7 @@
 \usepackage{titling}
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
-\usepackage[OT4]{fontenc} 
+\usepackage[utf8]{inputenc}
 % Margins in document
 \usepackage[left=1.5cm, right=1.5cm, top=3cm]{geometry}
 
@@ -54,9 +54,6 @@
 \definecolor{light-gray}{gray}{1}
 \newcommand{\code}[1]{\colorbox{light-gray}{\texttt{#1}}}
 
-% Modulename command
-\newcommand{\modulename}[1]{\textit{#1}}
-
 
 % DOCUMENT
 \title{
@@ -69,7 +66,7 @@
 		\maketitle
 		\vspace{3cm}
 		\begin{abstract}
-			Poniższy dokument zawiera ogólny zarys projektu. Aplikacja ma w zamyśle pozwalać na oglądanie i dokładną analizę rozgrywki z komputerem w jedną z dwóch gier planszowych. Istnieje możliwość łatwego rozszerzenia o kolejne gry wpasowujące się w założenia algorytmu UCT. W dokumencie przedstawione są wszystkie moduły aplikacji wraz z pełnionymi funkcjami oraz ich dokładny opis i diagramy UML. Z dokumentu można dowiedzieć się też o zachowaniu poszczególnych komponentów względem siebie oraz jakie opcje są dostępne dla użytkownika. 
+			Poniższy dokument zawiera ogólny zarys projektu. Aplikacja ma w zamyśle pozwalać na oglądanie i dokładną analizę rozgrywki z komputerem w jedną z dwóch gier planszowych. Jest ona potencjalnie rozszerzalna o kolejne gry wpasowujące się w założenia algorytmu UCT. W dokumencie przedstawione są wszystkie moduły aplikacji wraz z pełnionymi funkcjami oraz ich dokładny opis i diagramy UML. Z dokumentu można dowiedzieć się też o zachowaniu poszczególnych komponentów względem siebie oraz jakie opcje są dostępne dla użytkownika. 
 		\end{abstract}
 	\end{titlingpage}
 
@@ -80,10 +77,10 @@
 	\tableofcontents
 	
 	\section{Architektura aplikacji}
-	Aplikacja będzie podzielona na pięć oddzielnych modułów: \modulename{algorytm}, \modulename{serializacja}, \modulename{wizualizacja}, \modulename{gry}, które będą funkcjonować w obrębie nadrzędnego modułu - \modulename{aplikacji głównej}. Cele każdego z modułów i zadania powierzone im są przedstawione poniżej.
+	Aplikacja będzie podzielona na pięć oddzielnych modułów: algorytm, serializacja, wizualizacja, gra pierwsza i gra druga, które będą funkcjonować w obrębie aplikacji głównej. Cele każdego z modułów i zadania powierzone im są przedstawione poniżej.
 	
 	\subsection{Wizualizacja}
-	Moduł \modulename{wizualizacja} udostępnia funkcjonalność wizualizacji dostarczonych drzew. Użytkownik będzie miał również możliwość przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach. \\
+	Moduł ``wizualizacja'' udostępnia funkcjonalność wizualizacji dostarczonych drzew. Użytkownik będzie miał również możliwość przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach. \\
 	
 	\noindent Dla czytelnych wizualizacji, poczyniliśmy następujące założenia: \\
 	
@@ -94,20 +91,20 @@
 		\item Wierzchołki mają być narysowane możliwie najwęziej.  \\
 	\end{enumerate}
 
-	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{\modulename{Improving Walker's Algorithm to Run in Linear Time} - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik}.
+	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 6 założeń, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{``Improving Walker's Algorithm to Run in Linear Time'' - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik}.
 	
 	\subsection{Algorytm}
-	Moduł \modulename{Algorytm} jest implementacją algorytmu Monte Carlo Tree Search, korzystającą z wariantu UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania. \\
+	Moduł ``Algorytm'' jest implementacją algorytmu Monte Carlo Tree Search, korzystającą z usprawnienia UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania. \\
 	
-	\noindent Aby gra była poprawnie obsłużona przez moduł \modulename{algorytm}, musi spełniać następujące założenia: \\
+	\noindent Aby gra była poprawnie obsłużona przez moduł ``algorytm'', musi spełniać następujące założenia: \\
 		
 	\begin{enumerate}
 		\item Rozgrywka jest prowadzona naprzemiennie przez dwóch graczy.
 		\item Każdy ruch ma jednoznaczny wpływ na dalszą rozgrywkę (rozgrywka jest deterministyczna).
-		\item Każdy z graczy ma dostęp do pełnej informacji o aktualnym stanie gry. \\
+		\item Każdy z graczy ma stały dostęp do pełnej informacji o aktualnym stanie gry. \\
 	\end{enumerate} 
 	
-	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł \modulename{Algorytm} mógł wyznaczać kolejne ruchy danej gry.
+	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł ``Algorytm'' mógł wyznaczać kolejne ruchy danej gry.
 	
 	\subsection{Gry}
 	Aplikacja będzie udostępniała 2 gry planszowe umożliwiające przetestowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały różne tryby rozgrywki: \\
@@ -120,7 +117,7 @@
 	\clearpage
 	
 	\subsection{Serializacja}
-	\modulename{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub csv. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy zserializować jego korzeń.\\
+	Serializacja jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub csv. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy zserializować jego korzeń.\\
 	
 	\noindent \textbf{\large Serializacja binarna} \\
 	W serializacji binarnej przyjmujemy opisany niżej schemat.\\
@@ -129,21 +126,21 @@
 		\item \textbf{liczba całkowita} - wartość liczby zakodowanej w U2 na 4 bajtach. Bajty liczby w kolejności little endian.
 		\item \textbf{napis}:
 		\begin{itemize}
-			\item liczba bajtów w napisie \textit{(liczba całkowita)},
-			\item zawartość napisu kodowana w UTF8.
+			\item liczba bajtów w napisie \textit{(liczba całkowita)}
+			\item zawartość napisu kodowana w UTF8
 		\end{itemize}
 		\item \textbf{liczba zmiennoprzecinkowa} - wartość liczby zakodowanej w IEEE754 na 64 bitach w kolejności little endian.
 		\item \textbf{wierzchołek:}
 		\begin{itemize}
-			\item nazwa stanu \textit{(napis)},
-			\item $m$ - liczba węzłów potomnych \textit{(liczba całkowita)},
+			\item nazwa stanu \textit{(napis)}
+			\item $m$ - liczba węzłów potomnych \textit{(liczba całkowita)}
 			\item $m$ powtórzeń następującego bytu:
 			\begin{itemize}
-				\item nazwa ruchu \textit{(napis)},
-				\item licznik odwiedzin \textit{(liczba całkowita)},
-				\item dodatkowy licznik odwiedzin \textit{(liczba całkowita)},
-				\item średnia wypłata \textit{(liczba zmiennoprzecinkowa)},
-				\item węzeł potomny \textit{(wierzchołek)}. \\
+				\item nazwa ruchu \textit{(napis)}
+				\item licznik odwiedzin \textit{(liczba całkowita)}
+				\item dodatkowy licznik odwiedzin \textit{(liczba całkowita)}
+				\item średnia wypłata \textit{(liczba zmiennoprzecinkowa)}
+				\item węzeł potomny \textit{(wierzchołek)} \\
 			\end{itemize}
 		\end{itemize}
 	\end{itemize}
@@ -156,16 +153,16 @@
 	\end{center}
 	Oznaczenia:
 	\begin{itemize}
-		\item R - nazwa ruchu,
-		\item O - licznik odwiedzin,
-		\item O2 - dodatkowy licznik odwiedzin,
-		\item W - średnia wypłata algorytmu za ruch,
-		\item S - nawa stanu,
-		\item D - liczba wierzchołków potomnych.
+		\item R - nazwa ruchu
+		\item O - licznik odwiedzin
+		\item O2 - dodatkowy licznik odwiedzin
+		\item W - średnia wypłata algorytmu za ruch
+		\item S - nawa stanu
+		\item D - liczba wierzchołków potomnych
 	\end{itemize}
 
 	\subsection{Aplikacja główna}
-	\modulename{Aplikacja główna} jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Obszerny opis projektu aplikacji okienkowej znajduje się w rozdziale czwartym.
+	``Aplikacja główna'' jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Obszerny opis projektu aplikacji okienkowej znajduje się w rozdziale czwartym.
 	
 	\section{Główne komponenty aplikacji}
 	\subsection{Diagram klas głównych komponentów}
@@ -176,11 +173,11 @@
 		\label{rys:umldiagrammain}
 	\end{figure}
 	
-	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}. Opis wierzchołka drzewa jest częścią wspólną dla każdego z tych modułów. Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}. \\
+	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami ``Algorytm'', ``Wizualizacja'' i ``Serializacja''. Opis wierzchołka drzewa jest częścią wspólną dla każdego z tych modułów. Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}. \\
 	
 	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Daje to użytkownikowi możliwość testowania również innych gier poprzez zaimplementowanie tych dwóch klas i ich metod. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}. \\
 	
-	\noindent \code{TreeVisualiser} jest głównym komponentem modułu \modulename{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
+	\noindent \code{TreeVisualiser} jest głównym komponentem modułu ``Wizualizacja''. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
 	
 	\clearpage
 	\subsection{Diagram stanów aplikacji}
@@ -191,9 +188,9 @@
 		\label{rys:statediagram}
 	\end{figure}
 
-	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \modulenameczłowiek kontra maszyna}. Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu \modulename{Rozgrywka}, zawierającego cztery wewnętrzne stany. Będac w stanie \modulename{Rozgrywka}, aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
+	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie ``człowiek kontra maszyna''. Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu ``Rozgrywka'', zawierającego cztery wewnętrzne stany. Będac w stanie ``Rozgrywka'', aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
 	
-	\noindent Istotna z punktu widzenia użytkownika jest możliwość serializowania wygenerowanego drzewa lub jego wizualizacja zaraz po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany \modulename{Serializacja wygenerowanego drzewa} oraz \modulename{Wyświetlanie wygenerowanego drzewa}.
+	\noindent Istotna z punktu widzenia użytkownika jest możliwość serializowania wygenerowanego drzewa lub jego wizualizacja zaraz po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany ``Serializacja wygenerowanego drzewa'' oraz ``Wyświetlanie wygenerowanego drzewa''.
 	\clearpage
 	
 	\subsection{Diagram sekwencji rozgrywki}
@@ -203,9 +200,9 @@
 		\caption{Diagram sekwencji rozgrywki}
 		\label{rys:sequencegame}
 	\end{figure}
-	\noindent Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \modulename{człowiek kontra maszyna}. Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły \modulename{Aplikacja główna}, \modulename{Gra} i \modulename{Algorytm}. Zgodnie z założeniami, \modulename{Aplikacja główna} jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
+	\noindent Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie ``człowiek kontra maszyna''. Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły ``Aplikacja główna'', ``Gra'' i ``Algorytm''. Zgodnie z założeniami, ``Aplikacja główna'' jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
 	
-	\noindent Diagram ukazuje również, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \modulename{Algorytm}, który pobiera stan rozgrywki z modułu \modulename{Gra}.
+	\noindent Diagram ukazuje również, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu ``Algorytm'', który pobiera stan rozgrywki z modułu ``Gra''.
 	
 	\clearpage
 	\subsection{Diagram sekwencji eksportu drzewa}
@@ -215,7 +212,7 @@
 		\caption{Diagram sekwencji eksportu drzewa}
 		\label{rys:sequenceserialize}
 	\end{figure}
-	\noindent Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia \modulename{człowiek kontra maszyna}, jednak w przypadku \modulename{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
+	\noindent Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Warty zauważenia jest fakt, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia ``człowiek kontra maszyna'', jednak w przypadku ``maszyna kontra maszyna'' istnieje taka sama funkcjonalność i diagram byłby analogiczny.
 	
 	\clearpage
 	\subsection{Diagram sekwencji wizualizacji}
@@ -228,7 +225,7 @@
 	\noindent Diagram \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki, tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Ten drugi sposób wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia.
 	
 	\section{Interfejs użytkownika}
-	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module \modulename{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie testowania poszczególnych modułów użytkownikom końcowym.
+	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module ``Aplikacja główna''. Zadaniem graficznego interfejsu jest umożliwienie testowania poszczególnych modułów użytkownikom końcowym.
 	
 	\subsection{Menu główne}
 	\begin{figure}[h!]
@@ -241,13 +238,13 @@
 	\noindent Ukazane na rysunku \ref{rys:main_menu} menu główne będzie głównym oknem aplikacji i będzie to pierwsza rzecz, którą zobaczy użytkownik po uruchomieniu programu. Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej tego przycisku znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji, w tym między innymi:\\
 	
 	\begin{itemize}
-		\item wybór gry - rozwijalna lista, w której znajdować się będą zaimplementowane gry (nasz projekt przewiduje dwa tytuły),
-		\item liczba iteracji (rozgrywek), jaką komputer będzie wykonywał przed wykonaniem ruchu,
-		\item maksymalny czas na wykonanie ruchu - czas, po którym komputer będzie przerywał obliczenia i wykona ruch,
+		\item wybór gry - rozwijalna lista, w której znajdować się będą zaimplementowane gry (nasz projekt przewiduje dwa tytuły)
+		\item liczba iteracji (rozgrywek), jaką komputer będzie wykonywał przed wykonaniem ruchu
+		\item maksymalny czas na wykonanie ruchu - czas, po którym komputer będzie przerywał obliczenia i wykona ruch
 		\item tryb rozgrywki:
-		\subitem - człowiek kontra człowiek,
-		\subitem - człowiek kontra maszyna,
-		\subitem - maszyna kontra maszyna,\\
+		\subitem - człowiek kontra człowiek
+		\subitem - człowiek kontra maszyna
+		\subitem - maszyna kontra maszyna\\
 	\end{itemize}
 
 	\noindent Analiza drzewa będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania pliku z zserializowanym drzewem (.tree, .csv).
@@ -273,14 +270,14 @@
 		\label{rys:game_view}
 	\end{figure}
 
-	\noindent Zgodnie z projektem okna przedstawionym na rysunku \ref{rys:game_view}, widok rozgrywki będzie podzielony na dwie części. Gra zawierać się będzie w wyżej pokazanym oknie po lewej stronie. To tutaj użytkownik za pomocą przygotowanego do gier GUI będzie mógł wykonać ruch. W prawej części okna znajdować się będą opcje związane z aktualnym stanem rozgrywki, między innymi:\\
+	\noindent Widok rozgrywki będzie podzielony na dwie części. Gra zawierać się będzie w wyżej pokazanym oknie po lewej stronie. To tutaj użytkownik za pomocą przygotowanego do gier GUI będzie mógł wykonać ruch. W prawej części okna znajdować się będą opcje związane z aktualnym stanem rozgrywki, między innymi:\\
 	
 	\begin{itemize}
-		\item informacja o aktualnym stanie gry.
+		\item informacja o aktualnym stanie gry
 		\item wykonaj kolejny ruch - wyłącznie w trybie rozgrywki maszyna kontra maszyna. Użytkownik będzie miał możliwość kontrolowania wykonywanych przez komputer ruchów, aby samemu móc powodować postęp w rozgrywce.
-		\item przeanalizuj powstałe drzewo - będzie to przycisk otwierający drugie okno z opisaną już poprzednio analizą drzewa.
-		\item porównaj powstałe drzewo z ostatnim - to samo co wyżej, jednak z wyraźnym zaznaczeniem zmian, które zaistniały w nowym drzewie względem starego.
-		\item wyeksportuj drzewo do pliku (csv, png lub binarnego).
+		\item przeanalizuj powstałe drzewo - będzie to przycisk otwierający drugie okno z opisaną już poprzednio analizą drzewa
+		\item porównaj powstałe drzewo z ostatnim - to samo co wyżej, jednak z wyraźnym zaznaczeniem zmian, które zaistniały w nowym drzewie względem starego
+		\item wyeksportuj drzewo do pliku (csv, png lub binarnego)
 	\end{itemize}
 	
 	
