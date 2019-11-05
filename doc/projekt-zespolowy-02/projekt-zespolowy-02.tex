@@ -94,13 +94,14 @@
 		\maketitle
 		\vspace{3cm}
 		\begin{abstract}
-			Poniższy dokument zawiera ogólny zarys projektu. Aplikacja ma w zamyśle pozwalać na oglądanie i dokładną analizę rozgrywki z komputerem w jedną z dwóch gier planszowych. Istnieje możliwość łatwego rozszerzenia o kolejne gry spełniające założenia wylistowane w dokumencie. Dokument przeprowadza czytelnika przez wszystkie moduły aplikacji - zaczynając od tego odpowiedzialnych za wizualizację. Pierwszy moduł, będący najistotniejszym, będzie opierał się na usprawnionej wersji algorytmu Walkera. Opisane są również moduły odpowiedzialne za logikę zaimplementowanych gier, implementację algorytmu oraz serializowanie generowanych drzew wraz ze schematami serializacji. \modulename{Aplikacja główna}, czyli ostatni opisywany moduł, jest modułem służącym do prezentacji działania poprzednich modułów. Przedstawiony jest również schemat interfejsu użytkownika, dokładnie opisujący najistotniejsze okna aplikacji. Ostatni rozdział dokumentu opisuje i uzasadnia technologie wybrane do stworzenia aplikacji.
+			Poniższy dokument zawiera ogólny zarys projektu. Aplikacja ma w zamyśle pozwalać na oglądanie i dokładną analizę rozgrywki z komputerem w jedną z dwóch gier planszowych. Istnieje możliwość łatwego rozszerzenia o kolejne gry spełniające założenia wylistowane w dokumencie. Dokument przeprowadza czytelnika przez wszystkie moduły aplikacji - zaczynając od tego odpowiedzialnego za wizualizację. Pierwszy moduł, będący najistotniejszym, będzie opierał się na usprawnionej wersji algorytmu Walkera. Opisane są również moduły odpowiedzialne za logikę zaimplementowanych gier, implementację algorytmu oraz serializowanie generowanych drzew wraz ze schematami serializacji. \modulename{Aplikacja główna}, czyli ostatni opisywany moduł, jest modułem służącym do prezentacji działania poprzednich modułów. Przedstawiony jest również schemat interfejsu użytkownika, dokładnie opisujący najistotniejsze okna aplikacji. Ostatni rozdział dokumentu opisuje i uzasadnia technologie wybrane do stworzenia aplikacji.
 		\end{abstract}
 	\end{titlingpage}
 
 	\begin{versionhistory}
 		\vhEntry{1.0}{3.11.2019}{PF|GK}{stworzenie szkicu dokumentu}
 		\vhEntry{1.0}{4.11.2019}{PF|GK}{stworzenie pierwszej wersji dokumentu}
+		\vhEntry{1.1}{5.11.2019}{PF|GK}{naniesienie poprawek do pierwszej wersji dokumentu}
 	\end{versionhistory}
 	\tableofcontents
 	
@@ -110,7 +111,7 @@
 	\subsection{Wizualizacja}
 	Moduł \modulename{wizualizacja} udostępnia funkcjonalność wizualizacji dostarczonych drzew. Użytkownik będzie miał również możliwość przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach. \\
 	
-	\noindent Dla czytelnych wizualizacji, poczyniliśmy następujące założenia: \\
+	\noindent Aby wizualizacja była czytelna, poczyniliśmy następujące założenia: \\
 	
 	\begin{enumerate}
 		\item Krawędzie drzewa nie mogą się przecinać.
@@ -331,7 +332,7 @@ def find_next_move(current_state):
 		\item tryb rozgrywki:
 		\subitem - człowiek kontra człowiek,
 		\subitem - człowiek kontra maszyna,
-		\subitem - maszyna kontra maszyna,\\
+		\subitem - maszyna kontra maszyna.\\
 	\end{itemize}
 
 	\noindent Analiza drzewa (lub drzew) będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania wybranych plików (.tree, .csv).
