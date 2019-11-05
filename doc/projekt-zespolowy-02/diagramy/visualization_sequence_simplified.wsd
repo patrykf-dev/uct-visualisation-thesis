@@ -1,0 +1,15 @@
+@startuml
+actor Użytkownik
+alt użytkownik wczytuje drzewo podczas rozgrywki
+Użytkownik -> "Aplikacja główna": Włącz grę
+"Aplikacja główna" -> Gra: Włącz grę
+...użytkownik wykonuje ruchy...
+Użytkownik -> "Aplikacja główna": Analizuj drzewo
+"Aplikacja główna" -> Wizualizacja: Analizuj drzewo
+else użytkownik wczytuje drzewo z aplikacji głównej
+Użytkownik -> "Aplikacja główna": Wczytaj plik drzewa
+"Aplikacja główna" -> Serializacja: Zdeserializuj drzewo
+Serializacja --> Wizualizacja: Wyświetl drzewo
+end
+Wizualizacja --> Użytkownik: Pokaż okno analizy drzewa
+@enduml

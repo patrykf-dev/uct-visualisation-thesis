@@ -1,0 +1,9 @@
+@startuml
+actor Użytkownik
+Użytkownik -> "Aplikacja główna": Włącz grę
+"Aplikacja główna" -> Gra: Włącz grę
+...użytkownik wykonuje ruchy...
+Użytkownik -> "Aplikacja główna": Zapisz drzewo do pliku
+"Aplikacja główna" -> Serializacja: Zapisz drzewo do pliku
+Serializacja --> Użytkownik: Zwróć plik
+@enduml
