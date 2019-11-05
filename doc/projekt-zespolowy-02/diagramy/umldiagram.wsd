@@ -9,10 +9,10 @@ enum GamePhase {
 
 class MonteCarloTreeSearch {
     {method} + ""calculate_next_move(game_state)""
-    {method} - ""_selection()""
-    {method} - ""_expansion()""
-    {method} - ""_simulation()""
-    {method} - ""_backpropagation()""
+    {method} - ""_selection(node)""
+    {method} - ""_expansion(node)""
+    {method} - ""_simulation(node)""
+    {method} - ""_backpropagation(node, playout_result)""
 }
 
 abstract class BaseGameMove {

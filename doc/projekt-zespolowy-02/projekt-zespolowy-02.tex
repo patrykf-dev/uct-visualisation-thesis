@@ -145,21 +145,30 @@
 	
 	\clearpage
 	
-	\noindent Pseudokod algorytmu jest opisany w listingu \ref{lst:mcts}.
-\begin{lstlisting}[language=Python, caption=Pseudokod algorytmu Monte Carlo Tree Search, label=lst:mcts]
-iterations_counter = 0;
-tree = initialize_tree();
-while (iterations_counter < max_iterations_counter)
-{
-	node = selection(tree.root);
-	expansion(node);
-	playout_result = simulation(node);
-	backpropagation(node, playout_result); //TODO: dorzuc do UMLa
+	\noindent Algorytm jest opisany w formie pseudokodu w listingu \ref{lst:mcts}. Ponadto, w komentarzach zamieszczone są odwołania do metod wyszczególnionych na diagramie z rysunku \ref{rys:umldiagrammain}.
 	
-	iterations_counter++;
-}
-best_state = select_best_child(tree.root) //TODO: niedokladne
-return best_state;
+	\noindent Algorytm UCT, będący wariantem Monte Carlo Tree Search, opiera się na rozbudowywaniu drzewa ze stanami gry, poprzez iteracyjne wykonywanie czterech faz, opisanych poniżej.\\
+	\begin{enumerate}
+		\item \textbf{Faza wyboru} (linia 6 w listingu) - wybranie najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans pomiędzy eksploracją ruchów przeanalizowanych najdokładniej oraz eksploatacją jeszcze niezbadanych.
+		\item \textbf{Faza rozrostu} (linia 7 w listingu) - utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania poprzez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
+		\item \textbf{Faza symulacji} (linia 8 w listingu) - rozegranie losowej rozgrywki ze stanu jednego z utworzonych wierzchołków utworzonych w poprzedniej fazie.
+		\item \textbf{Faza propagacji wstecznej} (linia 9 w listingu) - aktualizacja informacji wierzchołków na ścieżce od wierzchołka, z którego rozpoczęto symulację, do korzenia drzewa.\\
+	\end{enumerate}
+	
+\begin{lstlisting}[caption=Pseudokod algorytmu Monte Carlo Tree Search, label=lst:mcts]
+def find_next_move(current_state):
+	iterations_counter = 0
+	tree = initialize_tree(current_state)
+	
+	while iterations_counter < max_iterations_counter:
+		curr_node = select promising node based on UCT formula      # selection(tree.root) 
+		create child nodes from node                                # expansion(node)
+		playout_result = simulate random playout from curr_node     # simulation(node)
+		update tree according to playout_result                     # backpropagation(node, playout_result)
+		iterations_counter++
+		
+	best_state = select best child(tree.root) 
+	return best_state
 \end{lstlisting}
 
 	
@@ -196,7 +205,8 @@ return best_state;
 	
 	
 	\noindent \textbf{\large Serializacja do plików csv} \\
-	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Jeśli wierzchołek $v$ ma $k$ potomków, to pod wierszem opisującym wierzchołek $v$ będzie $k$ wierszy opisujących jego potomków. Każdy wierzchołek serializujemy do wiersza postaci:
+	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Każdy wierzchołek serializujemy do wiersza postaci:
+	
 	\begin{center}
 		\textbf{R, O, O2, W, S, D}
 	\end{center}
@@ -207,7 +217,13 @@ return best_state;
 		\item O2 - dodatkowy licznik odwiedzin,
 		\item W - średnia wypłata algorytmu za ruch,
 		\item S - nawa stanu,
-		\item D - liczba wierzchołków potomnych.
+		\item D - liczba wierzchołków potomnych.\\
+	\end{itemize}
+
+	\noindent Kolejność wierszy opisujących wierzchołki jest analogiczna do odwiedzania wierzchołków przez algorytm przeszukiwania drzewa wgłąb, począwszy od korzenia.\\
+	\begin{itemize}
+		\item Jeśli wierzchołek $v$ ma jednego potomka $v_1$, to wiersz opisujący $v_1$ znajduje się pod wierszem opisującym $v$.
+		\item Jeśli wierzchołek $v$ ma $n$ potomków $v_1, v_2, ..., v_n$ i żaden z potomków nie ma swoich potomków, to pod wierszem opisującym $v$ kolejne $n$ wierszy opisuje wierzchołki $v_1, v_2, ..., v_n$.
 	\end{itemize}
 
 	\subsection{Aplikacja główna}
@@ -224,13 +240,17 @@ return best_state;
 		\caption{Diagram klas głównych komponentów}
 		\label{rys:umldiagrammain}
 	\end{figure}
-	 \noindent Opis wierzchołka drzewa jest częścią wspólną dla każdego z tych modułów. Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}. \\
+	 \noindent Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}. Klasa \code{MonteCarloNode} przechowuje referencję do swojego rodzica oraz wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa.\\
 	
-	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}. \\
-	
-	\noindent \code{TreeVisualiser} jest głównym komponentem modułu \modulename{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka zawarte są w \code{MonteCarloVisualisationDetails}.
+	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Algorytm zapisuje informacje o rozgrywanych playoutach w polach klasy \code{MonteCarloNodeDetails} analizowanych wierzchołków. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}.
 	
 	\clearpage
+	
+	\noindent \code{TreeVisualiser} jest głównym komponentem modułu \modulename{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka, takie jak jego współrzędne czy kolor, zawarte są w polach klasy \code{MonteCarloVisualisationDetails}.\\
+	
+	\noindent \code{BaseSerializator} jest klasą abstrakcyjną opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
+	
+	
 	\subsection{Diagram stanów aplikacji}
 	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \modulename{człowiek kontra maszyna}. 
 	\begin{figure}[h]
