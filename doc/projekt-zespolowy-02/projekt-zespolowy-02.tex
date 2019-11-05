@@ -205,7 +205,8 @@ def find_next_move(current_state):
 	
 	
 	\noindent \textbf{\large Serializacja do plików csv} \\
-	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Jeśli wierzchołek $v$ ma $k$ potomków, to pod wierszem opisującym wierzchołek $v$ będzie $k$ wierszy opisujących jego potomków. Każdy wierzchołek serializujemy do wiersza postaci:
+	W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Każdy wierzchołek serializujemy do wiersza postaci:
+	
 	\begin{center}
 		\textbf{R, O, O2, W, S, D}
 	\end{center}
@@ -216,7 +217,13 @@ def find_next_move(current_state):
 		\item O2 - dodatkowy licznik odwiedzin,
 		\item W - średnia wypłata algorytmu za ruch,
 		\item S - nawa stanu,
-		\item D - liczba wierzchołków potomnych.
+		\item D - liczba wierzchołków potomnych.\\
+	\end{itemize}
+
+	\noindent Kolejność wierszy opisujących wierzchołki jest analogiczna do odwiedzania wierzchołków przez algorytm przeszukiwania drzewa wgłąb, począwszy od korzenia.\\
+	\begin{itemize}
+		\item Jeśli wierzchołek $v$ ma jednego potomka $v_1$, to wiersz opisujący $v_1$ znajduje się pod wierszem opisującym $v$.
+		\item Jeśli wierzchołek $v$ ma $n$ potomków $v_1, v_2, ..., v_n$ i żaden z potomków nie ma swoich potomków, to pod wierszem opisującym $v$ kolejne $n$ wierszy opisuje wierzchołki $v_1, v_2, ..., v_n$.
 	\end{itemize}
 
 	\subsection{Aplikacja główna}
