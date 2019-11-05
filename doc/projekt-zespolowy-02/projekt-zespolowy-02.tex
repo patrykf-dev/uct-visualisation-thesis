@@ -58,6 +58,32 @@
 \newcommand{\modulename}[1]{\textit{#1}}
 
 
+% Listings setup
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+\lstset{style=mystyle}
+
 % DOCUMENT
 \title{
 	Wizualizacja drzewa stanów algorytmu UCT \\
@@ -96,6 +122,15 @@
 
 	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{\modulename{Improving Walker's Algorithm to Run in Linear Time} - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik}.
 	
+	\subsection{Gry}
+	Aplikacja będzie udostępniała 2 gry planszowe umożliwiające zademonstrowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały różne tryby rozgrywki: \\
+	
+	\begin{itemize}
+		\item \textbf{Człowiek kontra maszyna:} decyzje jednego z graczy są podejmowane przez użytkownika, natomiast drugi gracz podejmuje decyzje najoptymalniejsze z punktu widzenia algorytmu UCT.
+		\item \textbf{Maszyna kontra maszyna:} decyzje obojga graczy są podejmowane przez algorytm. 
+	\end{itemize}
+	
+	
 	\subsection{Algorytm}
 	Moduł \modulename{Algorytm} jest implementacją algorytmu Monte Carlo Tree Search, korzystającą z wariantu UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania. \\
 	
@@ -109,31 +144,25 @@
 	
 	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł \modulename{Algorytm} mógł wyznaczać kolejne ruchy danej gry.
 	
-%	\noindent Pseudokod algorytmu jest opisany w listingu \ref{...}.
-%	\lstlisting{
-%	iterations_counter = 0;
-%	tree = initialize_tree();
-%	while (iterations_counter < max_iterations_counter)
-%	{
-%	  node = selection(tree.root);
-%	  expansion(node);
-%	  playout_result = simulation(node);
-%	  backpropagation(node, playout_result); //TODO: dorzuc do UMLa
-%	  
-%	  iterations_counter++;
-%	}
-%	best_state = select_best_child(tree.root) //TODO: niedokladne
-%	return best_state;
-%	}
+	\clearpage
 	
+	\noindent Pseudokod algorytmu jest opisany w listingu \ref{lst:mcts}.
+\begin{lstlisting}[language=Python, caption=Pseudokod algorytmu Monte Carlo Tree Search, label=lst:mcts]
+iterations_counter = 0;
+tree = initialize_tree();
+while (iterations_counter < max_iterations_counter)
+{
+	node = selection(tree.root);
+	expansion(node);
+	playout_result = simulation(node);
+	backpropagation(node, playout_result); //TODO: dorzuc do UMLa
 	
-	\subsection{Gry}
-	Aplikacja będzie udostępniała 2 gry planszowe umożliwiające zademonstrowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały różne tryby rozgrywki: \\
-	
-	\begin{itemize}
-		\item \textbf{Człowiek kontra maszyna:} decyzje jednego z graczy są podejmowane przez użytkownika, natomiast drugi gracz podejmuje decyzje najoptymalniejsze z punktu widzenia algorytmu UCT.
-		\item \textbf{Maszyna kontra maszyna:} decyzje obojga graczy są podejmowane przez algorytm. \\ 
-	\end{itemize}
+	iterations_counter++;
+}
+best_state = select_best_child(tree.root) //TODO: niedokladne
+return best_state;
+\end{lstlisting}
+
 	
 	\clearpage
 	
