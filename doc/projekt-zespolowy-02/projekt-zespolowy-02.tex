@@ -109,6 +109,24 @@
 	
 	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł \modulename{Algorytm} mógł wyznaczać kolejne ruchy danej gry.
 	
+	\noindent Pseudokod algorytmu jest opisany w listingu \ref{...}.
+	\lstlisting{
+	iterations_counter = 0;
+	tree = initialize_tree();
+	while (iterations_counter < max_iterations_counter)
+	{
+	  node = selection(tree.root);
+	  expansion(node);
+	  playout_result = simulation(node);
+	  backpropagation(node, playout_result); //TODO: dorzuc do UMLa
+	  
+	  iterations_counter++;
+	}
+	best_state = select_best_child(tree.root) //TODO: niedokladne
+	return best_state;
+	}
+	
+	
 	\subsection{Gry}
 	Aplikacja będzie udostępniała 2 gry planszowe umożliwiające przetestowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały różne tryby rozgrywki: \\
 	
