@@ -228,7 +228,9 @@
 
 	\noindent Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły \modulename{Aplikacja główna}, \modulename{Gra} i \modulename{Algorytm}. Zgodnie z założeniami, \modulename{Aplikacja główna} jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
 	
-	\noindent Diagram ukazuje również, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \modulename{Algorytm}, który pobiera stan rozgrywki z modułu \modulename{Gra}.
+	\noindent Użytkownik końcowy za pomocą menu aplikacji głównej może ustawić parametry gry i następnie włączyć ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC - wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \modulename{Algorytm} (i vice versa). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika poprzez okno aplikacji głównej.\\
+	
+	\noindent Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \modulename{Algorytm}, który pobiera stan rozgrywki z modułu \modulename{Gra}.
 	
 	\clearpage
 	\subsection{Diagram sekwencji eksportu drzewa}
