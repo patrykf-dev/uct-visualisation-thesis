@@ -248,7 +248,7 @@
 	
 	\clearpage
 	\subsection{Diagram sekwencji wizualizacji}
-	Rysunek \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji.
+	Rysunek \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i wykonywania ruchów wygląda tak jak na rysunku \ref{rys:sequencegame}. 
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{visualization_sequence}
@@ -256,7 +256,9 @@
 		\label{rys:sequencevisualise}
 	\end{figure}
 
-	\noindent Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki, tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Ten drugi sposób wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia.
+	\noindent Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Gdy żądanie jest z poziomu rozgrywki, komponent \modulename{Aplikacja główna} komunikuje się z komponentem \modulename{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi w nowym oknie. \\
+	
+	 \noindent Drugi sposób (żądanie analizy drzewa z menu głównego) wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia - wymaga to komunikacji modułu \modulename{Wizualizacja} i \modulename{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanym drzewem.
 	
 	\section{Interfejs użytkownika}
 	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module \modulename{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie uruchomienia poszczególnych modułów użytkownikom końcowym.
