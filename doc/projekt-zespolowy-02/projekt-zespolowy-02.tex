@@ -109,22 +109,22 @@
 	
 	\noindent Rozdział trzeci zawiera dokładniejszy opis funkcjonalności, które należy zapewnić, by moduł \modulename{Algorytm} mógł wyznaczać kolejne ruchy danej gry.
 	
-	\noindent Pseudokod algorytmu jest opisany w listingu \ref{...}.
-	\lstlisting{
-	iterations_counter = 0;
-	tree = initialize_tree();
-	while (iterations_counter < max_iterations_counter)
-	{
-	  node = selection(tree.root);
-	  expansion(node);
-	  playout_result = simulation(node);
-	  backpropagation(node, playout_result); //TODO: dorzuc do UMLa
-	  
-	  iterations_counter++;
-	}
-	best_state = select_best_child(tree.root) //TODO: niedokladne
-	return best_state;
-	}
+%	\noindent Pseudokod algorytmu jest opisany w listingu \ref{...}.
+%	\lstlisting{
+%	iterations_counter = 0;
+%	tree = initialize_tree();
+%	while (iterations_counter < max_iterations_counter)
+%	{
+%	  node = selection(tree.root);
+%	  expansion(node);
+%	  playout_result = simulation(node);
+%	  backpropagation(node, playout_result); //TODO: dorzuc do UMLa
+%	  
+%	  iterations_counter++;
+%	}
+%	best_state = select_best_child(tree.root) //TODO: niedokladne
+%	return best_state;
+%	}
 	
 	
 	\subsection{Gry}
@@ -187,14 +187,16 @@
 	
 	\section{Główne komponenty aplikacji}
 	\subsection{Diagram klas głównych komponentów}
+	
+	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}.
+	
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.9\textwidth]{umldiagram}
 		\caption{Diagram klas głównych komponentów}
 		\label{rys:umldiagrammain}
 	\end{figure}
-	
-	\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}. Opis wierzchołka drzewa jest częścią wspólną dla każdego z tych modułów. Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}. \\
+	 \noindent Opis wierzchołka drzewa jest częścią wspólną dla każdego z tych modułów. Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}. \\
 	
 	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Daje to użytkownikowi możliwość testowania również innych gier poprzez zaimplementowanie tych dwóch klas i ich metod. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}. \\
 	
@@ -202,6 +204,7 @@
 	
 	\clearpage
 	\subsection{Diagram stanów aplikacji}
+	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \modulename{człowiek kontra maszyna}. 
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.7\textwidth]{statediagram}
@@ -209,46 +212,53 @@
 		\label{rys:statediagram}
 	\end{figure}
 
-	\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \modulenameczłowiek kontra maszyna}. Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu \modulename{Rozgrywka}, zawierającego cztery wewnętrzne stany. Będac w stanie \modulename{Rozgrywka}, aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
+	\noindent Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu \modulename{Rozgrywka}, zawierającego cztery wewnętrzne stany. Będac w stanie \modulename{Rozgrywka}, aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
 	
 	\noindent Istotna z punktu widzenia użytkownika jest możliwość serializowania wygenerowanego drzewa lub jego wizualizacja zaraz po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany \modulename{Serializacja wygenerowanego drzewa} oraz \modulename{Wyświetlanie wygenerowanego drzewa}.
 	\clearpage
 	
 	\subsection{Diagram sekwencji rozgrywki}
+	Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \modulename{człowiek kontra maszyna}.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{play_with_pc_sequence}
 		\caption{Diagram sekwencji rozgrywki}
 		\label{rys:sequencegame}
 	\end{figure}
-	\noindent Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \modulename{człowiek kontra maszyna}. Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły \modulename{Aplikacja główna}, \modulename{Gra} i \modulename{Algorytm}. Zgodnie z założeniami, \modulename{Aplikacja główna} jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
+
+	\noindent Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły \modulename{Aplikacja główna}, \modulename{Gra} i \modulename{Algorytm}. Zgodnie z założeniami, \modulename{Aplikacja główna} jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
 	
 	\noindent Diagram ukazuje również, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \modulename{Algorytm}, który pobiera stan rozgrywki z modułu \modulename{Gra}.
 	
 	\clearpage
 	\subsection{Diagram sekwencji eksportu drzewa}
+	Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{serialize_sequence}
 		\caption{Diagram sekwencji eksportu drzewa}
 		\label{rys:sequenceserialize}
 	\end{figure}
-	\noindent Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia \modulename{człowiek kontra maszyna}, jednak w przypadku \modulename{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
+
+	\noindent Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może to zrobić w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Jest to diagram dla ustawienia \modulename{człowiek kontra maszyna}, jednak w przypadku \modulename{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
 	
 	\clearpage
 	\subsection{Diagram sekwencji wizualizacji}
+	Diagram \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{visualization_sequence}
 		\caption{Diagram sekwencji wizualizacji}
 		\label{rys:sequencevisualise}
 	\end{figure}
-	\noindent Diagram \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki, tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Ten drugi sposób wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia.
+
+	\noindent Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki, tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Ten drugi sposób wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia.
 	
 	\section{Interfejs użytkownika}
 	Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module \modulename{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie testowania poszczególnych modułów użytkownikom końcowym.
 	
 	\subsection{Menu główne}
+	Ukazane na rysunku \ref{rys:main_menu} menu główne będzie głównym oknem aplikacji i będzie to pierwsza rzecz, którą zobaczy użytkownik po uruchomieniu programu.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.4\textwidth]{menu-eps}
@@ -256,7 +266,7 @@
 		\label{rys:main_menu}
 	\end{figure}
 
-	\noindent Ukazane na rysunku \ref{rys:main_menu} menu główne będzie głównym oknem aplikacji i będzie to pierwsza rzecz, którą zobaczy użytkownik po uruchomieniu programu. Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej tego przycisku znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji, w tym między innymi:\\
+	\noindent Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej tego przycisku znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji, w tym między innymi:\\
 	
 	\begin{itemize}
 		\item wybór gry - rozwijalna lista, w której znajdować się będą zaimplementowane gry (nasz projekt przewiduje dwa tytuły),
@@ -272,6 +282,7 @@
 	
 	\clearpage
 	\subsection{Analiza drzewa}
+	W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać wczytane lub wygenerowane drzewo. 
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.8]{analyze-eps}
@@ -279,11 +290,12 @@
 		\label{rys:analyze_tree}
 	\end{figure}
 	
-	\noindent W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać wczytane lub wygenerowane drzewo. Kluczową funkcją będzie tutaj możliwość dynamicznego przybliżania i oddalania go wraz z możliwością klikania poszczególnych węzłów w celu pozyskania stanu rozgrywki w danym momencie. Widoczna będzie także informacja o tym, ile razy algorytm odwiedził dany węzeł, ile razy doprowadził on do wygranej oraz średnią nagrodę za ruch w danym węźle.
+	\noindent Kluczową funkcją będzie tutaj możliwość dynamicznego przybliżania i oddalania go wraz z możliwością klikania poszczególnych węzłów w celu pozyskania stanu rozgrywki w danym momencie. Widoczna będzie także informacja o tym, ile razy algorytm odwiedził dany węzeł, ile razy doprowadził on do wygranej oraz średnią nagrodę za ruch w danym węźle.
 	
 	\clearpage
 	
 	\subsection{Rozgrywka}
+	Poniżej przedstawiony jest przykładowy interfejs graficzny, do którego użytkownik będzie miał dostęp podczas rozgrywki.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.7\textwidth]{game-eps}
