@@ -100,8 +100,9 @@
 
 	\begin{versionhistory}
 		\vhEntry{1.0}{3.11.2019}{PF|GK}{stworzenie szkicu dokumentu}
-		\vhEntry{1.0}{4.11.2019}{PF|GK}{stworzenie pierwszej wersji dokumentu}
-		\vhEntry{1.1}{5.11.2019}{PF|GK}{naniesienie poprawek do pierwszej wersji dokumentu}
+		\vhEntry{1.1}{4.11.2019}{PF|GK}{stworzenie pierwszej wersji dokumentu}
+		\vhEntry{1.2}{5.11.2019}{PF|GK}{naniesienie poprawek do pierwszej wersji dokumentu}
+		\vhEntry{1.3}{6.11.2019}{PF|GK}{naniesienie drobnych poprawek do poprzedniej wersji dokumentu}
 	\end{versionhistory}
 	\tableofcontents
 	
@@ -120,7 +121,7 @@
 		\item Wierzchołki mają być narysowane możliwie najwęziej.  \\
 	\end{enumerate}
 
-	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{\modulename{Improving Walker's Algorithm to Run in Linear Time} - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik}.
+	\noindent Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{\modulename{Improving Walker's Algorithm to Run in Linear Time} - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik, 2002}.
 	
 	\subsection{Gry}
 	Aplikacja będzie udostępniała 2 gry planszowe umożliwiające zademonstrowanie efektywności wizualizacji oraz algorytmu. Obie gry będą umożliwiały różne tryby rozgrywki: \\
@@ -146,7 +147,7 @@
 	
 	\clearpage
 	
-	\noindent Algorytm jest opisany w formie pseudokodu w listingu \ref{lst:mcts}. Ponadto, w komentarzach zamieszczone są odwołania do metod wyszczególnionych na diagramie z rysunku \ref{rys:umldiagrammain}.
+	\noindent Algorytm jest opisany w formie pseudokodu w listingu \ref{lst:mcts}. Ponadto, w komentarzach zamieszczone są odwołania do metod wyszczególnionych na diagramie z rysunku \ref{rys:umldiagrammain}. Nasza implementacja będzie oparta o pracę \modulename{Bandit based Monte-Carlo Planning}\footnote{\textit{Bandit based Monte-Carlo Planning} - Levente Kocsis, Csaba Szepesvári, Berlin, Germany, September 18–22, 2006}.\\
 	
 	\noindent Algorytm UCT, będący wariantem Monte Carlo Tree Search, opiera się na rozbudowywaniu drzewa ze stanami gry, poprzez iteracyjne wykonywanie czterech faz, opisanych poniżej.\\
 	\begin{enumerate}
@@ -157,9 +158,9 @@
 	\end{enumerate}
 	
 \begin{lstlisting}[caption=Pseudokod algorytmu Monte Carlo Tree Search, label=lst:mcts]
-def find_next_move(current_state):
+def find_next_move(curr_state):
 	iterations_counter = 0
-	tree = initialize_tree(current_state)
+	tree = initialize_tree(curr_state)
 	
 	while iterations_counter < max_iterations_counter:
 		curr_node = select promising node based on UCT formula      # selection(tree.root) 
@@ -171,6 +172,8 @@ def find_next_move(current_state):
 	best_state = select best child(tree.root) 
 	return best_state
 \end{lstlisting}
+
+	\noindent W listingu \ref{lst:mcts} operujemy na trzech istotnych zmiennych - \code{tree}, \code{curr\textunderscore node} i \code{curr\textunderscore state}. Odpowiedzialnością struktury opisującej \code{tree} jest przechowywanie korzenia drzewa oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \code{curr\textunderscore state}. Struktura opisująca \code{curr\textunderscore node} przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica. Dokładniejszy opis użytych struktur jest w rozdziale 2.1.
 
 	
 	\clearpage
@@ -241,15 +244,15 @@ def find_next_move(current_state):
 		\caption{Diagram klas głównych komponentów}
 		\label{rys:umldiagrammain}
 	\end{figure}
-	 \noindent Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{BaseSerializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}. Klasa \code{MonteCarloNode} przechowuje referencję do swojego rodzica oraz wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa.\\
+	 \noindent Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{Serializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}. Klasa \code{MonteCarloNode} przechowuje referencję do swojego rodzica oraz wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa.\\
 	
-	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Algorytm zapisuje informacje o rozgrywanych playoutach w polach klasy \code{MonteCarloNodeDetails} analizowanych wierzchołków. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{BaseGameMove} i \code{BaseGameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}.
+	\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Algorytm zapisuje informacje o rozgrywanych playoutach w polach klasy \code{MonteCarloNodeDetails} analizowanych wierzchołków. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{GameMove} i \code{GameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}.
 	
 	\clearpage
 	
 	\noindent \code{TreeVisualiser} jest głównym komponentem modułu \modulename{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka, takie jak jego współrzędne czy kolor, zawarte są w polach klasy \code{MonteCarloVisualisationDetails}.\\
 	
-	\noindent \code{BaseSerializator} jest klasą abstrakcyjną opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
+	\noindent \code{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
 	
 	
 	\subsection{Diagram stanów aplikacji}
@@ -373,7 +376,7 @@ def find_next_move(current_state):
 	
 	
 	\section{Wybrane technologie}
-	Wybraną przez nas technologią do napisania aplikacji, to jest: gier, algorytmu i wizualizacji jest język programowania \textbf{Python} w stabilnej wersji 3.7. Do implementacji gier będziemy posługiwać się biblioteką \textbf{PyGame} (w wersji stabilnej 1.9.6). Wizualizacja będzie wykorzystywać w znacznym stopniu bibliotekę \textbf{VisPy} (OpenGL), w której najbardziej przydatną dla nas funkcją będzie możliwość pisania kodu w języku \textbf{C++} i stosunkowo łatwa integracja z głównym językiem projektu - Pythonem. Wykorzystana wersja 0.6.2 tej biblioteki również będzie wersją stabilną.\\
+	Wybraną przez nas technologią do napisania aplikacji, to jest: gier, algorytmu i wizualizacji jest język programowania \modulename{Python} w stabilnej wersji 3.7. Do implementacji gier będziemy posługiwać się biblioteką \modulename{PyGame} (w wersji stabilnej 1.9.6). Wizualizacja będzie wykorzystywać w znacznym stopniu bibliotekę \modulename{VisPy} (OpenGL), w której najbardziej przydatną dla nas funkcją będzie możliwość pisania kodu w języku \modulename{C++} i stosunkowo łatwa integracja z głównym językiem projektu - Pythonem. Wykorzystana wersja 0.6.2 tej biblioteki również będzie wersją stabilną.\\
 	
 	\noindent Python został przez nas wybrany ze względu na swoją wszechstronność. Posiada on bardzo szeroki zakres bibliotek, co pozwoli nam napisać zdecydowaną większość kodu w jednym języku i przyspieszyć wymianę informacji między komponentami (np. kodem gier a kodem algorytmu MCTS). Jest to korzystny scenariusz, gdyż w przeciwnym wypadku wymiana danych byłaby prawdopodobnie wolniejsza i bardziej problematyczna, ponieważ wiązałoby się to z wielokrotną serializacją i deserializacją danych.\\
 	
