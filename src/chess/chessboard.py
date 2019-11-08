@@ -48,7 +48,9 @@ class Chessboard:
         king_pos = ChessUtils.get_king_position(self, color_that_causes_check)
         # zakladamy ze jest krol na szachownicy
         king = Figure.get_figure(self.figures, king_pos)
-        self.check = king.is_check_on_position_given(king_pos, self.figures)
+        # self.check = king.is_check_on_position_given(king_pos, self.figures)
+        king.update_check_mask(self.figures)
+        self.check = king.check_mask[king_pos]
 
     def do_move(self, move, selected_tile):
         figure_moved = Figure.get_figure(self.figures, selected_tile)
@@ -73,6 +75,8 @@ class Chessboard:
         Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player_color)
         figures_count_before_move = len(self.figures.figures_list)
         self.do_move(move, move.position_from)
+        # self.figures.get_king_position(self.current_player_color)
+
         self.check_for_check(self.get_opposite_color())
         if self.check:
             king_pos = ChessUtils.get_king_position(self, self.get_opposite_color())

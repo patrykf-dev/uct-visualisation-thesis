@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from numpy import zeros
 
 from src.chess.algorithm_relay.chess_move import ChessMove
 from src.chess.enums import FigureType, Color, MoveType
@@ -110,8 +111,8 @@ class Pawn(Figure):
             figure = Figure.get_figure(figures, _pos)
             if figure:
                 if figure.color == opposite_color or threat_for_king:
-                    if figure.figure_type == FigureType.KING and figure.color == opposite_color:
-                        print('! Capture of a king should not be possible')
+                    # if figure.figure_type == FigureType.KING and figure.color == opposite_color:
+                    #     print('! Capture of a king should not be possible')
                     return MoveType.NORMAL if _pos[0] != move_setup["last_line"] else MoveType.PROMOTION
             elif threat_for_king:
                 return MoveType.NORMAL if _pos[0] != move_setup["last_line"] else MoveType.PROMOTION
@@ -221,26 +222,50 @@ class King(Figure):
     def __init__(self, color, position):
         self.is_able_to_castle = True
         self.initial_position = (0, 4) if color == Color.WHITE else (7, 4)
+        self.check_mask = zeros(shape=(8, 8), dtype=bool)
         image_file = 'king-white.png' if color == Color.WHITE else 'king-black.png'
         super().__init__(color, FigureType.KING, image_file, position)
 
+    def update_check_mask_around_rival_king(self, figures: ChessFiguresCollection):
+        opposite_color = Color.WHITE if self.color == Color.BLACK else Color.BLACK
+        rival_king_position = figures.get_king_position(opposite_color)
+        directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
+        for direction in directions:
+            position_being_checked = tuple(map(sum, zip(rival_king_position, direction)))
+            if self.is_move_valid(position_being_checked):
+                self.check_mask[position_being_checked] = True
+        self.check_mask[rival_king_position] = True
+
+    def reset_check_mask(self):
+        self.check_mask = zeros(shape=(8, 8), dtype=bool)
+
+    def update_check_mask_by_given_moves(self, moves):
+        for move in moves:
+            self.check_mask[move.position_to] = True
+
     # check if at least one of all possible rival's moves coincide with 'position';
-    def is_check_on_position_given(self, position, figures: ChessFiguresCollection):
+    def update_check_mask(self, figures: ChessFiguresCollection):
+        self.reset_check_mask()
+        previous_position = self.position
+        figures.temporarily_disable(self)
+
+        self.update_check_mask_around_rival_king(figures)
+
         for figure in figures.figures_list:
+            attacked_fields = []
             # only look for checks from the opposite color
             if figure.color == self.color:
                 continue
             # pawns have different capture rules
             if figure.figure_type == FigureType.PAWN:
-                for x in figure.check_captures(figures, True):
-                    if x.position_to == position:
-                        return True
+                attacked_fields = figure.check_captures(figures, True)
             # to avoid recursion
             elif figure.figure_type != FigureType.KING:
-                for x in figure.check_moves(figures, True):
-                    if x.position_to == position:
-                        return True
-        return False
+                attacked_fields = figure.check_moves(figures, True)
+
+            if attacked_fields:
+                self.update_check_mask_by_given_moves(attacked_fields)
+        figures.restore(self, previous_position)
 
     def possibility_to_castle(self, position, figures: ChessFiguresCollection):
         def possibility_to_castle_one_side(move_type):
@@ -271,18 +296,16 @@ class King(Figure):
                 return
             if figure_offset_1:
                 return
-            if move_type == MoveType.CASTLE_SHORT and (self.is_check_on_position_given(
-                    figure_offset_1_position, figures) or self.is_the_other_king_around(figure_offset_1_position,
-                                                                                        figures)):
+            # if move_type == MoveType.CASTLE_SHORT and (self.is_check_on_position_given(
+            #         figure_offset_1_position, figures) or self.is_the_other_king_around(figure_offset_1_position,
+            #                                                                             figures)):
+            if move_type == MoveType.CASTLE_SHORT and self.check_mask[figure_offset_1_position]:
                 return
             if figure_offset_2:
                 return
-            if self.is_check_on_position_given(figure_offset_2_position, figures) or self.is_the_other_king_around(
-                    figure_offset_2_position, figures):
+            if self.check_mask[figure_offset_2_position]:
                 return
-            if move_type == MoveType.CASTLE_LONG and (
-                    figure_offset_3 or self.is_check_on_position_given(figure_offset_3_position, figures) or
-                    self.is_the_other_king_around(figure_offset_3_position, figures)):
+            if move_type == MoveType.CASTLE_LONG and (figure_offset_3 or self.check_mask[figure_offset_3_position]):
                 return
 
             final_king_pos = figure_offset_1_position if \
@@ -298,17 +321,17 @@ class King(Figure):
             possibility_to_castle_one_side(MoveType.CASTLE_LONG)
         return possible_moves
 
-    def is_the_other_king_around(self, _pos, figures: ChessFiguresCollection):
-        directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
-        for _direction in directions:
-            _position_being_checked = tuple(map(sum, zip(_pos, _direction)))
-            if not Figure.is_move_valid(_position_being_checked):
-                continue
-            figure = Figure.get_figure(figures, _position_being_checked)
-            if figure:
-                if figure.figure_type == FigureType.KING and figure.color != self.color:
-                    return True
-        return False
+    # def is_the_other_king_around(self, _pos, figures: ChessFiguresCollection):
+    #     directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
+    #     for _direction in directions:
+    #         _position_being_checked = tuple(map(sum, zip(_pos, _direction)))
+    #         if not Figure.is_move_valid(_position_being_checked):
+    #             continue
+    #         figure = Figure.get_figure(figures, _position_being_checked)
+    #         if figure:
+    #             if figure.figure_type == FigureType.KING and figure.color != self.color:
+    #                 return True
+    #     return False
 
     def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
@@ -324,16 +347,19 @@ class King(Figure):
                 elif figure.figure_type == FigureType.KING:
                     print('! Two kings cannot stand next to each other')
                     continue
-            previous_position = self.position
-            figures.temporarily_disable(self)  # TODO: must fix that nonsense
-            if self.is_check_on_position_given(position_being_checked, figures):
-                figures.restore(self, previous_position)
-                continue
-            figures.restore(self, previous_position)
-            if self.is_the_other_king_around(position_being_checked, figures):
-                continue
-            possible_moves.append(ChessMove(position_being_checked, self.position, MoveType.NORMAL))
-        if self.is_able_to_castle and not self.is_check_on_position_given(self.position, figures):
+            if not self.check_mask[position_being_checked]:
+                possible_moves.append(ChessMove(position_being_checked, self.position, MoveType.NORMAL))
+
+            # previous_position = self.position
+            # figures.temporarily_disable(self)  # TODO: must fix that nonsense
+            # if self.is_check_on_position_given(position_being_checked, figures):
+            #     figures.restore(self, previous_position)
+            #     continue
+            # figures.restore(self, previous_position)
+            # if self.is_the_other_king_around(position_being_checked, figures):
+            #     continue
+            # possible_moves.append(ChessMove(position_being_checked, self.position, MoveType.NORMAL))
+        if self.is_able_to_castle and not self.check_mask[self.position]:
             possible_moves.extend(self.possibility_to_castle(self.position, figures))
         return possible_moves
 

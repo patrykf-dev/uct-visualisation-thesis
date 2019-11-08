@@ -73,7 +73,8 @@ def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
         board.figures.move_figure_to(figure, move.position_to)
         king_pos = get_king_position(board, board.current_player_color)
         king = Figure.get_figure(board.figures, king_pos)
-        if not king.is_check_on_position_given(king_pos, board.figures):
+        king.update_check_mask(board.figures)
+        if not king.check_mask[king_pos]:
             reduced_moves.append(move)
         # figure.move(previous_position)
         board.figures.move_figure_to(figure, previous_position)
