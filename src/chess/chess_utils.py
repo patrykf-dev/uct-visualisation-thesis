@@ -1,3 +1,5 @@
+import copy
+
 from src.chess.chessboard import Chessboard
 from src.chess.enums import GameStatus
 from src.chess.figures import *
@@ -45,15 +47,16 @@ def is_there_a_draw(board: Chessboard):
 
 def get_all_possible_moves(board: Chessboard):
     all_possible_moves = []
-    for figure in board.figures.figures_list.copy():
-        if figure.color != board.current_player_color:
+    copied_board = board.deep_copy()
+    for figure in copied_board.figures.figures_list:
+        if figure.color != copied_board.current_player_color:
             continue
 
-        figure_moves = figure.check_moves(board.figures)
-        possible_moves = reduce_move_range_when_check(board, figure, figure_moves)
+        figure_moves = figure.check_moves(copied_board.figures)
+        possible_moves = reduce_move_range_when_check(copied_board, figure, figure_moves)
 
         for move in possible_moves:
-            move.player = get_player_from_color(board.current_player_color)
+            move.player = get_player_from_color(copied_board.current_player_color)
 
         if possible_moves:
             all_possible_moves.extend(possible_moves)
