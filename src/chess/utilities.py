@@ -7,4 +7,4 @@ class PastMove:
         self.position_to = position_to
 
     def __str__(self):
-        return f'Move {self.figure_moved} to: {self.position_from}, check: {self.was_check}, capture: {self.was_capture}'
+        return f'Move {self.figure_moved} to: {self.position_to}, check: {self.was_check}, capture: {self.was_capture}'
