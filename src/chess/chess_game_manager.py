@@ -51,8 +51,8 @@ class ChessGameManager:
     def deselect_last_moved(self):
         if not self.board.past_moves:
             return
-        tile_1 = self.board.past_moves[-1].position
-        tile_2 = self.board.past_moves[-1].old_position
+        tile_1 = self.board.past_moves[-1].position_to
+        tile_2 = self.board.past_moves[-1].position_from
         self.board_gui.mark_tile_deselected(tile_1)
         self.board_gui.mark_tile_deselected(tile_2)
 
