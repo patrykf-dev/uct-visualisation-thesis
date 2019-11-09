@@ -1,8 +1,12 @@
 import numpy as np
+import vispy
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton
 from vispy import app as VispyApp
 from vispy.gloo import set_viewport, set_state, clear
-import vispy
+
+import src.trees.example_trees as ExampleTrees
+from src.uct.algorithm.mc_node import MonteCarloNode
+from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 
 vs_vertices = """
 #version 410
@@ -98,36 +102,56 @@ void main(){
 
 fs_edges = """
 void main(){
-    gl_FragColor = vec4(1.0, 0.2, 0.2, 1.0);
+    gl_FragColor = vec4(0.2, 0.2, 0.2, 1.0);
 }
 """
 
+vertices_count = 0
+edges_count = 0
 
-def generate_graph_data(n, ne, ps):
-    edges = np.random.randint(size=(ne, 2), low=0, high=n).astype(np.uint32)
-    vertices = np.zeros(n, dtype=[('a_position', np.float32, 3),
-                                  ('a_fg_color', np.float32, 4),
-                                  ('a_bg_color', np.float32, 4),
-                                  ('a_size', np.float32),
-                                  ('a_linewidth', np.float32)])
-    vertices['a_position'] = np.hstack((0.25 * np.random.randn(n, 2), np.zeros((n, 1))))
+
+def add_node_data(node: MonteCarloNode, vertices, edges):
+    global vertices_count, edges_count
+    x = node.vis_details.x / 12
+    y = 0.5 - node.vis_details.y / 5.5
+    vertices['a_position'][vertices_count] = (x, y, 0)
+    parent_counter = vertices_count
+    for child in node.children:
+        vertices_count = vertices_count + 1
+        edges[edges_count] = (vertices_count, parent_counter)
+        edges_count = edges_count + 1
+        add_node_data(child, vertices, edges)
+
+
+def generate_graph_data(node: MonteCarloNode, ps):
+    global vertices_count
+    edges = np.zeros((29, 2)).astype(np.uint32)
+
+    vertices = np.zeros(29, dtype=[('a_position', np.float32, 3),
+                                   ('a_fg_color', np.float32, 4),
+                                   ('a_bg_color', np.float32, 4),
+                                   ('a_size', np.float32),
+                                   ('a_linewidth', np.float32)])
+
+    add_node_data(node, vertices, edges)
+
+    vertices_count = vertices_count + 1
+
     vertices['a_fg_color'] = 0, 0, 0, 1
-    color = np.random.uniform(0.1, 1.0, (n, 3))
-    vertices['a_bg_color'] = np.hstack((color, np.ones((n, 1))))
-    vertices['a_size'] = np.random.randint(size=n, low=15 * ps, high=18 * ps)
+    color = np.random.uniform(0.1, 1.0, (vertices_count, 3))
+    vertices['a_bg_color'] = np.hstack((color, np.ones((vertices_count, 1))))
+    vertices['a_size'] = np.random.randint(size=vertices_count, low=15 * ps, high=18 * ps)
     vertices['a_linewidth'] = 1.0 * ps
     return vertices, edges
 
 
-class Canvas(VispyApp.Canvas):
-    def __init__(self, **kwargs):
+class MonteCarloTreeCanvas(VispyApp.Canvas):
+    def __init__(self, tree, **kwargs):
         VispyApp.Canvas.__init__(self, size=(1000, 1000), **kwargs)
         self.position = 50, 50
 
         ps = self.pixel_scale
-        n = 1000
-        ne = 10
-        vertices, edges = generate_graph_data(n, ne, ps)
+        vertices, edges = generate_graph_data(tree, ps)
 
         u_antialias = 1
 
@@ -159,7 +183,11 @@ class Canvas(VispyApp.Canvas):
 
 
 if __name__ == '__main__':
-    canvas = Canvas(title="Graph")
+    root = ExampleTrees.create_tree_1()
+    alg = ImprovedWalkersAlgorithm()
+    alg.buchheim_algorithm(root)
+
+    canvas = MonteCarloTreeCanvas(root, title="Graph")
     window = QMainWindow()
     widget = QWidget()
     window.setCentralWidget(widget)
