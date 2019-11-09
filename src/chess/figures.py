@@ -232,7 +232,7 @@ class King(Figure):
         rival_king_position = figures.get_king_position(opposite_color)
         directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
         for direction in directions:
-            position_being_checked = tuple(map(sum, zip(rival_king_position, direction)))
+            position_being_checked = rival_king_position[0] + direction[0], rival_king_position[1] + direction[1]
             if self.is_move_valid(position_being_checked):
                 self.check_mask[position_being_checked] = True
         self.check_mask[rival_king_position] = True
@@ -324,7 +324,7 @@ class King(Figure):
         directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
         possible_moves = []
         for direction in directions:
-            position_being_checked = tuple(map(sum, zip(self.position, direction)))
+            position_being_checked = self.position[0] + direction[0], self.position[1] + direction[1]
             if not self.is_move_valid(position_being_checked):
                 continue
             figure = Figure.get_figure(figures, position_being_checked)
