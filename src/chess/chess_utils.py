@@ -45,7 +45,7 @@ def is_there_a_draw(board: Chessboard):
 
 def get_all_possible_moves(board: Chessboard):
     all_possible_moves = []
-    for figure in board.figures.figures_list:
+    for figure in board.figures.figures_list.copy():
         if figure.color != board.current_player_color:
             continue
 
