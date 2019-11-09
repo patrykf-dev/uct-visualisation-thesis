@@ -73,6 +73,7 @@ class Pawn(Figure):
 
     def __init__(self, color, position):
         self.can_be_captured_en_passant = False
+        self.value = 1
         image_file = 'pawn-white.png' if color == Color.WHITE else 'pawn-black.png'
         super().__init__(color, FigureType.PAWN, image_file, position)
 
@@ -157,6 +158,7 @@ class Pawn(Figure):
 
 class Knight(Figure):
     def __init__(self, color, position):
+        self.value = 3
         image_file = 'knight-white.png' if color == Color.WHITE else 'knight-black.png'
         super().__init__(color, FigureType.KNIGHT, image_file, position)
 
@@ -186,6 +188,7 @@ class Knight(Figure):
 
 class Bishop(FigureWithLinearMovement):
     def __init__(self, color, position):
+        self.value = 3
         self.light_squared = (position[0] + position[1]) % 2 == 1
         image_file = 'bishop-white.png' if color == Color.WHITE else 'bishop-black.png'
         super().__init__(color, FigureType.BISHOP, image_file, position)
@@ -197,6 +200,7 @@ class Bishop(FigureWithLinearMovement):
 
 class Rook(FigureWithLinearMovement):
     def __init__(self, color, position):
+        self.value = 5
         self.is_able_to_castle = True
         image_file = 'rook-white.png' if color == Color.WHITE else 'rook-black.png'
         super().__init__(color, FigureType.ROOK, image_file, position)
@@ -211,6 +215,7 @@ class Rook(FigureWithLinearMovement):
 
 class Queen(FigureWithLinearMovement):
     def __init__(self, color, position):
+        self.value = 9
         image_file = 'queen-white.png' if color == Color.WHITE else 'queen-black.png'
         super().__init__(color, FigureType.QUEEN, image_file, position)
 
@@ -224,6 +229,7 @@ class King(Figure):
         self.is_able_to_castle = True
         self.initial_position = (0, 4) if color == Color.WHITE else (7, 4)
         self.check_mask = zeros(shape=(8, 8), dtype=bool)
+        self.value = 0
         image_file = 'king-white.png' if color == Color.WHITE else 'king-black.png'
         super().__init__(color, FigureType.KING, image_file, position)
 

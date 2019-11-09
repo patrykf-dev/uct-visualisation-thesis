@@ -1,15 +1,30 @@
 import src.utils.array_utils as ArrayUtils
-from src.chess.enums import FigureType
+from src.chess.enums import FigureType, Color
 
 
 class ChessFiguresCollection:
     def __init__(self, figures):
         self._figures_array = ArrayUtils.generate_2d_nones_array(8, 8)
         self.figures_list = []
+        self.player1_value = 0
+        self.player2_value = 0
         for figure in figures:
             self.add_figure(figure)
 
+    def decrease_collection_value(self, figure):
+        if figure.color == Color.WHITE:
+            self.player1_value -= figure.value
+        else:
+            self.player2_value -= figure.value
+
+    def increase_collection_value(self, figure):
+        if figure.color == Color.WHITE:
+            self.player1_value += figure.value
+        else:
+            self.player2_value += figure.value
+
     def remove(self, figure):
+        self.decrease_collection_value(figure)
         self.figures_list.remove(figure)
         self._set_figure_in_array(figure.position, None)
 
@@ -20,6 +35,7 @@ class ChessFiguresCollection:
         return self._get_figure_from_array(position)
 
     def add_figure(self, figure):
+        self.increase_collection_value(figure)
         self.figures_list.append(figure)
         self._set_figure_in_array(figure.position, figure)
 
