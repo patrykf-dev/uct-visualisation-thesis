@@ -8,8 +8,16 @@ class ChessFiguresCollection:
         self.figures_list = []
         self.player1_value = 0
         self.player2_value = 0
+        self.white_king = None
+        self.black_king = None
         for figure in figures:
             self.add_figure(figure)
+
+    def get_king(self, color):
+        return self.white_king if color == Color.WHITE else self.black_king
+
+    def get_king_position(self, color):
+        return self.get_king(color).position
 
     def decrease_collection_value(self, figure):
         if figure.color == Color.WHITE:
@@ -23,6 +31,12 @@ class ChessFiguresCollection:
         else:
             self.player2_value += figure.value
 
+    def set_king_reference(self, figure):
+        if figure.color == Color.WHITE:
+            self.white_king = figure
+        else:
+            self.black_king = figure
+
     def remove(self, figure):
         self.decrease_collection_value(figure)
         self.figures_list.remove(figure)
@@ -35,16 +49,11 @@ class ChessFiguresCollection:
         return self._get_figure_from_array(position)
 
     def add_figure(self, figure):
+        if figure.figure_type == FigureType.KING:
+            self.set_king_reference(figure)
         self.increase_collection_value(figure)
         self.figures_list.append(figure)
         self._set_figure_in_array(figure.position, figure)
-
-    def get_king_position(self, color):
-        # TODO: optimize
-        for fig in self.figures_list:
-            if fig.figure_type == FigureType.KING and fig.color == color:
-                return fig.position
-        return None
 
     def move_figure_at(self, old_position, new_position):
         figure = self._get_figure_from_array(old_position)

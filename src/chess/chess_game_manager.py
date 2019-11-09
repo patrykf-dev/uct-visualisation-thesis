@@ -59,7 +59,7 @@ class ChessGameManager:
     def deselect_figure(self):
         if self.selected_tile:
             if not self.board.check:
-                self.board_gui.mark_tile_deselected(ChessUtils.get_king_position(self.board, self.board.current_player_color))
+                self.board_gui.mark_tile_deselected(self.board.figures.get_king_position(self.board.current_player_color))
             is_king_selected = ChessUtils.is_king_selected_to_move_in_check(self.board, self.selected_tile)
             self.board_gui.mark_tile_deselected(self.selected_tile, when_checked=is_king_selected)
         self.reset_selected_tile()

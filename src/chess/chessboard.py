@@ -45,12 +45,9 @@ class Chessboard:
         return rc
 
     def check_for_check(self, color_that_causes_check):
-        king_pos = ChessUtils.get_king_position(self, color_that_causes_check)
-        # zakladamy ze jest krol na szachownicy
-        king = Figure.get_figure(self.figures, king_pos)
-        # self.check = king.is_check_on_position_given(king_pos, self.figures)
+        king = self.figures.get_king(color_that_causes_check)
         king.update_check_mask(self.figures)
-        self.check = king.check_mask[king_pos]
+        self.check = king.check_mask[king.position]
 
     def do_move(self, move, selected_tile):
         figure_moved = Figure.get_figure(self.figures, selected_tile)
@@ -64,6 +61,8 @@ class Chessboard:
             ChessUtils.do_promotion(self, move, figure_moved)
         elif move.move_type == MoveType.CASTLE_SHORT or move.move_type == MoveType.CASTLE_LONG:
             ChessUtils.do_castling(self, move, figure_moved)
+        if figure_moved.figure_type == FigureType.KING:
+            self.figures.set_king_reference(figure_moved)
 
     def add_past_move(self, position, figures_count_before_move, old_position):
         figure = Figure.get_figure(self.figures, position)
@@ -75,11 +74,9 @@ class Chessboard:
         Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player_color)
         figures_count_before_move = len(self.figures.figures_list)
         self.do_move(move, move.position_from)
-        # self.figures.get_king_position(self.current_player_color)
-
         self.check_for_check(self.get_opposite_color())
         if self.check:
-            king_pos = ChessUtils.get_king_position(self, self.get_opposite_color())
+            king_pos = self.figures.get_king_position(self.get_opposite_color())
             self.notify_tile_marked(king_pos, TileMarkType.CHECKED)
         self.add_past_move(move.position_to, figures_count_before_move, move.position_from)
         self.notify_tile_marked(move.position_from, TileMarkType.MOVED)
