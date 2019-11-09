@@ -12,6 +12,12 @@ class ChessState(BaseGameState):
         self.board = board
         self.current_player = ChessUtils.get_player_from_color(board.current_player_color)
 
+    def get_win_score(self):
+        if self.current_player == 1:
+            return self.board.figures.player1_value
+        else:
+            return self.board.figures.player2_value
+
     def get_all_possible_moves(self):
         return ChessUtils.get_all_possible_moves(self.board)
 

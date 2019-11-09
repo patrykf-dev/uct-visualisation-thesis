@@ -5,11 +5,12 @@ from src.uct.algorithm.mc_tree import MonteCarloTree
 
 
 class MonteCarloTreeSearch:
-    def __init__(self, game_state, max_iterations=10):
+    def __init__(self, game_state, max_iterations=10, max_moves_per_simulation=40):
         self.iterations = 0
         self.debug_print_allowed = False
         self.tree = MonteCarloTree(game_state)
         self.max_iterations = max_iterations
+        self.max_moves_per_simulation = max_moves_per_simulation
 
     def calculate_next_move(self):
         while self.iterations < self.max_iterations:
@@ -22,8 +23,8 @@ class MonteCarloTreeSearch:
             else:
                 leaf_to_explore = promising_node
 
-            playout_result = self._simulation(leaf_to_explore)
-            self._backpropagation(leaf_to_explore, playout_result)
+            simulation_result = self._simulation(leaf_to_explore)
+            self._backpropagation(leaf_to_explore, simulation_result)
             self.iterations = self.iterations + 1
 
         best_child = NodeUtils.get_child_with_max_score(self.tree.root)
@@ -83,27 +84,39 @@ class MonteCarloTreeSearch:
 
         self._print_debug("Simulating from node {}...".format(leaf.id))
 
+        moves_counter = 0
         while tmp_phase == Enums.GamePhase.IN_PROGRESS:
             tmp_state.perform_random_move()
             tmp_phase = tmp_state.phase
+            moves_counter = moves_counter + 1
+            if moves_counter >= self.max_moves_per_simulation:
+                print("!!!	GAME ENDED: max_moves_per_simulation exceeded")
+                break
 
         return tmp_phase
 
-    def _backpropagation(self, leaf, playout_result):
+    def _backpropagation(self, leaf, simulation_result):
         """
         4th stage of MCTS
         Use the result of the playout to update information in the nodes on the path from C to R.
         :param leaf: leaf from which to start backpropagating
-        :param playout_result: result of random playout simulated from :leaf:
+        :param simulation_result: result of random simulation simulated from :leaf:
         """
         self._print_debug("Backpropagating from node {}".format(leaf.id))
+
+        leaf_state = self.tree.retrieve_node_game_state(leaf)
+        leaf_player = leaf_state.current_player
+        if simulation_result == Enums.get_player_win(leaf_player):
+            reward = 1
+        else:
+            reward = leaf_state.get_win_score()
 
         tmp_node = leaf
         while tmp_node != self.tree.root:
             tmp_node.details.mark_visit()
             tmp_current_player = tmp_node.move.player
-            if playout_result == Enums.get_player_win(tmp_current_player):
-                tmp_node.details.add_score(1)
+            if leaf_player == tmp_current_player:
+                tmp_node.details.add_score(reward)
             tmp_node = tmp_node.parent
         self.tree.root.details.mark_visit()
 
