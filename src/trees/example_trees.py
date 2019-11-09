@@ -12,7 +12,30 @@ def create_node(name, move_name):
     return n
 
 
-def create_tree_1():
+def create_canvas_tree():
+    a = create_node("aa", "")
+    b = create_node("bb", "x")
+    c = create_node("cc", "y")
+    d = create_node("dd", "z")
+    e = create_node("ee", "w")
+    a.add_child_by_node(b)
+    b.add_child_by_node(c)
+    c.add_child_by_node(d)
+    d.add_child_by_node(e)
+    a.vis_details.x = 1
+    a.vis_details.y = 1
+    b.vis_details.x = -1
+    b.vis_details.y = 1
+    c.vis_details.x = -1
+    c.vis_details.y = -1
+    d.vis_details.x = 1
+    d.vis_details.y = -1
+    e.vis_details.x = 0
+    e.vis_details.y = 0
+    return a
+
+
+def create_sample_tree_1():
     aa = create_node("aa", "")
     bb = create_node("bb", "x")
     cc = create_node("cc", "y")

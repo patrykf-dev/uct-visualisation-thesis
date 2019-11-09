@@ -4,54 +4,18 @@ from vispy import app as VispyApp
 from vispy.gloo import set_viewport, set_state, clear
 
 from src.uct.algorithm.mc_node import MonteCarloNode
+from src.visualisation_drawing.mc_tree_draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
-
-vertices_count = 0
-edges_count = 0
-
-
-def add_node_data(node: MonteCarloNode, vertices, edges):
-    global vertices_count, edges_count
-    x = node.vis_details.x / 12
-    y = 0.5 - node.vis_details.y / 5.5
-    # print(f"Adding vertex ({x}, {y})")
-    vertices['a_position'][vertices_count] = (x, y, 0)
-    parent_counter = vertices_count
-    for child in node.children:
-        vertices_count = vertices_count + 1
-        edges[edges_count] = (vertices_count, parent_counter)
-        edges_count = edges_count + 1
-        add_node_data(child, vertices, edges)
-
-
-def generate_graph_data(node: MonteCarloNode, ps):
-    global vertices_count
-    edges = np.zeros((29, 2)).astype(np.uint32)
-
-    vertices = np.zeros(29, dtype=[('a_position', np.float32, 3),
-                                   ('a_fg_color', np.float32, 4),
-                                   ('a_bg_color', np.float32, 4),
-                                   ('a_size', np.float32),
-                                   ('a_linewidth', np.float32)])
-
-    add_node_data(node, vertices, edges)
-
-    vertices_count = vertices_count + 1
-
-    vertices['a_fg_color'] = 0, 0, 0, 1
-    vertices['a_bg_color'] = np.full((vertices_count, 4), 1)
-    vertices['a_size'] = np.full(vertices_count, 16 * ps)
-    vertices['a_linewidth'] = 2.0 * ps
-    return vertices, edges
 
 
 class MonteCarloTreeCanvas(VispyApp.Canvas):
     def __init__(self, tree, **kwargs):
         VispyApp.Canvas.__init__(self, size=(1000, 1000), **kwargs)
         ps = self.pixel_scale
-        vertices, edges = generate_graph_data(tree, ps)
-        self.vbo = vispy.gloo.VertexBuffer(vertices)
-        self.index = vispy.gloo.IndexBuffer(edges)
+        retriever = MonteCarloTreeDrawDataRetriever()
+        data = retriever.retrieve_draw_data(tree, ps)
+        self.vbo = vispy.gloo.VertexBuffer(data.vertices)
+        self.index = vispy.gloo.IndexBuffer(data.edges)
 
         self._bind_shaders()
         self._setup_matrices()

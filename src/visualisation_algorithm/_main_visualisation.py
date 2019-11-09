@@ -21,7 +21,7 @@ y = []
 
 
 def main_test():
-    root = ExampleTrees.create_tree_1()
+    root = ExampleTrees.create_sample_tree_1()
     alg = ImprovedWalkersAlgorithm()
     algorithm_result, spans = alg.buchheim_algorithm(root)
     print(f"Walkers algorithm finished - {spans[0]} x {spans[1]}")
