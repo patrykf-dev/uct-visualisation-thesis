@@ -56,19 +56,23 @@ class MonteCarloNode:
         return MonteCarloNode._node_counter
 
     def left(self):
+        """
+        :rtype: MonteCarloNode
+        """
         if self.has_children():
             rc = self.children[0]
         else:
             rc = self.vis_details.thread
-        #print(f"Left returns {rc} - {type(rc)}")
         return rc
 
     def right(self):
+        """
+        :rtype: MonteCarloNode
+        """
         if self.has_children():
             rc = self.children[-1]
         else:
             rc = self.vis_details.thread
-        #print(f"Right returns {rc} - {type(rc)}")
         return rc
 
     def lbrother(self):

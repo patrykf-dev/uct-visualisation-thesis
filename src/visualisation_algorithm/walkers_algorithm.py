@@ -70,21 +70,23 @@ def apportion(node: MonteCarloNode, default_ancestor, distance):
             vol = vol.left()
             vor = vor.right()
             vor.ancestor = node
-            shift = (vil.x + sil) - (vir.x + sir) + distance
+            shift = (vil.vis_details.x + sil) - (vir.vis_details.x + sir) + distance
             if shift > 0:
                 move_subtree(ancestor(vil, node, default_ancestor), node, shift)
                 sir = sir + shift
                 sor = sor + shift
-            sil += vil.mod
-            sir += vir.mod
-            sol += vol.mod
-            sor += vor.mod
+            sil += vil.vis_details.mod
+            sir += vir.vis_details.mod
+            if vol:
+                sol += vol.vis_details.mod
+            if vor:
+                sor += vor.vis_details.mod
         if vil.right() and not vor.right():
-            vor.thread = vil.right()
+            vor.vis_details.thread = vil.right()
             vor.vis_details.mod += sil - sor
         else:
             if vir.left() and not vol.left():
-                vol.thread = vir.left()
+                vol.vis_details.thread = vir.left()
                 vol.vis_details.mod += sir - sol
             default_ancestor = node
     return default_ancestor
@@ -108,13 +110,13 @@ def execute_shifts(v: MonteCarloNode):
         shift += child.vis_details.shift + change
 
 
-def ancestor(node: MonteCarloNodeVisualisationDetails, v: MonteCarloNode, default_ancestor):
+def ancestor(node: MonteCarloNode, v: MonteCarloNode, default_ancestor):
     # TODO: fix it
     siblings = []
     for sibling in v.parent.children:
         siblings.append(sibling.vis_details)
 
-    if node.ancestor in siblings:
-        return node.ancestor
+    if node.vis_details.ancestor in siblings:
+        return node.vis_details.ancestor
     else:
         return default_ancestor
