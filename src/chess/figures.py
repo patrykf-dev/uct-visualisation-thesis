@@ -161,26 +161,27 @@ class Knight(Figure):
         super().__init__(color, FigureType.KNIGHT, image_file, position)
 
     def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
-        def wipe_out_bad_moves(moves):
+        def wipe_out_bad_moves(move_positions):
             toret = []
-            for move in moves:
-                if not self.is_move_valid(move.position_to):
+            for move_position in move_positions:
+                if not self.is_move_valid(move_position):
                     continue
-                figure = Figure.get_figure(figures, move.position_to)
+                figure = Figure.get_figure(figures, move_position)
                 if figure and figure.color == self.color:
                     continue
-                toret.append(move)
+                toret.append(ChessMove(move_position, self.position, MoveType.NORMAL))
             return toret
 
-        possible_moves = [ChessMove((self.position[0] + 2, self.position[1] - 1), self.position, MoveType.NORMAL),
-                          ChessMove((self.position[0] + 2, self.position[1] + 1), self.position, MoveType.NORMAL),
-                          ChessMove((self.position[0] - 2, self.position[1] + 1), self.position, MoveType.NORMAL),
-                          ChessMove((self.position[0] - 2, self.position[1] - 1), self.position, MoveType.NORMAL),
-                          ChessMove((self.position[0] + 1, self.position[1] - 2), self.position, MoveType.NORMAL),
-                          ChessMove((self.position[0] + 1, self.position[1] + 2), self.position, MoveType.NORMAL),
-                          ChessMove((self.position[0] - 1, self.position[1] + 2), self.position, MoveType.NORMAL),
-                          ChessMove((self.position[0] - 1, self.position[1] - 2), self.position, MoveType.NORMAL)]
-        return wipe_out_bad_moves(possible_moves)
+        possible_moves_positions = [
+            (self.position[0] + 2, self.position[1] - 1),
+            (self.position[0] + 2, self.position[1] + 1),
+            (self.position[0] - 2, self.position[1] + 1),
+            (self.position[0] - 2, self.position[1] - 1),
+            (self.position[0] + 1, self.position[1] - 2),
+            (self.position[0] + 1, self.position[1] + 2),
+            (self.position[0] - 1, self.position[1] + 2),
+            (self.position[0] - 1, self.position[1] - 2)]
+        return wipe_out_bad_moves(possible_moves_positions)
 
 
 class Bishop(FigureWithLinearMovement):
