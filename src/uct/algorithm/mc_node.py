@@ -44,7 +44,7 @@ class MonteCarloNode:
         node = MonteCarloNode()
         node.id = MonteCarloNode.generate_next_id()
         node.move = move
-        node.vis_details = Vis.MonteCarloNodeVisualisationDetails(node)
+        node.vis_details = Vis.MonteCarloNodeVisualisationDetails()
         node.details = MonteCarloNodeDetails()
         node.children = []
         node.parent = None
