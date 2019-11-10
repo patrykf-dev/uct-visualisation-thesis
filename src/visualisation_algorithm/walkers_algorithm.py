@@ -2,18 +2,12 @@ from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 class ImprovedWalkersAlgorithm:
-    def __init__(self):
-        self.min_x = 0
-        self.max_x = 0
-        self.min_y = 0
-        self.max_y = 0
-
     def buchheim_algorithm(self, root: MonteCarloNode):
         root = self.first_walk(root)
         min = self.second_walk(root)
         if min < 0:
             self.third_walk(root, -min)
-        return root, (self.max_x - self.min_x, self.max_y - self.min_y)
+        return root
 
     def first_walk(self, node: MonteCarloNode, distance=1):
         if len(node.children) == 0:
@@ -48,21 +42,12 @@ class ImprovedWalkersAlgorithm:
         for w in node.children:
             min = self.second_walk(w, m + node.vis_details.mod, depth + 1, min)
 
-        self.update_bounds(node)
         return min
 
     def third_walk(self, node: MonteCarloNode, n):
         node.vis_details.x += n
         for c in node.children:
             self.third_walk(c, n)
-
-        self.update_bounds(node)  # TODO: probably useless
-
-    def update_bounds(self, node):
-        self.max_x = max(node.vis_details.x, self.max_x)
-        self.min_x = min(node.vis_details.x, self.min_x)
-        self.max_y = max(node.vis_details.y, self.max_y)
-        self.min_y = min(node.vis_details.y, self.min_y)
 
     def apportion(self, node: MonteCarloNode, default_ancestor, distance):
         left_brother = node.lbrother()

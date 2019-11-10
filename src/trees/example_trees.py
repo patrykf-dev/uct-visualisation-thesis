@@ -53,11 +53,23 @@ def create_sample_tree_1():
     dd.add_child_by_node(hh)
     cc.add_child_by_node(ee)
     cc.add_child_by_node(ff)
-    prev = aa
-    for i in range(5):
+    prev1 = aa
+    prev2 = dd
+    prev3 = gg
+    for i in range(10):
         new_node = create_node("xx", "z")
-        prev.add_child_by_node(new_node)
-        for i in range(3):
-            prev.add_child_by_node(create_node("asd", "asd"))
-        prev = new_node
+        new_node2 = create_node("xx", "z")
+        prev1.add_child_by_node(new_node)
+        prev2.add_child_by_node(new_node2)
+        child_count1 = i % 4
+        child = create_node("asd", "asd")
+        prev3.add_child_by_node(child)
+        for j in range(child_count1):
+            prev1.add_child_by_node(create_node("asd", "asd"))
+        child_count2 = i % 3
+        for j in range(child_count2):
+            prev2.add_child_by_node(create_node("asd", "asd"))
+        prev1 = new_node
+        prev2 = new_node2
+        prev3 = child
     return aa
