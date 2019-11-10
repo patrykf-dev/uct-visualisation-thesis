@@ -15,12 +15,14 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def __init__(self, tree, **kwargs):
         VispyApp.Canvas.__init__(self, size=(1000, 1000), **kwargs)
-
         self.mouse_tics = 0
         self._setup_widget()
         self._bind_buffers(tree)
         self._bind_shaders()
         self._setup_matrices()
+        self.x = 0
+        self.y = 0
+        self.scale = 1
 
     def on_resize(self, event):
         set_viewport(0, 0, *event.physical_size)
@@ -31,25 +33,60 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_vertices.draw('points')
 
     def handle_key_press_event(self, event):
-        print(f"Key pressed canvas: {event.key()}")
+        x_diff = 0
+        y_diff = 0
+        if event.key() == self.KEY_CODE_RIGHT:
+            x_diff = 0.1
+        elif event.key() == self.KEY_CODE_LEFT:
+            x_diff = -0.1
+        elif event.key() == self.KEY_CODE_UP:
+            y_diff = -0.1
+        elif event.key() == self.KEY_CODE_DOWN:
+            y_diff = 0.1
+
+        self.x = self.x + x_diff
+        self.y = self.y + y_diff
+        self.update_view()
+
+    def look_at(self, x, y):
+        eye = np.array([x, y, 0])
+        center = np.array([x, y, 1])
+        up = np.array([0, -1, 0])
+        z = eye - center
+        z = self.normalize(z)
+        x = np.cross(up, z)
+        y = np.cross(z, x)
+        x = self.normalize(x)
+        y = self.normalize(y)
+        rc = np.array([
+            [x[0], x[1], x[2], np.dot(-x, eye)],
+            [y[0], -y[1], y[2], np.dot(-y, eye)],
+            [z[0], z[1], z[2], np.dot(-z, eye)],
+            [0, 0, 0, 1]
+        ]).transpose()
+        return rc
+
+    @staticmethod
+    def normalize(v):
+        norm = np.linalg.norm(v, ord=1)
+        if norm == 0:
+            norm = np.finfo(v.dtype).eps
+        return v / norm
 
     def handle_wheel_event(self, event):
         self.mouse_tics = self.mouse_tics + event.angleDelta().y() / 120
-        if self.mouse_tics > 30:
-            self.mouse_tics = 30
-        elif self.mouse_tics < -30:
+        if self.mouse_tics < -30:
             self.mouse_tics = -30
         self.react_to_mouse_scroll(self.mouse_tics)
 
     def react_to_mouse_scroll(self, mouse_tics):
         if mouse_tics == 0:
-            scale = 1
+            self.scale = 1
         elif mouse_tics < 0:
-            scale = 1 + (mouse_tics / 30)
+            self.scale = 1 + (mouse_tics / 30)
         else:
-            scale = 1 + (mouse_tics / 30)
-        self._scale_view(scale)
-        self.update()
+            self.scale = 1 + (mouse_tics / 30)
+        self.update_view()
 
     def _setup_matrices(self):
         self.program_vertices['u_model'] = np.eye(4, dtype=np.float32)
@@ -77,15 +114,22 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.vertices_buffer = vispy.gloo.VertexBuffer(data.vertices)
         self.edges_buffer = vispy.gloo.IndexBuffer(data.edges)
 
-    def _scale_view(self, scale):
+    def update_view(self):
+        view = self.look_at(self.x, self.y)
+        self.program_vertices['u_view'] = view
+        self.program_edges['u_view'] = view
+        self._scale_view()
+        self.update()
+
+    def _scale_view(self):
         self.program_vertices['u_view'] = np.copy(self.program_vertices['u_view'])
         self.program_edges['u_view'] = np.copy(self.program_edges['u_view'])
-        self.program_vertices['u_view'][0] = scale
-        self.program_vertices['u_view'][5] = scale
-        self.program_vertices['u_view'][10] = scale
-        self.program_edges['u_view'][0] = scale
-        self.program_edges['u_view'][5] = scale
-        self.program_edges['u_view'][10] = scale
+        self.program_vertices['u_view'][0] = self.scale
+        self.program_vertices['u_view'][5] = self.scale
+        self.program_vertices['u_view'][10] = self.scale
+        self.program_edges['u_view'][0] = self.scale
+        self.program_edges['u_view'][5] = self.scale
+        self.program_edges['u_view'][10] = self.scale
 
     def _setup_widget(self):
         self.native.keyPressEvent = self.handle_key_press_event
@@ -93,3 +137,4 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
         set_viewport(0, 0, *self.physical_size)
         set_state(clear_color='gray', depth_test=False, blend=True, blend_func=('src_alpha', 'one_minus_src_alpha'))
+
