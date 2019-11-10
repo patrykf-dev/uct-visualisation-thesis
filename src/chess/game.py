@@ -8,6 +8,9 @@ from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_game_manager import ChessGameManager
 from src.chess.chessboard import Figure
 from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
+from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
+from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
+from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
 
 WIDTH = 600
 HEIGHT = 600
@@ -98,6 +101,13 @@ class Game:
             self.game_manager.board.perform_legal_move(move)
             self.game_manager.reset_selected_tile()
             self.redraw_board()
+
+            alg = ImprovedWalkersAlgorithm()
+            alg.buchheim_algorithm(mcts.tree.root)
+
+            canvas = MonteCarloTreeCanvas(mcts.tree.root)
+            window = MonteCarloTreeWindow(canvas)
+            window.show()
 
     def process_input(self, events):
         for event in events:
