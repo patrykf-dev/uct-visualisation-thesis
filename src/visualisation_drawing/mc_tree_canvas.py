@@ -35,8 +35,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             scale = 1 + (mouse_tics / 30)
 
         print(f"I GOT {mouse_tics} tics, scaling to: {scale}")
-        self.program_vertices['u_view'] = np.diag([scale, scale, scale, 1])
-        self.program_edges['u_view'] = np.diag([scale, scale, scale, 1])
+        self._scale_view(scale)
         self.update()
 
     def _setup_matrices(self):
@@ -64,3 +63,13 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         data = retriever.retrieve_draw_data(tree, ps)
         self.vertices_buffer = vispy.gloo.VertexBuffer(data.vertices)
         self.edges_buffer = vispy.gloo.IndexBuffer(data.edges)
+
+    def _scale_view(self, scale):
+        self.program_vertices['u_view'] = np.copy(self.program_vertices['u_view'])
+        self.program_edges['u_view'] = np.copy(self.program_edges['u_view'])
+        self.program_vertices['u_view'][0] = scale
+        self.program_vertices['u_view'][5] = scale
+        self.program_vertices['u_view'][10] = scale
+        self.program_edges['u_view'][0] = scale
+        self.program_edges['u_view'][5] = scale
+        self.program_edges['u_view'][10] = scale
