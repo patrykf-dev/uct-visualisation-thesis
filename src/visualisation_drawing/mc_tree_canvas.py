@@ -111,3 +111,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         set_viewport(0, 0, *self.physical_size)
         set_state(clear_color=(160 / 255, 160 / 255, 160 / 255, 1), depth_test=False, blend=True,
                   blend_func=('src_alpha', 'one_minus_src_alpha'))
+
+    def reset_view(self):
+        self.mouse_tics = 0
+        self.view_matrix_manager.reset_view()
+        self._update_view_matrix()

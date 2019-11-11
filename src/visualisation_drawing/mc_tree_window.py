@@ -1,5 +1,5 @@
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QGridLayout, QLabel, QFrame
+from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFrame, QPushButton
 from vispy import app as VispyApp
 
 from src.uct.algorithm.mc_node import MonteCarloNode
@@ -11,6 +11,7 @@ class MonteCarloTreeWindow(QMainWindow):
 
     def __init__(self, canvas: MonteCarloTreeCanvas):
         super().__init__()
+        self.canvas = canvas
         self.right_panel_widget = None
         self.labels = [
             ["Id", None],
@@ -21,7 +22,7 @@ class MonteCarloTreeWindow(QMainWindow):
             ["Win score", None],
             ["Average prize", None],
             ["Current player", None]]
-        self._setup_window(canvas)
+        self._setup_window()
 
     def show(self):
         super().show()
@@ -46,18 +47,27 @@ class MonteCarloTreeWindow(QMainWindow):
             if node.move:
                 self.labels[7][1].setText(str(node.move.current_player))
 
-    def _setup_window(self, canvas: MonteCarloTreeCanvas):
-        canvas.on_node_clicked += self._handle_node_clicked_event
+    def _handle_reset_button_clicked_event(self):
+        self.canvas.reset_view()
+
+    def _setup_window(self):
+        self.canvas.on_node_clicked += self._handle_node_clicked_event
+
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
-        main_layout = QHBoxLayout()
-        main_widget.setLayout(main_layout)
-        main_layout.addWidget(canvas.native)
+        main_layout = QGridLayout()
         self.right_panel_widget = PanelWidget()
         right_panel_layout = QGridLayout()
-        self._fill_right_panel(right_panel_layout)
+        self.reset_button = self._create_reset_button()
+        self.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
+
+        main_widget.setLayout(main_layout)
+        main_layout.addWidget(self.canvas.native, 0, 0)
         self.right_panel_widget.setLayout(right_panel_layout)
-        main_layout.addWidget(self.right_panel_widget)
+        main_layout.addWidget(self.right_panel_widget, 0, 1)
+        main_layout.addWidget(self.reset_button, 1, 0)
+
+        self._fill_right_panel(right_panel_layout)
 
     def _fill_right_panel(self, right_panel_layout):
         content_font = QtGui.QFont("Helvetica", 12)
@@ -74,6 +84,13 @@ class MonteCarloTreeWindow(QMainWindow):
             right_panel_layout.addWidget(label_content, counter, 1)
             self.labels[counter][1] = label_content
             counter += 1
+
+    def _create_reset_button(self):
+        rc = QPushButton()
+        button_font = QtGui.QFont("Helvetica", 12)
+        rc.setText("Reset view")
+        rc.setFont(button_font)
+        return rc
 
 
 class PanelWidget(QFrame):

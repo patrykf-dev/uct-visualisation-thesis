@@ -19,6 +19,12 @@ class ViewMatrixManager:
         self.y += y_diff
         self._update_matrix()
 
+    def reset_view(self):
+        self.x = 0
+        self.y = 0
+        self.scale = 0.9
+        self._update_matrix()
+
     def _update_matrix(self):
         self._apply_translation()
         self._apply_scale()
@@ -79,3 +85,4 @@ class ViewMatrixManager:
         world_y = - (fract_clicked_y * world_y_span + seen_world_up)
 
         return world_x, world_y
+
