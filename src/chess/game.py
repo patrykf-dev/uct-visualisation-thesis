@@ -88,6 +88,13 @@ class Game:
                 moves_projected = self.tile_to_grid(x.position_to for x in self.game_manager.board.possible_moves)
                 self.draw_circles(moves_projected)
 
+    def mock_react_to_player_click(self, position):
+        grid_pos = self.grid_click_to_tile(position)
+        player_moved = self.game_manager.react_to_tile_click(grid_pos)
+        self.redraw_board()
+        if player_moved:
+            self.game_manager.deselect_last_moved()
+
     def react_to_player_click(self):
         pos = pygame.mouse.get_pos()
         grid_pos = self.grid_click_to_tile(pos)
