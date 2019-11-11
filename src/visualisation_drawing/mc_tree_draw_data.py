@@ -67,9 +67,9 @@ class MonteCarloTreeDrawDataRetriever:
         color = (1, 1, 0, 1)
         if node.move is not None:
             if node.move.player == 1:
-                color = (0, 0, 0, 1)
-            else:
                 color = (1, 1, 1, 1)
+            else:
+                color = (0, 0, 0, 1)
 
         coords = (x, y, 0)
         vertices.append((coords, node, color))
