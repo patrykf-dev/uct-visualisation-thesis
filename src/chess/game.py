@@ -102,6 +102,7 @@ class Game:
             move, _ = mcts.calculate_next_move()
 
             print(f"Algorithm decided to go {move.position_from} -> {move.position_to} for player {move.player}")
+            self.game_manager.deselect_king()
             self.game_manager.board.perform_legal_move(move)
             self.game_manager.reset_selected_tile()
             self.redraw_board()
