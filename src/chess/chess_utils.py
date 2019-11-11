@@ -1,3 +1,5 @@
+import copy
+
 from src.chess.chessboard import Chessboard
 from src.chess.enums import GameStatus
 from src.chess.figures import *
@@ -55,9 +57,9 @@ def get_all_possible_moves(board: Chessboard):
         possible_moves = reduce_move_range_when_check(board, figures_list[i], figure_moves)
 
         for move in possible_moves:
-            move.player = get_player_from_color(copied_board.current_player_color)
-            f_color = str(figure.color).split(".")[1].lower()
-            f_type = str(figure.figure_type).split(".")[1].lower()
+            move.player = get_player_from_color(board.current_player_color)
+            f_color = str(copied_figure.color).split(".")[1].lower()
+            f_type = str(copied_figure.figure_type).split(".")[1].lower()
             move.description = f"{f_color} {f_type} {move.position_from} -> {move.position_to}"
 
         if possible_moves:
