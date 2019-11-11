@@ -45,13 +45,14 @@ def is_there_a_draw(board: Chessboard):
 
 def get_all_possible_moves(board: Chessboard):
     all_possible_moves = []
-    copied_board = board.deep_copy()
-    for figure in copied_board.figures.figures_list:
-        if figure.color != copied_board.current_player_color:
+    figures_list = board.figures.figures_list
+    copied_figures_list = copy.deepcopy(board.figures.figures_list)
+    for i, copied_figure in enumerate(copied_figures_list):
+        if figures_list[i].color != board.current_player_color:
             continue
 
-        figure_moves = figure.check_moves(copied_board.figures)
-        possible_moves = reduce_move_range_when_check(copied_board, figure, figure_moves)
+        figure_moves = figures_list[i].check_moves(board.figures)
+        possible_moves = reduce_move_range_when_check(board, figures_list[i], figure_moves)
 
         for move in possible_moves:
             move.player = get_player_from_color(copied_board.current_player_color)
