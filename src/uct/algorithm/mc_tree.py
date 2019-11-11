@@ -14,5 +14,5 @@ class MonteCarloTree:
             tmp_node = tmp_node.parent
 
         rc = self.game_state.deep_copy()
-        rc.apply_moves(moves)
+        rc.apply_moves(moves[::-1])
         return rc
