@@ -484,6 +484,16 @@ class TestChess(unittest.TestCase):
         self.make_moves_from_queue(moves)
         self.assertEqual(self.game.game_manager.board.game_status, GameStatus.FIFTY_MOVE_RULE)
 
+    def test_en_passant_capture_should_not_uncover_the_king(self):
+        figures = [King(Color.WHITE, (3, 2)), King(Color.BLACK, (7, 7)),
+                   Pawn(Color.WHITE, (4, 4)), Pawn(Color.BLACK, (6, 3)),
+                   Queen(Color.BLACK, (4, 7))]
+        self.game.game_manager.board.figures = ChessFiguresCollection(figures)
+
+        moves = [Move((3, 2), (4, 2)), Move((6, 3), (4, 3)), Move((4, 4))]
+        self.make_moves_from_queue(moves)
+        self.assertNotIn((5, 3), [move.position_to for move in self.game.game_manager.board.possible_moves])
+
 
 if __name__ == '__main__':
     unittest.main()
