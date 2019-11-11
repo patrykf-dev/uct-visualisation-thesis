@@ -3,11 +3,12 @@ import numpy as np
 
 class ViewMatrixManager:
     def __init__(self):
-        self.view_matrix_1 = np.eye(4, dtype=np.float32)
-        self.view_matrix_2 = np.eye(4, dtype=np.float32)
         self.x = 0
         self.y = 0
-        self.scale = 1
+        self.scale = 0.9
+        self.view_matrix_1 = np.eye(4, dtype=np.float32)
+        self.view_matrix_2 = np.eye(4, dtype=np.float32)
+        self._update_matrix()
 
     def change_scale(self, scale):
         self.scale = scale

@@ -10,9 +10,6 @@ class MonteCarloTreeDrawData:
 
 
 class MonteCarloTreeDrawDataRetriever:
-    PADDING_X = 0.05
-    PADDING_Y = 0.05
-
     def __init__(self):
         self.vertices_count = 0
         self.edges_count = 0
@@ -77,7 +74,7 @@ class MonteCarloTreeDrawDataRetriever:
         for i in range(len(vertices)):
             x = vertices[i][0]
             y = vertices[i][1]
-            new_x = (x - self.min_x - (x_span / 2)) / (x_span * (0.5 + self.PADDING_X))
-            new_y = -(y - self.min_y - (y_span / 2)) / (y_span * (0.5 + self.PADDING_Y))
+            new_x = (x - self.min_x - (x_span / 2)) / (x_span * 0.5)
+            new_y = -(y - self.min_y - (y_span / 2)) / (y_span * 0.5)
             vertices[i] = (new_x, new_y, 0)
             # print(f"Scaled vertex: ({x}, {y}) -> ({new_x}, {new_y})")

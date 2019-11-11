@@ -51,13 +51,19 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             self.mouse_tics = -20
 
         if self.mouse_tics == 0:
-            scale = 1
+            scale = 0.9
         elif self.mouse_tics < 0:
-            scale = 1 + (self.mouse_tics / 20)
+            scale = 0.9 + (self.mouse_tics / 20)
         else:
-            scale = 1 + (self.mouse_tics / 20)
+            scale = 0.9 + (self.mouse_tics / 20)
         self.view_matrix_manager.change_scale(scale)
         self._update_view_matrix()
+
+    def handle_mouse_click_event(self, event):
+        pos = event.pos()
+        x_clicked = pos.x()
+        y_clicked = pos.y()
+        print(f"Clicked ({x_clicked}, {y_clicked})")
 
     def _update_view_matrix(self):
         self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
@@ -94,6 +100,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def _setup_widget(self):
         self.native.keyPressEvent = self.handle_key_press_event
         self.native.wheelEvent = self.handle_wheel_event
+        self.native.mousePressEvent = self.handle_mouse_click_event
 
         set_viewport(0, 0, *self.physical_size)
         set_state(clear_color='gray', depth_test=False, blend=True, blend_func=('src_alpha', 'one_minus_src_alpha'))
