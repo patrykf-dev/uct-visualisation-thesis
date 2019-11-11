@@ -89,6 +89,16 @@ class Game:
         if player_moved:
             self.game_manager.deselect_last_moved()
 
+    def simulate_opponent_move(self):
+        game_state = ChessState(self.game_manager.board)
+        mcts = MonteCarloTreeSearch(game_state, max_iterations=20)
+        move, _ = mcts.calculate_next_move()
+        print(f"Algorithm decided to go {move.position_from} -> {move.position_to} for player {move.player}")
+        self.game_manager.deselect_king()
+        self.game_manager.board.perform_legal_move(move)
+        self.game_manager.reset_selected_tile()
+        self.redraw_board()
+
     def react_to_player_click(self):
         pos = pygame.mouse.get_pos()
         grid_pos = self.grid_click_to_tile(pos)
@@ -96,16 +106,7 @@ class Game:
         self.redraw_board()
         if player_moved:
             self.game_manager.deselect_last_moved()
-
-            game_state = ChessState(self.game_manager.board)
-            mcts = MonteCarloTreeSearch(game_state, max_iterations=20)
-            move, _ = mcts.calculate_next_move()
-
-            print(f"Algorithm decided to go {move.position_from} -> {move.position_to} for player {move.player}")
-            self.game_manager.deselect_king()
-            self.game_manager.board.perform_legal_move(move)
-            self.game_manager.reset_selected_tile()
-            self.redraw_board()
+            self.simulate_opponent_move()
 
     def process_input(self, events):
         for event in events:
