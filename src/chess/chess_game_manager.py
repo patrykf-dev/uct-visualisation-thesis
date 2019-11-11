@@ -28,6 +28,7 @@ class ChessGameManager:
             clicked_possible_move = move_index != -1
             if clicked_possible_move:
                 self.deselect_last_moved()
+                self.deselect_king()
                 self.board.perform_legal_move(self.board.possible_moves[move_index])
                 self.reset_selected_tile()
                 return True
@@ -58,8 +59,6 @@ class ChessGameManager:
 
     def deselect_figure(self):
         if self.selected_tile:
-            if not self.board.check:
-                self.board_gui.mark_tile_deselected(self.board.figures.get_king_position(self.board.current_player_color))
             is_king_selected = ChessUtils.is_king_selected_to_move_in_check(self.board, self.selected_tile)
             self.board_gui.mark_tile_deselected(self.selected_tile, when_checked=is_king_selected)
         self.reset_selected_tile()
@@ -68,3 +67,7 @@ class ChessGameManager:
         self.selected_tile = None
         self.board.possible_moves = []
         self.if_figure_selected = False
+
+    def deselect_king(self):
+        if self.board.check:
+            self.board_gui.mark_tile_deselected(self.board.figures.get_king_position(self.board.current_player_color))
