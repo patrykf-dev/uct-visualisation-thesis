@@ -50,6 +50,8 @@ class MonteCarloTreeDrawDataRetriever:
 
         for i in range(self.vertices_count):
             vertices[i]["a_position"] = tmp_vertices[i][0]
+            vertices[i]["a_bg_color"] = tmp_vertices[i][2]
+
         edges = np.asarray(tmp_edges, dtype=np.uint32)
 
         data = MonteCarloTreeDrawData()
@@ -62,8 +64,15 @@ class MonteCarloTreeDrawDataRetriever:
         x = node.vis_details.x
         y = node.vis_details.y
         self.update_bounds(x, y)
-        # print(f"Adding vertex ({x}, {y})")
-        vertices.append(((x, y, 0), node))
+        color = (1, 1, 0, 1)
+        if node.move is not None:
+            if node.move.player == 1:
+                color = (0, 0, 0, 1)
+            else:
+                color = (1, 1, 1, 1)
+
+        coords = (x, y, 0)
+        vertices.append((coords, node, color))
         parent_counter = self.vertices_count
         for child in node.children:
             self.vertices_count = self.vertices_count + 1
@@ -85,5 +94,5 @@ class MonteCarloTreeDrawDataRetriever:
             y = vertices[i][0][1]
             new_x = (x - self.min_x - (x_span / 2)) / (x_span * 0.5)
             new_y = -(y - self.min_y - (y_span / 2)) / (y_span * 0.5)
-            vertices[i] = ((new_x, new_y, 0), vertices[i][1])
+            vertices[i] = ((new_x, new_y, 0), vertices[i][1], vertices[i][2])
             # print(f"Scaled vertex: ({x}, {y}) -> ({new_x}, {new_y})")
