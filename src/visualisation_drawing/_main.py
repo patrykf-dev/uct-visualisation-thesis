@@ -10,5 +10,4 @@ if __name__ == '__main__':
 
     canvas = MonteCarloTreeCanvas(root)
     window = MonteCarloTreeWindow(canvas)
-    canvas.window = window
     window.show()
