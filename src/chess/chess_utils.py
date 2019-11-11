@@ -73,6 +73,10 @@ def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
         potential_figure = Figure.get_figure(board.figures, move.position_to)
         if potential_figure:
             Figure.remove_figure(board.figures, potential_figure)
+        if move.move_type == MoveType.EN_PASSANT:
+            opponent_figure_position = move.help_dict['opponent-pawn-pos']
+            opponent_figure = Figure.get_figure(board.figures, opponent_figure_position)
+            Figure.remove_figure(board.figures, opponent_figure)
         board.figures.move_figure_to(figure, move.position_to)
         king = board.figures.get_king(board.current_player_color)
         king.update_check_mask(board.figures)
@@ -81,6 +85,8 @@ def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
         board.figures.move_figure_to(figure, previous_position)
         if potential_figure:
             board.figures.add_figure(potential_figure)
+        if move.move_type == MoveType.EN_PASSANT:
+            board.figures.add_figure(opponent_figure)
     return reduced_moves
 
 
