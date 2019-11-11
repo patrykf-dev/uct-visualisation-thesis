@@ -18,6 +18,7 @@ TILE_NUMBER = 8
 TILE_WIDTH = int(WIDTH / TILE_NUMBER)
 TILE_HEIGHT = int(HEIGHT / TILE_NUMBER)
 ICONS_FOLDER = 'icons'
+TILES_FONT = None
 
 
 class Game:
@@ -56,6 +57,8 @@ class Game:
                 tile_figure = Figure.get_figure(self.game_manager.board.figures, (i, j))
                 if tile_figure:
                     self.draw_figure(tile_figure, tile.start_position)
+                tile_text_surface = TILES_FONT.render(f"{i}, {j}", False, (255, 255, 255))
+                self.screen.blit(tile_text_surface, tile.start_position)
 
     def grid_click_to_tile(self, pos):
         """
@@ -124,6 +127,8 @@ class Game:
 
 
 if __name__ == "__main__":
+    pygame.font.init()
+    TILES_FONT = pygame.font.SysFont("Helvetica", 30)
     game = Game()
     game.draw_board()
     pygame.display.flip()

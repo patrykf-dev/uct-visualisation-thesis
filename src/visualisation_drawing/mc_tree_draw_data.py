@@ -10,7 +10,7 @@ class MonteCarloTreeDrawData:
         self.vertices_list = None
 
     def get_node_at(self, world_x, world_y):
-        eps = 0.01
+        eps = 0.03
         for vertex in self.vertices_list:
             if abs(vertex[0][0] - world_x) < eps and abs(vertex[0][1] - world_y) < eps:
                 return vertex[1]
