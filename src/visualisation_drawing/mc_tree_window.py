@@ -1,4 +1,4 @@
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFrame, QPushButton
 from vispy import app as VispyApp
 
@@ -70,8 +70,8 @@ class MonteCarloTreeWindow(QMainWindow):
         self._fill_right_panel(right_panel_layout)
 
     def _fill_right_panel(self, right_panel_layout):
-        content_font = QtGui.QFont("Helvetica", 12)
-        title_font = QtGui.QFont("Helvetica", 12, QtGui.QFont.Bold)
+        content_font = QtGui.QFont("Helvetica", 10)
+        title_font = QtGui.QFont("Helvetica", 10, QtGui.QFont.Bold)
         counter = 0
         for label in self.labels:
             label_title = QLabel()
@@ -87,7 +87,7 @@ class MonteCarloTreeWindow(QMainWindow):
 
     def _create_reset_button(self):
         rc = QPushButton()
-        button_font = QtGui.QFont("Helvetica", 12)
+        button_font = QtGui.QFont("Helvetica", 10)
         rc.setText("Reset view")
         rc.setFont(button_font)
         return rc
@@ -97,6 +97,8 @@ class PanelWidget(QFrame):
     def __init__(self, *args):
         super(PanelWidget, self).__init__(*args)
         self.setStyleSheet("background-color: rgb(160, 160, 160); margin:2px; border:2px solid rgb(0, 0, 0);")
+        # self.setMinimumWidth(300)
+        self.setFixedSize(400, 400)
 
     def change_background_color(self, color):
         self.setStyleSheet(

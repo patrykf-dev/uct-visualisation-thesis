@@ -48,6 +48,8 @@ class MonteCarloNode:
         node.details = MonteCarloNodeDetails()
         node.children = []
         node.parent = None
+        if move:
+            node.details.move_name = move.description
         return node
 
     @staticmethod

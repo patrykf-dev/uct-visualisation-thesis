@@ -104,6 +104,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.edges_buffer = vispy.gloo.IndexBuffer(self.tree_draw_data.edges)
 
     def _setup_widget(self):
+        self.native.setMinimumWidth(600)
+        self.native.setMinimumHeight(600)
         self.native.keyPressEvent = self.handle_key_press_event
         self.native.wheelEvent = self.handle_wheel_event
         self.native.mousePressEvent = self.handle_mouse_click_event
