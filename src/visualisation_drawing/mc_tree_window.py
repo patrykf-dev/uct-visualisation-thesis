@@ -45,7 +45,7 @@ class MonteCarloTreeWindow(QMainWindow):
                 self.labels[5][1].setText(str(node.details.win_score))
                 self.labels[6][1].setText(str(node.details.average_prize))
             if node.move:
-                self.labels[7][1].setText(str(node.move.current_player))
+                self.labels[7][1].setText(str(node.move.player))
 
     def _handle_reset_button_clicked_event(self):
         self.canvas.reset_view()
