@@ -62,3 +62,20 @@ class ViewMatrixManager:
         if norm == 0:
             norm = np.finfo(v.dtype).eps
         return v / norm
+
+    def parse_click(self, x_clicked, y_clicked, width, height):
+        seen_world_up = (-1 + self.y) / self.scale
+        seen_world_down = (1 + self.y) / self.scale
+        seen_world_right = (1 + self.x) / self.scale
+        seen_world_left = (-1 + self.x) / self.scale
+
+        world_x_span = seen_world_right - seen_world_left
+        world_y_span = seen_world_down - seen_world_up
+
+        fract_clicked_x = x_clicked / width
+        fract_clicked_y = y_clicked / height
+
+        world_x = fract_clicked_x * world_x_span + seen_world_left
+        world_y = - (fract_clicked_y * world_y_span + seen_world_up)
+
+        return world_x, world_y

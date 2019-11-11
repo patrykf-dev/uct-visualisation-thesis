@@ -63,7 +63,10 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         pos = event.pos()
         x_clicked = pos.x()
         y_clicked = pos.y()
-        print(f"Clicked ({x_clicked}, {y_clicked})")
+        width = self.native.frameGeometry().width()
+        height = self.native.frameGeometry().height()
+        world_x, world_y = self.view_matrix_manager.parse_click(x_clicked, y_clicked, width, height)
+        print(f"Clicked ({world_x}, {world_y})")
 
     def _update_view_matrix(self):
         self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
