@@ -7,6 +7,14 @@ class MonteCarloTreeDrawData:
     def __init__(self):
         self.vertices = None
         self.edges = None
+        self.vertices_list = None
+
+    def get_node_at(self, world_x, world_y):
+        eps = 0.01
+        for vertex in self.vertices_list:
+            if abs(vertex[0][0] - world_x) < eps and abs(vertex[0][1] - world_y) < eps:
+                return vertex[1]
+        return None
 
 
 class MonteCarloTreeDrawDataRetriever:
@@ -41,12 +49,13 @@ class MonteCarloTreeDrawDataRetriever:
         vertices["a_linewidth"] = 2.0 * ps
 
         for i in range(self.vertices_count):
-            vertices[i]["a_position"] = tmp_vertices[i]
+            vertices[i]["a_position"] = tmp_vertices[i][0]
         edges = np.asarray(tmp_edges, dtype=np.uint32)
 
         data = MonteCarloTreeDrawData()
         data.vertices = vertices
         data.edges = edges
+        data.vertices_list = tmp_vertices
         return data
 
     def walk_tree(self, node: MonteCarloNode, vertices, edges):
@@ -54,7 +63,7 @@ class MonteCarloTreeDrawDataRetriever:
         y = node.vis_details.y
         self.update_bounds(x, y)
         # print(f"Adding vertex ({x}, {y})")
-        vertices.append((x, y, 0))
+        vertices.append(((x, y, 0), node))
         parent_counter = self.vertices_count
         for child in node.children:
             self.vertices_count = self.vertices_count + 1
@@ -72,9 +81,9 @@ class MonteCarloTreeDrawDataRetriever:
         x_span = self.max_x - self.min_x
         y_span = self.max_y - self.min_y
         for i in range(len(vertices)):
-            x = vertices[i][0]
-            y = vertices[i][1]
+            x = vertices[i][0][0]
+            y = vertices[i][0][1]
             new_x = (x - self.min_x - (x_span / 2)) / (x_span * 0.5)
             new_y = -(y - self.min_y - (y_span / 2)) / (y_span * 0.5)
-            vertices[i] = (new_x, new_y, 0)
+            vertices[i] = ((new_x, new_y, 0), vertices[i][1])
             # print(f"Scaled vertex: ({x}, {y}) -> ({new_x}, {new_y})")

@@ -66,7 +66,12 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         width = self.native.frameGeometry().width()
         height = self.native.frameGeometry().height()
         world_x, world_y = self.view_matrix_manager.parse_click(x_clicked, y_clicked, width, height)
-        print(f"Clicked ({world_x}, {world_y})")
+
+        clicked_node = self.tree_draw_data.get_node_at(world_x, world_y)
+        if clicked_node:
+            print(f"You clicked a node {clicked_node.id}!")
+            if clicked_node.details:
+                print(f"{clicked_node.details.visits_count} / {clicked_node.details.visits_count}")
 
     def _update_view_matrix(self):
         self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
@@ -96,9 +101,9 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def _bind_buffers(self, tree):
         ps = self.pixel_scale
         retriever = MonteCarloTreeDrawDataRetriever()
-        data = retriever.retrieve_draw_data(tree, ps)
-        self.vertices_buffer = vispy.gloo.VertexBuffer(data.vertices)
-        self.edges_buffer = vispy.gloo.IndexBuffer(data.edges)
+        self.tree_draw_data = retriever.retrieve_draw_data(tree, ps)
+        self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
+        self.edges_buffer = vispy.gloo.IndexBuffer(self.tree_draw_data.edges)
 
     def _setup_widget(self):
         self.native.keyPressEvent = self.handle_key_press_event
