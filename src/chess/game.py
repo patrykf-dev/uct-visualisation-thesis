@@ -95,6 +95,15 @@ class Game:
         if player_moved:
             self.game_manager.deselect_last_moved()
 
+    @staticmethod
+    def open_visualization_window(mcts):
+        alg = ImprovedWalkersAlgorithm()
+        alg.buchheim_algorithm(mcts.tree.root)
+
+        canvas = MonteCarloTreeCanvas(mcts.tree.root)
+        window = MonteCarloTreeWindow(canvas)
+        window.show()
+
     def simulate_opponent_move(self):
         game_state = ChessState(self.game_manager.board)
         mcts = MonteCarloTreeSearch(game_state, max_iterations=20)
@@ -104,12 +113,7 @@ class Game:
         self.game_manager.board.perform_legal_move(move)
         self.game_manager.reset_selected_tile()
         self.redraw_board()
-        alg = ImprovedWalkersAlgorithm()
-        alg.buchheim_algorithm(mcts.tree.root)
-
-        canvas = MonteCarloTreeCanvas(mcts.tree.root)
-        window = MonteCarloTreeWindow(canvas)
-        window.show()
+        self.open_visualization_window(mcts)
 
     def react_to_player_click(self):
         pos = pygame.mouse.get_pos()
