@@ -1,9 +1,11 @@
 import numpy as np
 import vispy
+from axel import Event
 from vispy import app as VispyApp
 from vispy.gloo import set_viewport, set_state, clear
 
 from src.visualisation_drawing.mc_tree_draw_data import MonteCarloTreeDrawDataRetriever
+from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
 
@@ -17,6 +19,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def __init__(self, tree, **kwargs):
         VispyApp.Canvas.__init__(self, size=(1000, 1000), **kwargs)
         self.mouse_tics = 0
+        self.window = None
         self._setup_widget()
         self._bind_buffers(tree)
         self._bind_shaders()
@@ -69,9 +72,10 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
         clicked_node = self.tree_draw_data.get_node_at(world_x, world_y)
         if clicked_node:
-            print(f"You clicked a node {clicked_node.id}!")
-            if clicked_node.details:
-                print(f"{clicked_node.details.visits_count} / {clicked_node.details.visits_count}")
+            # print(f"You clicked a node {clicked_node.id}!")
+            # if clicked_node.details:
+            #     print(f"{clicked_node.details.visits_count} / {clicked_node.details.visits_count}")
+            self.window._handle_node_clicked_event(None, clicked_node)
 
     def _update_view_matrix(self):
         self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
@@ -109,6 +113,5 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.native.keyPressEvent = self.handle_key_press_event
         self.native.wheelEvent = self.handle_wheel_event
         self.native.mousePressEvent = self.handle_mouse_click_event
-
         set_viewport(0, 0, *self.physical_size)
         set_state(clear_color='gray', depth_test=False, blend=True, blend_func=('src_alpha', 'one_minus_src_alpha'))
