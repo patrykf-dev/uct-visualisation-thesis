@@ -48,8 +48,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def handle_wheel_event(self, event):
         self.mouse_tics += event.angleDelta().y() / 120
-        if self.mouse_tics < -20:
-            self.mouse_tics = -20
+        if self.mouse_tics < -17:
+            self.mouse_tics = -17
 
         if self.mouse_tics == 0:
             scale = 0.9
