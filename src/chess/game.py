@@ -8,6 +8,9 @@ from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_game_manager import ChessGameManager
 from src.chess.chessboard import Figure
 from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
+from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
+from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
+from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
 
 WIDTH = 600
 HEIGHT = 600
@@ -15,6 +18,7 @@ TILE_NUMBER = 8
 TILE_WIDTH = int(WIDTH / TILE_NUMBER)
 TILE_HEIGHT = int(HEIGHT / TILE_NUMBER)
 ICONS_FOLDER = 'icons'
+TILES_FONT = None
 
 
 class Game:
@@ -53,6 +57,8 @@ class Game:
                 tile_figure = Figure.get_figure(self.game_manager.board.figures, (i, j))
                 if tile_figure:
                     self.draw_figure(tile_figure, tile.start_position)
+                tile_text_surface = TILES_FONT.render(f"{i}, {j}", False, (255, 255, 255))
+                self.screen.blit(tile_text_surface, tile.start_position)
 
     def grid_click_to_tile(self, pos):
         """
@@ -98,6 +104,12 @@ class Game:
         self.game_manager.board.perform_legal_move(move)
         self.game_manager.reset_selected_tile()
         self.redraw_board()
+        alg = ImprovedWalkersAlgorithm()
+        alg.buchheim_algorithm(mcts.tree.root)
+
+        canvas = MonteCarloTreeCanvas(mcts.tree.root)
+        window = MonteCarloTreeWindow(canvas)
+        window.show()
 
     def react_to_player_click(self):
         pos = pygame.mouse.get_pos()
@@ -123,6 +135,8 @@ class Game:
 
 
 if __name__ == "__main__":
+    pygame.font.init()
+    TILES_FONT = pygame.font.SysFont("Helvetica", 30)
     game = Game()
     game.draw_board()
     pygame.display.flip()

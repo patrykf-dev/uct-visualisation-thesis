@@ -62,7 +62,7 @@ class MonteCarloTreeSearch:
         self._print_debug("Expanding from node {}".format(node.id))
         possible_moves = node_state.get_all_possible_moves()
         for move in possible_moves:
-            node.add_child(move)
+            node.add_child_by_move(move)
 
     def _simulation(self, leaf):
         """
