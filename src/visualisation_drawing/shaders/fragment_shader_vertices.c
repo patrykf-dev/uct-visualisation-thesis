@@ -1,4 +1,4 @@
-#version 410
+#version 120
 
 varying vec4 v_fg_color;
 varying vec4 v_bg_color;

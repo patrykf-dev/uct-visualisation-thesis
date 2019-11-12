@@ -1,4 +1,4 @@
-#version 410
+#version 120
 
 uniform mat4 u_model;
 uniform mat4 u_view;
