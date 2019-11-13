@@ -4,6 +4,7 @@ from axel import Event
 from vispy import app as VispyApp
 from vispy.gloo import set_viewport, set_state, clear
 
+from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.mc_tree_draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
@@ -15,11 +16,13 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     KEY_CODE_RIGHT = 16777236
     KEY_CODE_DOWN = 16777237
 
-    def __init__(self, tree, **kwargs):
+    def __init__(self, root: MonteCarloNode, **kwargs):
         VispyApp.Canvas.__init__(self, size=(1000, 1000), **kwargs)
         self.mouse_tics = 0
+        self.root = root
+
         self._setup_widget()
-        self._bind_buffers(tree)
+        self._bind_buffers()
         self._bind_shaders()
         self._setup_matrices()
 
@@ -96,10 +99,10 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_edges = vispy.gloo.Program(shader_reader.get_edges_vshader(), shader_reader.get_edges_fshader())
         self.program_edges.bind(self.vertices_buffer)
 
-    def _bind_buffers(self, tree):
+    def _bind_buffers(self):
         ps = self.pixel_scale
         retriever = MonteCarloTreeDrawDataRetriever()
-        self.tree_draw_data = retriever.retrieve_draw_data(tree, ps)
+        self.tree_draw_data = retriever.retrieve_draw_data(self.root, ps)
         self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
         self.edges_buffer = vispy.gloo.IndexBuffer(self.tree_draw_data.edges)
 

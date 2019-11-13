@@ -1,7 +1,8 @@
-from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFrame, QPushButton
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFrame, QPushButton, QFileDialog
 from vispy import app as VispyApp
 
+from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
 
@@ -50,6 +51,12 @@ class MonteCarloTreeWindow(QMainWindow):
     def _handle_reset_button_clicked_event(self):
         self.canvas.reset_view()
 
+    def _handle_serialize_button_clicked_event(self):
+        path, category = QFileDialog.getSaveFileName(self, "Serialize tree", "", "Csv files (*.csv)")
+        serializator = CsvSerializator()
+        serializator.save_node_to_path(self.canvas.root, path)
+        print(f"Saved file: {path}")
+
     def _setup_window(self):
         self.canvas.on_node_clicked += self._handle_node_clicked_event
 
@@ -59,13 +66,14 @@ class MonteCarloTreeWindow(QMainWindow):
         self.right_panel_widget = PanelWidget()
         right_panel_layout = QGridLayout()
         self.reset_button = self._create_reset_button()
-        self.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
+        self.serialize_button = self._create_serialize_button()
 
         main_widget.setLayout(main_layout)
         main_layout.addWidget(self.canvas.native, 0, 0)
         self.right_panel_widget.setLayout(right_panel_layout)
         main_layout.addWidget(self.right_panel_widget, 0, 1)
         main_layout.addWidget(self.reset_button, 1, 0)
+        main_layout.addWidget(self.serialize_button, 2, 0)
 
         self._fill_right_panel(right_panel_layout)
 
@@ -90,6 +98,15 @@ class MonteCarloTreeWindow(QMainWindow):
         button_font = QtGui.QFont("Helvetica", 10)
         rc.setText("Reset view")
         rc.setFont(button_font)
+        rc.clicked.connect(self._handle_reset_button_clicked_event)
+        return rc
+
+    def _create_serialize_button(self):
+        rc = QPushButton()
+        button_font = QtGui.QFont("Helvetica", 10)
+        rc.setText("Save tree to csv file")
+        rc.setFont(button_font)
+        rc.clicked.connect(self._handle_serialize_button_clicked_event)
         return rc
 
 
@@ -97,7 +114,6 @@ class PanelWidget(QFrame):
     def __init__(self, *args):
         super(PanelWidget, self).__init__(*args)
         self.setStyleSheet("background-color: rgb(160, 160, 160); margin:2px; border:2px solid rgb(0, 0, 0);")
-        # self.setMinimumWidth(300)
         self.setFixedSize(400, 400)
 
     def change_background_color(self, color):

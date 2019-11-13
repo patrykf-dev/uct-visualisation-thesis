@@ -1,7 +1,7 @@
 import src.serialization.codec_binary as BinaryCodec
 from src.serialization.serializator_base import BaseSerializator
-from src.uct.algorithm.mc_node_details import MonteCarloNodeDetails
 from src.uct.algorithm.mc_node import MonteCarloNode
+from src.uct.algorithm.mc_node_details import MonteCarloNodeDetails
 
 
 class BinarySerializator(BaseSerializator):
@@ -9,17 +9,15 @@ class BinarySerializator(BaseSerializator):
         super().__init__()
         self.extension = "tree"
 
-    def save_node_to_file(self, node, file_name):
+    def save_node_to_path(self, node, path):
         bin_arrays = []
         self._encode_node(bin_arrays, node)
 
-        path = self.get_file_path(file_name)
         with open(path, 'wb+') as file:
             for bin_array in bin_arrays:
                 file.write(bin_array)
 
-    def get_node_from_file(self, file_name):
-        path = self.get_file_path(file_name)
+    def get_node_from_path(self, path):
         with open(path, "rb") as file:
             node, _ = self._decode_node(file)
         return node

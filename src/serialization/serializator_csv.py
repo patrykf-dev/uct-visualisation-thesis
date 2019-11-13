@@ -9,14 +9,12 @@ class CsvSerializator(BaseSerializator):
         super().__init__()
         self.extension = "csv"
 
-    def save_node_to_file(self, node, file_name):
-        path = self.get_file_path(file_name)
+    def save_node_to_path(self, node, path):
         with open(path, "w+", newline='') as file:
             writer = csv.writer(file, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
             self._encode_node(writer, node)
 
-    def get_node_from_file(self, file_name):
-        path = self.get_file_path(file_name)
+    def get_node_from_path(self, path):
         with open(path, newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='|')
             node = self._decode_node(reader)
