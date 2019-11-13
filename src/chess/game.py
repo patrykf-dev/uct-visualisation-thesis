@@ -139,7 +139,8 @@ class Game:
         pygame.display.update()
 
 
-if __name__ == "__main__":
+def launch_game():
+    global TILES_FONT
     pygame.font.init()
     TILES_FONT = pygame.font.SysFont("Helvetica", 30)
     game = Game()
@@ -147,3 +148,7 @@ if __name__ == "__main__":
     pygame.display.flip()
     while True:
         game.process_input(pygame.event.get())
+
+
+if __name__ == "__main__":
+    launch_game()
