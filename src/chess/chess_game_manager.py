@@ -21,22 +21,22 @@ class ChessGameManager:
     def react_to_tile_click(self, grid_pos):
         if not self.if_figure_selected:
             self.select_figure(grid_pos)
-            return False
+            return False, None
         else:
             positions_list = [x.position_to for x in self.board.possible_moves]
             move_index = positions_list.index(grid_pos) if grid_pos in positions_list else -1
-            clicked_possible_move = move_index != -1
-            if clicked_possible_move:
+            if move_index != -1:
+                move = self.board.possible_moves[move_index]
                 self.deselect_last_moved()
                 self.deselect_king()
-                self.board.perform_legal_move(self.board.possible_moves[move_index])
+                self.board.perform_legal_move(move)
                 self.reset_selected_tile()
-                return True
+                return True, move
             else:
                 if self.selected_tile:
                     self.deselect_figure()
                 self.select_figure(grid_pos)
-                return False
+                return False, None
 
     def select_figure(self, grid_pos):
         figure = Figure.get_figure(self.board.figures, grid_pos)

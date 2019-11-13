@@ -9,5 +9,10 @@ class ChessMove(BaseGameMove):
         self.move_type = move_type
         self.help_dict = help_dict
 
+    def move_equal(self, move) -> bool:
+        return self.position_to[0] == move.position_to[0] and self.position_to[1] == move.position_to[1] and \
+               self.position_from[0] == move.position_from[0] and self.position_from[1] == move.position_from[1] and \
+               self.move_type == move.move_type
+
     def __str__(self):
         return f'{self.position_to}, {self.move_type}'

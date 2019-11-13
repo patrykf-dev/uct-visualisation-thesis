@@ -3,17 +3,19 @@ import src.uct.algorithm.mc_node_utils as NodeUtils
 import src.uct.algorithm.uct_calculation as UCT
 from src.uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
 from src.uct.algorithm.mc_tree import MonteCarloTree
+from src.uct.game.base_game_move import BaseGameMove
+from src.uct.game.base_game_state import BaseGameState
 
 
 class MonteCarloTreeSearch:
-    def __init__(self, game_state, max_iterations=10, max_moves_per_simulation=40):
+    def __init__(self, tree: MonteCarloTree, max_iterations, max_moves_per_simulation):
         self.iterations = 0
+        self.tree = tree
         self.debug_print_allowed = False
-        self.tree = MonteCarloTree(game_state)
         self.max_iterations = max_iterations
         self.max_moves_per_simulation = max_moves_per_simulation
 
-    def calculate_next_move(self):
+    def calculate_next_move(self) -> (BaseGameMove, BaseGameState):
         while self.iterations < self.max_iterations:
             self._print_debug("\n=======Iteration {} =======".format(self.iterations))
             promising_node = self._selection(self.tree.root)

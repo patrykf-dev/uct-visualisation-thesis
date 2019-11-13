@@ -7,7 +7,8 @@ from pygame.locals import *
 from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_game_manager import ChessGameManager
 from src.chess.chessboard import Figure
-from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
+from src.uct.algorithm.mc_game_manager import MonteCarloGameManager
+from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
 from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
@@ -39,6 +40,8 @@ class Game:
         pygame.display.set_caption('Chess')
         self.screen = pygame.display.get_surface()
         self.game_manager = ChessGameManager()
+        game_state = ChessState(self.game_manager.board)
+        self.monte_carlo_manager = MonteCarloGameManager(game_state)
 
     def get_image(self, image_file):
         tile_image = pygame.image.load(os.path.join(self.ICONS_FOLDER, image_file))
@@ -90,39 +93,37 @@ class Game:
 
     def mock_react_to_player_click(self, position):
         grid_pos = self.grid_click_to_tile(position)
-        player_moved = self.game_manager.react_to_tile_click(grid_pos)
+        player_moved, _ = self.game_manager.react_to_tile_click(grid_pos)
         self.redraw_board()
         if player_moved:
             self.game_manager.deselect_last_moved()
 
-    @staticmethod
-    def open_visualization_window(mcts):
-        alg = ImprovedWalkersAlgorithm()
-        alg.buchheim_algorithm(mcts.tree.root)
-
-        canvas = MonteCarloTreeCanvas(mcts.tree.root)
-        window = MonteCarloTreeWindow(canvas)
-        window.show()
+    def react_to_player_click(self):
+        pos = pygame.mouse.get_pos()
+        grid_pos = self.grid_click_to_tile(pos)
+        player_moved, player_move = self.game_manager.react_to_tile_click(grid_pos)
+        self.redraw_board()
+        if player_moved:
+            self.game_manager.deselect_last_moved()
+            self.monte_carlo_manager.notify_move_performed(player_move)
+            self.simulate_opponent_move()
 
     def simulate_opponent_move(self):
-        game_state = ChessState(self.game_manager.board)
-        mcts = MonteCarloTreeSearch(game_state, max_iterations=20, max_moves_per_simulation=40)
-        move, _ = mcts.calculate_next_move()
+        move = self.monte_carlo_manager.calculate_next_move(max_iterations=20, max_moves_per_simulation=80)
         print(f"Algorithm decided to go {move.position_from} -> {move.position_to} for player {move.player}")
         self.game_manager.deselect_king()
         self.game_manager.board.perform_legal_move(move)
         self.game_manager.reset_selected_tile()
         self.redraw_board()
-        self.open_visualization_window(mcts)
+        self.open_visualization_window(self.monte_carlo_manager.tree.root)
 
-    def react_to_player_click(self):
-        pos = pygame.mouse.get_pos()
-        grid_pos = self.grid_click_to_tile(pos)
-        player_moved = self.game_manager.react_to_tile_click(grid_pos)
-        self.redraw_board()
-        if player_moved:
-            self.game_manager.deselect_last_moved()
-            self.simulate_opponent_move()
+    @staticmethod
+    def open_visualization_window(tree_root: MonteCarloNode):
+        alg = ImprovedWalkersAlgorithm()
+        alg.buchheim_algorithm(tree_root)
+        canvas = MonteCarloTreeCanvas(tree_root)
+        window = MonteCarloTreeWindow(canvas)
+        window.show()
 
     def process_input(self, events):
         for event in events:
