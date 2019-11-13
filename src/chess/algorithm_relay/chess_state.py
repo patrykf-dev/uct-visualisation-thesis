@@ -41,7 +41,8 @@ class ChessState(BaseGameState):
         return rc
 
     def generate_description(self):
-        return f"{self.board.game_status}, {len(self.board.figures.figures_list)} figures left on board," \
+        status = str(self.board.game_status).split(".")[1]
+        return f"{status}, {len(self.board.figures.figures_list)} figures left on board," \
                f" player1 value: {self.board.figures.player1_value}, player2 value: {self.board.figures.player2_value}"
 
     def apply_moves(self, moves):

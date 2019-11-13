@@ -92,11 +92,13 @@ class MonteCarloTreeSearch:
             tmp_phase = tmp_state.phase
             moves_counter = moves_counter + 1
             if moves_counter >= self.max_moves_per_simulation:
-                print(f"{count_formatted}: node id {leaf.id}, {tmp_state.generate_description()}")
+                print(
+                    f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
                 break
 
         if tmp_phase != Enums.GamePhase.IN_PROGRESS:
-            print(f"{count_formatted}: node id {leaf.id}, {tmp_state.generate_description()}")
+            print(
+                f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
 
         return MonteCarloSimulationResult(tmp_state)
 
