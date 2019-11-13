@@ -2,6 +2,7 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFrame, QPushButton, QFileDialog
 from vispy import app as VispyApp
 
+from src.main_application.GUI_utils import DEFAULT_FONT, DEFAULT_FONT_BOLD
 from src.main_application.panel_widget import PanelWidget
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
@@ -79,15 +80,13 @@ class MonteCarloTreeWindow(QMainWindow):
         self._fill_right_panel(right_panel_layout)
 
     def _fill_right_panel(self, right_panel_layout):
-        content_font = QtGui.QFont("Helvetica", 10)
-        title_font = QtGui.QFont("Helvetica", 10, QtGui.QFont.Bold)
         counter = 0
         for label in self.labels:
             label_title = QLabel()
             label_title.setText(label[0] + ": ")
-            label_title.setFont(title_font)
+            label_title.setFont(DEFAULT_FONT_BOLD)
             label_content = QLabel()
-            label_content.setFont(content_font)
+            label_content.setFont(DEFAULT_FONT)
             label_content.setText(self.NO_INFO_LABEL)
             right_panel_layout.addWidget(label_title, counter, 0)
             right_panel_layout.addWidget(label_content, counter, 1)
@@ -96,16 +95,14 @@ class MonteCarloTreeWindow(QMainWindow):
 
     def _create_reset_button(self):
         rc = QPushButton()
-        button_font = QtGui.QFont("Helvetica", 10)
         rc.setText("Reset view")
-        rc.setFont(button_font)
+        rc.setFont(DEFAULT_FONT)
         rc.clicked.connect(self._handle_reset_button_clicked_event)
         return rc
 
     def _create_serialize_button(self):
         rc = QPushButton()
-        button_font = QtGui.QFont("Helvetica", 10)
         rc.setText("Save tree to csv file")
-        rc.setFont(button_font)
+        rc.setFont(DEFAULT_FONT)
         rc.clicked.connect(self._handle_serialize_button_clicked_event)
         return rc
