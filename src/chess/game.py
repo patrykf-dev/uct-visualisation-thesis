@@ -106,7 +106,7 @@ class Game:
 
     def simulate_opponent_move(self):
         game_state = ChessState(self.game_manager.board)
-        mcts = MonteCarloTreeSearch(game_state, max_iterations=20)
+        mcts = MonteCarloTreeSearch(game_state, max_iterations=20, max_moves_per_simulation=40)
         move, _ = mcts.calculate_next_move()
         print(f"Algorithm decided to go {move.position_from} -> {move.position_to} for player {move.player}")
         self.game_manager.deselect_king()

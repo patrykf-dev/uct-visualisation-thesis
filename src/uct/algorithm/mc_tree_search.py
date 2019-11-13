@@ -1,6 +1,7 @@
 import src.uct.algorithm.enums as Enums
 import src.uct.algorithm.mc_node_utils as NodeUtils
 import src.uct.algorithm.uct_calculation as UCT
+from src.uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
 from src.uct.algorithm.mc_tree import MonteCarloTree
 
 
@@ -64,7 +65,7 @@ class MonteCarloTreeSearch:
         for move in possible_moves:
             node.add_child_by_move(move)
 
-    def _simulation(self, leaf):
+    def _simulation(self, leaf) -> MonteCarloSimulationResult:
         """
         3rd stage of MCTS
         Complete one random playout from node C.
@@ -85,17 +86,21 @@ class MonteCarloTreeSearch:
         self._print_debug("Simulating from node {}...".format(leaf.id))
 
         moves_counter = 0
+        count_formatted = f"#{str(self.iterations).ljust(4)}"
         while tmp_phase == Enums.GamePhase.IN_PROGRESS:
             tmp_state.perform_random_move()
             tmp_phase = tmp_state.phase
             moves_counter = moves_counter + 1
             if moves_counter >= self.max_moves_per_simulation:
-                print("!!!	GAME ENDED: max_moves_per_simulation exceeded")
+                print(f"{count_formatted}: node id {leaf.id}, {tmp_state.generate_description()}")
                 break
 
-        return tmp_phase
+        if tmp_phase != Enums.GamePhase.IN_PROGRESS:
+            print(f"{count_formatted}: node id {leaf.id}, {tmp_state.generate_description()}")
 
-    def _backpropagation(self, leaf, simulation_result):
+        return MonteCarloSimulationResult(tmp_state)
+
+    def _backpropagation(self, leaf, simulation_result: MonteCarloSimulationResult):
         """
         4th stage of MCTS
         Use the result of the playout to update information in the nodes on the path from C to R.
@@ -106,10 +111,12 @@ class MonteCarloTreeSearch:
 
         leaf_state = self.tree.retrieve_node_game_state(leaf)
         leaf_player = leaf_state.current_player
-        if simulation_result == Enums.get_player_win(leaf_player):
+        if simulation_result.phase == Enums.get_player_win(leaf_player):
             reward = 1
+        elif simulation_result.phase == Enums.GamePhase.DRAW:
+            reward = 0.5
         else:
-            reward = leaf_state.get_win_score()
+            reward = simulation_result.get_reward(leaf_player)
 
         tmp_node = leaf
         while tmp_node != self.tree.root:

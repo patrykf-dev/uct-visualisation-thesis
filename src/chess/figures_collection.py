@@ -3,6 +3,8 @@ from src.chess.enums import FigureType, Color
 
 
 class ChessFiguresCollection:
+    FIGURES_MAX_VALUE = 39
+
     def __init__(self, figures):
         self._figures_array = ArrayUtils.generate_2d_nones_array(8, 8)
         self.figures_list = []

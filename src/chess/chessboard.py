@@ -92,9 +92,6 @@ class Chessboard:
                     GameStatus.CHECKMATE_WHITE if self.current_player_color == Color.BLACK else GameStatus.CHECKMATE_BLACK
             else:
                 self.game_status = GameStatus.STALEMATE
-            print(f'!!!\tGAME ENDED: {self.game_status}')
-        elif ChessUtils.is_there_a_draw(self):
-            print(f'!!!\tGAME ENDED: {self.game_status}')
 
     def get_opposite_color(self):
         return Color.WHITE if self.current_player_color == Color.BLACK else Color.BLACK

@@ -21,11 +21,15 @@ class BaseGameState(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get_win_score(self):
+    def get_win_score(self, player):
         pass
 
     @abc.abstractmethod
     def deep_copy(self):
+        pass
+
+    @abc.abstractmethod
+    def generate_description(self):
         pass
 
     def switch_current_player(self):
