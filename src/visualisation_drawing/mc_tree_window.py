@@ -2,6 +2,7 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFrame, QPushButton, QFileDialog
 from vispy import app as VispyApp
 
+from src.main_application.panel_widget import PanelWidget
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
@@ -108,14 +109,3 @@ class MonteCarloTreeWindow(QMainWindow):
         rc.setFont(button_font)
         rc.clicked.connect(self._handle_serialize_button_clicked_event)
         return rc
-
-
-class PanelWidget(QFrame):
-    def __init__(self, *args):
-        super(PanelWidget, self).__init__(*args)
-        self.setStyleSheet("background-color: rgb(160, 160, 160); margin:2px; border:2px solid rgb(0, 0, 0);")
-        self.setFixedSize(400, 400)
-
-    def change_background_color(self, color):
-        self.setStyleSheet(
-            f"background-color: rgb({color[0]}, {color[1]}, {color[2]}); margin:2px; border:2px solid rgb(0, 0, 0);")
