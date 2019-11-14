@@ -23,21 +23,16 @@ TILES_FONT = None
 
 
 class Game:
-    def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super().__new__(cls)
-        return cls.instance
-
     def __init__(self):
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.TILE_NUMBER = TILE_NUMBER
         self.TILE_WIDTH = int(WIDTH / TILE_NUMBER)
         self.TILE_HEIGHT = int(HEIGHT / TILE_NUMBER)
-        self.ICONS_FOLDER = 'icons'
+        self.ICONS_FOLDER = os.path.join(os.path.realpath(__file__), "..", "icons")
         pygame.init()
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption('Chess')
+        pygame.display.set_caption("Chess")
         self.screen = pygame.display.get_surface()
         self.game_manager = ChessGameManager()
         game_state = ChessState(self.game_manager.board)
@@ -109,7 +104,7 @@ class Game:
             self.simulate_opponent_move()
 
     def simulate_opponent_move(self):
-        move = self.monte_carlo_manager.calculate_next_move(max_iterations=20, max_moves_per_simulation=80)
+        move = self.monte_carlo_manager.calculate_next_move(max_iterations=60, max_moves_per_simulation=10)
         print(f"Algorithm decided to go {move.position_from} -> {move.position_to} for player {move.player}")
         self.game_manager.deselect_king()
         self.game_manager.board.perform_legal_move(move)

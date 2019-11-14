@@ -1,10 +1,16 @@
+import os
 import sys
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
 from src.chess.game import launch_game
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
+from src.serialization.serializator_csv import CsvSerializator
+from src.visualisation_algorithm._main_visualisation import draw_tree
+from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
+from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
+from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
 
 
 class MainApplicationWindow(QMainWindow):
@@ -16,21 +22,56 @@ class MainApplicationWindow(QMainWindow):
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
+        self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
+        self.layout.draw_matplotlib_button.clicked.connect(self._handle_matplotlib_button)
+        self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def _handle_play_button(self):
         launch_game()
 
+    def _handle_select_tree_path_button(self):
+        trees_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "trees")
+        path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", trees_path, "Csv files (*.csv)")
+        path = self.layout.tree_path_edit.setText(path)
+        return path
+
+    def _get_tree_from_given_path(self):
+        path = self.layout.tree_path_edit.text()
+        serializator = CsvSerializator()
+        root = serializator.get_node_from_path(path)
+        return root
+
+    def _handle_matplotlib_button(self):
+        root = self._get_tree_from_given_path()
+        draw_tree(root)
+
+    def _handle_opengl_button(self):
+        root = self._get_tree_from_given_path()
+        alg = ImprovedWalkersAlgorithm()
+        alg.buchheim_algorithm(root)
+        canvas = MonteCarloTreeCanvas(root)
+        window = MonteCarloTreeWindow(canvas)
+        window.show()
+
 
 def launch_application():
-    try:
-        window = MainApplicationWindow()
-        window.show()
-    except:
-        print("ERRRRO")
+    redefine_exceptions()
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainApplicationWindow()
+    window.show()
+    sys.exit(app.exec_())
+
+
+def redefine_exceptions():
+    def catch_exceptions(t, val, tb):
+        QtWidgets.QMessageBox.critical(None,
+                                       "An exception was raised",
+                                       f"Exception info: [{t}] [{val}] [{tb}]")
+        old_hook(t, val, tb)
+
+    old_hook = sys.excepthook
+    sys.excepthook = catch_exceptions
 
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    myapp = MainApplicationWindow()
-    myapp.show()
-    sys.exit(app.exec_())
+    launch_application()

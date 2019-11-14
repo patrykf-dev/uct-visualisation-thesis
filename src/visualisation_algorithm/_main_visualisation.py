@@ -8,7 +8,6 @@ from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorit
 def display_tree(node: MonteCarloNode):
     x_parent = node.vis_details.x
     y_parent = node.vis_details.y
-    print(f"{node.details.state_name} - ({node.vis_details.x}, {node.vis_details.y})")
     x.append(node.vis_details.x)
     y.append(node.vis_details.y)
     for child in node.children:
@@ -20,16 +19,14 @@ x = []
 y = []
 
 
-def main_test():
-    root = ExampleTrees.create_sample_tree_1()
+def draw_tree(root: MonteCarloNode):
     alg = ImprovedWalkersAlgorithm()
-    algorithm_result, spans = alg.buchheim_algorithm(root)
-    print(f"Walkers algorithm finished - {spans[0]} x {spans[1]}")
-
-    display_tree(algorithm_result)
-
+    alg.buchheim_algorithm(root)
+    display_tree(root)
     plt.scatter(x, y)
     plt.show()
 
 
-main_test()
+if __name__ == '__main__':
+    root = ExampleTrees.create_sample_tree_1()
+    draw_tree(root)

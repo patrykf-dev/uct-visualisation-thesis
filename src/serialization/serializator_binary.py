@@ -49,6 +49,6 @@ class BinarySerializator(BaseSerializator):
             child, child_state_name = self._decode_node(file)
             details.state_name = child_state_name
             child.details = details
-            rc.children.append(child)
+            rc.add_child_by_node(child)
 
         return rc, state_name

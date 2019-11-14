@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QLineEdit
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
     get_line_edit, get_hint_line_edit
@@ -7,7 +7,11 @@ from src.main_application.GUI_utils import get_non_resizable_label, get_radiobut
 class MainApplicationWindowLayout:
     def __init__(self):
         self.main_widget = None
-        self.play_button = None
+        self.play_button = QPushButton()
+        self.draw_opengl_button = QPushButton()
+        self.draw_matplotlib_button = QPushButton()
+        self.tree_path_edit = QLineEdit()
+        self.select_tree_path_button = QPushButton()
         self._create_layout()
 
     def _create_layout(self):
@@ -39,10 +43,14 @@ class MainApplicationWindowLayout:
         rc.setStyleSheet(
             "QWidget#box{background-color: rgb(160, 160, 160); margin:2px; border:2px solid rgb(0, 0, 0);}")
         rc.setLayout(main_layout)
-        main_layout.addWidget(get_hint_line_edit("Path..."), 0, 0)
-        main_layout.addWidget(get_button("Select"), 0, 1)
-        main_layout.addWidget(get_button("Draw tree (OpenGL)"), 1, 0, 1, 2)
-        main_layout.addWidget(get_button("Draw tree (matplotlib)"), 2, 0, 1, 2)
+        self.tree_path_edit = get_hint_line_edit("Path...")
+        main_layout.addWidget(self.tree_path_edit, 0, 0)
+        self.select_tree_path_button = get_button("Select")
+        main_layout.addWidget(self.select_tree_path_button, 0, 1)
+        self.draw_opengl_button = get_button("Draw tree (OpenGL)")
+        self.draw_matplotlib_button = get_button("Draw tree (matplotlib)")
+        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2)
+        main_layout.addWidget(self.draw_matplotlib_button, 2, 0, 1, 2)
         return rc
 
     def _add_left_panel(self, main_layout):

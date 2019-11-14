@@ -28,7 +28,7 @@ class CsvSerializator(BaseSerializator):
         for child in node.children:
             self._encode_node(writer, child)
 
-    def _decode_node(self, reader):
+    def _decode_node(self, reader, depth=0):
         row = next(reader)
         node = MonteCarloNode()
         d = node.details
@@ -39,6 +39,6 @@ class CsvSerializator(BaseSerializator):
         d.state_name = row[4]
         children = int(row[5])
         for i in range(children):
-            child = self._decode_node(reader)
-            node.children.append(child)
+            child = self._decode_node(reader, depth+1)
+            node.add_child_by_node(child)
         return node
