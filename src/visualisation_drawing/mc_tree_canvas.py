@@ -30,8 +30,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def on_draw(self, event):
         clear(color=True, depth=True)
-        self.program_edges.draw('lines', self.edges_buffer)
-        self.program_vertices.draw('points')
+        self.program_edges.draw("lines", self.edges_buffer)
+        self.program_vertices.draw("points")
 
     def handle_key_press_event(self, event):
         x_diff = 0
@@ -59,27 +59,27 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self._update_view_matrix()
 
     def _update_view_matrix(self):
-        self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
-        self.program_edges['u_view'] = self.view_matrix_manager.view_matrix_2
-        self.program_vertices['u_projection'] = self.view_matrix_manager.projection_matrix_1
-        self.program_edges['u_projection'] = self.view_matrix_manager.projection_matrix_2
+        self.program_vertices["u_view"] = self.view_matrix_manager.view_matrix_1
+        self.program_edges["u_view"] = self.view_matrix_manager.view_matrix_2
+        self.program_vertices["u_projection"] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges["u_projection"] = self.view_matrix_manager.projection_matrix_2
         self.update()
 
     def _setup_matrices(self):
         self.view_matrix_manager = ViewMatrixManager()
-        self.program_vertices['u_model'] = np.eye(4, dtype=np.float32)
-        self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
-        self.program_vertices['u_projection'] = self.view_matrix_manager.projection_matrix_1
-        self.program_edges['u_model'] = np.eye(4, dtype=np.float32)
-        self.program_edges['u_view'] = self.view_matrix_manager.view_matrix_2
-        self.program_edges['u_projection'] = self.view_matrix_manager.projection_matrix_2
+        self.program_vertices["u_model"] = np.eye(4, dtype=np.float32)
+        self.program_vertices["u_view"] = self.view_matrix_manager.view_matrix_1
+        self.program_vertices["u_projection"] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges["u_model"] = np.eye(4, dtype=np.float32)
+        self.program_edges["u_view"] = self.view_matrix_manager.view_matrix_2
+        self.program_edges["u_projection"] = self.view_matrix_manager.projection_matrix_2
 
     def _bind_shaders(self):
         shader_reader = ShaderReader()
         self.program_vertices = vispy.gloo.Program(shader_reader.get_vertices_vshader(),
                                                    shader_reader.get_vertices_fshader())
-        self.program_vertices['u_size'] = 1
-        self.program_vertices['u_antialias'] = 1
+        self.program_vertices["u_radius_multiplier"] = 3
+        self.program_vertices["u_antialias"] = 1
         self.program_vertices.bind(self.vertices_buffer)
 
         self.program_edges = vispy.gloo.Program(shader_reader.get_edges_vshader(), shader_reader.get_edges_fshader())
@@ -132,9 +132,9 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.native.mouseMoveEvent = self.handle_mouse_move_event
         self.native.mouseReleaseEvent = self.handle_mouse_release_event
         self.on_node_clicked = Event(self)
-        set_viewport(0, 0, *self.physical_size)
+        set_viewport(0, 0, self.physical_size[0], self.physical_size[1])
         set_state(clear_color=(160 / 255, 160 / 255, 160 / 255, 1), depth_test=False, blend=True,
-                  blend_func=('src_alpha', 'one_minus_src_alpha'))
+                  blend_func=("src_alpha", "one_minus_src_alpha"))
 
     def reset_view(self):
         self.mouse_tics = 0
