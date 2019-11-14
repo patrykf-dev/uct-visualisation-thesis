@@ -5,6 +5,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
 from src.chess.game import launch_game
+from src.main_application.GUI_utils import TREES_PATH
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.serialization.serializator_csv import CsvSerializator
 from src.visualisation_algorithm._main_visualisation import draw_tree
@@ -30,8 +31,7 @@ class MainApplicationWindow(QMainWindow):
         launch_game()
 
     def _handle_select_tree_path_button(self):
-        trees_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "trees")
-        path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", trees_path, "Csv files (*.csv)")
+        path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
         path = self.layout.tree_path_edit.setText(path)
         return path
 

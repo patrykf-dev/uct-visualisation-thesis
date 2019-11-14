@@ -1,7 +1,9 @@
+import os
+
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QLineEdit
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
-    get_line_edit, get_hint_line_edit
+    get_line_edit, get_hint_line_edit, TREES_PATH
 
 
 class MainApplicationWindowLayout:
@@ -43,7 +45,8 @@ class MainApplicationWindowLayout:
         rc.setStyleSheet(
             "QWidget#box{background-color: rgb(160, 160, 160); margin:2px; border:2px solid rgb(0, 0, 0);}")
         rc.setLayout(main_layout)
-        self.tree_path_edit = get_hint_line_edit("Path...")
+        big_tree_path = os.path.join(TREES_PATH, "big_tree.csv")
+        self.tree_path_edit = get_hint_line_edit(big_tree_path)
         main_layout.addWidget(self.tree_path_edit, 0, 0)
         self.select_tree_path_button = get_button("Select")
         main_layout.addWidget(self.select_tree_path_button, 0, 1)
