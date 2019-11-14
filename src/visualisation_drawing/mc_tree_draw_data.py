@@ -40,12 +40,12 @@ class MonteCarloTreeDrawDataRetriever:
         vertices = np.zeros(self.vertices_count, dtype=[("a_position", np.float32, 3),
                                                         ("a_fg_color", np.float32, 4),
                                                         ("a_bg_color", np.float32, 4),
-                                                        ("a_size", np.float32),
+                                                        ("a_radius", np.float32),
                                                         ("a_linewidth", np.float32)])
 
         vertices["a_fg_color"] = (0, 0, 0, 1)
         vertices["a_bg_color"] = (1, 1, 1, 1)
-        vertices["a_size"] = 16 * ps
+        vertices["a_radius"] = 16 * ps
         vertices["a_linewidth"] = 2.0 * ps
 
         for i in range(self.vertices_count):
