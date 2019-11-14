@@ -2,6 +2,8 @@ import numpy as np
 
 
 class ViewMatrixManager:
+    SMOOTH_TRANSLATION_MODIFIER = 2
+
     def __init__(self):
         self.x_from_center = 0
         self.y_from_center = 0
@@ -12,13 +14,19 @@ class ViewMatrixManager:
         self.projection_matrix_2 = np.eye(4, dtype=np.float32)
         self._update_matrix()
 
-    def change_scale(self, scale):
-        self.scale = scale
+    def zoom_out(self):
+        self.scale *= 0.9
+        self._update_matrix()
+
+    def zoom_in(self):
+        self.scale *= 1.1
         self._update_matrix()
 
     def translate_view(self, x_diff, y_diff):
-        self.x_from_center += x_diff
-        self.y_from_center += y_diff
+        x_diff_scaled = ViewMatrixManager.SMOOTH_TRANSLATION_MODIFIER * (x_diff / self.scale)
+        y_diff_scaled = ViewMatrixManager.SMOOTH_TRANSLATION_MODIFIER * (y_diff / self.scale)
+        self.x_from_center += x_diff_scaled
+        self.y_from_center += y_diff_scaled
         self._update_matrix()
 
     def reset_view(self):
@@ -33,10 +41,8 @@ class ViewMatrixManager:
 
     def _apply_translation(self):
         view = self.look_at(self.x_from_center, self.y_from_center)
-        for i in range(4):
-            for j in range(4):
-                self.view_matrix_1[i][j] = view[i][j]
-                self.view_matrix_2[i][j] = view[i][j]
+        self.view_matrix_1 = view
+        self.view_matrix_2 = view
 
     def _apply_scale(self):
         projection = self.perspective()
@@ -87,8 +93,6 @@ class ViewMatrixManager:
         seen_world_right = (1 / self.scale) + self.x_from_center
         seen_world_left = (1 / -self.scale) + self.x_from_center
 
-        print(f"{seen_world_up}, {seen_world_down} [][] {seen_world_left}, {seen_world_right}")
-
         world_x_span = seen_world_right - seen_world_left
         world_y_span = seen_world_down - seen_world_up
 
@@ -97,7 +101,5 @@ class ViewMatrixManager:
 
         world_x = fract_clicked_x * world_x_span + seen_world_left
         world_y = - (fract_clicked_y * world_y_span + seen_world_up)
-
-        print(f"WORLD SPACE: {world_x}, {world_y}")
 
         return world_x, world_y

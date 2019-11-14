@@ -16,8 +16,7 @@ from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
 
 class MonteCarloTreeCanvas(VispyApp.Canvas):
     def __init__(self, root: MonteCarloNode, **kwargs):
-        VispyApp.Canvas.__init__(self, size=(1000, 1000), **kwargs)
-        self.mouse_tics = 0
+        VispyApp.Canvas.__init__(self, **kwargs)
         self.root = root
         self.previous_mouse_pos = None
 
@@ -38,29 +37,25 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         x_diff = 0
         y_diff = 0
         if event.key() == PYQT_KEY_CODE_RIGHT:
-            x_diff = 0.1
+            x_diff = 50
         elif event.key() == PYQT_KEY_CODE_LEFT:
-            x_diff = -0.1
+            x_diff = -50
         elif event.key() == PYQT_KEY_CODE_UP:
-            y_diff = -0.1
+            y_diff = -50
         elif event.key() == PYQT_KEY_CODE_DOWN:
-            y_diff = 0.1
+            y_diff = 50
 
-        self.view_matrix_manager.translate_view(x_diff, y_diff)
+        size = self.native.frameGeometry()
+        self.view_matrix_manager.translate_view(x_diff / size.width(), y_diff / size.height())
         self._update_view_matrix()
 
     def handle_wheel_event(self, event):
-        self.mouse_tics += event.angleDelta().y() / 120
-        if self.mouse_tics < -17:
-            self.mouse_tics = -17
+        wheel_direction = event.angleDelta().y()
 
-        if self.mouse_tics == 0:
-            scale = 0.9
-        elif self.mouse_tics < 0:
-            scale = 0.9 + (self.mouse_tics / 20)
+        if wheel_direction < 0:
+            self.view_matrix_manager.zoom_out()
         else:
-            scale = 0.9 + self.mouse_tics
-        self.view_matrix_manager.change_scale(scale)
+            self.view_matrix_manager.zoom_in()
         self._update_view_matrix()
 
     def _update_view_matrix(self):
@@ -120,7 +115,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
             self.previous_mouse_pos = event.pos()
 
-            self.view_matrix_manager.translate_view(diff.x() / 1000, diff.y() / 1000)
+            size = self.native.frameGeometry()
+            self.view_matrix_manager.translate_view(diff.x() / size.width(), diff.y() / size.height())
             self._update_view_matrix()
 
     def handle_mouse_release_event(self, event):
