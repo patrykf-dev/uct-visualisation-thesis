@@ -1,31 +1,17 @@
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QLabel, QFrame, QPushButton, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
 from vispy import app as VispyApp
 
-from src.main_application.GUI_utils import DEFAULT_FONT, DEFAULT_FONT_BOLD
-from src.main_application.panel_widget import PanelWidget
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
+from src.visualisation_drawing.mc_tree_window_layout import MonteCarloTreeWindowLayout
 
 
 class MonteCarloTreeWindow(QMainWindow):
-    NO_INFO_LABEL = "_NO INFO_"
 
     def __init__(self, canvas: MonteCarloTreeCanvas):
         super().__init__()
-        self.canvas = canvas
-        self.right_panel_widget = None
-        self.labels = [
-            ["Id", None],
-            ["State name", None],
-            ["Move name", None],
-            ["Visits count", None],
-            ["Visits count pre", None],
-            ["Win score", None],
-            ["Average prize", None],
-            ["Current player", None]]
-        self._setup_window()
+        self._setup_window(canvas)
 
     def show(self):
         super().show()
@@ -33,76 +19,20 @@ class MonteCarloTreeWindow(QMainWindow):
         self.setFocus()
 
     def _handle_node_clicked_event(self, sender, node: MonteCarloNode):
-        if node is None:
-            self.right_panel_widget.change_background_color((160, 160, 160))
-            for i in range(8):
-                self.labels[i][1].setText(self.NO_INFO_LABEL)
-        else:
-            self.right_panel_widget.change_background_color((255, 255, 255))
-            self.labels[0][1].setText(str(node.id))
-            if node.details:
-                self.labels[1][1].setText(node.details.state_name)
-                self.labels[2][1].setText(node.details.move_name)
-                self.labels[3][1].setText(str(node.details.visits_count))
-                self.labels[4][1].setText(str(node.details.visits_count_pre_modified))
-                self.labels[5][1].setText(str(node.details.win_score))
-                self.labels[6][1].setText(str(node.details.average_prize))
-            if node.move:
-                self.labels[7][1].setText(str(node.move.player))
+        self.layout.fill_right_panel_info(node)
 
     def _handle_reset_button_clicked_event(self):
-        self.canvas.reset_view()
+        self.layout.canvas.reset_view()
 
     def _handle_serialize_button_clicked_event(self):
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", "", "Csv files (*.csv)")
         serializator = CsvSerializator()
-        serializator.save_node_to_path(self.canvas.root, path)
+        serializator.save_node_to_path(self.layout.canvas.root, path)
         print(f"Saved file: {path}")
 
-    def _setup_window(self):
-        self.canvas.on_node_clicked += self._handle_node_clicked_event
-
-        main_widget = QWidget()
-        self.setCentralWidget(main_widget)
-        main_layout = QGridLayout()
-        self.right_panel_widget = PanelWidget()
-        right_panel_layout = QGridLayout()
-        self.reset_button = self._create_reset_button()
-        self.serialize_button = self._create_serialize_button()
-
-        main_widget.setLayout(main_layout)
-        main_layout.addWidget(self.canvas.native, 0, 0)
-        self.right_panel_widget.setLayout(right_panel_layout)
-        main_layout.addWidget(self.right_panel_widget, 0, 1)
-        main_layout.addWidget(self.reset_button, 1, 0)
-        main_layout.addWidget(self.serialize_button, 2, 0)
-
-        self._fill_right_panel(right_panel_layout)
-
-    def _fill_right_panel(self, right_panel_layout):
-        counter = 0
-        for label in self.labels:
-            label_title = QLabel()
-            label_title.setText(label[0] + ": ")
-            label_title.setFont(DEFAULT_FONT_BOLD)
-            label_content = QLabel()
-            label_content.setFont(DEFAULT_FONT)
-            label_content.setText(self.NO_INFO_LABEL)
-            right_panel_layout.addWidget(label_title, counter, 0)
-            right_panel_layout.addWidget(label_content, counter, 1)
-            self.labels[counter][1] = label_content
-            counter += 1
-
-    def _create_reset_button(self):
-        rc = QPushButton()
-        rc.setText("Reset view")
-        rc.setFont(DEFAULT_FONT)
-        rc.clicked.connect(self._handle_reset_button_clicked_event)
-        return rc
-
-    def _create_serialize_button(self):
-        rc = QPushButton()
-        rc.setText("Save tree to csv file")
-        rc.setFont(DEFAULT_FONT)
-        rc.clicked.connect(self._handle_serialize_button_clicked_event)
-        return rc
+    def _setup_window(self, canvas):
+        self.layout = MonteCarloTreeWindowLayout(canvas)
+        self.setCentralWidget(self.layout.main_widget)
+        self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
+        self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
+        self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
