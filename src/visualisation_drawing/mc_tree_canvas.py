@@ -27,7 +27,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self._setup_matrices()
 
     def on_resize(self, event):
-        set_viewport(0, 0, *event.physical_size)
+        set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
 
     def on_draw(self, event):
         clear(color=True, depth=True)
@@ -66,16 +66,18 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def _update_view_matrix(self):
         self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
         self.program_edges['u_view'] = self.view_matrix_manager.view_matrix_2
+        self.program_vertices['u_projection'] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges['u_projection'] = self.view_matrix_manager.projection_matrix_2
         self.update()
 
     def _setup_matrices(self):
         self.view_matrix_manager = ViewMatrixManager()
         self.program_vertices['u_model'] = np.eye(4, dtype=np.float32)
         self.program_vertices['u_view'] = self.view_matrix_manager.view_matrix_1
-        self.program_vertices['u_projection'] = np.eye(4, dtype=np.float32)
+        self.program_vertices['u_projection'] = self.view_matrix_manager.projection_matrix_1
         self.program_edges['u_model'] = np.eye(4, dtype=np.float32)
         self.program_edges['u_view'] = self.view_matrix_manager.view_matrix_2
-        self.program_edges['u_projection'] = np.eye(4, dtype=np.float32)
+        self.program_edges['u_projection'] = self.view_matrix_manager.projection_matrix_2
 
     def _bind_shaders(self):
         shader_reader = ShaderReader()
@@ -118,8 +120,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
             self.previous_mouse_pos = event.pos()
 
-            self.view_matrix_manager.translate_view(diff.x() / 500, diff.y() / 500)
-            print(f"Diff is ({diff.x()}, {diff.y()})")
+            self.view_matrix_manager.translate_view(diff.x() / 1000, diff.y() / 1000)
             self._update_view_matrix()
 
     def handle_mouse_release_event(self, event):
