@@ -1,19 +1,31 @@
+import math
+
 import numpy as np
 
 from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 class MonteCarloTreeDrawData:
+    RADIUS = 0.02
+
     def __init__(self):
         self.vertices = None
         self.edges = None
         self.vertices_list = None
 
     def get_node_at(self, world_x, world_y):
-        eps = 0.03
         for vertex in self.vertices_list:
-            if abs(vertex[0][0] - world_x) < eps and abs(vertex[0][1] - world_y) < eps:
+            center_x = vertex[0][0]
+            center_y = vertex[0][1]
+            distance = math.sqrt((center_x - world_x) * (center_x - world_x) +
+                                 (center_y - world_y) * (center_y - world_y))
+            if distance <= self.RADIUS:
+                # print(
+                #     f"You clicked ({round(world_x, 4)}, {round(world_y, 4)}) and that's vertex {str(vertex[0])} "
+                #     f"for radius {round(self.RADIUS, 4)}")
                 return vertex[1]
+
+        # print(f"Empty click ({round(world_x, 4)}, {round(world_y, 4)})")
         return None
 
 

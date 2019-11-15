@@ -58,13 +58,6 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             self.view_matrix_manager.zoom_in()
         self._update_view_matrix()
 
-    def _update_view_matrix(self):
-        self.program_vertices["u_view"] = self.view_matrix_manager.view_matrix_1
-        self.program_edges["u_view"] = self.view_matrix_manager.view_matrix_2
-        self.program_vertices["u_projection"] = self.view_matrix_manager.projection_matrix_1
-        self.program_edges["u_projection"] = self.view_matrix_manager.projection_matrix_2
-        self.update()
-
     def _setup_matrices(self):
         self.view_matrix_manager = ViewMatrixManager()
         self.program_vertices["u_model"] = np.eye(4, dtype=np.float32)
@@ -73,6 +66,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_edges["u_model"] = np.eye(4, dtype=np.float32)
         self.program_edges["u_view"] = self.view_matrix_manager.view_matrix_2
         self.program_edges["u_projection"] = self.view_matrix_manager.projection_matrix_2
+        self.program_vertices["u_radius_multiplier"] = self.view_matrix_manager.scale
 
     def _bind_shaders(self):
         shader_reader = ShaderReader()
@@ -93,7 +87,6 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.edges_buffer = vispy.gloo.IndexBuffer(self.tree_draw_data.edges)
 
     def handle_mouse_click_event(self, event):
-        self.previous_mouse_pos = None
         pos = event.pos()
 
         if event.button() == QtCore.Qt.RightButton:
@@ -119,8 +112,15 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             self.view_matrix_manager.translate_view(diff.x() / size.width(), diff.y() / size.height())
             self._update_view_matrix()
 
+    def _update_view_matrix(self):
+        self.program_vertices["u_view"] = self.view_matrix_manager.view_matrix_1
+        self.program_edges["u_view"] = self.view_matrix_manager.view_matrix_2
+        self.program_vertices["u_projection"] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges["u_projection"] = self.view_matrix_manager.projection_matrix_2
+        # self.program_vertices["u_radius_multiplier"] = self.view_matrix_manager.scale
+        self.update()
+
     def handle_mouse_release_event(self, event):
-        self.previous_mouse_pos = None
         QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))
 
     def _setup_widget(self):

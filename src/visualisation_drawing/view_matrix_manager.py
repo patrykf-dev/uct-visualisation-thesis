@@ -91,7 +91,7 @@ class ViewMatrixManager:
         seen_world_up = (-1 / self.scale) + self.y_from_center
         seen_world_down = (1 / self.scale) + self.y_from_center
         seen_world_right = (1 / self.scale) + self.x_from_center
-        seen_world_left = (1 / -self.scale) + self.x_from_center
+        seen_world_left = (-1 / self.scale) + self.x_from_center
 
         world_x_span = seen_world_right - seen_world_left
         world_y_span = seen_world_down - seen_world_up
