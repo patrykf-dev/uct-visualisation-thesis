@@ -50,10 +50,12 @@ class MainApplicationWindowLayout:
         main_layout.addWidget(self.tree_path_edit, 0, 0)
         self.select_tree_path_button = get_button("Select")
         main_layout.addWidget(self.select_tree_path_button, 0, 1)
-        self.draw_opengl_button = get_button("Draw tree (OpenGL)")
-        self.draw_matplotlib_button = get_button("Draw tree (matplotlib)")
+        self.draw_opengl_button = get_button("Inspect tree (OpenGL)")
+        self.draw_matplotlib_button = get_button("Inspect tree (matplotlib) - old")
+        self.draw_matplotlib_test_button = get_button("Inspect tree (matplotlib) - dev")
         main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2)
         main_layout.addWidget(self.draw_matplotlib_button, 2, 0, 1, 2)
+        main_layout.addWidget(self.draw_matplotlib_test_button, 3, 0, 1, 2)
         return rc
 
     def _add_left_panel(self, main_layout):

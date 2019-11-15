@@ -2,28 +2,23 @@ import matplotlib.pyplot as plt
 
 import src.trees.example_trees as ExampleTrees
 from src.uct.algorithm.mc_node import MonteCarloNode
-from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 
 
-def display_tree(node: MonteCarloNode):
+def display_tree(node: MonteCarloNode, vertices_x, vertices_y):
     x_parent = node.vis_details.x
     y_parent = node.vis_details.y
-    x.append(node.vis_details.x)
-    y.append(node.vis_details.y)
+    vertices_x.append(node.vis_details.x)
+    vertices_y.append(node.vis_details.y)
     for child in node.children:
-        display_tree(child)
+        display_tree(child, vertices_x, vertices_y)
         plt.plot([x_parent, child.vis_details.x], [y_parent, child.vis_details.y], "r-")
 
 
-x = []
-y = []
-
-
 def draw_tree(root: MonteCarloNode):
-    alg = ImprovedWalkersAlgorithm()
-    alg.buchheim_algorithm(root)
-    display_tree(root)
-    plt.scatter(x, y)
+    vertices_x = []
+    vertices_y = []
+    display_tree(root, vertices_x, vertices_y)
+    plt.scatter(vertices_x, vertices_y)
     plt.show()
 
 

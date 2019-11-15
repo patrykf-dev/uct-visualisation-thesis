@@ -1,4 +1,3 @@
-import os
 import sys
 
 from PyQt5 import QtWidgets
@@ -8,8 +7,9 @@ from src.chess.game import launch_game
 from src.main_application.GUI_utils import TREES_PATH
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.serialization.serializator_csv import CsvSerializator
-from src.visualisation_algorithm._main_visualisation import draw_tree
+import src.main_application.easy_plot_tree as MatplotlibDrawer
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
+from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
 from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
 
@@ -20,11 +20,13 @@ class MainApplicationWindow(QMainWindow):
         self._setup_window()
 
     def _setup_window(self):
+        self.setMinimumWidth(500)
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
         self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
         self.layout.draw_matplotlib_button.clicked.connect(self._handle_matplotlib_button)
+        self.layout.draw_matplotlib_test_button.clicked.connect(self._handle_matplotlib_test_button)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def _handle_play_button(self):
@@ -35,15 +37,17 @@ class MainApplicationWindow(QMainWindow):
         path = self.layout.tree_path_edit.setText(path)
         return path
 
-    def _get_tree_from_given_path(self):
-        path = self.layout.tree_path_edit.text()
-        serializator = CsvSerializator()
-        root = serializator.get_node_from_path(path)
-        return root
-
     def _handle_matplotlib_button(self):
         root = self._get_tree_from_given_path()
-        draw_tree(root)
+        alg = ImprovedWalkersAlgorithm()
+        alg.buchheim_algorithm(root)
+        MatplotlibDrawer.draw_tree(root)
+
+    def _handle_matplotlib_test_button(self):
+        root = self._get_tree_from_given_path()
+        alg_new = ImprovedWalkersAlgorithmNew()
+        alg_new.buchheim_algorithm(root)
+        MatplotlibDrawer.draw_tree(root)
 
     def _handle_opengl_button(self):
         root = self._get_tree_from_given_path()
@@ -52,6 +56,12 @@ class MainApplicationWindow(QMainWindow):
         canvas = MonteCarloTreeCanvas(root)
         window = MonteCarloTreeWindow(canvas)
         window.show()
+
+    def _get_tree_from_given_path(self):
+        path = self.layout.tree_path_edit.text()
+        serializator = CsvSerializator()
+        root = serializator.get_node_from_path(path)
+        return root
 
 
 def launch_application():
