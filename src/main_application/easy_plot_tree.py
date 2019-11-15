@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 
-import src.trees.example_trees as ExampleTrees
 from src.uct.algorithm.mc_node import MonteCarloNode
 
 
@@ -20,8 +19,3 @@ def draw_tree(root: MonteCarloNode):
     display_tree(root, vertices_x, vertices_y)
     plt.scatter(vertices_x, vertices_y)
     plt.show()
-
-
-if __name__ == '__main__':
-    root = ExampleTrees.create_sample_tree_1()
-    draw_tree(root)

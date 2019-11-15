@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 from vispy import app as VispyApp
 
+from src.main_application.GUI_utils import TREES_PATH
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
@@ -25,7 +26,7 @@ class MonteCarloTreeWindow(QMainWindow):
         self.layout.canvas.reset_view()
 
     def _handle_serialize_button_clicked_event(self):
-        path, category = QFileDialog.getSaveFileName(self, "Serialize tree", "", "Csv files (*.csv)")
+        path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Csv files (*.csv)")
         serializator = CsvSerializator()
         serializator.save_node_to_path(self.layout.canvas.root, path)
         print(f"Saved file: {path}")

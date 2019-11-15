@@ -45,7 +45,7 @@ class MainApplicationWindowLayout:
         rc.setStyleSheet(
             "QWidget#box{background-color: rgb(160, 160, 160); margin:2px; border:2px solid rgb(0, 0, 0);}")
         rc.setLayout(main_layout)
-        big_tree_path = os.path.join(TREES_PATH, "big_tree.csv")
+        big_tree_path = os.path.join(TREES_PATH, "example_tree_05.csv")
         self.tree_path_edit = get_hint_line_edit(big_tree_path)
         main_layout.addWidget(self.tree_path_edit, 0, 0)
         self.select_tree_path_button = get_button("Select")
