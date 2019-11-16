@@ -1,26 +1,31 @@
 import numpy as np
 import vispy
 from PyQt5 import QtCore
-from PyQt5.QtGui import QCursor
-from PyQt5.QtWidgets import QApplication
 from axel import Event
 from vispy import app as VispyApp
 from vispy.gloo import set_viewport, set_state, clear
 
 from src.main_application.GUI_utils import PYQT_KEY_CODE_DOWN, PYQT_KEY_CODE_UP, PYQT_KEY_CODE_LEFT, PYQT_KEY_CODE_RIGHT
 from src.uct.algorithm.mc_node import MonteCarloNode
+from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_drawing.mc_tree_draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
 
 
 class MonteCarloTreeCanvas(VispyApp.Canvas):
-    def __init__(self, root: MonteCarloNode, **kwargs):
+    def __init__(self, root: MonteCarloNode = None, **kwargs):
         VispyApp.Canvas.__init__(self, **kwargs)
-        self.root = root
         self.previous_mouse_pos = None
-
+        self.root = root
         self._setup_widget()
+        if root:
+            self.use_root_data(root)
+
+    def use_root_data(self, root):
+        self.root = root
+        alg = ImprovedWalkersAlgorithm()
+        alg.buchheim_algorithm(self.root)
         self._bind_buffers()
         self._bind_shaders()
         self._setup_matrices()
@@ -30,8 +35,9 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def on_draw(self, event):
         clear(color=True, depth=True)
-        self.program_edges.draw("lines", self.edges_buffer)
-        self.program_vertices.draw("points")
+        if self.root:
+            self.program_edges.draw("lines", self.edges_buffer)
+            self.program_vertices.draw("points")
 
     def handle_key_press_event(self, event):
         x_diff = 0
@@ -103,7 +109,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def handle_mouse_move_event(self, event):
         if event.buttons() == QtCore.Qt.RightButton:
-            QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+            # QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+
             diff = self.previous_mouse_pos - event.pos()
 
             self.previous_mouse_pos = event.pos()
@@ -121,7 +128,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.update()
 
     def handle_mouse_release_event(self, event):
-        QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))
+        # QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))
+        pass
 
     def _setup_widget(self):
         self.native.setMinimumWidth(600)

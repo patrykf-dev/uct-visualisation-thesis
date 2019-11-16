@@ -10,7 +10,6 @@ from src.main_application.main_application_window_layout import MainApplicationW
 from src.serialization.serializator_csv import CsvSerializator
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
-from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
 from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
 
 
@@ -56,10 +55,8 @@ class MainApplicationWindow(QMainWindow):
 
     def _handle_opengl_button(self):
         root = self._get_tree_from_given_path()
-        alg = ImprovedWalkersAlgorithm()
-        alg.buchheim_algorithm(root)
-        canvas = MonteCarloTreeCanvas(root)
-        window = MonteCarloTreeWindow(canvas)
+        window = MonteCarloTreeWindow(self)
+        window.canvas_widget.layout.canvas.use_root_data(root)
         window.show()
 
     def _get_tree_from_given_path(self):

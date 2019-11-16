@@ -5,11 +5,10 @@ from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
 
 
-class MonteCarloTreeWindowLayout:
+class MonteCarloTreeWidgetLayout:
     NO_INFO_LABEL = "-NO INFO-"
 
-    def __init__(self, canvas: MonteCarloTreeCanvas):
-        self.main_widget = None
+    def __init__(self, main_widget, canvas: MonteCarloTreeCanvas):
         self.canvas = canvas
         self.reset_button = QPushButton()
         self.serialize_button = QPushButton()
@@ -23,7 +22,7 @@ class MonteCarloTreeWindowLayout:
             ["Win score", None],
             ["Average prize", None],
             ["Current player", None]]
-        self._create_layout()
+        self._create_layout(main_widget)
 
     def fill_right_panel_info(self, node: MonteCarloNode):
         if node is None:
@@ -43,10 +42,9 @@ class MonteCarloTreeWindowLayout:
             if node.move:
                 self.labels[7][1].setText(str(node.move.player))
 
-    def _create_layout(self):
-        self.main_widget = QWidget()
+    def _create_layout(self, main_widget):
         main_layout = QGridLayout()
-        self.main_widget.setLayout(main_layout)
+        main_widget.setLayout(main_layout)
 
         self._fill_right_panel_contents()
 

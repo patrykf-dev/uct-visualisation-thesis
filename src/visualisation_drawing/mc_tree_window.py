@@ -1,39 +1,22 @@
-from PyQt5.QtWidgets import QMainWindow, QFileDialog
-from vispy import app as VispyApp
+from PyQt5.QtWidgets import QMainWindow, QGridLayout, QWidget
 
-from src.main_application.GUI_utils import TREES_PATH
-from src.serialization.serializator_csv import CsvSerializator
-from src.uct.algorithm.mc_node import MonteCarloNode
-from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
-from src.visualisation_drawing.mc_tree_window_layout import MonteCarloTreeWindowLayout
+from src.main_application.GUI_utils import center_window_on_screen
+from src.visualisation_drawing.mc_tree_canvas_widget import MonteCarloTreeCanvasWidget
 
 
 class MonteCarloTreeWindow(QMainWindow):
+    def __init__(self, parent=None):
+        super(MonteCarloTreeWindow, self).__init__(parent)
+        self._setup_window()
 
-    def __init__(self, canvas: MonteCarloTreeCanvas):
-        super().__init__()
-        self._setup_window(canvas)
+    def _setup_window(self):
+        main_widget = QWidget()
+        main_layout = QGridLayout()
+        main_widget.setLayout(main_layout)
+        self.canvas_widget = MonteCarloTreeCanvasWidget()
+        main_layout.addWidget(self.canvas_widget, 0, 0)
+        self.setCentralWidget(main_widget)
 
-    def show(self):
-        super().show()
-        VispyApp.run()
-        self.setFocus()
-
-    def _handle_node_clicked_event(self, sender, node: MonteCarloNode):
-        self.layout.fill_right_panel_info(node)
-
-    def _handle_reset_button_clicked_event(self):
-        self.layout.canvas.reset_view()
-
-    def _handle_serialize_button_clicked_event(self):
-        path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Csv files (*.csv)")
-        serializator = CsvSerializator()
-        serializator.save_node_to_path(self.layout.canvas.root, path)
-        print(f"Saved file: {path}")
-
-    def _setup_window(self, canvas):
-        self.layout = MonteCarloTreeWindowLayout(canvas)
-        self.setCentralWidget(self.layout.main_widget)
-        self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
-        self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
-        self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
+    def showEvent(self, event):
+        super().showEvent(event)
+        center_window_on_screen(self)
