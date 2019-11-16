@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from numpy import zeros
 
 from src.chess.algorithm_relay.chess_move import ChessMove
@@ -42,16 +43,21 @@ class FigureWithLinearMovement(Figure):
 
     def check_moves_linear(self, figures: ChessFiguresCollection, directions, threat_for_king=False):
         possible_moves = []
+        pos_x = self.position[0]
+        pos_y = self.position[1]
         for direction in directions:
-            pos_being_checked = (self.position[0] + direction[0], self.position[1] + direction[1])
+            dir_x = direction[0]
+            dir_y = direction[1]
+            pos_being_checked = (pos_x + dir_x, pos_y + dir_y)
             while self.is_move_valid(pos_being_checked):
-                figure = self.get_figure(figures, pos_being_checked)
+                figure = figures.get_figure_at(pos_being_checked)
                 if figure:
                     if figure.color != self.color or threat_for_king:
                         possible_moves.append(ChessMove(pos_being_checked, self.position, MoveType.NORMAL))
                     break
                 possible_moves.append(ChessMove(pos_being_checked, self.position, MoveType.NORMAL))
-                pos_being_checked = (pos_being_checked[0] + direction[0], pos_being_checked[1] + direction[1])
+                pos_being_checked = (pos_being_checked[0] + dir_x, pos_being_checked[1] + dir_y)
+
         return possible_moves
 
 
@@ -89,7 +95,7 @@ class Pawn(Figure):
             print('! Pawn should not be allowed to stay in the end line')
         else:
             pos = move_setup["step_forward"](self.position[0], 1), self.position[1]
-            figure = Figure.get_figure(figures, pos)
+            figure = figures.get_figure_at(pos)
             if not figure:
                 if pos[0] != move_setup["last_line"]:
                     move = ChessMove(pos, self.position, MoveType.NORMAL)
@@ -98,7 +104,7 @@ class Pawn(Figure):
                 possible_moves.append(move)
                 # double move at the beginning
                 double_move = move_setup["step_forward"](self.position[0], 2), self.position[1]
-                if self.position[0] == move_setup["start_line"] and not Figure.get_figure(figures, double_move):
+                if self.position[0] == move_setup["start_line"] and not figures.get_figure_at(double_move):
                     possible_moves.append(ChessMove(double_move, self.position, MoveType.PAWN_DOUBLE_MOVE))
             possible_moves.extend(self.check_captures(figures, threat_for_king))
         return possible_moves
@@ -109,7 +115,7 @@ class Pawn(Figure):
             opposite_color = Color.BLACK if color == Color.WHITE else Color.WHITE
             if not self.is_move_valid(_pos):
                 return None
-            figure = Figure.get_figure(figures, _pos)
+            figure = figures.get_figure_at(_pos)
             if figure:
                 if figure.color == opposite_color or threat_for_king:
                     # if figure.figure_type == FigureType.KING and figure.color == opposite_color:
@@ -120,7 +126,7 @@ class Pawn(Figure):
             # capture en passant
             else:
                 opponent_pawn_pos = (move_setup["step_backward"](_pos[0], 1), _pos[1])
-                figure = Figure.get_figure(figures, opponent_pawn_pos)
+                figure = figures.get_figure_at(opponent_pawn_pos)
                 if not figure:
                     return None
                 if self.position[0] == move_setup["step_backward"](move_setup["last_line"], 3) and \
@@ -168,7 +174,7 @@ class Knight(Figure):
             for move_position in move_positions:
                 if not self.is_move_valid(move_position):
                     continue
-                figure = Figure.get_figure(figures, move_position)
+                figure = figures.get_figure_at(move_position)
                 if figure and figure.color == self.color:
                     continue
                 toret.append(ChessMove(move_position, self.position, MoveType.NORMAL))
@@ -272,6 +278,7 @@ class King(Figure):
 
             if attacked_fields:
                 self.update_check_mask_by_given_moves(attacked_fields)
+
         figures.restore(self, previous_position)
 
     def possibility_to_castle(self, figures: ChessFiguresCollection):
@@ -285,7 +292,7 @@ class King(Figure):
             else:
                 rook_position = (0, 0) if self.color == Color.WHITE else (7, 0)
                 offset = 1
-            figure_rook = Figure.get_figure(figures, rook_position)
+            figure_rook = figures.get_figure_at(rook_position)
 
             if not figure_rook:
                 return
@@ -298,10 +305,10 @@ class King(Figure):
             figure_offset_2_position = rook_position[0], rook_position[1] + 2 * offset
             figure_offset_3_position = rook_position[0], rook_position[1] + 3 * offset
 
-            figure_offset_1 = Figure.get_figure(figures, figure_offset_1_position)
-            figure_offset_2 = Figure.get_figure(figures, figure_offset_2_position)
-            figure_offset_3 = Figure.get_figure(figures,
-                                                figure_offset_3_position) if move_type == MoveType.CASTLE_LONG else None
+            figure_offset_1 = figures.get_figure_at(figure_offset_1_position)
+            figure_offset_2 = figures.get_figure_at(figure_offset_2_position)
+            figure_offset_3 = figures.get_figure_at(
+                figure_offset_3_position) if move_type == MoveType.CASTLE_LONG else None
 
             if figure_offset_1:
                 return
@@ -333,7 +340,7 @@ class King(Figure):
             position_being_checked = self.position[0] + direction[0], self.position[1] + direction[1]
             if not self.is_move_valid(position_being_checked):
                 continue
-            figure = Figure.get_figure(figures, position_being_checked)
+            figure = figures.get_figure_at(position_being_checked)
             if figure:
                 if figure.color == self.color:
                     continue

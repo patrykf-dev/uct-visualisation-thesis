@@ -54,28 +54,28 @@ def get_all_possible_moves(board: Chessboard):
             continue
 
         figure_moves = figures_list[i].check_moves(board.figures)
-        possible_moves = reduce_move_range_when_check(board, figures_list[i], figure_moves)
+        reduce_move_range_when_check(board, figures_list[i], figure_moves)
 
-        for move in possible_moves:
+        for move in figure_moves:
             move.player = get_player_from_color(board.current_player_color)
 
             f_color = str(copied_figure.color).split(".")[1].lower()
             f_type = str(copied_figure.figure_type).split(".")[1].lower()
             move.description = f"{f_color} {f_type} {move.position_from} -> {move.position_to}"
 
-        if possible_moves:
-            all_possible_moves.extend(possible_moves)
+        if figure_moves:
+            all_possible_moves.extend(figure_moves)
 
     return all_possible_moves
 
 
 def take_off_potential_figure(board: Chessboard, move: ChessMove):
-    figure = Figure.get_figure(board.figures, move.position_to)
+    figure = board.figures.get_figure_at(move.position_to)
     if figure:
         Figure.remove_figure(board.figures, figure)
     elif move.move_type == MoveType.EN_PASSANT:
         opponent_figure_position = move.help_dict['opponent-pawn-pos']
-        figure = Figure.get_figure(board.figures, opponent_figure_position)
+        figure = board.figures.get_figure_at(opponent_figure_position)
         Figure.remove_figure(board.figures, figure)
     return figure
 
@@ -86,22 +86,26 @@ def put_back_potential_figure(board: Chessboard, figure: Figure):
 
 
 def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
-    reduced_moves = []
-    for move in moves:
-        previous_position = figure.position
+    bad_moves = []
+    figs = board.figures
+    king = figs.get_king(board.current_player_color)
+    previous_position = figure.position
+    for i in range(len(moves)):
+        move = moves[i]
         potential_figure = take_off_potential_figure(board, move)
-        board.figures.move_figure_to(figure, move.position_to)
-        king = board.figures.get_king(board.current_player_color)
-        king.update_check_mask(board.figures)
-        if not king.check_mask[king.position]:
-            reduced_moves.append(move)
-        board.figures.move_figure_to(figure, previous_position)
+        figs.move_figure_to(figure, move.position_to)
+        king.update_check_mask(figs)
+        if king.check_mask[king.position]:
+            bad_moves.append(i)
+        figs.move_figure_to(figure, previous_position)
         put_back_potential_figure(board, potential_figure)
-    return reduced_moves
+
+    for bad_move in bad_moves[::-1]:
+        moves.pop(bad_move)
 
 
 def is_king_selected_to_move_in_check(board: Chessboard, selected_tile):
-    figure = Figure.get_figure(board.figures, selected_tile)
+    figure = board.figures.get_figure_at(selected_tile)
     return figure and figure.figure_type == FigureType.KING and figure.color == board.current_player_color and board.check
 
 
@@ -113,7 +117,7 @@ def do_normal_move(board: Chessboard, move, figure_moved: Figure):
     if (figure_moved.figure_type == FigureType.KING or figure_moved.figure_type == FigureType.ROOK) and \
             figure_moved.is_able_to_castle:
         figure_moved.set_is_able_to_castle(False)
-    potential_figure = Figure.get_figure(board.figures, move.position_to)
+    potential_figure = board.figures.get_figure_at(move.position_to)
     if potential_figure:
         Figure.remove_figure(board.figures, potential_figure)
     # figure_moved.move(move.position_to)
@@ -165,9 +169,10 @@ def is_there_any_possible_move(board: Chessboard):
     for figure in board.figures.figures_list:
         if figure.color != board.current_player_color:
             continue
+
         possible_moves = figure.check_moves(board.figures)
-        possible_moves_reduced = reduce_move_range_when_check(board, figure, possible_moves)
-        if possible_moves_reduced:
+        reduce_move_range_when_check(board, figure, possible_moves)
+        if possible_moves:
             return True
     return False
 

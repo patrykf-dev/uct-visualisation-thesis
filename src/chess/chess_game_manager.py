@@ -45,7 +45,8 @@ class ChessGameManager:
             self.if_figure_selected = True
             self.selected_tile = grid_pos
             available_moves = figure.check_moves(self.board.figures)
-            self.board.possible_moves = ChessUtils.reduce_move_range_when_check(self.board, figure, available_moves)
+            ChessUtils.reduce_move_range_when_check(self.board, figure, available_moves)
+            self.board.possible_moves = available_moves
         else:
             self.deselect_figure()
 

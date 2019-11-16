@@ -50,7 +50,7 @@ class Chessboard:
         self.check = king.check_mask[king.position]
 
     def do_move(self, move, selected_tile):
-        figure_moved = Figure.get_figure(self.figures, selected_tile)
+        figure_moved = self.figures.get_figure_at(selected_tile)
         if move.move_type == MoveType.NORMAL:
             ChessUtils.do_normal_move(self, move, figure_moved)
         elif move.move_type == MoveType.PAWN_DOUBLE_MOVE:
@@ -65,7 +65,7 @@ class Chessboard:
             self.figures.set_king_reference(figure_moved)
 
     def add_past_move(self, position, figures_count_before_move, old_position):
-        figure = Figure.get_figure(self.figures, position)
+        figure = self.figures.get_figure_at(position)
         self.past_moves.append(
             PastMove(position, self.check, figure, len(self.figures.figures_list) < figures_count_before_move,
                      old_position))
@@ -85,6 +85,7 @@ class Chessboard:
         self.update_game_status()
 
     def update_game_status(self):
+        # TODO: get rid of it
         move_is_possible = ChessUtils.is_there_any_possible_move(self)
         if not move_is_possible:
             if self.check:

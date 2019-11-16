@@ -48,7 +48,7 @@ class ChessFiguresCollection:
         self.remove(self._get_figure_from_array(position))
 
     def get_figure_at(self, position):
-        return self._get_figure_from_array(position)
+        return self._figures_array[position[0]][position[1]]
 
     def add_figure(self, figure):
         if figure.figure_type == FigureType.KING:
