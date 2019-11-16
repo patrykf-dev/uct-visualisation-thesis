@@ -27,7 +27,7 @@ class TestChess(unittest.TestCase):
 
     def setUp(self):
         self.game = Game()
-        self.game.draw_board()
+        self.game._draw_board()
         pygame.display.flip()
 
     def tearDown(self):
