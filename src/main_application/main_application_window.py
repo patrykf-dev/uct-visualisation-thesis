@@ -35,7 +35,6 @@ class MainApplicationWindow(QMainWindow):
     def _handle_play_button(self):
         game = self.layout.get_chosen_game()
         game_mode = self.layout.get_chosen_game_mode()
-        print(f"_handle_play_button {game_mode}")
         w = create_proper_window(self, game, game_mode)
         w.show()
 

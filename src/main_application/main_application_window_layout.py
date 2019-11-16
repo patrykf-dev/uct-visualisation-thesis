@@ -1,5 +1,6 @@
 import os
 
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QLineEdit
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
@@ -51,8 +52,8 @@ class MainApplicationWindowLayout:
         self._add_left_panel(main_layout)
         self._add_right_panel(main_layout)
         self._add_uct_panel(main_layout)
-        self.play_button = get_button("Play")
-        main_layout.addWidget(self.play_button, 2, 0, 1, 2)
+        self.play_button = get_button("Play", 80, 30)
+        main_layout.addWidget(self.play_button, 2, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
         return rc
 
     def _get_second_row(self):
@@ -70,9 +71,9 @@ class MainApplicationWindowLayout:
         self.draw_opengl_button = get_button("Inspect tree (OpenGL)")
         self.draw_matplotlib_button = get_button("Inspect tree (matplotlib) - old")
         self.draw_matplotlib_test_button = get_button("Inspect tree (matplotlib) - dev")
-        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2)
-        main_layout.addWidget(self.draw_matplotlib_button, 2, 0, 1, 2)
-        main_layout.addWidget(self.draw_matplotlib_test_button, 3, 0, 1, 2)
+        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.draw_matplotlib_button, 2, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.draw_matplotlib_test_button, 3, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
         return rc
 
     def _add_left_panel(self, main_layout):
@@ -85,7 +86,7 @@ class MainApplicationWindowLayout:
         layout.addWidget(self.chess_button, 1, 0)
         self.mancala_button = get_radiobutton("Mancala")
         layout.addWidget(self.mancala_button, 2, 0)
-        main_layout.addWidget(new_widget, 0, 0)
+        main_layout.addWidget(new_widget, 0, 0, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
 
     def _add_right_panel(self, main_layout):
         new_widget = QWidget()
@@ -99,7 +100,7 @@ class MainApplicationWindowLayout:
         layout.addWidget(self.player_vs_player_button, 1, 0)
         layout.addWidget(self.player_vs_pc_button, 2, 0)
         layout.addWidget(self.pc_vs_pc_button, 3, 0)
-        main_layout.addWidget(new_widget, 0, 1)
+        main_layout.addWidget(new_widget, 0, 1, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
 
     def _add_uct_panel(self, main_layout):
         new_widget = QWidget()

@@ -31,9 +31,12 @@ def get_non_resizable_label(caption=""):
     return rc
 
 
-def get_button(caption=""):
+def get_button(caption="", padding_width=50, padding_height=0):
     rc = QPushButton(caption)
     rc.setFont(DEFAULT_FONT)
+    rc.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+    rc.setFixedWidth(rc.sizeHint().width() + padding_width)
+    rc.setFixedHeight(rc.sizeHint().height() + padding_height)
     return rc
 
 

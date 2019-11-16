@@ -2,11 +2,12 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
 from src.chess.chess_canvas import ChessCanvas
 from src.main_application.GUI_utils import center_window_on_screen
+from src.main_application.game_canvas import GameCanvas
 from src.visualisation_drawing.canvas_widget import MonteCarloTreeCanvasWidget
 
 
 class PlayerVsMachineWindow(QMainWindow):
-    def __init__(self, game_canvas: QWidget, parent):
+    def __init__(self, game_canvas: GameCanvas, parent):
         super(PlayerVsMachineWindow, self).__init__(parent)
         self.game_canvas = game_canvas
         self.tree_widget = MonteCarloTreeCanvasWidget()

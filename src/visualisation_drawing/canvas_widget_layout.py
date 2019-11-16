@@ -1,3 +1,4 @@
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy
 
 from src.main_application.GUI_utils import DEFAULT_FONT, get_button, get_non_resizable_label
@@ -53,8 +54,8 @@ class MonteCarloTreeWidgetLayout:
 
         main_layout.addWidget(self.canvas.native, 0, 0)
         main_layout.addWidget(self.right_panel_widget, 0, 1)
-        main_layout.addWidget(self.reset_button, 1, 0)
-        main_layout.addWidget(self.serialize_button, 2, 0)
+        main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.serialize_button, 2, 0, alignment=QtCore.Qt.AlignCenter)
 
     def _fill_right_panel_contents(self):
         self.right_panel_widget = QWidget()
