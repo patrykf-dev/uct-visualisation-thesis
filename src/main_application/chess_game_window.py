@@ -19,6 +19,3 @@ class ChessGameWindow(QMainWindow):
     def showEvent(self, event):
         super().showEvent(event)
         center_window_on_screen(self)
-
-    def _handle_click(self):
-        print("ASDASD")

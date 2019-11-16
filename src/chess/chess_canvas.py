@@ -49,7 +49,7 @@ class ChessCanvas(QWidget):
         :return: GUI order
         """
         if y == 0:
-            pos = x, 1
+            y = 1
         return (x // self.TILE_WIDTH, (self.HEIGHT - y) // self.TILE_HEIGHT)[::-1]
 
     def _tile_to_grid(self, positions):
