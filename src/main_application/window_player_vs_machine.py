@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
-from src.chess.chess_canvas import ChessCanvas
 from src.main_application.GUI_utils import center_window_on_screen
 from src.main_application.game_canvas import GameCanvas
 from src.visualisation_drawing.canvas_widget import MonteCarloTreeCanvasWidget

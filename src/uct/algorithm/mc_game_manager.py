@@ -17,8 +17,12 @@ class MonteCarloGameManager:
             return
         else:
             self.tree.perform_move_on_root(self.previous_move_calculated)
-            self.previous_move_calculated = None
             self.tree.perform_move_on_root(move)
+            self.previous_move_calculated = None
+
+    def perform_previous_move(self):
+        self.tree.perform_move_on_root(self.previous_move_calculated)
+        self.previous_move_calculated = None
 
     def calculate_next_move(self, max_iterations=40, max_moves_per_simulation=40):
         mcts = MonteCarloTreeSearch(self.tree, max_iterations, max_moves_per_simulation)

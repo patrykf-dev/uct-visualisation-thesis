@@ -1,15 +1,18 @@
 import src.chess.chess_utils as ChessUtils
 from src.chess.board_gui import BoardGUI, TileMarkType
+from src.chess.chess_canvas_drawer import ChessCanvasDrawer
 from src.chess.chessboard import Chessboard
 from src.chess.figures import Figure
 
 
 class ChessGameManager:
-    def __init__(self, tiles_count, tile_width, tile_height):
+    def __init__(self, width, height):
         self.board = Chessboard()
         self.if_figure_selected = False
         self.selected_tile = None
-        self.board_gui = BoardGUI(tiles_count, tile_width, tile_height)
+        self.canvas_drawer = ChessCanvasDrawer(width, height, self)
+        self.board_gui = BoardGUI(self.canvas_drawer.tiles_count, self.canvas_drawer.tile_width,
+                                  self.canvas_drawer.tile_height)
         self.board.notify_tile_marked += self.on_tile_marked
 
     def on_tile_marked(self, sender, pos, tile_mark_type):
