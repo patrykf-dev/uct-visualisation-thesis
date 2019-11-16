@@ -8,7 +8,7 @@ from src.main_application.window_player_vs_player import PlayerVsPlayerWindow
 
 
 def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode) -> QMainWindow:
-    canvas = ChessCanvas()
+    canvas = ChessCanvas(game_mode)
     if game_mode == GameMode.PLAYER_VS_PC:
         return PlayerVsMachineWindow(canvas, parent)
     elif game_mode == GameMode.PLAYER_VS_PLAYER:

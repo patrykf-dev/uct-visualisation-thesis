@@ -19,6 +19,7 @@ def center_window_on_screen(window):
     bounds = window.frameGeometry()
     screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
     center_point = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
+    center_point.setY(int(bounds.height() / 2))  # Just for debugging purposes
     bounds.moveCenter(center_point)
     window.move(bounds.topLeft())
 

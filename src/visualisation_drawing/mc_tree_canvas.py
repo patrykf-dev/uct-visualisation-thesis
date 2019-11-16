@@ -29,6 +29,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self._bind_buffers()
         self._bind_shaders()
         self._setup_matrices()
+        self.update()
 
     def on_resize(self, event):
         set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
