@@ -5,13 +5,12 @@ from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
 import src.main_application.easy_plot_tree as MatplotlibDrawer
 from src.main_application.GUI_utils import TREES_PATH, center_window_on_screen
-from src.main_application.enums import GameMode, Game
 from src.main_application.game_window_creator import create_proper_window
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.serialization.serializator_csv import CsvSerializator
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
-from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
+from src.main_application.mc_tree_window import MonteCarloTreeWindow
 
 
 class MainApplicationWindow(QMainWindow):

@@ -8,7 +8,7 @@ from vispy.gloo import set_viewport, set_state, clear
 from src.main_application.GUI_utils import PYQT_KEY_CODE_DOWN, PYQT_KEY_CODE_UP, PYQT_KEY_CODE_LEFT, PYQT_KEY_CODE_RIGHT
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
-from src.visualisation_drawing.mc_tree_draw_data import MonteCarloTreeDrawDataRetriever
+from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
 

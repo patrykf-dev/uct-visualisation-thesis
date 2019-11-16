@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QWidget, QFileDialog
 from src.main_application.GUI_utils import TREES_PATH
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
-from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
-from src.visualisation_drawing.mc_tree_widget_layout import MonteCarloTreeWidgetLayout
+from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
+from src.visualisation_drawing.canvas_widget_layout import MonteCarloTreeWidgetLayout
 
 
 class MonteCarloTreeCanvasWidget(QWidget):

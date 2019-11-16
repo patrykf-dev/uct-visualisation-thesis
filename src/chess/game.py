@@ -6,12 +6,11 @@ from pygame.locals import *
 
 from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_game_manager import ChessGameManager
-from src.chess.chessboard import Figure
 from src.uct.algorithm.mc_game_manager import MonteCarloGameManager
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
-from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
-from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
+from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
+from src.main_application.mc_tree_window import MonteCarloTreeWindow
 
 WIDTH = 600
 HEIGHT = 600

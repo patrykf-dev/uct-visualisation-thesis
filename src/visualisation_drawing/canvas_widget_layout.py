@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy
 
 from src.main_application.GUI_utils import DEFAULT_FONT, get_button, get_non_resizable_label
 from src.uct.algorithm.mc_node import MonteCarloNode
-from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
+from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
 
 
 class MonteCarloTreeWidgetLayout:

@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import QtWidgets
 
-from src.visualisation_drawing.mc_tree_window import MonteCarloTreeWindow
+from src.main_application.mc_tree_window import MonteCarloTreeWindow
 
 
 def redefine_exceptions():

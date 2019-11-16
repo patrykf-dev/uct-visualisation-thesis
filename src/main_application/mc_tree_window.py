@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QGridLayout, QWidget
 
 from src.main_application.GUI_utils import center_window_on_screen
-from src.visualisation_drawing.mc_tree_canvas_widget import MonteCarloTreeCanvasWidget
+from src.visualisation_drawing.canvas_widget import MonteCarloTreeCanvasWidget
 
 
 class MonteCarloTreeWindow(QMainWindow):
