@@ -34,7 +34,10 @@ class MainApplicationWindow(QMainWindow):
         center_window_on_screen(self)
 
     def _handle_play_button(self):
-        w = create_proper_window(self, Game.Chess, GameMode.PLAYER_VS_PC)
+        game = self.layout.get_chosen_game()
+        game_mode = self.layout.get_chosen_game_mode()
+        print(f"_handle_play_button {game_mode}")
+        w = create_proper_window(self, game, game_mode)
         w.show()
 
     def _handle_select_tree_path_button(self):

@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QLineEdit
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
     get_line_edit, get_hint_line_edit, TREES_PATH
+from src.main_application.enums import GameMode, Game
 
 
 class MainApplicationWindowLayout:
@@ -15,6 +16,22 @@ class MainApplicationWindowLayout:
         self.tree_path_edit = QLineEdit()
         self.select_tree_path_button = QPushButton()
         self._create_layout()
+
+    def get_chosen_game(self):
+        if self.mancala_button.isChecked():
+            return Game.Mancala
+        else:
+            return Game.Chess
+
+    def get_chosen_game_mode(self):
+        if self.pc_vs_pc_button.isChecked():
+            return GameMode.PC_VS_PC
+        elif self.player_vs_player_button.isChecked():
+            return GameMode.PLAYER_VS_PLAYER
+        elif self.player_vs_pc_button.isChecked():
+            return GameMode.PLAYER_VS_PC
+        else:
+            return GameMode.PLAYER_VS_PC
 
     def _create_layout(self):
         self.main_widget = QWidget()
@@ -63,8 +80,11 @@ class MainApplicationWindowLayout:
         layout = QGridLayout()
         new_widget.setLayout(layout)
         layout.addWidget(get_non_resizable_label("Game"), 0, 0)
-        layout.addWidget(get_radiobutton("Chess"), 1, 0)
-        layout.addWidget(get_radiobutton("Mancala"), 2, 0)
+        self.chess_button = get_radiobutton("Chess")
+        self.chess_button.setChecked(True)
+        layout.addWidget(self.chess_button, 1, 0)
+        self.mancala_button = get_radiobutton("Mancala")
+        layout.addWidget(self.mancala_button, 2, 0)
         main_layout.addWidget(new_widget, 0, 0)
 
     def _add_right_panel(self, main_layout):
@@ -72,9 +92,13 @@ class MainApplicationWindowLayout:
         layout = QGridLayout()
         new_widget.setLayout(layout)
         layout.addWidget(get_non_resizable_label("Mode"), 0, 0)
-        layout.addWidget(get_radiobutton("Player vs player"), 1, 0)
-        layout.addWidget(get_radiobutton("Player vs PC"), 2, 0)
-        layout.addWidget(get_radiobutton("PC vs PC"), 3, 0)
+        self.player_vs_player_button = get_radiobutton("Player vs player")
+        self.player_vs_pc_button = get_radiobutton("Player vs PC")
+        self.pc_vs_pc_button = get_radiobutton("PC vs PC")
+        self.player_vs_pc_button.setChecked(True)
+        layout.addWidget(self.player_vs_player_button, 1, 0)
+        layout.addWidget(self.player_vs_pc_button, 2, 0)
+        layout.addWidget(self.pc_vs_pc_button, 3, 0)
         main_layout.addWidget(new_widget, 0, 1)
 
     def _add_uct_panel(self, main_layout):

@@ -8,5 +8,5 @@ class Game(Enum):
 
 class GameMode(Enum):
     PLAYER_VS_PLAYER = 1,
-    PLAYER_VS_PC = 1,
+    PLAYER_VS_PC = 2,
     PC_VS_PC = 3
