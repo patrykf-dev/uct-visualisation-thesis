@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QPushButton
 
 from src.chess.chess_canvas import ChessCanvas
+from src.main_application.GUI_utils import center_window_on_screen
 
 
 class ChessGameWindow(QMainWindow):
@@ -17,6 +18,10 @@ class ChessGameWindow(QMainWindow):
         main_layout.addWidget(self.button, 0, 1)
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        center_window_on_screen(self)
 
     def _handle_click(self):
         print("ASDASD")

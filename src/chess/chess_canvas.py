@@ -39,18 +39,18 @@ class ChessCanvas(QWidget):
         self._react_to_player_click(x, y)
 
     def _react_to_player_click(self, x, y):
-        grid_pos = self._grid_click_to_tile((x, y))
+        grid_pos = self._grid_click_to_tile(x, y)
         player_moved, player_move = self.game_manager.react_to_tile_click(grid_pos)
         self.update()
 
-    def _grid_click_to_tile(self, pos):
+    def _grid_click_to_tile(self, x, y):
         """
         :param pos: GUI order (x, y)
         :return: GUI order
         """
-        if pos[1] == 0:
-            pos = pos[0], 1
-        return (pos[0] // self.TILE_WIDTH, (self.HEIGHT - pos[1]) // self.TILE_HEIGHT)[::-1]
+        if y == 0:
+            pos = x, 1
+        return (x // self.TILE_WIDTH, (self.HEIGHT - y) // self.TILE_HEIGHT)[::-1]
 
     def _tile_to_grid(self, positions):
         """

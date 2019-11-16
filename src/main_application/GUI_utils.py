@@ -1,8 +1,7 @@
 import os
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioButton
-
 
 DEFAULT_FONT = QtGui.QFont("Helvetica", 10)
 DEFAULT_FONT_BOLD = QtGui.QFont("Helvetica", 10, QtGui.QFont.Bold)
@@ -14,6 +13,15 @@ PYQT_KEY_CODE_RIGHT = 16777236
 PYQT_KEY_CODE_DOWN = 16777237
 
 TREES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "trees")
+
+
+def center_window_on_screen(window):
+    bounds = window.frameGeometry()
+    screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
+    center_point = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
+    bounds.moveCenter(center_point)
+    window.move(bounds.topLeft())
+
 
 def get_non_resizable_label(caption=""):
     rc = QLabel(caption)

@@ -3,11 +3,11 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
-from src.main_application.GUI_utils import TREES_PATH
-from src.main_application.chess_game_window import launch_chess_game_window, ChessGameWindow
+import src.main_application.easy_plot_tree as MatplotlibDrawer
+from src.main_application.GUI_utils import TREES_PATH, center_window_on_screen
+from src.main_application.chess_game_window import ChessGameWindow
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.serialization.serializator_csv import CsvSerializator
-import src.main_application.easy_plot_tree as MatplotlibDrawer
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
 from src.visualisation_drawing.mc_tree_canvas import MonteCarloTreeCanvas
@@ -28,6 +28,10 @@ class MainApplicationWindow(QMainWindow):
         self.layout.draw_matplotlib_button.clicked.connect(self._handle_matplotlib_button)
         self.layout.draw_matplotlib_test_button.clicked.connect(self._handle_matplotlib_test_button)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        center_window_on_screen(self)
 
     def _handle_play_button(self):
         w = ChessGameWindow(self)
