@@ -4,20 +4,19 @@ import numpy as np
 
 
 class BoardGUI:
-    def __init__(self):
-        self.grid = self.create_grid()
+    def __init__(self, tiles_count, tile_width, tile_height):
+        self.grid = self.create_grid(tiles_count, tile_width, tile_height)
 
-    def create_grid(self):
-        from src.chess.game import TILE_HEIGHT, TILE_WIDTH, TILE_NUMBER
-        self.grid = np.full((TILE_NUMBER, TILE_NUMBER), None)
-        grid = [[(i * TILE_WIDTH, j * TILE_HEIGHT) for i in range(TILE_NUMBER)] for j in range(TILE_NUMBER)]
+    def create_grid(self, tiles_count, tile_width, tile_height):
+        self.grid = np.full((tiles_count, tiles_count), None)
+        grid = [[(i * tile_width, j * tile_height) for i in range(tiles_count)] for j in range(tiles_count)]
         for i, row in enumerate(grid[::-1]):
             for j, tile in enumerate(row):
                 if (i + j) % 2 == 1:
                     tile_color = (255, 195, 77)
                 else:
                     tile_color = (230, 115, 0)
-                self.grid[i, j] = Tile(tile_color, tile, TILE_WIDTH, TILE_HEIGHT)
+                self.grid[i, j] = Tile(tile_color, tile, tile_width, tile_height)
         return self.grid
 
     def mark_tile_selected(self, tile):

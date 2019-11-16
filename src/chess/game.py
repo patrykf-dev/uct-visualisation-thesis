@@ -19,20 +19,19 @@ TILE_NUMBER = 8
 TILE_WIDTH = int(WIDTH / TILE_NUMBER)
 TILE_HEIGHT = int(HEIGHT / TILE_NUMBER)
 ICONS_FOLDER = 'icons'
-TILES_FONT = None
 
 
-class Game:
+class ChessGame:
     def __init__(self):
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
         self.TILE_NUMBER = TILE_NUMBER
         self.TILE_WIDTH = int(WIDTH / TILE_NUMBER)
         self.TILE_HEIGHT = int(HEIGHT / TILE_NUMBER)
+        self.TILES_FONT = pygame.font.SysFont("Helvetica", 30)
         self.ICONS_FOLDER = os.path.join(os.path.realpath(__file__), "..", "icons")
-        pygame.init()
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("Chess")
+        #pygame.display.set_caption("Chess")
         self.screen = pygame.display.get_surface()
         self.game_manager = ChessGameManager()
         game_state = ChessState(self.game_manager.board)
@@ -52,10 +51,10 @@ class Game:
             for j, tile in enumerate(row):
                 pygame.draw.rect(self.window, tile.color, (tile.start_position[0], tile.start_position[1],
                                                            tile.tile_width, tile.tile_height))
-                tile_figure = Figure.get_figure(self.game_manager.board.figures, (i, j))
+                tile_figure = self.game_manager.board.figures.get_figure_at((i, j))
                 if tile_figure:
                     self.draw_figure(tile_figure, tile.start_position)
-                tile_text_surface = TILES_FONT.render(f"{i}, {j}", False, (255, 255, 255))
+                tile_text_surface = self.TILES_FONT.render(f"{i}, {j}", False, (255, 255, 255))
                 self.screen.blit(tile_text_surface, tile.start_position)
 
     def grid_click_to_tile(self, pos):
@@ -135,10 +134,9 @@ class Game:
 
 
 def launch_game():
-    global TILES_FONT
+    pygame.init()
     pygame.font.init()
-    TILES_FONT = pygame.font.SysFont("Helvetica", 30)
-    game = Game()
+    game = ChessGame()
     game.draw_board()
     pygame.display.flip()
     while True:

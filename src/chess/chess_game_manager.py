@@ -5,11 +5,11 @@ from src.chess.figures import Figure
 
 
 class ChessGameManager:
-    def __init__(self):
+    def __init__(self, tiles_count, tile_width, tile_height):
         self.board = Chessboard()
         self.if_figure_selected = False
         self.selected_tile = None
-        self.board_gui = BoardGUI()
+        self.board_gui = BoardGUI(tiles_count, tile_width, tile_height)
         self.board.notify_tile_marked += self.on_tile_marked
 
     def on_tile_marked(self, sender, pos, tile_mark_type):

@@ -3,8 +3,8 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
-from src.chess.game import launch_game
 from src.main_application.GUI_utils import TREES_PATH
+from src.main_application.chess_game_window import launch_chess_game_window, ChessGameWindow
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.serialization.serializator_csv import CsvSerializator
 import src.main_application.easy_plot_tree as MatplotlibDrawer
@@ -30,7 +30,8 @@ class MainApplicationWindow(QMainWindow):
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def _handle_play_button(self):
-        launch_game()
+        w = ChessGameWindow(self)
+        w.show()
 
     def _handle_select_tree_path_button(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
