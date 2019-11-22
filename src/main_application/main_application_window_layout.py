@@ -82,9 +82,9 @@ class MainApplicationWindowLayout:
         new_widget.setLayout(layout)
         layout.addWidget(get_non_resizable_label("Game"), 0, 0)
         self.chess_button = get_radiobutton("Chess")
-        self.chess_button.setChecked(True)
         layout.addWidget(self.chess_button, 1, 0)
         self.mancala_button = get_radiobutton("Mancala")
+        self.mancala_button.setChecked(True)
         layout.addWidget(self.mancala_button, 2, 0)
         main_layout.addWidget(new_widget, 0, 0, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
 
