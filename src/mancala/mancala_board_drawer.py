@@ -6,7 +6,7 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import QRect, Qt, QPoint
 from PyQt5.QtGui import QPainter, QImage, QColor, QFontMetrics, QBrush
 
-from src.mancala.mancala_board_new import MancalaBoardNew
+from src.mancala.mancala_board import MancalaBoard
 
 
 class MancalaBoardDrawer:
@@ -23,7 +23,7 @@ class MancalaBoardDrawer:
         self.stones_centers = []
         self.initial_draw = True
 
-    def draw_board(self, painter: QPainter, board: MancalaBoardNew):
+    def draw_board(self, painter: QPainter, board: MancalaBoard):
         self.draw_holes(painter)
         self.draw_stores(painter)
         self.draw_numbers(painter, board)
@@ -68,7 +68,7 @@ class MancalaBoardDrawer:
                       self.hole_radius * 3, self.hole_radius * 5)
         painter.drawPixmap(point, pixmap)
 
-    def draw_numbers(self, painter, board: MancalaBoardNew):
+    def draw_numbers(self, painter, board: MancalaBoard):
         font = painter.font()
         font.setPixelSize(30)
         font.setFamily("Consolas")

@@ -4,14 +4,14 @@ from PyQt5.QtGui import QPainter
 from src.main_application.enums import GameMode
 from src.main_application.game_canvas import GameCanvas
 from src.mancala.mancala_board_drawer import MancalaBoardDrawer
-from src.mancala.mancala_board_new import MancalaBoardNew
+from src.mancala.mancala_board import MancalaBoard
 
 
 class MancalaCanvas(GameCanvas):
     def __init__(self, game_mode: GameMode):
         super().__init__(game_mode)
         self.board_drawer = MancalaBoardDrawer(self.WIDTH, self.HEIGHT)
-        self.board = MancalaBoardNew()
+        self.board = MancalaBoard()
 
     def paintEvent(self, event: QtGui.QPaintEvent):
         super().paintEvent(event)
