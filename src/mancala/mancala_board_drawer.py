@@ -17,8 +17,10 @@ class MancalaBoardDrawer:
         self.hole_padding = 10
         self.images_folder = os.path.join(os.path.realpath(__file__), "..", "images")
         self.hole_radius = 25
+        self.stone_radius = 4
         self.selected_hole_index = -1
         self.hole_centers = []
+        self.stones_centers = []
         self.initial_draw = True
 
     def draw_board(self, painter: QPainter, board: MancalaBoardNew):
@@ -107,6 +109,7 @@ class MancalaBoardDrawer:
             if sqrt(x_dist * x_dist + y_dist * y_dist) <= self.hole_radius:
                 if self.selected_hole_index == i:
                     self.selected_hole_index = -1
+                    self.stones_centers = []
                     return True, self.draw_index_to_board_index(i)
                 else:
                     self.selected_hole_index = i
@@ -120,20 +123,26 @@ class MancalaBoardDrawer:
         else:
             return 18 - i
 
-    def draw_stones(self, painter, board):
-        stone_radius = 4
-        max_span = self.hole_radius - 2 * stone_radius - 1
+    def generate_stones_centers(self, board):
+        max_span = self.hole_radius - self.stone_radius - 2
 
-        brush = QBrush(QColor(0, 180, 100, 150), Qt.SolidPattern)
-        painter.setBrush(brush)
         for i in range(len(self.hole_centers)):
             board_index = self.draw_index_to_board_index(i)
             for j in range(board.board[board_index]):
                 hole_x = self.hole_centers[i][0]
                 hole_y = self.hole_centers[i][1]
                 x_diff = random.uniform(-max_span, max_span)
-                max_y = int(sqrt(abs(stone_radius * stone_radius - x_diff * x_diff)))
+                max_y = int(sqrt(abs(max_span * max_span - x_diff * x_diff)))
                 y_diff = random.uniform(-max_y, max_y)
                 x = hole_x + x_diff
                 y = hole_y + y_diff
-                painter.drawEllipse(QPoint(x, y), stone_radius * 2, stone_radius * 2)
+                self.stones_centers.append((x, y))
+
+    def draw_stones(self, painter, board):
+        if len(self.stones_centers) == 0:
+            self.generate_stones_centers(board)
+
+        brush = QBrush(QColor(0, 180, 100, 150), Qt.SolidPattern)
+        painter.setBrush(brush)
+        for center in self.stones_centers:
+            painter.drawEllipse(QPoint(*center), self.stone_radius * 2, self.stone_radius * 2)

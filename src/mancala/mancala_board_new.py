@@ -12,6 +12,9 @@ class MancalaBoardNew:
         self.current_player = 1
 
     def perform_move(self, hole_index):
+        if (0 <= hole_index <= 5 and self.current_player == 2) or (7 <= hole_index <= 12 and self.current_player == 1):
+            raise PermissionError("ILLEGAL MOVE!!!")
+
         stones = self.board[hole_index]
         self.board[hole_index] = 0
         index = hole_index + 1
