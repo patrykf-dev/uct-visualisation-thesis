@@ -10,22 +10,20 @@ class MancalaState(BaseGameState):
         self.board = board
 
     def get_all_possible_moves(self):
-        # TODO
-        return []
+        return self.board.find_all_moves()
 
     def perform_random_move(self):
         all_possible_moves = self.get_all_possible_moves()
         random_number = RandomUtils.get_random_int(0, len(all_possible_moves))
         move = all_possible_moves[random_number]
-        self.board.perform_moves_sequence(move)
+        self.board.perform_move(move)
         self.switch_current_player()
-        if self.board.check_if_game_ended:
-            self.phase = GamePhase.DRAW  # TODO
+        self.phase = self.board.phase
 
     def apply_moves(self, moves):
-        self.board.perform_moves_sequence(moves)
-        if self.board.check_if_game_ended:
-            self.phase = GamePhase.DRAW  # TODO
+        for move in moves:
+            self.board.perform_move(move)
+        self.phase = self.board.phase
 
     def get_win_score(self, player):
         max_score_diff = 48

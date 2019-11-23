@@ -76,14 +76,6 @@ class MonteCarloTreeSearch:
         leaf_state = self.tree.retrieve_node_game_state(leaf)
         tmp_state = leaf_state.deep_copy()
         tmp_phase = leaf_state.phase
-        opponent_win_phase = Enums.get_opponent_win(tmp_state.current_player)
-
-        if tmp_phase == opponent_win_phase:
-            # TODO: do we do anything here?
-            return tmp_phase
-        elif tmp_phase == Enums.GamePhase.DRAW:
-            # TODO: do we do anything here?
-            return tmp_phase
 
         self._print_debug("Simulating from node {}...".format(leaf.id))
 

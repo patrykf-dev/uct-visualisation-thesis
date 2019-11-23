@@ -19,4 +19,9 @@ def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode) -
             return MachineVsMachineWindow(canvas, parent)
     elif game == Game.Mancala:
         canvas = MancalaCanvas(game_mode)
-        return PlayerVsPlayerWindow(canvas, parent)
+        if game_mode == GameMode.PLAYER_VS_PC:
+            return PlayerVsMachineWindow(canvas, parent)
+        elif game_mode == GameMode.PLAYER_VS_PLAYER:
+            return PlayerVsPlayerWindow(canvas, parent)
+        elif game_mode == GameMode.PC_VS_PC:
+            return MachineVsMachineWindow(canvas, parent)

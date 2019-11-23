@@ -24,6 +24,7 @@ class MancalaBoardDrawer:
         self.initial_draw = True
 
     def draw_board(self, painter: QPainter, board: MancalaBoard):
+        self.fill_background(painter)
         self.draw_holes(painter)
         self.draw_stores(painter)
         self.draw_numbers(painter, board)
@@ -33,7 +34,11 @@ class MancalaBoardDrawer:
         if self.initial_draw:
             self.initial_draw = False
 
-    def draw_holes(self, painter):
+    def fill_background(self, painter: QPainter):
+        background = QRect(0, 0, self.canvas_width, self.canvas_height)
+        painter.fillRect(background, QColor(160, 160, 160))
+
+    def draw_holes(self, painter: QPainter):
         pixmap = QtGui.QPixmap.fromImage(QImage(os.path.join(self.images_folder, "hole.png")))
         pixmap_selected = QtGui.QPixmap.fromImage(QImage(os.path.join(self.images_folder, "hole_selected.png")))
         pixmap.detach()
@@ -56,7 +61,7 @@ class MancalaBoardDrawer:
                 x = start_x
                 y = self.top_padding
 
-    def draw_stores(self, painter):
+    def draw_stores(self, painter: QPainter):
         path = os.path.join(self.images_folder, "store.png")
         image = QImage(path)
         pixmap = QtGui.QPixmap.fromImage(image)
@@ -68,7 +73,7 @@ class MancalaBoardDrawer:
                       self.hole_radius * 3, self.hole_radius * 5)
         painter.drawPixmap(point, pixmap)
 
-    def draw_numbers(self, painter, board: MancalaBoard):
+    def draw_numbers(self, painter: QPainter, board: MancalaBoard):
         font = painter.font()
         font.setPixelSize(30)
         font.setFamily("Consolas")
@@ -82,20 +87,20 @@ class MancalaBoardDrawer:
         x = start_x
         y = self.top_padding + 5 * self.hole_radius
         for i in range(6):
-            self._draw_number(board.board[i], 2 * self.hole_radius, font_height, painter, x, y)
+            self._draw_number(board.board_values[i], 2 * self.hole_radius, font_height, painter, x, y)
             x += 2 * self.hole_radius + self.hole_padding
 
         x = start_x + 12 * self.hole_radius + 6 * self.hole_padding
-        self._draw_number(board.board[6], 3 * self.hole_radius, font_height, painter, x, y)
+        self._draw_number(board.board_values[6], 3 * self.hole_radius, font_height, painter, x, y)
 
         x = start_x + 10 * self.hole_radius + 5 * self.hole_padding
         y = self.top_padding - font_height
         for i in range(6):
-            self._draw_number(board.board[i + 7], 2 * self.hole_radius, font_height, painter, x, y)
+            self._draw_number(board.board_values[i + 7], 2 * self.hole_radius, font_height, painter, x, y)
             x -= 2 * self.hole_radius + self.hole_padding
 
         x = start_x - self.hole_radius * 3 - self.hole_padding
-        self._draw_number(board.board[13], 3 * self.hole_radius, font_height, painter, x, y)
+        self._draw_number(board.board_values[13], 3 * self.hole_radius, font_height, painter, x, y)
 
     def _draw_number(self, value, font_width, font_height, painter, x, y):
         number = str(value)
@@ -123,12 +128,12 @@ class MancalaBoardDrawer:
         else:
             return 18 - i
 
-    def generate_stones_centers(self, board):
+    def generate_stones_centers(self, board: MancalaBoard):
         max_span = self.hole_radius - self.stone_radius - 2
 
         for i in range(len(self.hole_centers)):
             board_index = self.draw_index_to_board_index(i)
-            for j in range(board.board[board_index]):
+            for j in range(board.board_values[board_index]):
                 hole_x = self.hole_centers[i][0]
                 hole_y = self.hole_centers[i][1]
                 x_diff = random.uniform(-max_span, max_span)
@@ -138,7 +143,7 @@ class MancalaBoardDrawer:
                 y = hole_y + y_diff
                 self.stones_centers.append((x, y))
 
-    def draw_stones(self, painter, board):
+    def draw_stones(self, painter, board: MancalaBoard):
         if len(self.stones_centers) == 0:
             self.generate_stones_centers(board)
 
