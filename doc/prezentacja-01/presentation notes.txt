@@ -1,0 +1,85 @@
+Wstęp
+Tytuł projektu
+MCTS co to właściwie jest
+
+założenia:
+1. Rozgrywka jest prowadzona naprzemiennie przez dwóch graczy. (komentaerz albo i nie)
+2. Każdy ruch ma jednoznaczny wpływ na dalszą rozgrywkę (rozgrywka jest deterministyczna).
+3. Każdy z graczy ma dostęp do pełnej informacji o aktualnym stanie gry.
+
+wartość dla klienta (promotora) - jakie funkcjonalności powinien mieć użytkownik:
+- możliwość gry gracz vs pc, pc vs pc, (gracz vs gracz? chyba nie)
+- user podaje: liczba playoutów, po jakim zcsie sie bedzie ucinac playout, max czas na oblizcenie ruchu
+- wczytywanie plików binarnych z drzewami w jednym z trzech formatów
+- możliwość zapisywania drzew podczas rozgrywki
+- wyświetlenie wekwencji drzew, gdzie porównywać bęczie można krawędzie i nody - czyli wyświetlanie statystyk damnego ruchu (danej sytuacji na mapie)
+wymaganie niefunkcjinalne:
+- przekleić z deliver1
+- 
+
+UCT co to jest
+
+omówienie głównych komponetów (selection/exploration...)
+aspekt wizualizacji (?)
+dwie gry - tylko wspomniec ze dwie ()
+
+w czym piszemy?
+Python
+biblioteki:
+vispy - jako nakładka na OpenGL
+pygame - w tym robione jest GUI (problem z wielowątkowością, ale biblioteke do grafiki mozna wzglednie latwo zmienic)
+
+serializacja:
+- przepisać z dokument8
+
+wizualizacja:
+co było w zamyśle: scrollowanie, przewijanie itd
+omówić że używamy walkers algorithm i jakie są jego główne założenia:
+1. Krawędzie drzewa nie mogą się przecinać.
+2. Wierzchołki będą ustawione od góry w rzędach, a przynależność do rzędów będzie zależała od odległości wierzchołków
+od korzenia.
+3. Wierzchołki mają być narysowane możliwie najwęziej
+
+gry:
+- na samym początku testowaliśmy kółko i krzyżyk, ale finalnie nie będzie częścią pracy bo jest zbyt mało wyrafinowane: mimo to algorytm nieźle ogrywał użytkownika
+- więc jak nie kółko i krzyżyk to szachy
+
+gry - dlazcego
+i omowienie logiki
+to, co już mamy: prawie działające szachy z testami
+algorytm, który póki co gra gównianie (o tym dlaczego później)
+jakie byly przy tym problemy
+
+sazchy:
+dlaczego szachy? ambitna próba. cel: aby grał w miarę ok, choć jest to trudne bo takie algorytmy powstawały latami z udzuałem ekspertów
+pierwsze podejście: liczenie na mata
+ucinanie i ilość iteracji
+do poprawienia: pozycja figur
+problem optymalizacyjny:
+omówić dlaczego to jest wolne: 
+- sprawdzanie wszystkich możliwych ruchów jest dość łatwe, ale późniejusuwanie ruchow, które powodują szacha/ analogicznie gdy jest szach i szukamy ruchó broniących
+- ciągłe szukanie pomysłów na usprawnienia
+- brak równoleglości
+problemy jakie napotkalismy przy impolementacji szachów:
+- w sumie głównie optymalizacyjne: ten moment ze sprawdzaniem ruchów
+- implementacja wszystkich zasad ... (?)
+- w odniesieniu do algorytmu: jest coś takiego jak fifty move rule - to nie wystarczyło, algorytm obchodził to robiąc ruchy postępowe, stąd ucinanie
+- promocja piona jako 4 ruchy (póki co tego nie ma)
+- pc nie będzie grał jak mistrz
+
+mancala:
+- dlaczego mancala?
+- prosta logika gry:
+- szybko się kończy, zawsze w nie więćej niż ... ruchach
+- mimo to, jest dość nieprzewidywalna
+- algorytm powinien mega ogrywać użytkownika
++ najstarsza gra świata
+
+- omowic zasady
+
+- problem z mancalą jest s sumie jeden: kilkukrotny ruch, solucja: traktujemy jako jeden
+
+pokazanie programu:
+- dla dwóch gier, dla różnych parametrów
+
+dac dużo zdjęć i screenów z rozgrywki
