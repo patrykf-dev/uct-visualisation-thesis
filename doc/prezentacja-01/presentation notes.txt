@@ -90,24 +90,35 @@ dac dużo zdjęć i screenów z rozgrywki
 Podział:
 
 MCTS
-G - cele biznesowe
-G - wymagania funkcjonalne
-G - wymagania niefunkcjonalne (4 komponenty)
+7:00
 P - założenia monte carlo
 P - 4 fazy mcts
 P - uct założenia i wzór
+
+9:00
+G - cele biznesowe
+G - wymagania funkcjonalne
+G - wymagania niefunkcjonalne (4 komponenty)
+
+8:00
 P - użyte technologie
 P - serializacja 
 P - wizualizacja
 P - wizualizacja - walker
+
+5:00
 G - szachy
 G - szachy - mniej zanane zasady
 G - szachy - podejsca
 G - szachy - preoblemy optymalizacjyne
 G - szachy - problemy ogolne
+
+5:00
 P - mancala
 P - mancala - zasady
 P - mancala - problemy
+
+5:00
 PG - prezentacja aplikacji
 G - dalsze plany
 G - koniec
