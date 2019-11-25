@@ -83,3 +83,31 @@ pokazanie programu:
 - dla dwóch gier, dla różnych parametrów
 
 dac dużo zdjęć i screenów z rozgrywki
+
+
+
+
+Podział:
+
+MCTS
+G - cele biznesowe
+G - wymagania funkcjonalne
+G - wymagania niefunkcjonalne (4 komponenty)
+P - założenia monte carlo
+P - 4 fazy mcts
+P - uct założenia i wzór
+P - użyte technologie
+P - serializacja 
+P - wizualizacja
+P - wizualizacja - walker
+G - szachy
+G - szachy - mniej zanane zasady
+G - szachy - podejsca
+G - szachy - preoblemy optymalizacjyne
+G - szachy - problemy ogolne
+P - mancala
+P - mancala - zasady
+P - mancala - problemy
+PG - prezentacja aplikacji
+G - dalsze plany
+G - koniec
