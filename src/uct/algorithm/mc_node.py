@@ -14,7 +14,7 @@ class MonteCarloNode:
         self.details = MonteCarloNodeDetails()
         self.children = []
         self.parent = None
-        self.vis_details = Vis.MonteCarloNodeVisualisationDetails()
+        self.vis_details = Vis.MonteCarloNodeVisualisationDetails(self)
         self._left_most_sibling = None
         # this is the number of the node in its group of siblings 1..n
         self.number = 1
@@ -44,7 +44,7 @@ class MonteCarloNode:
         node = MonteCarloNode()
         node.id = MonteCarloNode.generate_next_id()
         node.move = move
-        node.vis_details = Vis.MonteCarloNodeVisualisationDetails()
+        node.vis_details = Vis.MonteCarloNodeVisualisationDetails(node)
         node.details = MonteCarloNodeDetails()
         node.children = []
         node.parent = None
