@@ -70,7 +70,8 @@ class ImprovedWalkersAlgorithmNew:
             elif vir.left() and not vol.left():
                 vol.vis_details.thread = vir.left()
                 vol.vis_details.mod += sir - sol
-            default_ancestor = node
+            if node.children:
+                default_ancestor = node
         return default_ancestor
 
     @staticmethod
