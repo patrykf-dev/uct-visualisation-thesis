@@ -67,11 +67,10 @@ class ImprovedWalkersAlgorithmNew:
             if vil.right() and not vor.right():
                 vor.vis_details.thread = vil.right()
                 vor.vis_details.mod += sil - sor
-            else:
-                if vir.left() and not vol.left():
-                    vol.vis_details.thread = vir.left()
-                    vol.vis_details.mod += sir - sol
-                default_ancestor = node
+            elif vir.left() and not vol.left():
+                vol.vis_details.thread = vir.left()
+                vol.vis_details.mod += sir - sol
+            default_ancestor = node
         return default_ancestor
 
     @staticmethod
@@ -94,9 +93,7 @@ class ImprovedWalkersAlgorithmNew:
 
     @staticmethod
     def ancestor(node: MonteCarloNode, v: MonteCarloNode, default_ancestor):
-        ancestor_node = node.vis_details.ancestor if node.parent is None else node.parent
-
-        if ancestor_node in v.parent.children:
-            return ancestor_node
+        if node.parent in v.parent.children:
+            return node.parent
         else:
             return default_ancestor
