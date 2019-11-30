@@ -33,7 +33,6 @@ from .util.wrappers import use  # noqa
 # load the two functions that IPython uses to instantiate an extension
 # that way, the user only needs to run %load_ext vispy.ipython rather that
 # %load_ext vispy.ipython.ipython
-from .ipython import load_ipython_extension, unload_ipython_extension  # noqa
 
 
 # Allow for Jupyter extension to be enabled
