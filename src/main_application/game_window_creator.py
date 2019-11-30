@@ -21,7 +21,7 @@ def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode,
         canvas = MancalaCanvas()
         start_state = MancalaState(canvas.board)
 
-    manager = MonteCarloWindowManager(canvas, game_mode, start_state)
+    manager = MonteCarloWindowManager(canvas, game_mode, start_state, settings)
 
     if game_mode == GameMode.PLAYER_VS_PC:
         return PlayerVsMachineWindow(manager, parent)
