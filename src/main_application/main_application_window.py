@@ -44,7 +44,7 @@ class MainApplicationWindow(QMainWindow):
             show_eror_dialog(validation_string)
             return
 
-        window = create_proper_window(self, game, game_mode)
+        window = create_proper_window(self, game, game_mode, settings)
         window.show()
 
     def _handle_select_tree_path_button(self):

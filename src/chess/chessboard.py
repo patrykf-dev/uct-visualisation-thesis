@@ -1,13 +1,11 @@
 import copy
 
-from axel import Event
-
 import src.chess.chess_utils as ChessUtils
-from src.chess.board_gui import TileMarkType
-from src.chess.enums import GameStatus
+from src.chess.enums import GameStatus, TileMarkArgs, TileMarkType
 from src.chess.figures import *
 from src.chess.figures_collection import ChessFiguresCollection
 from src.chess.utilities import PastMove
+from src.utils.CustomEvent import CustomEvent
 
 
 class Chessboard:
@@ -18,7 +16,7 @@ class Chessboard:
         self.figures = ChessFiguresCollection(Chessboard.create_figures())
         self.game_status = GameStatus.IN_PROGRESS
         self.past_moves = []
-        self.notify_tile_marked = Event(self)
+        self.notify_tile_marked = CustomEvent()
 
     @staticmethod
     def create_figures():
@@ -77,10 +75,10 @@ class Chessboard:
         self.check_for_check(self.get_opposite_color())
         if self.check:
             king_pos = self.figures.get_king_position(self.get_opposite_color())
-            self.notify_tile_marked(king_pos, TileMarkType.CHECKED)
+            self.notify_tile_marked.fire(self, earg=TileMarkArgs(king_pos, TileMarkType.CHECKED))
         self.add_past_move(move.position_to, figures_count_before_move, move.position_from)
-        self.notify_tile_marked(move.position_from, TileMarkType.MOVED)
-        self.notify_tile_marked(move.position_to, TileMarkType.MOVED)
+        self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_from, TileMarkType.MOVED))
+        self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_to, TileMarkType.MOVED))
         self.switch_current_player()
         self.update_game_status()
 

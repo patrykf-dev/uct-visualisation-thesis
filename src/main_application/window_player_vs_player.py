@@ -1,15 +1,16 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
 from src.main_application.GUI_utils import center_window_on_screen
+from src.main_application.mc_window_manager import MonteCarloWindowManager
 
 
 class PlayerVsPlayerWindow(QMainWindow):
-    def __init__(self, game_canvas: QWidget, parent):
+    def __init__(self, manager: MonteCarloWindowManager, parent):
         super(PlayerVsPlayerWindow, self).__init__(parent)
-        self.game_canvas = game_canvas
+        self.manager = manager
         main_widget = QWidget()
         main_layout = QGridLayout()
-        main_layout.addWidget(self.game_canvas)
+        main_layout.addWidget(self.manager.canvas)
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
 

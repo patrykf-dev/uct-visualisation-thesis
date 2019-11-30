@@ -1,13 +1,13 @@
 import numpy as np
 import vispy
 from PyQt5 import QtCore
-from axel import Event
 from vispy import app as VispyApp
 from vispy.gloo import set_viewport, set_state, clear
 
 from src.main_application.GUI_utils import PYQT_KEY_CODE_DOWN, PYQT_KEY_CODE_UP, PYQT_KEY_CODE_LEFT, PYQT_KEY_CODE_RIGHT
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
+from src.utils.CustomEvent import CustomEvent
 from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
@@ -106,7 +106,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             world_x, world_y = self.view_matrix_manager.parse_click(x_clicked, y_clicked, width, height)
 
             clicked_node = self.tree_draw_data.get_node_at(world_x, world_y)
-            self.on_node_clicked(clicked_node)
+            self.on_node_clicked.fire(self, earg=clicked_node)
 
     def handle_mouse_move_event(self, event):
         if event.buttons() == QtCore.Qt.RightButton:
@@ -140,7 +140,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.native.mousePressEvent = self.handle_mouse_click_event
         self.native.mouseMoveEvent = self.handle_mouse_move_event
         self.native.mouseReleaseEvent = self.handle_mouse_release_event
-        self.on_node_clicked = Event(self)
+        self.on_node_clicked = CustomEvent()
         set_viewport(0, 0, self.physical_size[0], self.physical_size[1])
         set_state(clear_color=(160 / 255, 160 / 255, 160 / 255, 1), depth_test=False, blend=True,
                   blend_func=("src_alpha", "one_minus_src_alpha"))
