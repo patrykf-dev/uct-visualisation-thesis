@@ -1,10 +1,11 @@
 import numpy as np
-import vispy
 from PyQt5 import QtCore
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QApplication
-from vispy import app as VispyApp
-from vispy.gloo import set_viewport, set_state, clear
+
+from src import vispy
+from src.vispy import app as VispyApp
+from src.vispy.gloo import set_viewport, clear,set_state
 
 from src.main_application.GUI_utils import PYQT_KEY_CODE_DOWN, PYQT_KEY_CODE_UP, PYQT_KEY_CODE_LEFT, PYQT_KEY_CODE_RIGHT
 from src.uct.algorithm.mc_node import MonteCarloNode
