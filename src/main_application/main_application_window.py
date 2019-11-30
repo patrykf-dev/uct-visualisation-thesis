@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
 import src.main_application.easy_plot_tree as MatplotlibDrawer
-from src.main_application.GUI_utils import TREES_PATH, center_window_on_screen
+from src.main_application.GUI_utils import TREES_PATH, center_window_on_screen, show_eror_dialog
 from src.main_application.game_window_creator import create_proper_window
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.main_application.mc_tree_window import MonteCarloTreeWindow
@@ -35,8 +35,17 @@ class MainApplicationWindow(QMainWindow):
     def _handle_play_button(self):
         game = self.layout.get_chosen_game()
         game_mode = self.layout.get_chosen_game_mode()
-        w = create_proper_window(self, game, game_mode)
-        w.show()
+        settings = self.layout.get_mc_settings()
+        if settings is None:
+            return
+
+        validation_string = settings.validate()
+        if validation_string != "":
+            show_eror_dialog(validation_string)
+            return
+
+        window = create_proper_window(self, game, game_mode)
+        window.show()
 
     def _handle_select_tree_path_button(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
