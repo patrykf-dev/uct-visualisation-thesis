@@ -43,8 +43,5 @@ class MancalaCanvas(GameCanvas):
         super().perform_algorithm_move(move)
         self.board.perform_move(move)
 
-        # if self.game_mode == GameMode.PC_VS_PC:
-        #     self.monte_carlo_manager.perform_previous_move()
-
         self.board_drawer.stones_centers = []  # TODO get rid of this
         self.repaint()

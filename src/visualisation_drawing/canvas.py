@@ -1,13 +1,15 @@
 import numpy as np
 import vispy
 from PyQt5 import QtCore
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import QApplication
 from vispy import app as VispyApp
 from vispy.gloo import set_viewport, set_state, clear
 
 from src.main_application.GUI_utils import PYQT_KEY_CODE_DOWN, PYQT_KEY_CODE_UP, PYQT_KEY_CODE_LEFT, PYQT_KEY_CODE_RIGHT
 from src.uct.algorithm.mc_node import MonteCarloNode
-from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
 from src.utils.CustomEvent import CustomEvent
+from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
 from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
@@ -97,6 +99,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         pos = event.pos()
 
         if event.button() == QtCore.Qt.RightButton:
+            QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
             self.previous_mouse_pos = pos
         elif event.button() == QtCore.Qt.LeftButton:
             x_clicked = pos.x()
@@ -110,8 +113,6 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def handle_mouse_move_event(self, event):
         if event.buttons() == QtCore.Qt.RightButton:
-            # QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
-
             diff = self.previous_mouse_pos - event.pos()
 
             self.previous_mouse_pos = event.pos()
@@ -125,12 +126,11 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_edges["u_view"] = self.view_matrix_manager.view_matrix_2
         self.program_vertices["u_projection"] = self.view_matrix_manager.projection_matrix_1
         self.program_edges["u_projection"] = self.view_matrix_manager.projection_matrix_2
-        # self.program_vertices["u_radius_multiplier"] = self.view_matrix_manager.scale
+        # self.program_vertices["u_radius_multiplier"] = self.view_matrix_manager.scale / 3
         self.update()
 
     def handle_mouse_release_event(self, event):
-        # QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))
-        pass
+        QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))
 
     def _setup_widget(self):
         self.native.setMinimumWidth(600)
@@ -146,6 +146,5 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
                   blend_func=("src_alpha", "one_minus_src_alpha"))
 
     def reset_view(self):
-        self.mouse_tics = 0
         self.view_matrix_manager.reset_view()
         self._update_view_matrix()

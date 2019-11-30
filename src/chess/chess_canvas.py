@@ -21,15 +21,9 @@ class ChessCanvas(GameCanvas):
         self.react_to_player_click(x, y)
 
     def perform_algorithm_move(self, move):
-        # if self.game_mode == GameMode.PC_VS_PC:
-        #     self.chess_manager.deselect_last_moved()
-
         self.chess_manager.deselect_king()
         self.chess_manager.board.perform_legal_move(move)
         self.chess_manager.reset_selected_tile()
-
-        # if self.game_mode == GameMode.PC_VS_PC:
-        #     self.monte_carlo_manager.perform_previous_move()
 
         self.repaint()
 
@@ -40,8 +34,3 @@ class ChessCanvas(GameCanvas):
 
         if player_moved:
             self.player_move_performed.fire(self, earg=player_move)
-
-        # if player_moved and self.game_mode == GameMode.PLAYER_VS_PC:
-        #     self.chess_manager.deselect_last_moved()
-        #     self.monte_carlo_manager.notify_move_performed(player_move)
-        #     self.perform_algorithm_move()

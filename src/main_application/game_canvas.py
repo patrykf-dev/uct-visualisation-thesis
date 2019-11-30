@@ -13,9 +13,5 @@ class GameCanvas(QWidget):
         self.setMinimumSize(self.WIDTH, self.HEIGHT)
         self.setMaximumSize(self.WIDTH, self.HEIGHT)
 
-    # def perform_player_move(self):
-    #     if self.game_mode == GameMode.PLAYER_VS_PC:
-    #         self.perform_algorithm_move()
-
     def perform_algorithm_move(self, move: BaseGameMove):
         pass
