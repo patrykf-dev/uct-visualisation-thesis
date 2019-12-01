@@ -3,6 +3,7 @@ from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
 from src.uct.game.base_game_move import BaseGameMove
 from src.uct.game.base_game_state import BaseGameState
+from src.utils.custom_event import CustomEvent
 
 
 class MonteCarloGameManager:
@@ -12,6 +13,7 @@ class MonteCarloGameManager:
         self.settings = settings
         self.first_move = True
         self.previous_move_calculated = None
+        self.iteration_performed = CustomEvent()
 
     def notify_move_performed(self, move: BaseGameMove):
         if self.first_move:
@@ -28,6 +30,10 @@ class MonteCarloGameManager:
 
     def calculate_next_move(self):
         mcts = MonteCarloTreeSearch(self.tree, self.settings)
+        mcts.iteration_performed += self._handle_iteration_performed
         move, state = mcts.calculate_next_move()
         self.previous_move_calculated = move
         return move
+
+    def _handle_iteration_performed(self, sender, earg):
+        self.iteration_performed.fire(self, earg)

@@ -3,7 +3,7 @@ from src.main_application.game_canvas import GameCanvas
 from src.main_application.mc_settings import MonteCarloSettings
 from src.uct.algorithm.mc_game_manager import MonteCarloGameManager
 from src.uct.game.base_game_state import BaseGameState
-from src.utils.CustomEvent import CustomEvent
+from src.utils.custom_event import CustomEvent
 
 
 class MonteCarloWindowManager:

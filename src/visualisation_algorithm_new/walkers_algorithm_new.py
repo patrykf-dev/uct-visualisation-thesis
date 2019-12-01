@@ -1,6 +1,18 @@
 from src.uct.algorithm.mc_node import MonteCarloNode
 
 
+def reset_walkers_data(node: MonteCarloNode):
+    node.vis_details.x = -1
+    node.vis_details.thread = None
+    node.vis_details.mod = 0
+    node.vis_details.ancestor = node
+    node.vis_details.change = 0
+    node.vis_details.shift = 0
+    node._left_most_sibling = None
+    for child in node.children:
+        reset_walkers_data(child)
+
+
 class ImprovedWalkersAlgorithmNew:
     def buchheim_algorithm(self, root: MonteCarloNode):
         self.first_walk(root)

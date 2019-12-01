@@ -8,6 +8,7 @@ from src.uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.uct.game.base_game_move import BaseGameMove
 from src.uct.game.base_game_state import BaseGameState
+from src.utils.custom_event import CustomEvent
 
 
 class MonteCarloTreeSearch:
@@ -15,6 +16,7 @@ class MonteCarloTreeSearch:
         self.tree = tree
         self.debug_print_allowed = False
         self.settings = settings
+        self.iteration_performed = CustomEvent()
         self.iterations = 0
 
     def calculate_next_move(self) -> (BaseGameMove, BaseGameState):
@@ -26,6 +28,7 @@ class MonteCarloTreeSearch:
     def _calculate_next_move_iterations_limited(self):
         while self.iterations < self.settings.max_iterations:
             self._perform_iteration()
+            self.iteration_performed.fire(self, self.iterations / self.settings.max_iterations)
         return self._select_result_node()
 
     def _calculate_next_move_time_limited(self):
@@ -34,6 +37,7 @@ class MonteCarloTreeSearch:
         while elapsed_time_ms < self.settings.internal_max_time:
             self._perform_iteration()
             elapsed_time_ms = (time.time() - start_time) * 1000
+            self.iteration_performed.fire(self, elapsed_time_ms / self.settings.internal_max_time)
         return self._select_result_node()
 
     def _perform_iteration(self):

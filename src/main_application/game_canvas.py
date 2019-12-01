@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget
 
 from src.uct.game.base_game_move import BaseGameMove
-from src.utils.CustomEvent import CustomEvent
+from src.utils.custom_event import CustomEvent
 
 
 class GameCanvas(QWidget):
