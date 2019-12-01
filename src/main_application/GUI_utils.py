@@ -52,9 +52,11 @@ def get_radiobutton(caption=""):
     return rc
 
 
-def get_line_edit():
+def get_line_edit(width=0):
     rc = QLineEdit()
     rc.setFont(DEFAULT_FONT)
+    if width != 0:
+        rc.setFixedWidth(width)
     return rc
 
 
