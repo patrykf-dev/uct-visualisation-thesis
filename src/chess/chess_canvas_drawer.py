@@ -12,7 +12,7 @@ class ChessCanvasDrawer:
         self.chess_manager = chess_manager
         self.tile_width = int(width / self.tiles_count)
         self.tile_height = int(height / self.tiles_count)
-        self.icons_folder = os.path.join(os.path.realpath(__file__), "..", "icons")
+        self.icons_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
     def grid_click_to_tile(self, x, y):
         if y == 0:
