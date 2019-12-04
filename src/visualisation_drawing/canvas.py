@@ -40,7 +40,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def on_draw(self, event):
         clear(color=True, depth=True)
         if self.root:
-            self.program_edges.draw("lines", self.edges_buffer)
+            self.program_edges.draw("lines")
             self.program_vertices.draw("points")
 
     def handle_key_press_event(self, event):
@@ -87,14 +87,14 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_vertices.bind(self.vertices_buffer)
 
         self.program_edges = vispy.gloo.Program(shader_reader.get_edges_vshader(), shader_reader.get_edges_fshader())
-        self.program_edges.bind(self.vertices_buffer)
+        self.program_edges.bind(self.edges_buffer)
 
     def _bind_buffers(self):
         ps = self.pixel_scale
         retriever = MonteCarloTreeDrawDataRetriever()
         self.tree_draw_data = retriever.retrieve_draw_data(self.root, ps)
         self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
-        self.edges_buffer = vispy.gloo.IndexBuffer(self.tree_draw_data.edges)
+        self.edges_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.edges)
 
     def handle_mouse_click_event(self, event):
         pos = event.pos()

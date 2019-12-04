@@ -835,6 +835,7 @@ class GlirParser(BaseGlirParser):
             GL_POINT_SPRITE = 34913
             GL_LINE_SMOOTH = 0xB20
             GL_MULISAMPLE = 0x809D
+            gl.glLineWidth(1)
             gl.glEnable(GL_LINE_SMOOTH)
             gl.glEnable(GL_MULISAMPLE)
             gl.glEnable(GL_VERTEX_PROGRAM_POINT_SIZE)
