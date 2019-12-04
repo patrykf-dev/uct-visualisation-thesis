@@ -4,8 +4,7 @@ import src.chess.chess_utils as ChessUtils
 from src.chess.enums import GameStatus, TileMarkArgs, TileMarkType
 from src.chess.figures import *
 from src.chess.figures_collection import ChessFiguresCollection
-from src.chess.utilities import PastMove
-from src.utils.custom_event import CustomEventutils
+from src.utils.custom_event import CustomEvent
 
 
 class Chessboard:
