@@ -29,8 +29,8 @@ class PlayerVsMachineWindow(QMainWindow):
 
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_progress_widget.layout.progress_bar.setValue(earg * 100)
-        # reset_walkers_data(self.manager.mc_manager.tree.root)
-        # self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
+        reset_walkers_data(self.manager.mc_manager.tree.root)
+        self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
 
     def showEvent(self, event):
         super().showEvent(event)

@@ -89,6 +89,9 @@ class ImprovedWalkersAlgorithmNew:
     @staticmethod
     def move_subtree(w_left: MonteCarloNode, w_right: MonteCarloNode, shift):
         subtrees = w_right.number - w_left.number
+        # TODO zmieniam, sypalo ZeroDivisionError
+        if subtrees == 0:
+            subtrees = 1
         w_right.vis_details.change -= shift / subtrees
         w_right.vis_details.shift += shift
         w_left.vis_details.change += shift / subtrees

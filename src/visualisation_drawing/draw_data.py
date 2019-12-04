@@ -55,7 +55,6 @@ class MonteCarloTreeDrawDataRetriever:
                                                         ("a_fg_color", np.float32, 4),
                                                         ("a_bg_color", np.float32, 4),
                                                         ("a_radius", np.float32),
-                                                        ("a_edge_color", np.float32, 4),
                                                         ("a_linewidth", np.float32)])
 
         vertices["a_fg_color"] = (0, 0, 0, 1)
@@ -128,5 +127,5 @@ class MonteCarloTreeDrawDataRetriever:
             fraction += 0.3
         red = ((1 - fraction) * 255) / 255
         green = (fraction * 255) / 255
-        print(f"Visits: {visits}/{self.max_visits_count} -> ({red}, {green}, {0})Fraction: {fraction}")
+        # print(f"Visits: {visits}/{self.max_visits_count} -> ({red}, {green}, {0})Fraction: {fraction}")
         return red, green, 0, 1
