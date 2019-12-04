@@ -7,7 +7,6 @@ from src.chess.board_gui import TileMarkType
 from src.chess.enums import GameStatus
 from src.chess.figures import *
 from src.chess.figures_collection import ChessFiguresCollection
-from src.chess.utilities import PastMove
 
 
 class Chessboard:
@@ -101,7 +100,7 @@ class Chessboard:
         """
         figure = self.figures.get_figure_at(position)
         self.past_moves.append(
-            PastMove(position, self.check, figure, len(self.figures.figures_list) < figures_count_before_move,
+            ChessUtils.PastMove(position, self.check, figure, len(self.figures.figures_list) < figures_count_before_move,
                      old_position))
 
     def perform_legal_move(self, move):
