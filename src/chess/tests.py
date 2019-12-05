@@ -12,11 +12,9 @@ from src.chess.chessboard import Chessboard
 
 
 class Move:
-    def __init__(self, _from_position, _to_position=None, move_type=MoveType.NORMAL, help_dict=None):
+    def __init__(self, _from_position, _to_position=None):
         self.from_position = _from_position
         self.to_position = _to_position
-        self.move_type = move_type
-        self.help_dict = help_dict
 
     def get_pos(self):
         return self.from_position, self.to_position
@@ -29,53 +27,46 @@ class TestChess(unittest.TestCase):
         self.chessboard = Chessboard()
         self.possible_moves = []
 
-    def translate_moves(self, moves):
-        toret = []
-        for move in moves:
-            toret.append(ChessMove(move.to_position, move.from_position, move.move_type, move.help_dict))
-        return toret
-
     def make_moves_from_queue(self, moves):
-        moves = self.translate_moves(moves)
         for move in moves:
-            if move.position_to:
-                self.chessboard.perform_legal_move(move)
+            figure = self.chessboard.figures.get_figure_at(move.from_position)
+            self.possible_moves = figure.check_moves(self.chessboard.figures)
+            ChessUtils.reduce_move_range_when_check(self.chessboard, figure, self.possible_moves)
+            if move.to_position:
+                move_from_pool = [_move for _move in self.possible_moves if _move.position_to == move.to_position][0]
+                self.chessboard.perform_legal_move(move_from_pool)
             else:
-                figure = self.chessboard.figures.get_figure_at(move.position_from)
-                self.possible_moves = figure.check_moves(self.chessboard.figures)
-                ChessUtils.reduce_move_range_when_check(self.chessboard, figure, self.possible_moves)
                 break
 
     def test_en_passant_capture_possibility_white(self):
-        moves = [Move((1, 0), (3, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 7), (4, 7), MoveType.PAWN_DOUBLE_MOVE),
-                 Move((3, 0), (4, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 1), (4, 1), MoveType.PAWN_DOUBLE_MOVE), Move((4, 0))]
+        moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
+                 Move((3, 0), (4, 0)), Move((6, 1), (4, 1)), Move((4, 0))]
         self.make_moves_from_queue(moves)
         self.assertIn((5, 1), [move.position_to for move in self.possible_moves])
 
-        moves = [Move((1, 2), (3, 2), MoveType.PAWN_DOUBLE_MOVE), Move((4, 7), (3, 7)),
+        moves = [Move((1, 2), (3, 2)), Move((4, 7), (3, 7)),
                  Move((4, 0))]
         self.make_moves_from_queue(moves)
         self.assertNotIn((5, 1), [move.position_to for move in self.possible_moves])
 
     def test_en_passant_capture_possibility_black(self):
-        moves = [Move((1, 0), (3, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 7), (4, 7), MoveType.PAWN_DOUBLE_MOVE),
+        moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
                  Move((3, 0), (4, 0)), Move((4, 7), (3, 7)),
-                 Move((1, 6), (3, 6), MoveType.PAWN_DOUBLE_MOVE), Move((3, 7))]
+                 Move((1, 6), (3, 6)), Move((3, 7))]
         self.make_moves_from_queue(moves)
         self.assertIn((2, 6), [move.position_to for move in self.possible_moves])
 
-        moves = [Move((6, 0), (5, 0)), Move((1, 1), (3, 1), MoveType.PAWN_DOUBLE_MOVE),
+        moves = [Move((6, 0), (5, 0)), Move((1, 1), (3, 1)),
                  Move((3, 7))]
         self.make_moves_from_queue(moves)
         self.assertNotIn((2, 6), [move.position_to for move in self.possible_moves])
 
     def test_en_passant_capture_white(self):
-        moves = [Move((1, 0), (3, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 7), (4, 7), MoveType.PAWN_DOUBLE_MOVE),
-                 Move((3, 0), (4, 0)), Move((6, 1), (4, 1), MoveType.PAWN_DOUBLE_MOVE),
-                 Move((4, 0), (5, 1), MoveType.EN_PASSANT, {'opponent-pawn-pos': (4, 1)})]
+        moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
+                 Move((3, 0), (4, 0)), Move((6, 1), (4, 1)),
+                 Move((4, 0), (5, 1))]
         self.make_moves_from_queue(moves)
-        # self.assertIsNone(Figure.get_figure(self.chessboard.figures, (4, 1)))
-        # self.assertIsNone(self.chessboard.figures.get_figure_at((4, 1)))
+        self.assertIsNone(Figure.get_figure(self.chessboard.figures, (4, 1)))
 
     def test_en_passant_capture_black(self):
         moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
