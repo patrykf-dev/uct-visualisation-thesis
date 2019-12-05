@@ -57,8 +57,8 @@ class MainApplicationWindow(QMainWindow):
         Handles button that enables user to load his own tree from file system.
         For now, only one file is accepted at once.
         """
-        path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
-        path = self.layout.tree_path_edit.setText(path)
+        path, _ = QFileDialog.getOpenFileNames(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
+        path = self.layout.tree_path_edit.setText(path[-1])
         return path
 
     def _handle_matplotlib_button(self):
