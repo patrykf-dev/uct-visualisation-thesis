@@ -61,18 +61,6 @@ class MainApplicationWindow(QMainWindow):
         path = self.layout.tree_path_edit.setText(path[-1])
         return path
 
-    def _handle_matplotlib_button(self):
-        root = self._get_tree_from_given_path()
-        alg = ImprovedWalkersAlgorithm()
-        alg.buchheim_algorithm(root)
-        MatplotlibDrawer.draw_tree(root)
-
-    def _handle_matplotlib_test_button(self):
-        root = self._get_tree_from_given_path()
-        alg_new = ImprovedWalkersAlgorithmNew()
-        alg_new.buchheim_algorithm(root)
-        MatplotlibDrawer.draw_tree(root)
-
     def _handle_opengl_button(self):
         root = self._get_tree_from_given_path()
         window = MonteCarloTreeWindow(self)
@@ -87,6 +75,10 @@ class MainApplicationWindow(QMainWindow):
 
 
 def launch_application():
+    """
+    Main program function.
+    Shows menu window.
+    """
     redefine_exceptions()
     app = QtWidgets.QApplication(sys.argv)
     window = MainApplicationWindow()
@@ -95,6 +87,9 @@ def launch_application():
 
 
 def redefine_exceptions():
+    """
+    Catches critical exceptions and displays them in message box.
+    """
     def catch_exceptions(t, val, tb):
         QtWidgets.QMessageBox.critical(None,
                                        "An exception was raised",
