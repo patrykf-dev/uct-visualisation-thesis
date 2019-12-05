@@ -62,12 +62,18 @@ class MainApplicationWindow(QMainWindow):
         return path
 
     def _handle_opengl_button(self):
+        """
+        Displays window with a UCT tree visualization.
+        """
         root = self._get_tree_from_given_path()
         window = MonteCarloTreeWindow(self)
         window.canvas_widget.layout.canvas.use_root_data(root)
         window.show()
 
     def _get_tree_from_given_path(self):
+        """
+        Runs serializer to parse the tree from a file given.
+        """
         path = self.layout.tree_path_edit.text()
         serializator = CsvSerializator()
         root = serializator.get_node_from_path(path)

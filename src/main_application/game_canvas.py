@@ -5,6 +5,9 @@ from src.utils.custom_event import CustomEvent
 
 
 class GameCanvas(QWidget):
+    """
+    Base game canvas class to be inherited from.
+    """
     def __init__(self):
         super().__init__()
         self.WIDTH = 600
@@ -14,4 +17,7 @@ class GameCanvas(QWidget):
         self.setMaximumSize(self.WIDTH, self.HEIGHT)
 
     def perform_algorithm_move(self, move: BaseGameMove):
+        """
+        Base class to implement the whole single move execution.
+        """
         pass
