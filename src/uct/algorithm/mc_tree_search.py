@@ -1,35 +1,60 @@
+import time
+
 import src.uct.algorithm.enums as Enums
 import src.uct.algorithm.mc_node_utils as NodeUtils
 import src.uct.algorithm.uct_calculation as UCT
+from src.main_application.mc_settings import MonteCarloSettings
 from src.uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.uct.game.base_game_move import BaseGameMove
 from src.uct.game.base_game_state import BaseGameState
+from src.utils.custom_event import CustomEvent
 
 
 class MonteCarloTreeSearch:
-    def __init__(self, tree: MonteCarloTree, max_iterations, max_moves_per_simulation):
-        self.iterations = 0
+    def __init__(self, tree: MonteCarloTree, settings: MonteCarloSettings):
         self.tree = tree
         self.debug_print_allowed = False
-        self.max_iterations = max_iterations
-        self.max_moves_per_simulation = max_moves_per_simulation
+        self.settings = settings
+        self.iteration_performed = CustomEvent()
+        self.iterations = 0
 
     def calculate_next_move(self) -> (BaseGameMove, BaseGameState):
-        while self.iterations < self.max_iterations:
-            self._print_debug("\n=======Iteration {} =======".format(self.iterations))
-            promising_node = self._selection(self.tree.root)
-            self._expansion(promising_node)
+        if self.settings.limit_iterations:
+            return self._calculate_next_move_iterations_limited()
+        else:
+            return self._calculate_next_move_time_limited()
 
-            if promising_node.has_children():
-                leaf_to_explore = NodeUtils.get_random_child(promising_node)
-            else:
-                leaf_to_explore = promising_node
+    def _calculate_next_move_iterations_limited(self):
+        while self.iterations < self.settings.max_iterations:
+            self._perform_iteration()
+            self.iteration_performed.fire(self, self.iterations / self.settings.max_iterations)
+        return self._select_result_node()
 
-            simulation_result = self._simulation(leaf_to_explore)
-            self._backpropagation(leaf_to_explore, simulation_result)
-            self.iterations = self.iterations + 1
+    def _calculate_next_move_time_limited(self):
+        start_time = time.time()
+        elapsed_time_ms = 0
+        while elapsed_time_ms < self.settings.internal_max_time:
+            self._perform_iteration()
+            elapsed_time_ms = (time.time() - start_time) * 1000
+            self.iteration_performed.fire(self, elapsed_time_ms / self.settings.internal_max_time)
+        return self._select_result_node()
 
+    def _perform_iteration(self):
+        promising_node = self._selection(self.tree.root)
+        self._expansion(promising_node)
+
+        if promising_node.has_children():
+            leaf_to_explore = NodeUtils.get_random_child(promising_node)
+        else:
+            leaf_to_explore = promising_node
+
+        simulation_result = self._simulation(leaf_to_explore)
+        self._backpropagation(leaf_to_explore, simulation_result)
+
+        self.iterations += 1
+
+    def _select_result_node(self):
         best_child = NodeUtils.get_child_with_max_score(self.tree.root)
         self._print_debug("Best node is {}".format(best_child.id))
 
@@ -85,7 +110,7 @@ class MonteCarloTreeSearch:
             tmp_state.perform_random_move()
             tmp_phase = tmp_state.phase
             moves_counter = moves_counter + 1
-            if moves_counter >= self.max_moves_per_simulation:
+            if self.settings.limit_moves and moves_counter >= self.settings.max_moves_per_iteration:
                 print(
                     f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
                 break

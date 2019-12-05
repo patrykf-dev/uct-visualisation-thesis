@@ -1,7 +1,7 @@
 import os
 
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioButton
+from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioButton, QCheckBox, QMessageBox
 
 DEFAULT_FONT = QtGui.QFont("Helvetica", 10)
 DEFAULT_FONT_BOLD = QtGui.QFont("Helvetica", 10, QtGui.QFont.Bold)
@@ -40,15 +40,23 @@ def get_button(caption="", padding_width=50, padding_height=0):
     return rc
 
 
+def get_checkbox(caption=""):
+    rc = QCheckBox(caption)
+    rc.setFont(DEFAULT_FONT)
+    return rc
+
+
 def get_radiobutton(caption=""):
     rc = QRadioButton(caption)
     rc.setFont(DEFAULT_FONT)
     return rc
 
 
-def get_line_edit():
+def get_line_edit(width=0):
     rc = QLineEdit()
     rc.setFont(DEFAULT_FONT)
+    if width != 0:
+        rc.setFixedWidth(width)
     return rc
 
 
@@ -56,3 +64,19 @@ def get_hint_line_edit(text=""):
     rc = QLineEdit(text)
     rc.setFont(DEFAULT_FONT_ITALIC)
     return rc
+
+
+def gray_out_radiobutton_text(buton: QRadioButton, disable):
+    if disable:
+        buton.setStyleSheet("color: gray")
+    else:
+        buton.setStyleSheet("color: black")
+
+
+def show_eror_dialog(message):
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Critical)
+    msg.setText(message)
+    msg.setWindowTitle("Error")
+    msg.setStandardButtons(QMessageBox.Ok)
+    msg.exec_()

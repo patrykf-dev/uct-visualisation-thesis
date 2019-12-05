@@ -1,5 +1,3 @@
-from enum import Enum
-
 import numpy as np
 
 
@@ -57,13 +55,6 @@ class BoardGUI:
         :param tile: Tile object
         """
         self.grid[tile].set_color_when_moved()
-
-
-class TileMarkType(Enum):
-    SELECTED = 0,
-    DESELECTED = 1,
-    MOVED = 2,
-    CHECKED = 3
 
 
 class Tile:

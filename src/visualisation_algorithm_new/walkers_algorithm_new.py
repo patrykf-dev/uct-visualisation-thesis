@@ -1,6 +1,18 @@
 from src.uct.algorithm.mc_node import MonteCarloNode
 
 
+def reset_walkers_data(node: MonteCarloNode):
+    node.vis_details.x = -1
+    node.vis_details.thread = None
+    node.vis_details.mod = 0
+    node.vis_details.ancestor = node
+    node.vis_details.change = 0
+    node.vis_details.shift = 0
+    node._left_most_sibling = None
+    for child in node.children:
+        reset_walkers_data(child)
+
+
 class ImprovedWalkersAlgorithmNew:
     def buchheim_algorithm(self, root: MonteCarloNode):
         self.first_walk(root)
@@ -77,6 +89,9 @@ class ImprovedWalkersAlgorithmNew:
     @staticmethod
     def move_subtree(w_left: MonteCarloNode, w_right: MonteCarloNode, shift):
         subtrees = w_right.number - w_left.number
+        # TODO zmieniam, sypalo ZeroDivisionError
+        if subtrees == 0:
+            subtrees = 1
         w_right.vis_details.change -= shift / subtrees
         w_right.vis_details.shift += shift
         w_left.vis_details.change += shift / subtrees
