@@ -58,16 +58,16 @@ class TestChess(unittest.TestCase):
         self.assertNotIn((5, 1), [move.position_to for move in self.possible_moves])
 
     def test_en_passant_capture_possibility_black(self):
-        moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
+        moves = [Move((1, 0), (3, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 7), (4, 7), MoveType.PAWN_DOUBLE_MOVE),
                  Move((3, 0), (4, 0)), Move((4, 7), (3, 7)),
-                 Move((1, 6), (3, 6)), Move((3, 7))]
+                 Move((1, 6), (3, 6), MoveType.PAWN_DOUBLE_MOVE), Move((3, 7))]
         self.make_moves_from_queue(moves)
-        self.assertIn((2, 6), [move.position_to for move in self.game.game_manager.board.possible_moves])
+        self.assertIn((2, 6), [move.position_to for move in self.possible_moves])
 
-        moves = [Move((6, 0), (5, 0)), Move((1, 1), (3, 1)),
+        moves = [Move((6, 0), (5, 0)), Move((1, 1), (3, 1), MoveType.PAWN_DOUBLE_MOVE),
                  Move((3, 7))]
         self.make_moves_from_queue(moves)
-        self.assertNotIn((2, 6), [move.position_to for move in self.game.game_manager.board.possible_moves])
+        self.assertNotIn((2, 6), [move.position_to for move in self.possible_moves])
 
     def test_en_passant_capture_white(self):
         moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
