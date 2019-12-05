@@ -14,6 +14,9 @@ from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalker
 
 
 class MainApplicationWindow(QMainWindow):
+    """
+    CLass is responsible for displaying the main window of the application.
+    """
     def __init__(self):
         super().__init__()
         self._setup_window()
@@ -24,8 +27,6 @@ class MainApplicationWindow(QMainWindow):
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
         self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
-        self.layout.draw_matplotlib_button.clicked.connect(self._handle_matplotlib_button)
-        self.layout.draw_matplotlib_test_button.clicked.connect(self._handle_matplotlib_test_button)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def showEvent(self, event):
