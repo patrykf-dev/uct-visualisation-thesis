@@ -70,11 +70,12 @@ class TestChess(unittest.TestCase):
         self.assertNotIn((2, 6), [move.position_to for move in self.possible_moves])
 
     def test_en_passant_capture_white(self):
-        moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
-                 Move((3, 0), (4, 0)), Move((6, 1), (4, 1)),
-                 Move((4, 0), (5, 1))]
+        moves = [Move((1, 0), (3, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 7), (4, 7), MoveType.PAWN_DOUBLE_MOVE),
+                 Move((3, 0), (4, 0)), Move((6, 1), (4, 1), MoveType.PAWN_DOUBLE_MOVE),
+                 Move((4, 0), (5, 1), MoveType.EN_PASSANT, {'opponent-pawn-pos': (4, 1)})]
         self.make_moves_from_queue(moves)
-        self.assertIsNone(Figure.get_figure(self.game.game_manager.board.figures, (4, 1)))
+        # self.assertIsNone(Figure.get_figure(self.chessboard.figures, (4, 1)))
+        # self.assertIsNone(self.chessboard.figures.get_figure_at((4, 1)))
 
     def test_en_passant_capture_black(self):
         moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
