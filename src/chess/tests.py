@@ -2,21 +2,21 @@ import unittest
 from unittest.mock import patch
 from itertools import chain
 
-import pygame
-from pygame.locals import *
 import sys
 import time
 
-from src.chess.game import Game
 from src.chess.figures import *
 from src.chess.enums import GameStatus
 import src.chess.chess_utils as ChessUtils
+from src.chess.chessboard import Chessboard
 
 
 class Move:
-    def __init__(self, _from_position, _to_position=None):
+    def __init__(self, _from_position, _to_position=None, move_type=MoveType.NORMAL, help_dict=None):
         self.from_position = _from_position
         self.to_position = _to_position
+        self.move_type = move_type
+        self.help_dict = help_dict
 
     def get_pos(self):
         return self.from_position, self.to_position
@@ -26,54 +26,36 @@ class TestChess(unittest.TestCase):
     sleep_time_general = 0
 
     def setUp(self):
-        self.game = Game()
-        self.game._draw_board()
-        pygame.display.flip()
+        self.chessboard = Chessboard()
+        self.possible_moves = []
 
-    def tearDown(self):
-        self.game.game_manager.board.figures = []
-
-    # y,x -> x,y
-    def get_mouse_position_from_tile(self, tile):
-        margin = 1
-        return tile[1] * self.game.TILE_HEIGHT + margin, (
-                self.game.TILE_NUMBER - 1 - tile[0]) * self.game.TILE_WIDTH + margin
-
-    def mock_process_input(self, event_queue, sleep_time=0.0):
-        for event in event_queue:
-            if event.type == QUIT:
-                sys.exit(0)
-            elif event.type == pygame.MOUSEBUTTONUP:
-                self.game.mock_react_to_player_click(event.pos)
-                if sleep_time:
-                    time.sleep(sleep_time)
-                elif self.sleep_time_general:
-                    time.sleep(self.sleep_time_general)
-            pygame.display.update()
-
-    def mock_move(self, pos):
-        move_pos = self.get_mouse_position_from_tile(pos)
-        mouse_event = pygame.event.Event(pygame.MOUSEBUTTONUP, {'pos': move_pos, 'button': 1})
-        return mouse_event
-
-    def make_moves_from_queue(self, moves, sleep_time=0.0):
-        event_queue = []
+    def translate_moves(self, moves):
+        toret = []
         for move in moves:
-            event_queue.append(self.mock_move(move.from_position))
-            if move.to_position:
-                event_queue.append(self.mock_move(move.to_position))
-        self.mock_process_input(event_queue, sleep_time)
+            toret.append(ChessMove(move.to_position, move.from_position, move.move_type, move.help_dict))
+        return toret
+
+    def make_moves_from_queue(self, moves):
+        moves = self.translate_moves(moves)
+        for move in moves:
+            if move.position_to:
+                self.chessboard.perform_legal_move(move)
+            else:
+                figure = self.chessboard.figures.get_figure_at(move.position_from)
+                self.possible_moves = figure.check_moves(self.chessboard.figures)
+                ChessUtils.reduce_move_range_when_check(self.chessboard, figure, self.possible_moves)
+                break
 
     def test_en_passant_capture_possibility_white(self):
-        moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
-                 Move((3, 0), (4, 0)), Move((6, 1), (4, 1)),
+        moves = [Move((1, 0), (3, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 7), (4, 7), MoveType.PAWN_DOUBLE_MOVE),
+                 Move((3, 0), (4, 0), MoveType.PAWN_DOUBLE_MOVE), Move((6, 1), (4, 1), MoveType.PAWN_DOUBLE_MOVE), Move((4, 0))]
+        self.make_moves_from_queue(moves)
+        self.assertIn((5, 1), [move.position_to for move in self.possible_moves])
+
+        moves = [Move((1, 2), (3, 2), MoveType.PAWN_DOUBLE_MOVE), Move((4, 7), (3, 7)),
                  Move((4, 0))]
         self.make_moves_from_queue(moves)
-        self.assertIn((5, 1), [move.position_to for move in self.game.game_manager.board.possible_moves])
-        moves = [Move((1, 2), (3, 2)), Move((4, 7), (3, 7)),
-                 Move((4, 0))]
-        self.make_moves_from_queue(moves)
-        self.assertNotIn((5, 1), [move.position_to for move in self.game.game_manager.board.possible_moves])
+        self.assertNotIn((5, 1), [move.position_to for move in self.possible_moves])
 
     def test_en_passant_capture_possibility_black(self):
         moves = [Move((1, 0), (3, 0)), Move((6, 7), (4, 7)),
