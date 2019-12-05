@@ -4,6 +4,9 @@ from src.main_application.GUI_utils import get_line_edit, get_non_resizable_labe
 
 
 class IterationProgressWidgetLayout:
+    """
+    Class is responsible for the layout of visualization iteration progress bar.
+    """
     def __init__(self, main_widget):
         self.progress_bar = QProgressBar()
         self.show_auto_button = get_non_resizable_label("Time between frames")

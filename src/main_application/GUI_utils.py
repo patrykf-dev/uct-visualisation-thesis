@@ -16,6 +16,9 @@ TREES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "tr
 
 
 def center_window_on_screen(window):
+    """
+    Function is responsible for centering the given window on the screen.
+    """
     bounds = window.frameGeometry()
     screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
     center_point = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
@@ -25,6 +28,9 @@ def center_window_on_screen(window):
 
 
 def get_non_resizable_label(caption=""):
+    """
+    Generates label with fixed, non-resizable policy with given caption.
+    """
     rc = QLabel(caption)
     rc.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
     rc.setFont(DEFAULT_FONT)
@@ -32,6 +38,13 @@ def get_non_resizable_label(caption=""):
 
 
 def get_button(caption="", padding_width=50, padding_height=0):
+    """
+    Returns PyQt button with given parameters.
+    :param caption: text on button
+    :param padding_width:
+    :param padding_height:
+    :return: customized button
+    """
     rc = QPushButton(caption)
     rc.setFont(DEFAULT_FONT)
     rc.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
@@ -41,18 +54,27 @@ def get_button(caption="", padding_width=50, padding_height=0):
 
 
 def get_checkbox(caption=""):
+    """
+    Returns default PyQt checkbox.
+    """
     rc = QCheckBox(caption)
     rc.setFont(DEFAULT_FONT)
     return rc
 
 
 def get_radiobutton(caption=""):
+    """
+    Returns default PyQt radiobutton.
+    """
     rc = QRadioButton(caption)
     rc.setFont(DEFAULT_FONT)
     return rc
 
 
 def get_line_edit(width=0):
+    """
+    Returns default PyQt textfield with a given width.
+    """
     rc = QLineEdit()
     rc.setFont(DEFAULT_FONT)
     if width != 0:
@@ -61,19 +83,28 @@ def get_line_edit(width=0):
 
 
 def get_hint_line_edit(text=""):
+    """
+    Returns default PyQt label with italic.
+    """
     rc = QLineEdit(text)
     rc.setFont(DEFAULT_FONT_ITALIC)
     return rc
 
 
-def gray_out_radiobutton_text(buton: QRadioButton, disable):
+def gray_out_radiobutton_text(button: QRadioButton, disable):
+    """
+    Function disables/enables given radiobutton.
+    """
     if disable:
-        buton.setStyleSheet("color: gray")
+        button.setStyleSheet("color: gray")
     else:
-        buton.setStyleSheet("color: black")
+        button.setStyleSheet("color: black")
 
 
 def show_eror_dialog(message):
+    """
+    Function pops up a critical error message box with given text.
+    """
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Critical)
     msg.setText(message)

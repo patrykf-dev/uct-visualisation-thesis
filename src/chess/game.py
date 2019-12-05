@@ -21,6 +21,9 @@ ICONS_FOLDER = 'icons'
 
 
 class ChessGame:
+    """
+    This class is obsolete and it shall not be used.
+    """
     def __init__(self):
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT

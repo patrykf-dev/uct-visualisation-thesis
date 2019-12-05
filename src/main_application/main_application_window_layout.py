@@ -14,8 +14,6 @@ class MainApplicationWindowLayout:
         self.main_widget = QWidget()
         self.play_button = get_button("Play", 80, 30)
         self.draw_opengl_button = get_button("Inspect tree (OpenGL)")
-        self.draw_matplotlib_button = get_button("Inspect tree (matplotlib) - old")
-        self.draw_matplotlib_test_button = get_button("Inspect tree (matplotlib) - dev")
         self.tree_path_edit = get_hint_line_edit(os.path.join(TREES_PATH, "example_tree_05.csv"))
         self.select_tree_path_button = get_button("Select")
         self.chess_button = get_radiobutton("Chess")
@@ -111,8 +109,6 @@ class MainApplicationWindowLayout:
         main_layout.addWidget(self.tree_path_edit, 0, 0)
         main_layout.addWidget(self.select_tree_path_button, 0, 1)
         main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.draw_matplotlib_button, 2, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.draw_matplotlib_test_button, 3, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
         return rc
 
     def _add_left_panel(self, main_layout):

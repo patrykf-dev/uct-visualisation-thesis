@@ -14,6 +14,9 @@ from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalker
 
 
 class MainApplicationWindow(QMainWindow):
+    """
+    CLass is responsible for displaying the main window of the application.
+    """
     def __init__(self):
         super().__init__()
         self._setup_window()
@@ -24,8 +27,6 @@ class MainApplicationWindow(QMainWindow):
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
         self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
-        self.layout.draw_matplotlib_button.clicked.connect(self._handle_matplotlib_button)
-        self.layout.draw_matplotlib_test_button.clicked.connect(self._handle_matplotlib_test_button)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def showEvent(self, event):
@@ -33,6 +34,10 @@ class MainApplicationWindow(QMainWindow):
         center_window_on_screen(self)
 
     def _handle_play_button(self):
+        """
+        Handler for button, that initiates the game.
+        It displays the game and visualization window.
+        """
         game = self.layout.get_chosen_game()
         game_mode = self.layout.get_chosen_game_mode()
         settings = self.layout.get_mc_settings()
@@ -48,29 +53,27 @@ class MainApplicationWindow(QMainWindow):
         window.show()
 
     def _handle_select_tree_path_button(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
-        path = self.layout.tree_path_edit.setText(path)
+        """
+        Handles button that enables user to load his own tree from file system.
+        For now, only one file is accepted at once.
+        """
+        path, _ = QFileDialog.getOpenFileNames(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
+        path = self.layout.tree_path_edit.setText(path[-1])
         return path
 
-    def _handle_matplotlib_button(self):
-        root = self._get_tree_from_given_path()
-        alg = ImprovedWalkersAlgorithm()
-        alg.buchheim_algorithm(root)
-        MatplotlibDrawer.draw_tree(root)
-
-    def _handle_matplotlib_test_button(self):
-        root = self._get_tree_from_given_path()
-        alg_new = ImprovedWalkersAlgorithmNew()
-        alg_new.buchheim_algorithm(root)
-        MatplotlibDrawer.draw_tree(root)
-
     def _handle_opengl_button(self):
+        """
+        Displays window with a UCT tree visualization.
+        """
         root = self._get_tree_from_given_path()
         window = MonteCarloTreeWindow(self)
         window.canvas_widget.layout.canvas.use_root_data(root)
         window.show()
 
     def _get_tree_from_given_path(self):
+        """
+        Runs serializer to parse the tree from a file given.
+        """
         path = self.layout.tree_path_edit.text()
         serializator = CsvSerializator()
         root = serializator.get_node_from_path(path)
@@ -78,6 +81,10 @@ class MainApplicationWindow(QMainWindow):
 
 
 def launch_application():
+    """
+    Main program function.
+    Shows menu window.
+    """
     redefine_exceptions()
     app = QtWidgets.QApplication(sys.argv)
     window = MainApplicationWindow()
@@ -86,6 +93,9 @@ def launch_application():
 
 
 def redefine_exceptions():
+    """
+    Catches critical exceptions and displays them in message box.
+    """
     def catch_exceptions(t, val, tb):
         QtWidgets.QMessageBox.critical(None,
                                        "An exception was raised",
