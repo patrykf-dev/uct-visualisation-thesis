@@ -34,6 +34,10 @@ class MainApplicationWindow(QMainWindow):
         center_window_on_screen(self)
 
     def _handle_play_button(self):
+        """
+        Handler for button, that initiates the game.
+        It displays the game and visualization window.
+        """
         game = self.layout.get_chosen_game()
         game_mode = self.layout.get_chosen_game_mode()
         settings = self.layout.get_mc_settings()
@@ -49,6 +53,10 @@ class MainApplicationWindow(QMainWindow):
         window.show()
 
     def _handle_select_tree_path_button(self):
+        """
+        Handles button that enables user to load his own tree from file system.
+        For now, only one file is accepted at once.
+        """
         path, _ = QFileDialog.getOpenFileName(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
         path = self.layout.tree_path_edit.setText(path)
         return path
