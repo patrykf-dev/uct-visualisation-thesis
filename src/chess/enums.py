@@ -42,3 +42,16 @@ class TileColor(Enum):
     CHECKED = 3
     LAST_MOVE_LIGHT = 4
     LAST_MOVE_DARK = 5
+
+
+class TileMarkType(Enum):
+    SELECTED = 0,
+    DESELECTED = 1,
+    MOVED = 2,
+    CHECKED = 3
+
+
+class TileMarkArgs:
+    def __init__(self, pos, tile_mark_type: TileMarkType):
+        self.pos = pos
+        self.tile_mark_type = tile_mark_type

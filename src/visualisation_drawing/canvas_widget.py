@@ -10,7 +10,7 @@ from src.visualisation_drawing.canvas_widget_layout import MonteCarloTreeWidgetL
 class MonteCarloTreeCanvasWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self._setup_widget(MonteCarloTreeCanvas())
+        self._setup_widget()
 
     def _handle_node_clicked_event(self, sender, node: MonteCarloNode):
         self.layout.fill_right_panel_info(node)
@@ -24,7 +24,8 @@ class MonteCarloTreeCanvasWidget(QWidget):
         serializator.save_node_to_path(self.layout.canvas.root, path)
         print(f"Saved file: {path}")
 
-    def _setup_widget(self, canvas):
+    def _setup_widget(self):
+        canvas = MonteCarloTreeCanvas()
         self.layout = MonteCarloTreeWidgetLayout(self, canvas)
         self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
         self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)

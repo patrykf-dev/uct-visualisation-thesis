@@ -42,8 +42,8 @@ void main()
 
 float marker(vec2 P, float size)
 {
-    vec2 someVector = (P.xy - vec2(0.5,0.5));
-    float r = length(someVector)*size;
+    vec2 someVector = (P.xy - vec2(0.5, 0.5));
+    float r = length(someVector) * size;
     r -= (v_radius / 2);
     return r;
 }

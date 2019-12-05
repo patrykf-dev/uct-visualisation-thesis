@@ -1,7 +1,8 @@
 import src.chess.chess_utils as ChessUtils
-from src.chess.board_gui import BoardGUI, TileMarkType
+from src.chess.board_gui import BoardGUI
 from src.chess.chess_canvas_drawer import ChessCanvasDrawer
 from src.chess.chessboard import Chessboard
+from src.chess.enums import TileMarkType
 from src.chess.figures import Figure
 
 
@@ -15,11 +16,11 @@ class ChessGameManager:
                                   self.canvas_drawer.tile_height)
         self.board.notify_tile_marked += self.on_tile_marked
 
-    def on_tile_marked(self, sender, pos, tile_mark_type):
-        if tile_mark_type == TileMarkType.CHECKED:
-            self.board_gui.mark_tile_checked(pos)
-        elif tile_mark_type == TileMarkType.MOVED:
-            self.board_gui.mark_tile_moved(pos)
+    def on_tile_marked(self, sender, args):
+        if args.tile_mark_type == TileMarkType.CHECKED:
+            self.board_gui.mark_tile_checked(args.pos)
+        elif args.tile_mark_type == TileMarkType.MOVED:
+            self.board_gui.mark_tile_moved(args.pos)
 
     def react_to_tile_click(self, grid_pos):
         if not self.if_figure_selected:
