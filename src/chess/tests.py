@@ -356,31 +356,31 @@ class TestChess(unittest.TestCase):
         self.make_moves_from_queue(moves)
         self.assertEqual(self.chessboard.game_status, GameStatus.STALEMATE)
 
-    # def test_is_draw_when_two_kings(self):
-    #     figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
-    #                                             Rook(Color.BLACK, (1, 1))]
-    #     self.chessboard.figures = ChessFiguresCollection(figures)
-    #     moves = [Move((0, 0), (1, 1))]
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
+    def test_is_draw_when_two_kings(self):
+        figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
+                                                Rook(Color.BLACK, (1, 1))]
+        self.chessboard.figures = ChessFiguresCollection(figures)
+        moves = [Move((0, 0), (1, 1))]
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
 
-    # def test_is_draw_when_king_bishop(self):
-    #     figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
-    #                                             Rook(Color.BLACK, (1, 1)),
-    #                                             Bishop(Color.BLACK, (1, 6))]
-    #     self.chessboard.figures = ChessFiguresCollection(figures)
-    #     moves = [Move((0, 0), (1, 1))]
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
+    def test_is_draw_when_king_bishop(self):
+        figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
+                                                Rook(Color.BLACK, (1, 1)),
+                                                Bishop(Color.BLACK, (1, 6))]
+        self.chessboard.figures = ChessFiguresCollection(figures)
+        moves = [Move((0, 0), (1, 1))]
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
 
-    # def test_is_draw_when_king_knight(self):
-    #     figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
-    #                                             Rook(Color.BLACK, (1, 1)),
-    #                                             Knight(Color.BLACK, (1, 6))]
-    #     self.chessboard.figures = ChessFiguresCollection(figures)
-    #     moves = [Move((0, 0), (1, 1))]
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
+    def test_is_draw_when_king_knight(self):
+        figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
+                                                Rook(Color.BLACK, (1, 1)),
+                                                Knight(Color.BLACK, (1, 6))]
+        self.chessboard.figures = ChessFiguresCollection(figures)
+        moves = [Move((0, 0), (1, 1))]
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
 
     def test_is_not_draw_when_king_rook(self):
         figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
@@ -391,14 +391,14 @@ class TestChess(unittest.TestCase):
         self.make_moves_from_queue(moves)
         self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
 
-    # def test_is_draw_when_kings_with_same_bishops(self):
-    #     figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
-    #                                             Rook(Color.BLACK, (1, 1)),
-    #                                             Bishop(Color.BLACK, (1, 6)), Bishop(Color.WHITE, (3, 6))]
-    #     self.chessboard.figures = ChessFiguresCollection(figures)
-    #     moves = [Move((0, 0), (1, 1))]
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
+    def test_is_draw_when_kings_with_same_bishops(self):
+        figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
+                                                Rook(Color.BLACK, (1, 1)),
+                                                Bishop(Color.BLACK, (1, 6)), Bishop(Color.WHITE, (3, 6))]
+        self.chessboard.figures = ChessFiguresCollection(figures)
+        moves = [Move((0, 0), (1, 1))]
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.DRAW)
 
     def test_is_not_draw_when_kings_with_other_bishops(self):
         figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (7, 7)),
@@ -409,54 +409,54 @@ class TestChess(unittest.TestCase):
         self.make_moves_from_queue(moves)
         self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
 
-    # def test_fifty_move_rule(self):
-    #     figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (6, 0)),
-    #                                             Pawn(Color.WHITE, (3, 3))]
-    #     self.chessboard.figures = ChessFiguresCollection(figures)
-    #
-    #     moves = [Move((0, 0), (0, 1)), Move((6, 0), (6, 1)), Move((3, 3), (4, 3)), Move((6, 1), (6, 2))]
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
-    #
-    #     moves_white = [
-    #         Move((0, 1), (0, 2)), Move((0, 2), (0, 3)), Move((0, 3), (0, 4)),
-    #         Move((0, 4), (0, 5)), Move((0, 5), (0, 6)), Move((0, 6), (0, 7)), Move((0, 7), (1, 7)),
-    #         Move((1, 7), (1, 6)), Move((1, 6), (1, 5)), Move((1, 5), (1, 4)), Move((1, 4), (1, 3)),
-    #         Move((1, 3), (1, 2)), Move((1, 2), (1, 1)), Move((1, 1), (1, 0)), Move((1, 0), (0, 0)),
-    #         Move((0, 0), (0, 1)), Move((0, 1), (0, 2)), Move((0, 2), (0, 3)), Move((0, 3), (0, 4)),
-    #         Move((0, 4), (0, 5)), Move((0, 5), (0, 6)), Move((0, 6), (0, 7)), Move((0, 7), (1, 7)),
-    #         Move((1, 7), (1, 6)), Move((1, 6), (1, 5)), Move((1, 5), (1, 4)), Move((1, 4), (1, 3)),
-    #         Move((1, 3), (1, 2)), Move((1, 2), (1, 1)), Move((1, 1), (1, 0)), Move((1, 0), (0, 0)),
-    #         Move((0, 0), (0, 1)), Move((0, 1), (0, 2)), Move((0, 2), (0, 3)), Move((0, 3), (0, 4)),
-    #         Move((0, 4), (0, 5)), Move((0, 5), (0, 6)), Move((0, 6), (0, 7)), Move((0, 7), (1, 7)),
-    #         Move((1, 7), (1, 6)), Move((1, 6), (1, 5)), Move((1, 5), (1, 4)), Move((1, 4), (1, 3)),
-    #         Move((1, 3), (1, 2)), Move((1, 2), (1, 1)), Move((1, 1), (1, 0)), Move((1, 0), (0, 0)),
-    #         Move((0, 0), (0, 1))]
-    #     moves_black = [
-    #         Move((6, 2), (6, 3)), Move((6, 3), (6, 4)),
-    #         Move((6, 4), (6, 5)), Move((6, 5), (6, 6)), Move((6, 6), (6, 7)), Move((6, 7), (7, 7)),
-    #         Move((7, 7), (7, 6)), Move((7, 6), (7, 5)), Move((7, 5), (7, 4)), Move((7, 4), (7, 3)),
-    #         Move((7, 3), (7, 2)), Move((7, 2), (7, 1)), Move((7, 1), (7, 0)), Move((7, 0), (6, 0)),
-    #         Move((6, 0), (6, 1)), Move((6, 1), (6, 2)), Move((6, 2), (6, 3)), Move((6, 3), (6, 4)),
-    #         Move((6, 4), (6, 5)), Move((6, 5), (6, 6)), Move((6, 6), (6, 7)), Move((6, 7), (7, 7)),
-    #         Move((7, 7), (7, 6)), Move((7, 6), (7, 5)), Move((7, 5), (7, 4)), Move((7, 4), (7, 3)),
-    #         Move((7, 3), (7, 2)), Move((7, 2), (7, 1)), Move((7, 1), (7, 0)), Move((7, 0), (6, 0)),
-    #         Move((6, 0), (6, 1)), Move((6, 1), (6, 2)), Move((6, 2), (6, 3)), Move((6, 3), (6, 4)),
-    #         Move((6, 4), (6, 5)), Move((6, 5), (6, 6)), Move((6, 6), (6, 7)), Move((6, 7), (7, 7)),
-    #         Move((7, 7), (7, 6)), Move((7, 6), (7, 5)), Move((7, 5), (7, 4)), Move((7, 4), (7, 3)),
-    #         Move((7, 3), (7, 2)), Move((7, 2), (7, 1)), Move((7, 1), (7, 0)), Move((7, 0), (6, 0)),
-    #         Move((6, 0), (6, 1)), Move((6, 1), (6, 2))]
-    #     moves = list(chain.from_iterable(zip(moves_white, moves_black)))
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
-    #
-    #     moves = [Move((0, 1), (0, 2)), Move((6, 2), (6, 3))]
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
-    #
-    #     moves = [Move((0, 2), (0, 3))]
-    #     self.make_moves_from_queue(moves)
-    #     self.assertEqual(self.chessboard.game_status, GameStatus.FIFTY_MOVE_RULE)
+    def test_fifty_move_rule(self):
+        figures = [King(Color.WHITE, (0, 0)), King(Color.BLACK, (6, 0)),
+                                                Pawn(Color.WHITE, (3, 3))]
+        self.chessboard.figures = ChessFiguresCollection(figures)
+
+        moves = [Move((0, 0), (0, 1)), Move((6, 0), (6, 1)), Move((3, 3), (4, 3)), Move((6, 1), (6, 2))]
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
+
+        moves_white = [
+            Move((0, 1), (0, 2)), Move((0, 2), (0, 3)), Move((0, 3), (0, 4)),
+            Move((0, 4), (0, 5)), Move((0, 5), (0, 6)), Move((0, 6), (0, 7)), Move((0, 7), (1, 7)),
+            Move((1, 7), (1, 6)), Move((1, 6), (1, 5)), Move((1, 5), (1, 4)), Move((1, 4), (1, 3)),
+            Move((1, 3), (1, 2)), Move((1, 2), (1, 1)), Move((1, 1), (1, 0)), Move((1, 0), (0, 0)),
+            Move((0, 0), (0, 1)), Move((0, 1), (0, 2)), Move((0, 2), (0, 3)), Move((0, 3), (0, 4)),
+            Move((0, 4), (0, 5)), Move((0, 5), (0, 6)), Move((0, 6), (0, 7)), Move((0, 7), (1, 7)),
+            Move((1, 7), (1, 6)), Move((1, 6), (1, 5)), Move((1, 5), (1, 4)), Move((1, 4), (1, 3)),
+            Move((1, 3), (1, 2)), Move((1, 2), (1, 1)), Move((1, 1), (1, 0)), Move((1, 0), (0, 0)),
+            Move((0, 0), (0, 1)), Move((0, 1), (0, 2)), Move((0, 2), (0, 3)), Move((0, 3), (0, 4)),
+            Move((0, 4), (0, 5)), Move((0, 5), (0, 6)), Move((0, 6), (0, 7)), Move((0, 7), (1, 7)),
+            Move((1, 7), (1, 6)), Move((1, 6), (1, 5)), Move((1, 5), (1, 4)), Move((1, 4), (1, 3)),
+            Move((1, 3), (1, 2)), Move((1, 2), (1, 1)), Move((1, 1), (1, 0)), Move((1, 0), (0, 0)),
+            Move((0, 0), (0, 1))]
+        moves_black = [
+            Move((6, 2), (6, 3)), Move((6, 3), (6, 4)),
+            Move((6, 4), (6, 5)), Move((6, 5), (6, 6)), Move((6, 6), (6, 7)), Move((6, 7), (7, 7)),
+            Move((7, 7), (7, 6)), Move((7, 6), (7, 5)), Move((7, 5), (7, 4)), Move((7, 4), (7, 3)),
+            Move((7, 3), (7, 2)), Move((7, 2), (7, 1)), Move((7, 1), (7, 0)), Move((7, 0), (6, 0)),
+            Move((6, 0), (6, 1)), Move((6, 1), (6, 2)), Move((6, 2), (6, 3)), Move((6, 3), (6, 4)),
+            Move((6, 4), (6, 5)), Move((6, 5), (6, 6)), Move((6, 6), (6, 7)), Move((6, 7), (7, 7)),
+            Move((7, 7), (7, 6)), Move((7, 6), (7, 5)), Move((7, 5), (7, 4)), Move((7, 4), (7, 3)),
+            Move((7, 3), (7, 2)), Move((7, 2), (7, 1)), Move((7, 1), (7, 0)), Move((7, 0), (6, 0)),
+            Move((6, 0), (6, 1)), Move((6, 1), (6, 2)), Move((6, 2), (6, 3)), Move((6, 3), (6, 4)),
+            Move((6, 4), (6, 5)), Move((6, 5), (6, 6)), Move((6, 6), (6, 7)), Move((6, 7), (7, 7)),
+            Move((7, 7), (7, 6)), Move((7, 6), (7, 5)), Move((7, 5), (7, 4)), Move((7, 4), (7, 3)),
+            Move((7, 3), (7, 2)), Move((7, 2), (7, 1)), Move((7, 1), (7, 0)), Move((7, 0), (6, 0)),
+            Move((6, 0), (6, 1)), Move((6, 1), (6, 2))]
+        moves = list(chain.from_iterable(zip(moves_white, moves_black)))
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
+
+        moves = [Move((0, 1), (0, 2)), Move((6, 2), (6, 3))]
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.IN_PROGRESS)
+
+        moves = [Move((0, 2), (0, 3))]
+        self.make_moves_from_queue(moves)
+        self.assertEqual(self.chessboard.game_status, GameStatus.FIFTY_MOVE_RULE)
 
     def test_en_passant_capture_should_not_uncover_the_king(self):
         figures = [King(Color.WHITE, (3, 2)), King(Color.BLACK, (7, 7)),
