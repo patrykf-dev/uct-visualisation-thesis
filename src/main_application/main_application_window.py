@@ -74,6 +74,9 @@ class MainApplicationWindow(QMainWindow):
         window = MonteCarloTreeWindow(self)
         if len(trees) >= 1:
             window.canvas_widget.layout.canvas.use_root_data(trees[0])
+            if len(trees) == 1:
+                window.canvas_widget.layout.right_button.setEnabled(False)
+        window.canvas_widget.layout.left_button.setEnabled(False)
         window.canvas_widget.layout.canvas.set_trees(trees)
         window.show()
 

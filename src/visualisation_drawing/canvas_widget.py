@@ -24,16 +24,29 @@ class MonteCarloTreeCanvasWidget(QWidget):
         serializator.save_node_to_path(self.layout.canvas.root, path)
         print(f"Saved file: {path}")
 
+    def _make_arrow_buttons_enabled_or_disabled(self):
+        current_tree_index = self.canvas.tree_index
+        if current_tree_index == 0:
+            self.layout.left_button.setEnabled(False)
+        elif current_tree_index == 1:
+            self.layout.left_button.setEnabled(True)
+        if current_tree_index == len(self.canvas.trees) - 1:
+            self.layout.right_button.setEnabled(False)
+        elif current_tree_index == len(self.canvas.trees) - 2:
+            self.layout.right_button.setEnabled(True)
+
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
         if tree_changed:
             self.canvas.root.reset_walkers_data()
+            self._make_arrow_buttons_enabled_or_disabled()
             self.canvas.use_root_data(self.canvas.root)
 
     def _handle_right_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_next_tree_as_root()
         if tree_changed:
             self.canvas.root.reset_walkers_data()
+            self._make_arrow_buttons_enabled_or_disabled()
             self.canvas.use_root_data(self.canvas.root)
 
     def _setup_widget(self):
