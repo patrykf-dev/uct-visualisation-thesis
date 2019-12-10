@@ -9,7 +9,7 @@ from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
 class MonteCarloTreeWidgetLayout:
     NO_INFO_LABEL = "-NO INFO-"
 
-    def __init__(self, main_widget, canvas: MonteCarloTreeCanvas):
+    def __init__(self, main_widget, canvas: MonteCarloTreeCanvas, sequences):
         self.canvas = canvas
         self.reset_button = QPushButton()
         self.serialize_button = QPushButton()
@@ -23,7 +23,7 @@ class MonteCarloTreeWidgetLayout:
             ["Win score", None],
             ["Average prize", None],
             ["Current player", None]]
-        self._create_layout(main_widget)
+        self._create_layout(main_widget, sequences)
 
     def fill_right_panel_info(self, node: MonteCarloNode):
         if node is None:
@@ -52,7 +52,7 @@ class MonteCarloTreeWidgetLayout:
         left_right_layout.addWidget(self.left_button, 0, 0)
         left_right_layout.addWidget(self.right_button, 0, 1)
 
-    def _create_layout(self, main_widget):
+    def _create_layout(self, main_widget, sequences):
         main_layout = QGridLayout()
         main_widget.setLayout(main_layout)
 
@@ -61,13 +61,15 @@ class MonteCarloTreeWidgetLayout:
         self.reset_button = get_button("Reset view")
         self.serialize_button = get_button("Save tree to csv file")
 
-        self._create_left_right_button_widget()
+        if sequences:
+            self._create_left_right_button_widget()
 
         main_layout.addWidget(self.canvas.native, 0, 0)
         main_layout.addWidget(self.right_panel_widget, 0, 1)
         main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
         main_layout.addWidget(self.serialize_button, 2, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.left_right_widget, 3, 0, alignment=QtCore.Qt.AlignCenter)
+        if sequences:
+            main_layout.addWidget(self.left_right_widget, 3, 0, alignment=QtCore.Qt.AlignCenter)
 
     def _fill_right_panel_contents(self):
         self.right_panel_widget = QWidget()

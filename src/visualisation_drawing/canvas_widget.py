@@ -8,9 +8,9 @@ from src.visualisation_drawing.canvas_widget_layout import MonteCarloTreeWidgetL
 
 
 class MonteCarloTreeCanvasWidget(QWidget):
-    def __init__(self):
+    def __init__(self, sequences):
         super().__init__()
-        self._setup_widget()
+        self._setup_widget(sequences)
 
     def _handle_node_clicked_event(self, sender, node: MonteCarloNode):
         self.layout.fill_right_panel_info(node)
@@ -49,11 +49,12 @@ class MonteCarloTreeCanvasWidget(QWidget):
             self._make_arrow_buttons_enabled_or_disabled()
             self.canvas.use_root_data(self.canvas.root)
 
-    def _setup_widget(self):
+    def _setup_widget(self, sequences):
         self.canvas = MonteCarloTreeCanvas()
-        self.layout = MonteCarloTreeWidgetLayout(self, self.canvas)
+        self.layout = MonteCarloTreeWidgetLayout(self, self.canvas, sequences)
         self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
         self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
         self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
-        self.layout.left_button.clicked.connect(self._handle_left_arrow_button_clicked_event)
-        self.layout.right_button.clicked.connect(self._handle_right_arrow_button_clicked_event)
+        if sequences:
+            self.layout.left_button.clicked.connect(self._handle_left_arrow_button_clicked_event)
+            self.layout.right_button.clicked.connect(self._handle_right_arrow_button_clicked_event)

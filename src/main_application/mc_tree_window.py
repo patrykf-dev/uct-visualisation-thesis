@@ -13,7 +13,7 @@ class MonteCarloTreeWindow(QMainWindow):
         main_widget = QWidget()
         main_layout = QGridLayout()
         main_widget.setLayout(main_layout)
-        self.canvas_widget = MonteCarloTreeCanvasWidget()
+        self.canvas_widget = MonteCarloTreeCanvasWidget(sequences=True)
         main_layout.addWidget(self.canvas_widget, 0, 0)
         self.setCentralWidget(main_widget)
 

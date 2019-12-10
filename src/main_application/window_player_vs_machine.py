@@ -10,7 +10,7 @@ class PlayerVsMachineWindow(QMainWindow):
     def __init__(self, manager: MonteCarloWindowManager, parent):
         super(PlayerVsMachineWindow, self).__init__(parent)
         self.manager = manager
-        self.tree_widget = MonteCarloTreeCanvasWidget()
+        self.tree_widget = MonteCarloTreeCanvasWidget(sequences=False)
         self.iteration_progress_widget = IterationProgressWidget()
         main_widget = QWidget()
         main_layout = QGridLayout()

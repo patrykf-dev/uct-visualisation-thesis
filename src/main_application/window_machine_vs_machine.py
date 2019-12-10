@@ -12,7 +12,7 @@ class MachineVsMachineWindow(QMainWindow):
         main_widget = QWidget()
         main_layout = QGridLayout()
         main_layout.addWidget(self.manager.canvas, 0, 0)
-        self.tree_widget = MonteCarloTreeCanvasWidget()
+        self.tree_widget = MonteCarloTreeCanvasWidget(sequences=False)
         main_layout.addWidget(self.tree_widget, 0, 1)
         self.next_move_button = get_button("Make next move")
         self.next_move_button.clicked.connect(self.handle_next_move_button)
