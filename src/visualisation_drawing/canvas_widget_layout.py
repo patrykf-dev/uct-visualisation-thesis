@@ -1,7 +1,8 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy
 
-from src.main_application.GUI_utils import DEFAULT_FONT, get_button, get_non_resizable_label
+from src.main_application.GUI_utils import DEFAULT_FONT, get_button, get_non_resizable_label, \
+    get_box_background_stylesheet
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
 
@@ -92,5 +93,4 @@ class MonteCarloTreeWidgetLayout:
             counter += 1
 
     def _set_right_panel_color(self, color):
-        self.right_panel_widget.setStyleSheet(
-            "QWidget#box{background-color: rgb" + str(color) + "; margin:2px; border:2px solid rgb(0, 0, 0);}")
+        self.right_panel_widget.setStyleSheet(get_box_background_stylesheet(color))

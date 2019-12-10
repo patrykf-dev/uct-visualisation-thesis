@@ -5,7 +5,7 @@ from src.main_application.mc_window_manager import MonteCarloWindowManager
 
 
 class PlayerVsPlayerWindow(QMainWindow):
-    def __init__(self, manager: MonteCarloWindowManager, parent):
+    def __init__(self, parent: QMainWindow, manager: MonteCarloWindowManager):
         super(PlayerVsPlayerWindow, self).__init__(parent)
         self.manager = manager
         main_widget = QWidget()

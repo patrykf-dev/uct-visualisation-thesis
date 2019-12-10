@@ -1,4 +1,4 @@
-from src.main_application.mc_settings import MonteCarloSettings
+from src.main_application.gui_settings import MonteCarloSettings
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.uct.algorithm.mc_tree_search import MonteCarloTreeSearch
 from src.uct.game.base_game_move import BaseGameMove

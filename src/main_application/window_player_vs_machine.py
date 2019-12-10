@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
 from src.main_application.GUI_utils import center_window_on_screen
+from src.main_application.gui_settings import DisplaySettings
 from src.main_application.iteration_progress_widget import IterationProgressWidget
 from src.main_application.mc_window_manager import MonteCarloWindowManager
 from src.visualisation_algorithm_new.walkers_algorithm_new import reset_walkers_data
@@ -8,8 +9,9 @@ from src.visualisation_drawing.canvas_widget import MonteCarloTreeCanvasWidget
 
 
 class PlayerVsMachineWindow(QMainWindow):
-    def __init__(self, manager: MonteCarloWindowManager, parent):
+    def __init__(self, parent: QMainWindow, manager: MonteCarloWindowManager, display_settings: DisplaySettings):
         super(PlayerVsMachineWindow, self).__init__(parent)
+        self.display_settings = display_settings
         self.manager = manager
         self.tree_widget = MonteCarloTreeCanvasWidget()
         self.iteration_progress_widget = IterationProgressWidget()
@@ -29,8 +31,11 @@ class PlayerVsMachineWindow(QMainWindow):
 
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_progress_widget.layout.progress_bar.setValue(earg * 100)
-        reset_walkers_data(self.manager.mc_manager.tree.root)
-        self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
+        if self.display_settings.animate:
+            reset_walkers_data(self.manager.mc_manager.tree.root)
+            self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
+        if earg == 1:
+            self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
 
     def showEvent(self, event):
         super().showEvent(event)

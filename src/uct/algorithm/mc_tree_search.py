@@ -3,7 +3,7 @@ import time
 import src.uct.algorithm.enums as Enums
 import src.uct.algorithm.mc_node_utils as NodeUtils
 import src.uct.algorithm.uct_calculation as UCT
-from src.main_application.mc_settings import MonteCarloSettings
+from src.main_application.gui_settings import MonteCarloSettings
 from src.uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.uct.game.base_game_move import BaseGameMove
@@ -34,10 +34,11 @@ class MonteCarloTreeSearch:
     def _calculate_next_move_time_limited(self):
         start_time = time.time()
         elapsed_time_ms = 0
-        while elapsed_time_ms < self.settings.internal_max_time:
+        max_time = self.settings.get_internal_time()
+        while elapsed_time_ms < max_time:
             self._perform_iteration()
             elapsed_time_ms = (time.time() - start_time) * 1000
-            self.iteration_performed.fire(self, elapsed_time_ms / self.settings.internal_max_time)
+            self.iteration_performed.fire(self, elapsed_time_ms / max_time)
         return self._select_result_node()
 
     def _perform_iteration(self):
@@ -111,13 +112,13 @@ class MonteCarloTreeSearch:
             tmp_phase = tmp_state.phase
             moves_counter = moves_counter + 1
             if self.settings.limit_moves and moves_counter >= self.settings.max_moves_per_iteration:
-                print(
-                    f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
+                # print(
+                #     f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
                 break
 
-        if tmp_phase != Enums.GamePhase.IN_PROGRESS:
-            print(
-                f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
+        # if tmp_phase != Enums.GamePhase.IN_PROGRESS:
+        #     print(
+        #         f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
 
         return MonteCarloSimulationResult(tmp_state)
 

@@ -3,7 +3,6 @@ class MonteCarloSettings:
         self.max_iterations = 30
         self.max_time = 4 * 1000
         self.max_moves_per_iteration = 50
-        self.internal_max_time = self.max_time - 500
         self.limit_iterations = True
         self.limit_moves = True
 
@@ -16,3 +15,11 @@ class MonteCarloSettings:
         elif not self.limit_iterations and (self.max_time < 1000 or self.max_time > 30000):
             return "Invalid time limit. Should be between 1000 and 30000."
         return ""
+
+    def get_internal_time(self):
+        return 0.9 * self.max_time
+
+
+class DisplaySettings:
+    def __init__(self):
+        self.animate = False
