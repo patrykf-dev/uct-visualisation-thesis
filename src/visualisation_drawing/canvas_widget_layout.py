@@ -44,8 +44,8 @@ class MonteCarloTreeWidgetLayout:
                 self.labels[7][1].setText(str(node.move.player))
 
     def _create_left_right_button_widget(self):
-        self.left_button = get_button("<<")
-        self.right_button = get_button(">>")
+        self.left_button = get_button("<<", 35)
+        self.right_button = get_button(">>", 35)
         self.left_right_widget = QWidget()
         left_right_layout = QGridLayout()
         self.left_right_widget.setLayout(left_right_layout)
