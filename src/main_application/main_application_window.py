@@ -58,7 +58,8 @@ class MainApplicationWindow(QMainWindow):
         For now, only one file is accepted at once.
         """
         path, _ = QFileDialog.getOpenFileNames(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
-        path = self.layout.tree_path_edit.setText(path[-1])
+        if path:
+            path = self.layout.tree_path_edit.setText(path[-1])
         return path
 
     def _handle_opengl_button(self):
