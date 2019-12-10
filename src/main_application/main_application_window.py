@@ -54,31 +54,38 @@ class MainApplicationWindow(QMainWindow):
 
     def _handle_select_tree_path_button(self):
         """
-        Handles button that enables user to load his own tree from file system.
-        For now, only one file is accepted at once.
+        Handles button that enables user to load his own trees from file system.
+        When one file is chosen, its name will appear in the edit line.
+        When multiple files were chosen, the user will see "Multiple files chosen" in the edit line.
         """
-        path, _ = QFileDialog.getOpenFileNames(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
-        if path:
-            path = self.layout.tree_path_edit.setText(path[-1])
-        return path
+        paths, _ = QFileDialog.getOpenFileNames(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
+        if len(paths) == 1:
+            self.layout.tree_path_edit.setText(paths[0])
+        elif len(paths) > 1:
+            self.layout.tree_path_edit.setText("Multiple files chosen")
+        self.layout.chosen_trees_paths = paths
 
     def _handle_opengl_button(self):
         """
-        Displays window with a UCT tree visualization.
+        Displays the window with a UCT tree visualization.
         """
-        root = self._get_tree_from_given_path()
+        trees = self._get_trees_from_given_path()
         window = MonteCarloTreeWindow(self)
-        window.canvas_widget.layout.canvas.use_root_data(root)
+        if len(trees) >= 1:
+            window.canvas_widget.layout.canvas.use_root_data(trees[0])
+        window.canvas_widget.layout.canvas.set_trees(trees)
         window.show()
 
-    def _get_tree_from_given_path(self):
+    def _get_trees_from_given_path(self):
         """
-        Runs serializer to parse the tree from a file given.
+        Runs serializer to parse the trees from the given files.
         """
-        path = self.layout.tree_path_edit.text()
+        deserialized_trees = []
         serializator = CsvSerializator()
-        root = serializator.get_node_from_path(path)
-        return root
+        for tree_path in self.layout.chosen_trees_paths:
+            tree = serializator.get_node_from_path(tree_path)
+            deserialized_trees.append(tree)
+        return deserialized_trees
 
 
 def launch_application():

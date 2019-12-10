@@ -21,6 +21,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         VispyApp.Canvas.__init__(self, **kwargs)
         self.previous_mouse_pos = None
         self.root = root
+        self.trees = []
+        self.tree_index = 0
         self._setup_widget()
         if root:
             self.use_root_data(root)
@@ -33,6 +35,23 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self._bind_shaders()
         self._setup_matrices()
         self.update()
+
+    def set_trees(self, trees):
+        self.trees = trees
+
+    def make_next_tree_as_root(self):
+        if self.tree_index + 1 < len(self.trees):
+            self.tree_index += 1
+            self.root = self.trees[self.tree_index]
+            return True
+        return False
+
+    def make_previous_tree_as_root(self):
+        if self.tree_index >= 1:
+            self.tree_index -= 1
+            self.root = self.trees[self.tree_index]
+            return True
+        return False
 
     def on_resize(self, event):
         set_viewport(0, 0, event.physical_size[0], event.physical_size[1])

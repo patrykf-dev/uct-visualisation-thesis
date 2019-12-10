@@ -24,9 +24,23 @@ class MonteCarloTreeCanvasWidget(QWidget):
         serializator.save_node_to_path(self.layout.canvas.root, path)
         print(f"Saved file: {path}")
 
+    def _handle_left_arrow_button_clicked_event(self):
+        tree_changed = self.canvas.make_previous_tree_as_root()
+        if tree_changed:
+            self.canvas.reset_view()
+            self.canvas.use_root_data(self.canvas.root)
+
+    def _handle_right_arrow_button_clicked_event(self):
+        tree_changed = self.canvas.make_next_tree_as_root()
+        if tree_changed:
+            self.canvas.reset_view()
+            self.canvas.use_root_data(self.canvas.root)
+
     def _setup_widget(self):
-        canvas = MonteCarloTreeCanvas()
-        self.layout = MonteCarloTreeWidgetLayout(self, canvas)
+        self.canvas = MonteCarloTreeCanvas()
+        self.layout = MonteCarloTreeWidgetLayout(self, self.canvas)
         self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
         self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
         self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
+        self.layout.left_button.clicked.connect(self._handle_left_arrow_button_clicked_event)
+        self.layout.right_button.clicked.connect(self._handle_right_arrow_button_clicked_event)
