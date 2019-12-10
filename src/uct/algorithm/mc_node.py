@@ -19,6 +19,17 @@ class MonteCarloNode:
         # this is the number of the node in its group of siblings 1..n
         self.number = 1
 
+    def reset_walkers_data(self):
+        self.vis_details.x = -1
+        self.vis_details.thread = None
+        self.vis_details.mod = 0
+        self.vis_details.ancestor = self
+        self.vis_details.change = 0
+        self.vis_details.shift = 0
+        self._left_most_sibling = None
+        for child in self.children:
+            child.reset_walkers_data()
+
     def add_child_by_move(self, move):
         child = MonteCarloNode._create_instance(move)
         child.parent = self
