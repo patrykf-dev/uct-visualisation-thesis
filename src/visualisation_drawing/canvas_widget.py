@@ -27,13 +27,13 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
         if tree_changed:
-            self.canvas.reset_view()
+            self.canvas.root.reset_walkers_data()
             self.canvas.use_root_data(self.canvas.root)
 
     def _handle_right_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_next_tree_as_root()
         if tree_changed:
-            self.canvas.reset_view()
+            self.canvas.root.reset_walkers_data()
             self.canvas.use_root_data(self.canvas.root)
 
     def _setup_widget(self):
