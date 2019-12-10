@@ -63,7 +63,8 @@ class MainApplicationWindow(QMainWindow):
             self.layout.tree_path_edit.setText(paths[0])
         elif len(paths) > 1:
             self.layout.tree_path_edit.setText("Multiple files chosen")
-        self.layout.chosen_trees_paths = paths
+        if paths:
+            self.layout.chosen_trees_paths = paths
 
     def _handle_opengl_button(self):
         """
