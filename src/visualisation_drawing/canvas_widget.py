@@ -35,11 +35,18 @@ class MonteCarloTreeCanvasWidget(QWidget):
         elif current_tree_index == len(self.canvas.trees) - 2:
             self.layout.right_button.setEnabled(True)
 
+    def _update_tree_info_label(self):
+        current_tree_index = self.canvas.tree_index
+        number_of_trees = len(self.canvas.trees)
+        text = f"Tree {current_tree_index + 1} of {number_of_trees}"
+        self.layout.tree_info_label.setText(text)
+
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
         if tree_changed:
             self.canvas.root.reset_walkers_data()
             self._make_arrow_buttons_enabled_or_disabled()
+            self._update_tree_info_label()
             self.canvas.use_root_data(self.canvas.root)
 
     def _handle_right_arrow_button_clicked_event(self):
@@ -47,6 +54,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
         if tree_changed:
             self.canvas.root.reset_walkers_data()
             self._make_arrow_buttons_enabled_or_disabled()
+            self._update_tree_info_label()
             self.canvas.use_root_data(self.canvas.root)
 
     def _setup_widget(self, sequences):

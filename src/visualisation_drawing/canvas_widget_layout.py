@@ -46,11 +46,13 @@ class MonteCarloTreeWidgetLayout:
     def _create_left_right_button_widget(self):
         self.left_button = get_button("<<", 35)
         self.right_button = get_button(">>", 35)
+        self.tree_info_label = get_non_resizable_label()
         self.left_right_widget = QWidget()
         left_right_layout = QGridLayout()
         self.left_right_widget.setLayout(left_right_layout)
-        left_right_layout.addWidget(self.left_button, 0, 0)
-        left_right_layout.addWidget(self.right_button, 0, 1)
+        left_right_layout.addWidget(self.tree_info_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        left_right_layout.addWidget(self.left_button, 1, 0)
+        left_right_layout.addWidget(self.right_button, 1, 1)
 
     def _create_layout(self, main_widget, sequences):
         main_layout = QGridLayout()
