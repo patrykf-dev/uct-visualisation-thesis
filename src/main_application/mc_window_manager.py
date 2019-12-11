@@ -1,4 +1,4 @@
-from src.main_application.enums import GameMode
+from src.main_application.enums import GameMode, Game
 from src.main_application.game_canvas import GameCanvas
 from src.main_application.gui_settings import MonteCarloSettings
 from src.uct.algorithm.mc_game_manager import MonteCarloGameManager
@@ -8,11 +8,12 @@ from src.utils.custom_event import CustomEvent
 
 class MonteCarloWindowManager:
     def __init__(self, canvas: GameCanvas, game_mode: GameMode, start_state: BaseGameState,
-                 settings: MonteCarloSettings):
+                 settings: MonteCarloSettings, game: Game):
         self.canvas = canvas
         self.game_mode = game_mode
         self.mc_manager = MonteCarloGameManager(start_state, settings)
         self.on_update_tree = CustomEvent()
+        self.game = game
 
         self.canvas.player_move_performed += self._handle_player_move_performed
 

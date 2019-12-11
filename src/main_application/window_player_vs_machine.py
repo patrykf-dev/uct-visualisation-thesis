@@ -1,6 +1,10 @@
+import os
+
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
 from src.main_application.GUI_utils import center_window_on_screen
+from src.main_application.enums import Game
 from src.main_application.gui_settings import DisplaySettings
 from src.main_application.iteration_progress_widget import IterationProgressWidget
 from src.main_application.mc_window_manager import MonteCarloWindowManager
@@ -21,9 +25,18 @@ class PlayerVsMachineWindow(QMainWindow):
         main_layout.addWidget(self.tree_widget, 1, 1)
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
+        self._set_icon()
 
         self.manager.on_update_tree += self._handle_update_tree
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
+
+    def _set_icon(self):
+        if self.manager.game == Game.Chess:
+            icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "chess-icon.png")
+            print(icon_path)
+            self.setWindowIcon(QIcon(icon_path))
+        elif self.manager.game == Game.Mancala:
+            pass
 
     def _handle_update_tree(self, sender, node):
         self.tree_widget.layout.canvas.use_root_data(node)
