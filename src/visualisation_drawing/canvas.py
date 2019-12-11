@@ -61,6 +61,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             self.program_vertices.draw("points")
 
     def handle_key_press_event(self, event):
+        if not self.root:
+            return
         x_diff = 0
         y_diff = 0
         if event.key() == PYQT_KEY_CODE_RIGHT:
@@ -77,6 +79,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self._update_view_matrix()
 
     def handle_wheel_event(self, event):
+        if not self.root:
+            return
         wheel_direction = event.angleDelta().y()
 
         if wheel_direction < 0:
@@ -114,14 +118,13 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.edges_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.edges)
 
     def handle_mouse_click_event(self, event):
+        if not self.root:
+            return
         pos = event.pos()
-
         if event.button() == QtCore.Qt.RightButton:
             QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
             self.previous_mouse_pos = pos
         elif event.button() == QtCore.Qt.LeftButton:
-            if not self.root:
-                return
             x_clicked = pos.x()
             y_clicked = pos.y()
             width = self.native.frameGeometry().width()
@@ -132,6 +135,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             self.on_node_clicked.fire(self, earg=clicked_node)
 
     def handle_mouse_move_event(self, event):
+        if not self.root:
+            return
         if event.buttons() == QtCore.Qt.RightButton:
             diff = self.previous_mouse_pos - event.pos()
 
