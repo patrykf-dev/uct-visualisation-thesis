@@ -1,3 +1,4 @@
+import os
 import sys
 import re
 
@@ -27,6 +28,8 @@ class MainApplicationWindow(QMainWindow):
     def _setup_window(self):
         self.setMinimumWidth(500)
         self.setWindowTitle('UCT Visualizer')
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "tree_icon.png")
+        self.setWindowIcon(QIcon(icon_path))
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
