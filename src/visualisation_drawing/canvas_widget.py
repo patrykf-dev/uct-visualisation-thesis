@@ -35,18 +35,19 @@ class MonteCarloTreeCanvasWidget(QWidget):
         elif current_tree_index == len(self.canvas.trees_info) - 2:
             self.layout.right_button.setEnabled(True)
 
-    def _update_tree_info_label(self):
+    def _update_tree_info_labels(self):
         current_tree_index = self.canvas.tree_index
         number_of_trees = len(self.canvas.trees_info)
         text = f"Tree {current_tree_index + 1} of {number_of_trees}"
         self.layout.tree_info_number_label.setText(text)
+        self.layout.tree_info_filename_label.setText(self.canvas.trees_info[self.canvas.tree_index].filename)
 
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
         if tree_changed:
             self.canvas.root.reset_walkers_data()
             self._make_arrow_buttons_enabled_or_disabled()
-            self._update_tree_info_label()
+            self._update_tree_info_labels()
             self.canvas.use_root_data(self.canvas.root)
 
     def _handle_right_arrow_button_clicked_event(self):
@@ -54,7 +55,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
         if tree_changed:
             self.canvas.root.reset_walkers_data()
             self._make_arrow_buttons_enabled_or_disabled()
-            self._update_tree_info_label()
+            self._update_tree_info_labels()
             self.canvas.use_root_data(self.canvas.root)
 
     def _setup_widget(self, sequences, trees_info=None):
@@ -64,6 +65,6 @@ class MonteCarloTreeCanvasWidget(QWidget):
         self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
         self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
         if sequences:
-            self._update_tree_info_label()
+            self._update_tree_info_labels()
             self.layout.left_button.clicked.connect(self._handle_left_arrow_button_clicked_event)
             self.layout.right_button.clicked.connect(self._handle_right_arrow_button_clicked_event)
