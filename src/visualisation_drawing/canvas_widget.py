@@ -20,9 +20,10 @@ class MonteCarloTreeCanvasWidget(QWidget):
 
     def _handle_serialize_button_clicked_event(self):
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Csv files (*.csv)")
-        serializator = CsvSerializator()
-        serializator.save_node_to_path(self.layout.canvas.root, path)
-        print(f"Saved file: {path}")
+        if path:
+            serializator = CsvSerializator()
+            serializator.save_node_to_path(self.layout.canvas.root, path)
+            print(f"Saved file: {path}")
 
     def _make_arrow_buttons_enabled_or_disabled(self):
         current_tree_index = self.canvas.tree_index
