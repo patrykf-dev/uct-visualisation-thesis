@@ -25,16 +25,17 @@ class PlayerVsMachineWindow(QMainWindow):
         main_layout.addWidget(self.tree_widget, 1, 1)
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
-        self._set_icon()
+        self._set_icon_and_title()
 
         self.manager.on_update_tree += self._handle_update_tree
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
 
-    def _set_icon(self):
+    def _set_icon_and_title(self):
         if self.manager.game == Game.Chess:
             icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "chess-icon.png")
             print(icon_path)
             self.setWindowIcon(QIcon(icon_path))
+            self.setWindowTitle("Chess")
         elif self.manager.game == Game.Mancala:
             pass
 
