@@ -1,3 +1,6 @@
+import os
+
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow
 
 from src.chess.algorithm_relay.chess_state import ChessState
@@ -32,9 +35,21 @@ def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode,
 
     manager = MonteCarloWindowManager(canvas, game_mode, start_state, mc_settings, game)
 
+    window = None
     if game_mode == GameMode.PLAYER_VS_PC:
-        return PlayerVsMachineWindow(parent, manager, display_settings)
+        window = PlayerVsMachineWindow(parent, manager, display_settings)
     elif game_mode == GameMode.PLAYER_VS_PLAYER:
-        return PlayerVsPlayerWindow(parent, manager)
+        window = PlayerVsPlayerWindow(parent, manager)
     elif game_mode == GameMode.PC_VS_PC:
-        return MachineVsMachineWindow(parent, manager, display_settings)
+        window = MachineVsMachineWindow(parent, manager, display_settings)
+
+    if game == Game.Chess:
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "chess-icon.png")
+        window.setWindowIcon(QIcon(icon_path))
+        window.setWindowTitle("Chess")
+    elif game == Game.Mancala:
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "mancala-icon.png")
+        window.setWindowIcon(QIcon(icon_path))
+        window.setWindowTitle("Mancala")
+
+    return window
