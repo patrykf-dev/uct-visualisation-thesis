@@ -42,16 +42,16 @@ class MainApplicationWindow(QMainWindow):
         """
         game = self.layout.get_chosen_game()
         game_mode = self.layout.get_chosen_game_mode()
-        settings = self.layout.get_mc_settings()
-        if settings is None:
+        ms_settings, display_settings = self.layout.get_settings()
+        if ms_settings is None or display_settings is None:
             return
 
-        validation_string = settings.validate()
+        validation_string = ms_settings.validate()
         if validation_string != "":
             show_eror_dialog(validation_string)
             return
 
-        window = create_proper_window(self, game, game_mode, settings)
+        window = create_proper_window(self, game, game_mode, ms_settings, display_settings)
         window.show()
 
     def _handle_select_tree_path_button(self):

@@ -27,6 +27,10 @@ def center_window_on_screen(window):
     window.move(bounds.topLeft())
 
 
+def get_box_background_stylesheet(color=(160, 200, 150)):
+    return "QWidget#box{background-color: rgb" + str(color) + "; margin:2px; border-radius: 10px}"
+
+
 def get_non_resizable_label(caption=""):
     """
     Generates label with fixed, non-resizable policy with given caption.
