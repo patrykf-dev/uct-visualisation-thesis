@@ -120,6 +120,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
             self.previous_mouse_pos = pos
         elif event.button() == QtCore.Qt.LeftButton:
+            if not self.root:
+                return
             x_clicked = pos.x()
             y_clicked = pos.y()
             width = self.native.frameGeometry().width()
