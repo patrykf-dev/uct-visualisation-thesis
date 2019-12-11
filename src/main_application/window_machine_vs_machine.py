@@ -17,20 +17,24 @@ class MachineVsMachineWindow(QMainWindow):
         self.iteration_progress_widget = IterationProgressWidget()
         main_layout.addWidget(self.manager.canvas, 0, 0, 2, 1)
         main_layout.addWidget(self.iteration_progress_widget, 0, 1)
-        main_layout.addWidget(self.tree_widget, 1, 1)
         self.tree_widget = MonteCarloTreeCanvasWidget(sequences=False)
-        main_layout.addWidget(self.tree_widget, 0, 1)
+        main_layout.addWidget(self.tree_widget, 1, 1)
         self.next_move_button = get_button("Make next move")
         self.next_move_button.clicked.connect(self.handle_next_move_button)
-        main_layout.addWidget(self.next_move_button, 1, 0)
+        main_layout.addWidget(self.next_move_button, 2, 0)
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
-        self.manager.on_update_tree += self._handle_iteration_performed
+
+        self.manager.on_update_tree += self._handle_update_tree
+        self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
+
+    def _handle_update_tree(self, sender, node):
+        self.tree_widget.layout.canvas.use_root_data(node)
 
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_progress_widget.layout.progress_bar.setValue(earg * 100)
         if self.display_settings.animate:
-            reset_walkers_data(self.manager.mc_manager.tree.root)
+            self.manager.mc_manager.tree.root.reset_walkers_data()
             self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
         if earg == 1:
             self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
