@@ -39,7 +39,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
         current_tree_index = self.canvas.tree_index
         number_of_trees = len(self.canvas.trees_info)
         text = f"Tree {current_tree_index + 1} of {number_of_trees}"
-        self.layout.tree_info_label.setText(text)
+        self.layout.tree_info_number_label.setText(text)
 
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
@@ -64,5 +64,6 @@ class MonteCarloTreeCanvasWidget(QWidget):
         self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
         self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
         if sequences:
+            self._update_tree_info_label()
             self.layout.left_button.clicked.connect(self._handle_left_arrow_button_clicked_event)
             self.layout.right_button.clicked.connect(self._handle_right_arrow_button_clicked_event)
