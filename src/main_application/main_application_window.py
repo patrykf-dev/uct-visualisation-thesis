@@ -2,6 +2,7 @@ import sys
 import re
 
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
 import src.main_application.easy_plot_tree as MatplotlibDrawer
@@ -25,6 +26,7 @@ class MainApplicationWindow(QMainWindow):
 
     def _setup_window(self):
         self.setMinimumWidth(500)
+        self.setWindowTitle('UCT Visualizer')
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
