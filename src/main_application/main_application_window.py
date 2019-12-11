@@ -13,6 +13,7 @@ from src.main_application.mc_tree_window import MonteCarloTreeWindow
 from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
 from src.serialization.serializator_binary import BinarySerializator
 from src.serialization.serializator_csv import CsvSerializator
+from src.main_application.sequence_loading_window import SequenceLoadingWindow
 
 
 class MainApplicationWindow(QMainWindow):
@@ -71,7 +72,7 @@ class MainApplicationWindow(QMainWindow):
         When multiple files were chosen, the user will see "Multiple files chosen" in the edit line.
         """
         paths, _ = QFileDialog.getOpenFileNames(self, "Open a tree file", TREES_PATH,
-                                                "Csv files (*.csv) | Tree files (*.tree)")
+                                                "Tree files (*.csv *.tree)")
         if len(paths) == 1:
             self.layout.tree_path_edit.setText(paths[0])
         elif len(paths) > 1:
@@ -83,36 +84,14 @@ class MainApplicationWindow(QMainWindow):
         """
         Displays the window with a UCT tree visualization.
         """
-        trees_info = self._get_trees_from_given_path()
+        self.loading_window = SequenceLoadingWindow(self, self.layout.chosen_trees_paths)
+        self.loading_window.finished_event += self._handle_sequence_loaded
+        self.loading_window.show()
+
+    def _handle_sequence_loaded(self, sender, trees_info):
         window = MonteCarloTreeWindow(self, trees_info=trees_info)
+        self.loading_window.close()
         window.show()
-
-    def _retrieve_filename_from_path(self, path):
-        split_strings = re.split('/', path)
-        final_split_strings = []
-        for split_string in split_strings:
-            final_split_strings.extend(re.split(r'\\', split_string))
-        return final_split_strings[-1]
-
-    def _get_trees_from_given_path(self):
-        """
-        Runs serializer to parse the trees from the given files.
-        Returns list of MonteCarloNodeSequenceInfo objects - contains: root node, filename
-        """
-        trees_info = []
-        if self.layout.chosen_trees_paths[0].endswith(".csv"):
-            serializator = CsvSerializator()
-        else:
-            serializator = BinarySerializator()
-        counter = 0
-        for tree_path in self.layout.chosen_trees_paths:
-            print(counter)
-            counter += 1
-            tree = serializator.get_node_from_path(tree_path)
-            filename = self._retrieve_filename_from_path(tree_path)
-            trees_info.append(MonteCarloNodeSequenceInfo(tree, filename))
-        return trees_info
-
 
 def launch_application():
     """

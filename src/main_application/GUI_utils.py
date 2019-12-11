@@ -8,12 +8,7 @@ DEFAULT_FONT_BOLD = QtGui.QFont("Helvetica", 10, QtGui.QFont.Bold)
 LARGE_FONT_BOLD = QtGui.QFont("Helvetica", 20, QtGui.QFont.Bold)
 DEFAULT_FONT_ITALIC = QtGui.QFont("Helvetica", 10, -1, True)
 
-PYQT_KEY_CODE_LEFT = 16777234
-PYQT_KEY_CODE_UP = 16777235
-PYQT_KEY_CODE_RIGHT = 16777236
-PYQT_KEY_CODE_DOWN = 16777237
-
-TREES_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "trees")
+TREES_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "trees")
 
 
 def center_window_on_screen(window):

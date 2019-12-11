@@ -1,4 +1,4 @@
-import bitstring
+import struct
 
 
 def write_string(bin_list, string_content):
@@ -15,45 +15,33 @@ def write_float(bin_list, value):
 
 
 def read_string(file):
-    string_size = _decode_integer(file)
-    content = _decode_string(file, string_size)
-    return content
+    string_size = int.from_bytes(file.read(_INT_SIZE), byteorder=_BYTE_ORDER)
+    return file.read(string_size).decode(_STRING_FORMAT)
 
 
 def read_integer(file):
-    return _decode_integer(file)
+    return int.from_bytes(file.read(_INT_SIZE), byteorder=_BYTE_ORDER)
 
 
 def read_float(file):
-    return _decode_float(file)
+    content_bytes = file.read(_FLOAT_SIZE)
+    return struct.unpack(_FLOAT_PACK_FORMAT, content_bytes)
 
 
 _INT_SIZE = 4
 _FLOAT_SIZE = 8
+_BYTE_ORDER = "little"
+_STRING_FORMAT = "utf-8"
+_FLOAT_PACK_FORMAT = "<d"
 
 
 def _encode_integer(value):
-    return value.to_bytes(_INT_SIZE, byteorder="little")
+    return value.to_bytes(_INT_SIZE, byteorder=_BYTE_ORDER)
 
 
 def _encode_string(content):
-    return content.encode("utf-8")
+    return content.encode(_STRING_FORMAT)
 
 
 def _encode_float(value):
-    value_bytes = bitstring.BitArray(floatle=value, length=64).tobytes()
-    return value_bytes
-
-
-def _decode_integer(file):
-    return int.from_bytes(file.read(_INT_SIZE), byteorder="little")
-
-
-def _decode_string(file, length):
-    return file.read(length).decode("utf-8")
-
-
-def _decode_float(file):
-    content_bytes = file.read(_FLOAT_SIZE)
-    # TODO: ensure we decode it 64-based
-    return bitstring.BitArray(content_bytes).floatle
+    return bytes(struct.pack(_FLOAT_PACK_FORMAT, value))

@@ -4,34 +4,33 @@ from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QApplication
 
 from src import vispy
-from src.vispy import app as VispyApp
-from src.vispy.gloo import set_viewport, clear,set_state
-
-from src.main_application.GUI_utils import PYQT_KEY_CODE_DOWN, PYQT_KEY_CODE_UP, PYQT_KEY_CODE_LEFT, PYQT_KEY_CODE_RIGHT
+from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
 from src.uct.algorithm.mc_node import MonteCarloNode
+from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.utils.custom_event import CustomEvent
+from src.vispy import app as VispyApp
+from src.vispy.gloo import set_viewport, clear, set_state
 from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
 from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
-from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
 
 
 class MonteCarloTreeCanvas(VispyApp.Canvas):
-    def __init__(self, root: MonteCarloNode = None, trees_info: MonteCarloNodeSequenceInfo = None, **kwargs):
+    def __init__(self, tree: MonteCarloTree = None, trees_info: MonteCarloNodeSequenceInfo = None, **kwargs):
         VispyApp.Canvas.__init__(self, **kwargs)
         self.previous_mouse_pos = None
-        self.root = root
+        self.tree = tree
         self.trees_info = trees_info
         self.tree_index = 0
         self._setup_widget()
-        if root:
-            self.use_root_data(root)
+        if self.tree:
+            self.use_tree_data(self.tree)
 
-    def use_root_data(self, root):
-        self.root = root
-        alg = ImprovedWalkersAlgorithmNew()
-        alg.buchheim_algorithm(self.root)
+    def use_tree_data(self, tree: MonteCarloTree):
+        self.tree = tree
+        alg = ImprovedWalkersAlgorithmNew(self.tree)
+        alg.buchheim_algorithm()
         self._bind_buffers()
         self._bind_shaders()
         self._setup_matrices()
@@ -40,14 +39,14 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def make_next_tree_as_root(self):
         if self.tree_index + 1 < len(self.trees_info):
             self.tree_index += 1
-            self.root = self.trees_info[self.tree_index].root
+            self.tree = self.trees_info[self.tree_index].tree
             return True
         return False
 
     def make_previous_tree_as_root(self):
         if self.tree_index >= 1:
             self.tree_index -= 1
-            self.root = self.trees_info[self.tree_index].root
+            self.tree = self.trees_info[self.tree_index].tree
             return True
         return False
 
@@ -56,30 +55,12 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def on_draw(self, event):
         clear(color=True, depth=True)
-        if self.root:
+        if self.tree:
             self.program_edges.draw("lines")
             self.program_vertices.draw("points")
 
-    def handle_key_press_event(self, event):
-        if not self.root:
-            return
-        x_diff = 0
-        y_diff = 0
-        if event.key() == PYQT_KEY_CODE_RIGHT:
-            x_diff = 50
-        elif event.key() == PYQT_KEY_CODE_LEFT:
-            x_diff = -50
-        elif event.key() == PYQT_KEY_CODE_UP:
-            y_diff = -50
-        elif event.key() == PYQT_KEY_CODE_DOWN:
-            y_diff = 50
-
-        size = self.native.frameGeometry()
-        self.view_matrix_manager.translate_view(x_diff / size.width(), y_diff / size.height())
-        self._update_view_matrix()
-
     def handle_wheel_event(self, event):
-        if not self.root:
+        if not self.tree:
             return
         wheel_direction = event.angleDelta().y()
 
@@ -112,13 +93,13 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def _bind_buffers(self):
         ps = self.pixel_scale
-        retriever = MonteCarloTreeDrawDataRetriever()
-        self.tree_draw_data = retriever.retrieve_draw_data(self.root, ps)
+        retriever = MonteCarloTreeDrawDataRetriever(self.tree)
+        self.tree_draw_data = retriever.retrieve_draw_data(ps)
         self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
         self.edges_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.edges)
 
     def handle_mouse_click_event(self, event):
-        if not self.root:
+        if not self.tree:
             return
         pos = event.pos()
         if event.button() == QtCore.Qt.RightButton:
@@ -131,11 +112,11 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             height = self.native.frameGeometry().height()
             world_x, world_y = self.view_matrix_manager.parse_click(x_clicked, y_clicked, width, height)
 
-            clicked_node = self.tree_draw_data.get_node_at(world_x, world_y)
+            clicked_node = self.tree_draw_data.get_node_at(world_x, world_y, self.view_matrix_manager.scale)
             self.on_node_clicked.fire(self, earg=clicked_node)
 
     def handle_mouse_move_event(self, event):
-        if not self.root:
+        if not self.tree:
             return
         if event.buttons() == QtCore.Qt.RightButton:
             diff = self.previous_mouse_pos - event.pos()
@@ -151,7 +132,6 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_edges["u_view"] = self.view_matrix_manager.view_matrix_2
         self.program_vertices["u_projection"] = self.view_matrix_manager.projection_matrix_1
         self.program_edges["u_projection"] = self.view_matrix_manager.projection_matrix_2
-        # self.program_vertices["u_radius_multiplier"] = self.view_matrix_manager.scale / 3
         self.update()
 
     def handle_mouse_release_event(self, event):
@@ -160,7 +140,6 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def _setup_widget(self):
         self.native.setMinimumWidth(600)
         self.native.setMinimumHeight(600)
-        self.native.keyPressEvent = self.handle_key_press_event
         self.native.wheelEvent = self.handle_wheel_event
         self.native.mousePressEvent = self.handle_mouse_click_event
         self.native.mouseMoveEvent = self.handle_mouse_move_event

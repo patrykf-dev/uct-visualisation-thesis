@@ -15,7 +15,7 @@ class MancalaBoardDrawer:
         self.canvas_height = canvas_height
         self.top_padding = 180
         self.hole_padding = 10
-        self.images_folder = os.path.join(os.path.realpath(__file__), "..", "images")
+        self.images_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images")
         self.hole_radius = 25
         self.stone_radius = 4
         self.selected_hole_index = -1

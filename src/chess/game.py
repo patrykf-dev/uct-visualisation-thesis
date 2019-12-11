@@ -31,7 +31,7 @@ class ChessGame:
         self.TILE_WIDTH = int(WIDTH / TILE_NUMBER)
         self.TILE_HEIGHT = int(HEIGHT / TILE_NUMBER)
         self.TILES_FONT = pygame.font.SysFont("Helvetica", 30)
-        self.ICONS_FOLDER = os.path.join(os.path.realpath(__file__), "..", "icons")
+        self.ICONS_FOLDER = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         #pygame.display.set_caption("Chess")
         self.screen = pygame.display.get_surface()

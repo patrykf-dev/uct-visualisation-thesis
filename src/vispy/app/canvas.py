@@ -15,7 +15,7 @@ from ..util import config as util_config
 from ..ext.six import string_types
 from . import Application, use_app
 from ..gloo.context import (GLContext, set_current_canvas, forget_canvas)
-from ..gloo import FrameBuffer, RenderBuffer
+from ..gloo import FrameBuffer, RenderBuffer, set_viewport
 
 
 # todo: add functions for asking about current mouse/keyboard state
@@ -529,12 +529,13 @@ class Canvas(object):
         
         """
         self.set_current()
-        size = self.physical_size
+        size = (3200, 2400)
         fbo = FrameBuffer(color=RenderBuffer(size[::-1]),
                           depth=RenderBuffer(size[::-1]))
 
         try:
             fbo.activate()
+            set_viewport(0, 0, size[0], size[1])
             self.events.draw()
             return fbo.read()
         finally:

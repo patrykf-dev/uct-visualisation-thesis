@@ -1,11 +1,14 @@
 from src.uct.algorithm.mc_node import MonteCarloNode
+from src.uct.algorithm.mc_tree import MonteCarloTree
 
 
 class ImprovedWalkersAlgorithmNew:
-    def buchheim_algorithm(self, root: MonteCarloNode):
-        self.first_walk(root)
-        self.second_walk(root)
-        return root
+    def __init__(self, tree: MonteCarloTree):
+        self.tree = tree
+
+    def buchheim_algorithm(self):
+        self.first_walk(self.tree.root)
+        self.second_walk(self.tree.root)
 
     def first_walk(self, node: MonteCarloNode, distance=1):
         if len(node.children) == 0:
@@ -33,7 +36,7 @@ class ImprovedWalkersAlgorithmNew:
     def second_walk(self, node: MonteCarloNode, m=0, depth=0):
         node.vis_details.x += m
         node.vis_details.y = depth
-
+        self.tree.data.update_tree_data(node)
         for w in node.children:
             self.second_walk(w, m + node.vis_details.mod, depth + 1)
 
