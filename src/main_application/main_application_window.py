@@ -1,26 +1,25 @@
 import os
-import sys
 import re
+import sys
 
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
-import src.main_application.easy_plot_tree as MatplotlibDrawer
 from src.main_application.GUI_utils import TREES_PATH, center_window_on_screen, show_eror_dialog
 from src.main_application.game_window_creator import create_proper_window
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.main_application.mc_tree_window import MonteCarloTreeWindow
-from src.serialization.serializator_csv import CsvSerializator
-from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
-from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
 from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
+from src.serialization.serializator_binary import BinarySerializator
+from src.serialization.serializator_csv import CsvSerializator
 
 
 class MainApplicationWindow(QMainWindow):
     """
     CLass is responsible for displaying the main window of the application.
     """
+
     def __init__(self):
         super().__init__()
         self._setup_window()
@@ -65,7 +64,8 @@ class MainApplicationWindow(QMainWindow):
         When one file is chosen, its name will appear in the edit line.
         When multiple files were chosen, the user will see "Multiple files chosen" in the edit line.
         """
-        paths, _ = QFileDialog.getOpenFileNames(self, "Open csv tree file", TREES_PATH, "Csv files (*.csv)")
+        paths, _ = QFileDialog.getOpenFileNames(self, "Open a tree file", TREES_PATH,
+                                                "Csv files (*.csv) | Tree files (*.tree)")
         if len(paths) == 1:
             self.layout.tree_path_edit.setText(paths[0])
         elif len(paths) > 1:
@@ -94,8 +94,14 @@ class MainApplicationWindow(QMainWindow):
         Returns list of MonteCarloNodeSequenceInfo objects - contains: root node, filename
         """
         trees_info = []
-        serializator = CsvSerializator()
+        if self.layout.chosen_trees_paths[0].endswith(".csv"):
+            serializator = CsvSerializator()
+        else:
+            serializator = BinarySerializator()
+        counter = 0
         for tree_path in self.layout.chosen_trees_paths:
+            print(counter)
+            counter += 1
             tree = serializator.get_node_from_path(tree_path)
             filename = self._retrieve_filename_from_path(tree_path)
             trees_info.append(MonteCarloNodeSequenceInfo(tree, filename))
@@ -118,6 +124,7 @@ def redefine_exceptions():
     """
     Catches critical exceptions and displays them in message box.
     """
+
     def catch_exceptions(t, val, tb):
         QtWidgets.QMessageBox.critical(None,
                                        "An exception was raised",

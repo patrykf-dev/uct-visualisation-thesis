@@ -24,12 +24,7 @@ class MachineVsMachineWindow(QMainWindow):
         main_layout.addWidget(self.next_move_button, 2, 0)
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
-
-        self.manager.on_update_tree += self._handle_update_tree
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
-
-    def _handle_update_tree(self, sender, node):
-        self.tree_widget.layout.canvas.use_root_data(node)
 
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_progress_widget.layout.progress_bar.setValue(earg * 100)
