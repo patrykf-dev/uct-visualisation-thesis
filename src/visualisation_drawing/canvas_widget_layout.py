@@ -50,9 +50,13 @@ class MonteCarloTreeWidgetLayout:
         self.left_right_widget = QWidget()
         left_right_layout = QGridLayout()
         self.left_right_widget.setLayout(left_right_layout)
-        left_right_layout.addWidget(self.tree_info_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
-        left_right_layout.addWidget(self.left_button, 1, 0)
-        left_right_layout.addWidget(self.right_button, 1, 1)
+        if len(self.canvas.trees_info) > 1:
+            left_right_layout.addWidget(self.tree_info_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+            left_right_layout.addWidget(self.left_button, 1, 0)
+            left_right_layout.addWidget(self.right_button, 1, 1)
+        else:
+            left_right_layout.addWidget(self.left_button, 0, 0)
+            left_right_layout.addWidget(self.right_button, 0, 1)
 
     def _create_layout(self, main_widget, sequences):
         main_layout = QGridLayout()
@@ -65,6 +69,11 @@ class MonteCarloTreeWidgetLayout:
 
         if sequences:
             self._create_left_right_button_widget()
+            if len(self.canvas.trees_info) >= 1:
+                self.canvas.use_root_data(self.canvas.trees_info[0].root)
+                if len(self.canvas.trees_info) == 1:
+                    self.right_button.setEnabled(False)
+            self.left_button.setEnabled(False)
 
         main_layout.addWidget(self.canvas.native, 0, 0)
         main_layout.addWidget(self.right_panel_widget, 0, 1)

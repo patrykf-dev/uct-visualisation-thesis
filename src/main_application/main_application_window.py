@@ -1,4 +1,5 @@
 import sys
+import re
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
@@ -11,6 +12,7 @@ from src.main_application.mc_tree_window import MonteCarloTreeWindow
 from src.serialization.serializator_csv import CsvSerializator
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
+from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
 
 
 class MainApplicationWindow(QMainWindow):
@@ -70,26 +72,29 @@ class MainApplicationWindow(QMainWindow):
         """
         Displays the window with a UCT tree visualization.
         """
-        trees = self._get_trees_from_given_path()
-        window = MonteCarloTreeWindow(self)
-        if len(trees) >= 1:
-            window.canvas_widget.layout.canvas.use_root_data(trees[0])
-            if len(trees) == 1:
-                window.canvas_widget.layout.right_button.setEnabled(False)
-        window.canvas_widget.layout.left_button.setEnabled(False)
-        window.canvas_widget.layout.canvas.set_trees(trees)
+        trees_info = self._get_trees_from_given_path()
+        window = MonteCarloTreeWindow(self, trees_info=trees_info)
         window.show()
+
+    def _retrieve_filename_from_path(self, path):
+        split_strings = re.split('/', path)
+        final_split_strings = []
+        for split_string in split_strings:
+            final_split_strings.extend(re.split(r'\\', split_string))
+        return final_split_strings[-1]
 
     def _get_trees_from_given_path(self):
         """
         Runs serializer to parse the trees from the given files.
+        Returns list of MonteCarloNodeSequenceInfo objects - contains: root node, filename
         """
-        deserialized_trees = []
+        trees_info = []
         serializator = CsvSerializator()
         for tree_path in self.layout.chosen_trees_paths:
             tree = serializator.get_node_from_path(tree_path)
-            deserialized_trees.append(tree)
-        return deserialized_trees
+            filename = self._retrieve_filename_from_path(tree_path)
+            trees_info.append(MonteCarloNodeSequenceInfo(tree, filename))
+        return trees_info
 
 
 def launch_application():

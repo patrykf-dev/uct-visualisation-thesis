@@ -5,15 +5,15 @@ from src.visualisation_drawing.canvas_widget import MonteCarloTreeCanvasWidget
 
 
 class MonteCarloTreeWindow(QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, trees_info=None):
         super(MonteCarloTreeWindow, self).__init__(parent)
-        self._setup_window()
+        self._setup_window(trees_info)
 
-    def _setup_window(self):
+    def _setup_window(self, trees_info=None):
         main_widget = QWidget()
         main_layout = QGridLayout()
         main_widget.setLayout(main_layout)
-        self.canvas_widget = MonteCarloTreeCanvasWidget(sequences=True)
+        self.canvas_widget = MonteCarloTreeCanvasWidget(sequences=True, trees_info=trees_info)
         main_layout.addWidget(self.canvas_widget, 0, 0)
         self.setCentralWidget(main_widget)
 

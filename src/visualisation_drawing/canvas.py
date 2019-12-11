@@ -14,14 +14,15 @@ from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalker
 from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
+from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
 
 
 class MonteCarloTreeCanvas(VispyApp.Canvas):
-    def __init__(self, root: MonteCarloNode = None, **kwargs):
+    def __init__(self, root: MonteCarloNode = None, trees_info: MonteCarloNodeSequenceInfo = None, **kwargs):
         VispyApp.Canvas.__init__(self, **kwargs)
         self.previous_mouse_pos = None
         self.root = root
-        self.trees = []
+        self.trees_info = trees_info
         self.tree_index = 0
         self._setup_widget()
         if root:
@@ -36,20 +37,17 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self._setup_matrices()
         self.update()
 
-    def set_trees(self, trees):
-        self.trees = trees
-
     def make_next_tree_as_root(self):
-        if self.tree_index + 1 < len(self.trees):
+        if self.tree_index + 1 < len(self.trees_info):
             self.tree_index += 1
-            self.root = self.trees[self.tree_index]
+            self.root = self.trees_info[self.tree_index].root
             return True
         return False
 
     def make_previous_tree_as_root(self):
         if self.tree_index >= 1:
             self.tree_index -= 1
-            self.root = self.trees[self.tree_index]
+            self.root = self.trees_info[self.tree_index].root
             return True
         return False
 
