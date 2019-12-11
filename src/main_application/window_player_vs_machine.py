@@ -33,11 +33,12 @@ class PlayerVsMachineWindow(QMainWindow):
     def _set_icon_and_title(self):
         if self.manager.game == Game.Chess:
             icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "chess-icon.png")
-            print(icon_path)
             self.setWindowIcon(QIcon(icon_path))
             self.setWindowTitle("Chess")
         elif self.manager.game == Game.Mancala:
-            pass
+            icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "mancala-icon.png")
+            self.setWindowIcon(QIcon(icon_path))
+            self.setWindowTitle("Mancala")
 
     def _handle_update_tree(self, sender, node):
         self.tree_widget.layout.canvas.use_root_data(node)
