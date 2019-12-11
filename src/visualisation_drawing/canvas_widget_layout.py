@@ -12,8 +12,9 @@ class MonteCarloTreeWidgetLayout:
 
     def __init__(self, main_widget, canvas: MonteCarloTreeCanvas, sequences):
         self.canvas = canvas
-        self.reset_button = QPushButton()
-        self.serialize_button = QPushButton()
+        self.reset_button = get_button("Reset view")
+        self.serialize_csv_button = get_button("Save to csv file")
+        self.serialize_binary_button = get_button("Save to binary file")
         self.right_panel_widget = None
         self.labels = [
             ["Id", None],
@@ -67,9 +68,6 @@ class MonteCarloTreeWidgetLayout:
 
         self._fill_right_panel_contents()
 
-        self.reset_button = get_button("Reset view")
-        self.serialize_button = get_button("Save tree to csv file")
-
         if sequences:
             self._create_left_right_button_widget()
             if len(self.canvas.trees_info) >= 1:
@@ -81,9 +79,10 @@ class MonteCarloTreeWidgetLayout:
         main_layout.addWidget(self.canvas.native, 0, 0)
         main_layout.addWidget(self.right_panel_widget, 0, 1)
         main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.serialize_button, 2, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.serialize_csv_button, 2, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.serialize_binary_button, 3, 0, alignment=QtCore.Qt.AlignCenter)
         if sequences:
-            main_layout.addWidget(self.left_right_widget, 3, 0, alignment=QtCore.Qt.AlignCenter)
+            main_layout.addWidget(self.left_right_widget, 4, 0, alignment=QtCore.Qt.AlignCenter)
 
     def _fill_right_panel_contents(self):
         self.right_panel_widget = QWidget()

@@ -27,8 +27,8 @@ class BinarySerializator(BaseSerializator):
         BinaryCodec.write_integer(bin_list, len(node.children))
         for child in node.children:
             s = child.details
-            if len(s.move) > 0:
-                BinaryCodec.write_string(bin_list, s.move)
+            if len(s.move_name) > 0:
+                BinaryCodec.write_string(bin_list, s.move_name)
                 BinaryCodec.write_integer(bin_list, s.visits_count)
                 BinaryCodec.write_integer(bin_list, s.visits_count_pre_modified)
                 BinaryCodec.write_float(bin_list, s.average_prize)

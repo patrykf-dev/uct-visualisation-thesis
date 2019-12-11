@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QFileDialog
 
 from src.main_application.GUI_utils import TREES_PATH
+from src.serialization.serializator_binary import BinarySerializator
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
@@ -18,11 +19,15 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def _handle_reset_button_clicked_event(self):
         self.layout.canvas.reset_view()
 
-    def _handle_serialize_button_clicked_event(self):
+    def _handle_serialize_csv_button_clicked_event(self):
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Csv files (*.csv)")
         serializator = CsvSerializator()
         serializator.save_node_to_path(self.layout.canvas.root, path)
-        print(f"Saved file: {path}")
+
+    def _handle_serialize_binary_button_clicked_event(self):
+        path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Binary tree files (*.tree)")
+        serializator = BinarySerializator()
+        serializator.save_node_to_path(self.layout.canvas.root, path)
 
     def _make_arrow_buttons_enabled_or_disabled(self):
         current_tree_index = self.canvas.tree_index
@@ -62,7 +67,8 @@ class MonteCarloTreeCanvasWidget(QWidget):
         self.canvas = MonteCarloTreeCanvas(trees_info=trees_info)
         self.layout = MonteCarloTreeWidgetLayout(self, self.canvas, sequences)
         self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
-        self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
+        self.layout.serialize_csv_button.clicked.connect(self._handle_serialize_csv_button_clicked_event)
+        self.layout.serialize_binary_button.clicked.connect(self._handle_serialize_binary_button_clicked_event)
         self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
         if sequences:
             self._update_tree_info_labels()
