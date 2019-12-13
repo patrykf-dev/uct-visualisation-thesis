@@ -29,6 +29,7 @@ class GameVisualizationWindow(QMainWindow):
         self.game_widget = QWidget()
         self.game_widget.setLayout(game_layout)
         self.start_over_button = get_button("Start over")
+        self.start_over_button.clicked.connect(self.handle_start_over_button)
         self.game_status_label = get_non_resizable_label("Game status: ")
         game_layout.addWidget(self.manager.canvas, 0, 0)
         game_layout.addWidget(self.game_status_label, 1, 0)
@@ -42,6 +43,9 @@ class GameVisualizationWindow(QMainWindow):
         if earg == 1:
             self.manager.mc_manager.tree.root.reset_walkers_data()
             self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
+
+    def handle_start_over_button(self):
+        print("Starting over")
 
     def showEvent(self, event):
         super().showEvent(event)
