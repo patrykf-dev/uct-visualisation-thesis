@@ -29,6 +29,7 @@ class PlayerVsMachineWindow(QMainWindow):
             self.manager.mc_manager.tree.root.reset_walkers_data()
             self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
         if earg == 1:
+            self.manager.mc_manager.tree.root.reset_walkers_data()
             self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
 
     def showEvent(self, event):
