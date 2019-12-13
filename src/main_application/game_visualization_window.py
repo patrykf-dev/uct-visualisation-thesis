@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
-from src.main_application.GUI_utils import center_window_on_screen
+from src.main_application.GUI_utils import center_window_on_screen, get_button, get_non_resizable_label
 from src.main_application.gui_settings import DisplaySettings
 from src.main_application.iteration_progress_widget import IterationProgressWidget
 from src.main_application.mc_window_manager import MonteCarloWindowManager
@@ -16,12 +16,23 @@ class GameVisualizationWindow(QMainWindow):
         main_widget = QWidget()
         self.tree_widget = MonteCarloTreeCanvasWidget(sequences=False)
         self.iteration_progress_widget = IterationProgressWidget()
-        main_layout.addWidget(self.manager.canvas, 0, 0, 2, 1)
+        self._create_game_layout()
+        main_layout.addWidget(self.game_widget, 0, 0, 2, 1)
         main_layout.addWidget(self.iteration_progress_widget, 0, 1)
         main_layout.addWidget(self.tree_widget, 1, 1)
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
+
+    def _create_game_layout(self):
+        game_layout = QGridLayout()
+        self.game_widget = QWidget()
+        self.game_widget.setLayout(game_layout)
+        self.start_over_button = get_button("Start over")
+        self.game_status_label = get_non_resizable_label("Game status: ")
+        game_layout.addWidget(self.manager.canvas, 0, 0)
+        game_layout.addWidget(self.game_status_label, 1, 0)
+        game_layout.addWidget(self.start_over_button, 2, 0)
 
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_progress_widget.layout.progress_bar.setValue(earg * 100)
