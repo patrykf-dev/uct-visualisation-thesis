@@ -18,6 +18,7 @@ class MonteCarloWindowManager:
         self.game = game
 
         self.canvas.player_move_performed += self._handle_player_move_performed
+        self.on_update_tree += self._handle_machine_move_performed
 
     def perform_algorithm_move(self):
         alg_move = self.mc_manager.calculate_next_move()
@@ -37,3 +38,9 @@ class MonteCarloWindowManager:
         if self.game_mode == GameMode.PLAYER_VS_PC and move_info["phase"] == GamePhase.IN_PROGRESS:
             self.mc_manager.notify_move_performed(move_info["move"])
             self.perform_algorithm_move()
+        elif move_info["phase"] != GamePhase.IN_PROGRESS:
+            self.canvas.set_player_can_click(False)
+
+    def _handle_machine_move_performed(self, sender, move_info):
+        if move_info["phase"] != GamePhase.IN_PROGRESS:
+            self.canvas.set_player_can_click(False)
