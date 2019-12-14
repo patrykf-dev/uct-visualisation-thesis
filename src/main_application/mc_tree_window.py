@@ -12,6 +12,7 @@ class MonteCarloTreeWindow(QMainWindow):
     def _setup_window(self, trees_info=None):
         main_widget = QWidget()
         main_layout = QGridLayout()
+        self.setWindowTitle('UCT Tree Preview')
         main_widget.setLayout(main_layout)
         self.canvas_widget = MonteCarloTreeCanvasWidget(sequences=True, trees_info=trees_info)
         main_layout.addWidget(self.canvas_widget, 0, 0)
