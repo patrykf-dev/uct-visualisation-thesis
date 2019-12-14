@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioB
 
 DEFAULT_FONT = QtGui.QFont("Helvetica", 10)
 DEFAULT_FONT_BOLD = QtGui.QFont("Helvetica", 10, QtGui.QFont.Bold)
+LARGE_FONT_BOLD = QtGui.QFont("Helvetica", 20, QtGui.QFont.Bold)
 DEFAULT_FONT_ITALIC = QtGui.QFont("Helvetica", 10, -1, True)
 
 PYQT_KEY_CODE_LEFT = 16777234
