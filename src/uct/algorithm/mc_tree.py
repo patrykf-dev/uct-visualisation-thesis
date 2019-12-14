@@ -66,3 +66,10 @@ class TreeData:
         self.min_y = min(y, self.min_y)
         if node.parent is not None:
             self.max_visits_count = max(node.details.visits_count, self.max_visits_count)
+
+    def reset_to_defaults(self):
+        self.min_x = 0
+        self.max_x = 0
+        self.min_y = 0
+        self.max_y = 0
+        self.max_visits_count = 0

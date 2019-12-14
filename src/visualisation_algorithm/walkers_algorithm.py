@@ -7,6 +7,7 @@ class ImprovedWalkersAlgorithm:
         self.tree = tree
 
     def buchheim_algorithm(self):
+        self.tree.data.reset_to_defaults()
         self.first_walk(self.tree.root)
         self.second_walk(self.tree.root)
 
