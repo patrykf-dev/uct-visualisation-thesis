@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QFileDialog
 
-from src.main_application.GUI_utils import TREES_PATH
+from src.main_application.GUI_utils import TREES_PATH, show_eror_dialog
 from src.serialization.serializator_binary import BinarySerializator
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
@@ -20,12 +20,18 @@ class MonteCarloTreeCanvasWidget(QWidget):
         self.layout.canvas.reset_view()
 
     def _handle_serialize_csv_button_clicked_event(self):
+        if not self.layout.canvas.root:
+            show_eror_dialog("Cannot save an empty tree!")
+            return
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Csv files (*.csv)")
         if path:
             serializator = CsvSerializator()
             serializator.save_node_to_path(self.layout.canvas.root, path)
 
     def _handle_serialize_binary_button_clicked_event(self):
+        if not self.layout.canvas.root:
+            show_eror_dialog("Cannot save an empty tree!")
+            return
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Binary tree files (*.tree)")
         if path:
             serializator = BinarySerializator()
