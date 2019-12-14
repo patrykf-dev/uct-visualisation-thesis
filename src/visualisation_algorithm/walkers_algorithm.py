@@ -1,13 +1,14 @@
 from src.uct.algorithm.mc_node import MonteCarloNode
+from src.uct.algorithm.mc_tree import MonteCarloTree
 
 
 class ImprovedWalkersAlgorithm:
-    def buchheim_algorithm(self, root: MonteCarloNode):
-        root = self.first_walk(root)
-        min = self.second_walk(root)
-        if min < 0:
-            self.third_walk(root, -min)
-        return root
+    def __init__(self, tree: MonteCarloTree):
+        self.tree = tree
+
+    def buchheim_algorithm(self):
+        self.first_walk(self.tree.root)
+        self.second_walk(self.tree.root)
 
     def first_walk(self, node: MonteCarloNode, distance=1):
         if len(node.children) == 0:
@@ -32,22 +33,12 @@ class ImprovedWalkersAlgorithm:
                 node.vis_details.x = midpoint
         return node
 
-    def second_walk(self, node: MonteCarloNode, m=0, depth=0, min=None):
+    def second_walk(self, node: MonteCarloNode, m=0, depth=0):
         node.vis_details.x += m
         node.vis_details.y = depth
-
-        if min is None or node.vis_details.x < min:
-            min = node.vis_details.x
-
+        self.tree.data.update_tree_data(node)
         for w in node.children:
-            min = self.second_walk(w, m + node.vis_details.mod, depth + 1, min)
-
-        return min
-
-    def third_walk(self, node: MonteCarloNode, n):
-        node.vis_details.x += n
-        for c in node.children:
-            self.third_walk(c, n)
+            self.second_walk(w, m + node.vis_details.mod, depth + 1)
 
     def apportion(self, node: MonteCarloNode, default_ancestor, distance):
         left_brother = node.lbrother()
@@ -74,23 +65,24 @@ class ImprovedWalkersAlgorithm:
                     sor = sor + shift
                 sil += vil.vis_details.mod
                 sir += vir.vis_details.mod
-                if vol:
-                    sol += vol.vis_details.mod
-                if vor:
-                    sor += vor.vis_details.mod
+                sol += vol.vis_details.mod
+                sor += vor.vis_details.mod
             if vil.right() and not vor.right():
                 vor.vis_details.thread = vil.right()
                 vor.vis_details.mod += sil - sor
-            else:
-                if vir.left() and not vol.left():
-                    vol.vis_details.thread = vir.left()
-                    vol.vis_details.mod += sir - sol
+            elif vir.left() and not vol.left():
+                vol.vis_details.thread = vir.left()
+                vol.vis_details.mod += sir - sol
+            if node.children:
                 default_ancestor = node
         return default_ancestor
 
     @staticmethod
     def move_subtree(w_left: MonteCarloNode, w_right: MonteCarloNode, shift):
         subtrees = w_right.number - w_left.number
+        # TODO zmieniam, sypalo ZeroDivisionError
+        if subtrees == 0:
+            subtrees = 1
         w_right.vis_details.change -= shift / subtrees
         w_right.vis_details.shift += shift
         w_left.vis_details.change += shift / subtrees
@@ -108,12 +100,7 @@ class ImprovedWalkersAlgorithm:
 
     @staticmethod
     def ancestor(node: MonteCarloNode, v: MonteCarloNode, default_ancestor):
-        # TODO: fix it
-        siblings = []
-        for sibling in v.parent.children:
-            siblings.append(sibling.vis_details)
-
-        if node.vis_details.ancestor in siblings:
-            return node.vis_details.ancestor
+        if node.parent in v.parent.children:
+            return node.parent
         else:
             return default_ancestor
