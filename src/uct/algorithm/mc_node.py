@@ -1,4 +1,4 @@
-import src.visualisation_algorithm_new.mc_node_vis_details as Vis
+import src.visualisation_algorithm.mc_node_vis_details as Vis
 from src.uct.algorithm.mc_node_details import MonteCarloNodeDetails
 
 

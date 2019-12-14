@@ -10,7 +10,7 @@ from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.utils.custom_event import CustomEvent
 from src.vispy import app as VispyApp
 from src.vispy.gloo import set_viewport, clear, set_state
-from src.visualisation_algorithm_new.walkers_algorithm_new import ImprovedWalkersAlgorithmNew
+from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader
 from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
@@ -29,7 +29,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def use_tree_data(self, tree: MonteCarloTree):
         self.tree = tree
-        alg = ImprovedWalkersAlgorithmNew(self.tree)
+        alg = ImprovedWalkersAlgorithm(self.tree)
         alg.buchheim_algorithm()
         self._bind_buffers()
         self._bind_shaders()

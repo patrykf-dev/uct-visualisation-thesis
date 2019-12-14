@@ -2,7 +2,7 @@ from src.uct.algorithm.mc_node import MonteCarloNode
 from src.uct.algorithm.mc_tree import MonteCarloTree
 
 
-class ImprovedWalkersAlgorithmNew:
+class ImprovedWalkersAlgorithm:
     def __init__(self, tree: MonteCarloTree):
         self.tree = tree
 
