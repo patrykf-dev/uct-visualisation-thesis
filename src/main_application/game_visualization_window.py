@@ -32,8 +32,8 @@ class GameVisualizationWindow(GameWindow):
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_progress_widget.layout.progress_bar.setValue(earg * 100)
         if self.display_settings.animate:
-            self.manager.mc_manager.tree.root.reset_walkers_data()
-            self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
+            self.manager.mc_manager.tree.reset_vis_data()
+            self.tree_widget.layout.canvas.use_tree_data(self.manager.mc_manager.tree)
         if earg == 1:
-            self.manager.mc_manager.tree.root.reset_walkers_data()
-            self.tree_widget.layout.canvas.use_root_data(self.manager.mc_manager.tree.root)
+            self.manager.mc_manager.tree.reset_vis_data()
+            self.tree_widget.layout.canvas.use_tree_data(self.manager.mc_manager.tree)

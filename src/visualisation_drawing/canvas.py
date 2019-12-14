@@ -150,6 +150,6 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
                   blend_func=("src_alpha", "one_minus_src_alpha"))
 
     def reset_view(self):
-        if self.root:
+        if self.tree:
             self.view_matrix_manager.reset_view()
             self._update_view_matrix()
