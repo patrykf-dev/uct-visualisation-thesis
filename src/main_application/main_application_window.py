@@ -56,6 +56,12 @@ class MainApplicationWindow(QMainWindow):
             return
 
         window = create_proper_window(self, game, game_mode, ms_settings, display_settings)
+        window.on_close_request += self._handle_close_request
+        window.show()
+
+    def _handle_close_request(self, sender, earg):
+        window = create_proper_window(self, earg["game"], earg["game_mode"], earg["settings"], earg["display_settings"])
+        window.on_close_request += self._handle_close_request
         window.show()
 
     def _handle_select_tree_path_button(self):

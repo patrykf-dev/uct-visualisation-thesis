@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QMainWindow
 from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_canvas import ChessCanvas
 from src.main_application.enums import Game, GameMode
+from src.main_application.game_window import GameWindow
 from src.main_application.gui_settings import MonteCarloSettings, DisplaySettings
 from src.main_application.mc_window_manager import MonteCarloWindowManager
 from src.main_application.window_machine_vs_machine import MachineVsMachineWindow
@@ -16,7 +17,7 @@ from src.mancala.mancala_canvas import MancalaCanvas
 
 
 def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode,
-                         mc_settings: MonteCarloSettings, display_settings: DisplaySettings) -> QMainWindow:
+                         mc_settings: MonteCarloSettings, display_settings: DisplaySettings) -> GameWindow:
     """
     Based on user decisions, function creates a proper window with game and visualization, applying chosen settings.
     :param parent: main window object
