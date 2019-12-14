@@ -16,6 +16,8 @@ class ChessCanvas(GameCanvas):
         self.chess_manager.canvas_drawer.draw_board(QPainter(self))
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
+        if not self.player_can_click:
+            return
         super().mousePressEvent(event)
         x = event.x()
         y = event.y()
@@ -37,3 +39,4 @@ class ChessCanvas(GameCanvas):
             move_info = {"move": player_move,
                          "phase": ChessState.cast_chess_phase_to_abstract_phase(self.chess_manager.board.game_status)}
             self.player_move_performed.fire(self, earg=move_info)
+

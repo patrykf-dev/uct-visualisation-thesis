@@ -23,6 +23,8 @@ class MancalaCanvas(GameCanvas):
         self.board_drawer.draw_board(painter, self.board)
 
     def mousePressEvent(self, event):
+        if not self.player_can_click:
+            return
         super().mousePressEvent(event)
         pos = event.pos()
         player_moved, moved_index = self.board_drawer.detect_click(pos.x(), pos.y())

@@ -42,6 +42,7 @@ def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode,
     elif game_mode == GameMode.PLAYER_VS_PLAYER:
         window = PlayerVsPlayerWindow(parent, manager)
     elif game_mode == GameMode.PC_VS_PC:
+        manager.canvas.set_player_can_click(False)
         window = MachineVsMachineWindow(parent, manager, display_settings)
 
     if game == Game.Chess:
