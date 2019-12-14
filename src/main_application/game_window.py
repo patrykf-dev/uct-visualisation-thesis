@@ -16,6 +16,7 @@ class GameWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
 
         self.manager.canvas.player_move_performed += self.change_game_status_label
+        self.manager.on_update_tree += self.change_game_status_label
 
     def _create_game_layout(self):
         game_layout = QGridLayout()
