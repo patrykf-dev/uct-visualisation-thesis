@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QGridLayout, QMessageBox
 
+from src.main_application.GUI_utils import show_dialog
 from src.main_application.enums import Game
 from src.main_application.game_window import GameWindow
 from src.main_application.gui_settings import DisplaySettings
@@ -20,11 +21,13 @@ class GameVisualizationWindow(GameWindow):
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
 
     def _handle_start_over_button(self):
-        game_window_properties = {"game": self.manager.game, "game_mode": self.manager.game_mode,
-                                  "settings": self.manager.mc_manager.settings,
-                                  "display_settings": self.display_settings}
-        self.on_close_request.fire(self, earg=game_window_properties)
-        self.close()
+        answer = show_dialog("Do you want to restart the game?")
+        if answer == QMessageBox.Ok:
+            game_window_properties = {"game": self.manager.game, "game_mode": self.manager.game_mode,
+                                      "settings": self.manager.mc_manager.settings,
+                                      "display_settings": self.display_settings}
+            self.on_close_request.fire(self, earg=game_window_properties)
+            self.close()
 
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_progress_widget.layout.progress_bar.setValue(earg * 100)

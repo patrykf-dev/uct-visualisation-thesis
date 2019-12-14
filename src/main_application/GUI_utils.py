@@ -116,3 +116,16 @@ def show_eror_dialog(message):
     msg.setWindowTitle("Error")
     msg.setStandardButtons(QMessageBox.Ok)
     msg.exec_()
+
+
+def show_dialog(message):
+    """
+    Function pops up a message box with given text.
+    :returns QMessageBox.Ok or QMessageBox.Cancel
+    """
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Question)
+    msg.setText(message)
+    msg.setWindowTitle("Confirm")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    return msg.exec_()
