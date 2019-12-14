@@ -37,7 +37,8 @@ class MancalaCanvas(GameCanvas):
             player_move = MancalaMove(copy.deepcopy(self.moves_sequence), player)
             print(f"PLAYER WENT FOR {player_move}")
             self.moves_sequence.clear()
-            self.player_move_performed.fire(self, earg=player_move)
+            move_info = {"move": player_move, "phase": self.board.phase}
+            self.player_move_performed.fire(self, earg=move_info)
 
     def perform_algorithm_move(self, move: MancalaMove):
         super().perform_algorithm_move(move)

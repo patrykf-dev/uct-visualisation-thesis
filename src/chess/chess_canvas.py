@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPainter
 
 from src.chess.chess_game_manager import ChessGameManager
 from src.main_application.game_canvas import GameCanvas
+from src.chess.algorithm_relay.chess_state import ChessState
 
 
 class ChessCanvas(GameCanvas):
@@ -33,4 +34,6 @@ class ChessCanvas(GameCanvas):
         self.repaint()
 
         if player_moved:
-            self.player_move_performed.fire(self, earg=player_move)
+            move_info = {"move": player_move,
+                         "phase": ChessState.cast_chess_phase_to_abstract_phase(self.chess_manager.board.game_status)}
+            self.player_move_performed.fire(self, earg=move_info)

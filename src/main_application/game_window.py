@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
 from src.main_application.GUI_utils import center_window_on_screen, get_button, get_non_resizable_label
 from src.main_application.mc_window_manager import MonteCarloWindowManager
+from src.utils.custom_event import CustomEvent
 
 
 class GameWindow(QMainWindow):
@@ -13,6 +14,8 @@ class GameWindow(QMainWindow):
         main_layout.addWidget(self.game_widget, 0, 0, 2, 1)
         self.main_widget.setLayout(main_layout)
         self.setCentralWidget(self.main_widget)
+
+        self.manager.canvas.player_move_performed += self.change_game_status_label
 
     def _create_game_layout(self):
         game_layout = QGridLayout()
@@ -27,6 +30,9 @@ class GameWindow(QMainWindow):
 
     def handle_start_over_button(self):
         print("Starting over")
+
+    def change_game_status_label(self, sender, move_info):
+        self.game_status_label.setText(f"Game status: {str(move_info['phase']).split('.')[1]}")
 
     def showEvent(self, event):
         super().showEvent(event)
