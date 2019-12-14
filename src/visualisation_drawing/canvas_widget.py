@@ -27,7 +27,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
             return
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Csv files (*.csv)")
         serializator = CsvSerializator()
-        serializator.save_node_to_path(self.layout.canvas.root, path)
+        serializator.save_node_to_path(self.layout.canvas.tree.root, path)
 
     def _handle_serialize_binary_button_clicked_event(self):
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Binary tree files (*.tree)")
