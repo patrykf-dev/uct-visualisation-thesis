@@ -115,12 +115,12 @@ class MancalaBoardDrawer:
                 if self.selected_hole_index == i:
                     self.selected_hole_index = -1
                     self.stones_centers = []
-                    return True, self.draw_index_to_board_index(i)
+                    return True, self.draw_index_to_board_index(i), i
                 else:
                     self.selected_hole_index = i
-                    return False, -1
+                    return False, -1, i
         self.selected_hole_index = -1
-        return False, -1
+        return False, -1, -1
 
     def draw_index_to_board_index(self, i):
         if i < 6:
@@ -151,3 +151,4 @@ class MancalaBoardDrawer:
         painter.setBrush(brush)
         for center in self.stones_centers:
             painter.drawEllipse(QPoint(*center), self.stone_radius * 2, self.stone_radius * 2)
+

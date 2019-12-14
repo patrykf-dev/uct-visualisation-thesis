@@ -27,7 +27,10 @@ class MancalaCanvas(GameCanvas):
             return
         super().mousePressEvent(event)
         pos = event.pos()
-        player_moved, moved_index = self.board_drawer.detect_click(pos.x(), pos.y())
+        player_moved, moved_index, hole_index = self.board_drawer.detect_click(pos.x(), pos.y())
+        if not player_moved and hole_index != -1:
+            if not self.board.is_hole_valid(hole_index) or self.board.is_hole_empty(hole_index):
+                self.board_drawer.selected_hole_index = -1
         extra_turn = False
         if player_moved:
             extra_turn = self.board.perform_move_internal(moved_index, self.board.current_player)
