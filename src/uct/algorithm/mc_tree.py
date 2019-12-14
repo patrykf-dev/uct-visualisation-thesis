@@ -30,8 +30,13 @@ class MonteCarloTree:
             if move.move_equal(child.move):
                 next_root = child
                 break
+
         if next_root is None:
-            raise RuntimeError("Couldn't find the move specified")
+            # Couldn't find the move specified
+            self.root.add_child_by_move(move)
+            if len(self.root.children) > 1:
+                raise RuntimeError("Why wouldn't you find your move?")
+            next_root = self.root.children[0]
         self.root = next_root
 
     def reset_vis_data(self):
