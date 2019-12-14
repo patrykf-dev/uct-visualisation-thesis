@@ -98,8 +98,11 @@ class MonteCarloTreeDrawDataRetriever:
     def _scale_coordinates(self, node: MonteCarloNode):
         x = node.vis_details.x
         y = node.vis_details.y
-        new_x = (x - self.tree.data.min_x - (self.x_span / 2)) / (self.x_span * 0.5)
-        new_y = -(y - self.tree.data.min_y - (self.y_span / 2)) / (self.y_span * 0.5)
+        new_x = (x - self.tree.data.min_x - (self.x_span / 2))
+        new_y = -(y - self.tree.data.min_y - (self.y_span / 2))
+        if self.x_span > 0 and self.y_span > 0:
+            new_x /= (self.x_span * 0.5)
+            new_y /= (self.y_span * 0.5)
         node.vis_details.x = new_x
         node.vis_details.y = new_y
 
