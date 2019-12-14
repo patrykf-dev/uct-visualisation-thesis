@@ -26,8 +26,9 @@ class MonteCarloTreeCanvasWidget(QWidget):
             show_eror_dialog("Cannot save an empty tree!")
             return
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Csv files (*.csv)")
-        serializator = CsvSerializator()
-        serializator.save_node_to_path(self.layout.canvas.tree.root, path)
+        if path:
+            serializator = CsvSerializator()
+            serializator.save_node_to_path(self.layout.canvas.tree.root, path)
 
     def _handle_serialize_binary_button_clicked_event(self):
         if not self.layout.canvas.tree:
