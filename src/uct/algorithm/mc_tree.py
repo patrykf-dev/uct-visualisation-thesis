@@ -62,15 +62,16 @@ class TreeData:
         self.max_y = 0
         self.max_visits_count = 0
 
-    def update_tree_data(self, node: MonteCarloNode):
+    def update_tree_visual_data(self, node: MonteCarloNode):
         x = node.vis_details.x
         y = node.vis_details.y
         self.max_x = max(x, self.max_x)
         self.min_x = min(x, self.min_x)
         self.max_y = max(y, self.max_y)
         self.min_y = min(y, self.min_y)
-        if node.parent is not None:
-            self.max_visits_count = max(node.details.visits_count, self.max_visits_count)
+
+    def update_tree_visits_data(self, node: MonteCarloNode):
+        self.max_visits_count = max(node.details.visits_count, self.max_visits_count)
 
     def reset_to_defaults(self):
         self.min_x = 0

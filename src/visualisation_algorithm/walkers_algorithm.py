@@ -37,15 +37,14 @@ class ImprovedWalkersAlgorithm:
     def second_walk(self, node: MonteCarloNode, m=0, depth=0):
         node.vis_details.x += m
         node.vis_details.y = depth
-        self.tree.data.update_tree_data(node)
-        for w in node.children:
-            self.second_walk(w, m + node.vis_details.mod, depth + 1)
+        self.tree.data.update_tree_visual_data(node)
+        for child in node.children:
+            self.tree.data.update_tree_visits_data(child)
+            self.second_walk(child, m + node.vis_details.mod, depth + 1)
 
     def apportion(self, node: MonteCarloNode, default_ancestor, distance):
         left_brother = node.lbrother()
         if left_brother is not None:
-            # in buchheim notation:
-            # i == inner; o == outer; r == right; l == left; r = +; l = -
             vir = vor = node
             vil = left_brother
             vol = node.lmost_sibling
