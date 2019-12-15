@@ -13,7 +13,8 @@ class MancalaBoardDrawer:
     def __init__(self, canvas_width, canvas_height):
         self.canvas_width = canvas_width
         self.canvas_height = canvas_height
-        self.top_padding = 180
+        self.top_padding = 240
+        self.left_padding = 37
         self.hole_padding = 10
         self.images_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images")
         self.hole_radius = 25
@@ -45,7 +46,7 @@ class MancalaBoardDrawer:
         pixmap_selected = QtGui.QPixmap.fromImage(QImage(os.path.join(self.images_folder, "hole_selected.png")))
         pixmap.detach()
         pixmap_selected.detach()
-        start_x = 3 * self.hole_radius + self.hole_padding
+        start_x = 3 * self.hole_radius + self.hole_padding + self.left_padding
         x = start_x
         y = self.top_padding + 3 * self.hole_radius
         for i in range(12):
@@ -68,10 +69,11 @@ class MancalaBoardDrawer:
         image = QImage(path)
         pixmap = QtGui.QPixmap.fromImage(image)
         pixmap.detach()
+        stores_x = self.left_padding
         stores_y = self.top_padding
-        self.store1_rectangle = QRect(0, stores_y, self.hole_radius * 3, self.hole_radius * 5)
+        self.store1_rectangle = QRect(stores_x, stores_y, self.hole_radius * 3, self.hole_radius * 5)
         painter.drawPixmap(self.store1_rectangle, pixmap)
-        self.store2_rectangle = QRect(15 * self.hole_radius + 7 * self.hole_padding, stores_y,
+        self.store2_rectangle = QRect(15 * self.hole_radius + 7 * self.hole_padding + stores_x, stores_y,
                       self.hole_radius * 3, self.hole_radius * 5)
         painter.drawPixmap(self.store2_rectangle, pixmap)
 
@@ -86,22 +88,22 @@ class MancalaBoardDrawer:
         painter.setPen(pen)
         start_x = 3 * self.hole_radius + self.hole_padding
 
-        x = start_x
+        x = start_x + self.left_padding
         y = self.top_padding + 5 * self.hole_radius
         for i in range(6):
             self._draw_number(board.board_values[i], 2 * self.hole_radius, font_height, painter, x, y)
             x += 2 * self.hole_radius + self.hole_padding
 
-        x = start_x + 12 * self.hole_radius + 6 * self.hole_padding
+        x = start_x + 12 * self.hole_radius + 6 * self.hole_padding + self.left_padding
         self._draw_number(board.board_values[6], 3 * self.hole_radius, font_height, painter, x, y)
 
-        x = start_x + 10 * self.hole_radius + 5 * self.hole_padding
+        x = start_x + 10 * self.hole_radius + 5 * self.hole_padding + self.left_padding
         y = self.top_padding - font_height
         for i in range(6):
             self._draw_number(board.board_values[i + 7], 2 * self.hole_radius, font_height, painter, x, y)
             x -= 2 * self.hole_radius + self.hole_padding
 
-        x = start_x - self.hole_radius * 3 - self.hole_padding
+        x = start_x - self.hole_radius * 3 - self.hole_padding + self.left_padding
         self._draw_number(board.board_values[13], 3 * self.hole_radius, font_height, painter, x, y)
 
     def _draw_number(self, value, font_width, font_height, painter, x, y):
