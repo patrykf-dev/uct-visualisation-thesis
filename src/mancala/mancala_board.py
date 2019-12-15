@@ -75,19 +75,28 @@ class MancalaBoard:
 
         return not switch_turns
 
+    def determine_winner(self):
+        player1_points = self.board_values[6]
+        player2_points = self.board_values[13]
+        if player1_points > player2_points:
+            self.phase = GamePhase.PLAYER1_WON
+        elif player1_points < player2_points:
+            self.phase = GamePhase.PLAYER2_WON
+        else:
+            self.phase = GamePhase.DRAW
+
     def check_if_game_ended(self):
         game_ended = False
         if not any(self._get_player_holes(1)):
-            self.phase = GamePhase.PLAYER1_WON
             self.board_values[13] += sum(self._get_player_holes(2))
             game_ended = True
         elif not any(self._get_player_holes(2)):
-            self.phase = GamePhase.PLAYER2_WON
             self.board_values[6] += sum(self._get_player_holes(1))
             game_ended = True
 
         if game_ended:
             self.board_values = [0 if i != 6 and i != 13 else self.board_values[i] for i in range(14)]
+            self.determine_winner()
 
     def get_win_score(self, player):
         if player == 1:
