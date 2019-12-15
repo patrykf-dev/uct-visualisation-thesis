@@ -45,7 +45,7 @@ class MonteCarloTreeDrawDataRetriever:
                                ("a_color", np.float32, 4),
                                ("a_width", np.float32)]
 
-    def retrieve_draw_data(self, ps) -> MonteCarloTreeDrawData:
+    def retrieve_draw_data(self) -> MonteCarloTreeDrawData:
         tmp_vertices = []
         tmp_edges = []
         self.walk_tree(self.tree.root, tmp_vertices, tmp_edges)
@@ -56,8 +56,8 @@ class MonteCarloTreeDrawDataRetriever:
                                                         ("a_radius", np.float32),
                                                         ("a_linewidth", np.float32)])
 
-        vertices["a_radius"] = 16 * ps
-        vertices["a_linewidth"] = 2.0 * ps
+        vertices["a_radius"] = 16
+        vertices["a_linewidth"] = 2.0
         vertices["a_fg_color"] = (0.1, 0.1, 0.1, 1)
 
         for i in range(self.vertices_count):

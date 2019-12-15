@@ -93,10 +93,9 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_edges.bind(self.edges_buffer)
 
     def _bind_buffers(self):
-        ps = self.pixel_scale
         retriever = MonteCarloTreeDrawDataRetriever(self.tree, self.display_settings.most_visited_color,
                                                     self.display_settings.least_visited_color)
-        self.tree_draw_data = retriever.retrieve_draw_data(ps)
+        self.tree_draw_data = retriever.retrieve_draw_data()
         self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
         self.edges_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.edges)
 
