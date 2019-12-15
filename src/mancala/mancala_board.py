@@ -141,7 +141,7 @@ class MancalaBoard:
             moves.append(move)
             return
 
-    def is_hole_valid(self, index):
+    def is_the_hole_of_current_player(self, index):
         if index in range(0, 6) and self.current_player == 1:
             return True
         if index in range(7, 13) and self.current_player == 2:
@@ -150,3 +150,6 @@ class MancalaBoard:
 
     def is_hole_empty(self, index):
         return self.board_values[index] == 0
+
+    def is_hole_valid(self, index):
+        return self.is_the_hole_of_current_player(index) and not self.is_hole_empty(index)

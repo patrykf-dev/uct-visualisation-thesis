@@ -115,12 +115,12 @@ class MancalaBoardDrawer:
                 if self.selected_hole_index == i:
                     self.selected_hole_index = -1
                     self.stones_centers = []
-                    return True, self.draw_index_to_board_index(i), i
+                    return True, self.draw_index_to_board_index(i)
                 else:
                     self.selected_hole_index = i
-                    return False, -1, i
+                    return False, -1
         self.selected_hole_index = -1
-        return False, -1, -1
+        return False, -1
 
     def draw_index_to_board_index(self, i):
         if i < 6:
