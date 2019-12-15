@@ -33,7 +33,7 @@ class Figure(ABC):
 
     @staticmethod
     def remove_figure(figures: ChessFiguresCollection, figure):
-        figures.remove(figure)
+        return figures.remove(figure)
 
 
 class FigureWithLinearMovement(Figure):

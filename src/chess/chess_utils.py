@@ -83,18 +83,19 @@ def get_all_possible_moves(board: Chessboard):
 
 def take_off_potential_figure(board: Chessboard, move: ChessMove):
     figure = board.figures.get_figure_at(move.position_to)
+    list_index = 0
     if figure:
-        Figure.remove_figure(board.figures, figure)
+        list_index = Figure.remove_figure(board.figures, figure)
     elif move.move_type == MoveType.EN_PASSANT:
         opponent_figure_position = move.help_dict['opponent-pawn-pos']
         figure = board.figures.get_figure_at(opponent_figure_position)
-        Figure.remove_figure(board.figures, figure)
-    return figure
+        list_index = Figure.remove_figure(board.figures, figure)
+    return figure, list_index
 
 
-def put_back_potential_figure(board: Chessboard, figure: Figure):
+def put_back_potential_figure(board: Chessboard, figure: Figure, figure_index):
     if figure:
-        board.figures.add_figure(figure)
+        board.figures.add_figure(figure, figure_index)
 
 
 def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
@@ -104,13 +105,13 @@ def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
     previous_position = figure.position
     for i in range(len(moves)):
         move = moves[i]
-        potential_figure = take_off_potential_figure(board, move)
+        potential_figure, figure_index = take_off_potential_figure(board, move)
         figs.move_figure_to(figure, move.position_to)
         king.update_check_mask(figs)
         if king.check_mask[king.position]:
             bad_moves.append(i)
         figs.move_figure_to(figure, previous_position)
-        put_back_potential_figure(board, potential_figure)
+        put_back_potential_figure(board, potential_figure, figure_index)
 
     for bad_move in bad_moves[::-1]:
         moves.pop(bad_move)

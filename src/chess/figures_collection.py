@@ -41,8 +41,10 @@ class ChessFiguresCollection:
 
     def remove(self, figure):
         self.decrease_collection_value(figure)
-        self.figures_list.remove(figure)
+        index = self.figures_list.index(figure)
+        self.figures_list.pop(index)
         self._set_figure_in_array(figure.position, None)
+        return index
 
     def remove_figure_at(self, position):
         self.remove(self._get_figure_from_array(position))
@@ -50,11 +52,14 @@ class ChessFiguresCollection:
     def get_figure_at(self, position):
         return self._figures_array[position[0]][position[1]]
 
-    def add_figure(self, figure):
+    def add_figure(self, figure, figure_index=-1):
         if figure.figure_type == FigureType.KING:
             self.set_king_reference(figure)
         self.increase_collection_value(figure)
-        self.figures_list.append(figure)
+        if figure_index == -1:
+            self.figures_list.append(figure)
+        else:
+            self.figures_list.insert(figure_index, figure)
         self._set_figure_in_array(figure.position, figure)
 
     def move_figure_at(self, old_position, new_position):
