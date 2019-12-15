@@ -149,6 +149,7 @@ class MancalaBoardDrawer:
 
         brush = QBrush(QColor(0, 180, 100, 150), Qt.SolidPattern)
         painter.setBrush(brush)
+        painter.setRenderHint(QPainter.Antialiasing, True)
         for center in self.stones_centers:
             painter.drawEllipse(QPoint(*center), self.stone_radius * 2, self.stone_radius * 2)
 
