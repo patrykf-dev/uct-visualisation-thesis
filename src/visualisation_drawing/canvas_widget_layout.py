@@ -122,6 +122,7 @@ class MonteCarloTreeWidgetLayout:
             label_title = get_non_resizable_label()
             label_title.setText(label[0] + ": ")
             label_content = get_non_resizable_label()
+            label_content.setMaximumWidth(250)
             label_content.setText(self.NO_INFO_LABEL)
             layout.addWidget(label_title, i, 0)
             layout.addWidget(label_content, i, 1)
