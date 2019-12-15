@@ -110,8 +110,6 @@ class MonteCarloTreeDrawDataRetriever:
 
     def get_edge_color(self, visits):
         fraction = visits / self.tree.data.max_visits_count
-        if fraction < 0.3:
-            fraction += 0.3
 
         red_diff = fraction * (self.most_visited_color[0] - self.least_visited_color[0])
         green_diff = fraction * (self.most_visited_color[1] - self.least_visited_color[1])
