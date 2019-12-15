@@ -60,9 +60,11 @@ class TreeData:
         self.max_x = 0
         self.min_y = 0
         self.max_y = 0
+        self.vertices_count = 0
         self.max_visits_count = 0
 
     def update_tree_visual_data(self, node: MonteCarloNode):
+        self.vertices_count += 1
         x = node.vis_details.x
         y = node.vis_details.y
         self.max_x = max(x, self.max_x)
@@ -78,4 +80,5 @@ class TreeData:
         self.max_x = 0
         self.min_y = 0
         self.max_y = 0
+        self.vertices_count = 0
         self.max_visits_count = 0

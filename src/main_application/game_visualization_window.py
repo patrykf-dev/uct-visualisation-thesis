@@ -34,6 +34,8 @@ class GameVisualizationWindow(GameWindow):
         if self.display_settings.animate:
             self.manager.mc_manager.tree.reset_vis_data()
             self.tree_widget.layout.canvas.use_tree_data(self.manager.mc_manager.tree)
+            self.tree_widget.layout.fill_tree_details_panel_info(self.manager.mc_manager.tree.data.vertices_count)
         if earg == 1:
             self.manager.mc_manager.tree.reset_vis_data()
             self.tree_widget.layout.canvas.use_tree_data(self.manager.mc_manager.tree)
+            self.tree_widget.layout.fill_tree_details_panel_info(self.manager.mc_manager.tree.data.vertices_count)

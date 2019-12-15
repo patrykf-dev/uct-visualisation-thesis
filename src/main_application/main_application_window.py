@@ -76,7 +76,7 @@ class MainApplicationWindow(QMainWindow):
         if len(paths) == 1:
             self.layout.tree_path_edit.setText(paths[0])
         elif len(paths) > 1:
-            self.layout.tree_path_edit.setText("Multiple files chosen")
+            self.layout.tree_path_edit.setText(f"Files chosen: {len(paths)}")
         if paths:
             self.layout.chosen_trees_paths = paths
 
