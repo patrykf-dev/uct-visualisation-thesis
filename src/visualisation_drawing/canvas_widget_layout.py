@@ -1,5 +1,5 @@
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
 
 from src.main_application.GUI_utils import DEFAULT_FONT, get_button, get_non_resizable_label, \
     get_box_background_stylesheet
@@ -28,11 +28,14 @@ class MonteCarloTreeWidgetLayout:
             ["Current player", None]]
         self._create_layout(main_widget, sequences)
 
-    def fill_right_panel_info(self, node: MonteCarloNode):
+    def reset_node_panel_node_info(self):
+        self._set_right_panel_color((160, 160, 160))
+        for i in range(len(self.labels)):
+            self.labels[i][1].setText(self.NO_INFO_LABEL)
+
+    def fill_node_panel_info(self, node: MonteCarloNode):
         if node is None:
-            self._set_right_panel_color((160, 160, 160))
-            for i in range(8):
-                self.labels[i][1].setText(self.NO_INFO_LABEL)
+            self.reset_node_panel_node_info()
         else:
             self._set_right_panel_color((255, 255, 255))
             self.labels[0][1].setText(str(node.id))

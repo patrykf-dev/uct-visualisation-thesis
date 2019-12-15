@@ -16,7 +16,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
         self._setup_widget(sequences, display_settings, trees_info)
 
     def _handle_node_clicked_event(self, sender, node: MonteCarloNode):
-        self.layout.fill_right_panel_info(node)
+        self.layout.fill_node_panel_info(node)
 
     def _handle_reset_button_clicked_event(self):
         self.layout.canvas.reset_view()
@@ -55,6 +55,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
         if tree_changed:
+            self.layout.reset_node_panel_node_info()
             self.canvas.tree.reset_vis_data()
             self._make_arrow_buttons_enabled_or_disabled()
             self._update_tree_info_labels()
@@ -63,6 +64,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def _handle_right_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_next_tree_as_root()
         if tree_changed:
+            self.layout.reset_node_panel_node_info()
             self.canvas.tree.reset_vis_data()
             self._make_arrow_buttons_enabled_or_disabled()
             self._update_tree_info_labels()
