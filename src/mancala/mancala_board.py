@@ -54,15 +54,17 @@ class MancalaBoard:
             index -= 1
 
         switch_turns = True
+        opposite_hole_index = 12 - index
         if (index == 6 and self.current_player == 1) or (index == 13 and self.current_player == 2):
             switch_turns = False
-        elif self.board_values[index] == 1 and self.is_the_hole_of_current_player(index):
-            opposite_hole_index = 12 - index
+        elif self.board_values[index] == 1 and self.is_the_hole_of_current_player(index) and self.board_values[
+            opposite_hole_index] > 0:
             if self.current_player == 1:
-                self.board_values[6] += self.board_values[opposite_hole_index]
+                self.board_values[6] += self.board_values[opposite_hole_index] + 1
             else:
-                self.board_values[13] += self.board_values[opposite_hole_index]
+                self.board_values[13] += self.board_values[opposite_hole_index] + 1
             self.board_values[opposite_hole_index] = 0
+            self.board_values[index] = 0
 
         self.check_if_game_ended()
 
