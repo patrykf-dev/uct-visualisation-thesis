@@ -40,7 +40,9 @@ class MonteCarloWindowManager:
             self.perform_algorithm_move()
         elif move_info["phase"] != GamePhase.IN_PROGRESS:
             self.canvas.set_player_can_click(False)
+            self.canvas.game_ended = True
 
     def _handle_machine_move_performed(self, sender, move_info):
         if move_info["phase"] != GamePhase.IN_PROGRESS:
             self.canvas.set_player_can_click(False)
+            self.canvas.game_ended = True

@@ -15,4 +15,7 @@ class MachineVsMachineWindow(GameVisualizationWindow):
         self.main_layout.addWidget(self.next_move_button, 2, 0)
 
     def handle_next_move_button(self, sender):
-        self.manager.perform_algorithm_move()
+        if not self.manager.canvas.game_ended:
+            self.manager.perform_algorithm_move()
+        else:
+            self.next_move_button.setEnabled(False)

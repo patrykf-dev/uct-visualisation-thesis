@@ -16,6 +16,7 @@ class GameCanvas(QWidget):
         self.setMinimumSize(self.WIDTH, self.HEIGHT)
         self.setMaximumSize(self.WIDTH, self.HEIGHT)
         self.player_can_click = True
+        self.game_ended = False
 
     def perform_algorithm_move(self, move: BaseGameMove):
         """
