@@ -11,9 +11,9 @@ from src.visualisation_drawing.canvas_widget_layout import MonteCarloTreeWidgetL
 
 
 class MonteCarloTreeCanvasWidget(QWidget):
-    def __init__(self, sequences, trees_info=None):
+    def __init__(self, sequences, display_settings, trees_info=None):
         super().__init__()
-        self._setup_widget(sequences, trees_info)
+        self._setup_widget(sequences, display_settings, trees_info)
 
     def _handle_node_clicked_event(self, sender, node: MonteCarloNode):
         self.layout.fill_right_panel_info(node)
@@ -79,8 +79,8 @@ class MonteCarloTreeCanvasWidget(QWidget):
         elif current_tree_index == len(self.canvas.trees_info) - 2:
             self.layout.right_button.setEnabled(True)
 
-    def _setup_widget(self, sequences, trees_info=None):
-        self.canvas = MonteCarloTreeCanvas(trees_info=trees_info)
+    def _setup_widget(self, sequences, display_settings, trees_info=None):
+        self.canvas = MonteCarloTreeCanvas(trees_info=trees_info, display_settings=display_settings)
         self.layout = MonteCarloTreeWidgetLayout(self, self.canvas, sequences)
         self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
         self.layout.serialize_csv_button.clicked.connect(self._handle_serialize_csv_button_clicked_event)

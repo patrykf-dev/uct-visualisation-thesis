@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QApplication
 
 from src import vispy
 from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
-from src.uct.algorithm.mc_node import MonteCarloNode
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.utils.custom_event import CustomEvent
 from src.vispy import app as VispyApp
@@ -17,10 +16,12 @@ from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
 
 
 class MonteCarloTreeCanvas(VispyApp.Canvas):
-    def __init__(self, tree: MonteCarloTree = None, trees_info: MonteCarloNodeSequenceInfo = None, **kwargs):
+    def __init__(self, tree: MonteCarloTree = None, trees_info: MonteCarloNodeSequenceInfo = None,
+                 display_settings=None, **kwargs):
         VispyApp.Canvas.__init__(self, **kwargs)
         self.previous_mouse_pos = None
         self.tree = tree
+        self.display_settings = display_settings
         self.trees_info = trees_info
         self.tree_index = 0
         self._setup_widget()
@@ -93,7 +94,8 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
 
     def _bind_buffers(self):
         ps = self.pixel_scale
-        retriever = MonteCarloTreeDrawDataRetriever(self.tree)
+        retriever = MonteCarloTreeDrawDataRetriever(self.tree, self.display_settings.most_visited_color,
+                                                    self.display_settings.least_visited_color)
         self.tree_draw_data = retriever.retrieve_draw_data(ps)
         self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
         self.edges_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.edges)

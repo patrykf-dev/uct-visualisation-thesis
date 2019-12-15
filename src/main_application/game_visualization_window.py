@@ -14,7 +14,7 @@ class GameVisualizationWindow(GameWindow):
                  main_layout: QGridLayout):
         super(GameVisualizationWindow, self).__init__(parent, manager, main_layout)
         self.display_settings = display_settings
-        self.tree_widget = MonteCarloTreeCanvasWidget(sequences=False)
+        self.tree_widget = MonteCarloTreeCanvasWidget(sequences=False, display_settings=display_settings)
         self.iteration_progress_widget = IterationProgressWidget()
         main_layout.addWidget(self.iteration_progress_widget, 0, 1)
         main_layout.addWidget(self.tree_widget, 1, 1)

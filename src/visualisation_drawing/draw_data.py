@@ -32,8 +32,10 @@ class MonteCarloTreeDrawData:
 
 
 class MonteCarloTreeDrawDataRetriever:
-    def __init__(self, tree: MonteCarloTree):
+    def __init__(self, tree: MonteCarloTree, most_visited_color, least_visited_color):
         self.tree = tree
+        self.most_visited_color = most_visited_color
+        self.least_visited_color = least_visited_color
         self.x_span = self.tree.data.max_x - self.tree.data.min_x
         self.y_span = self.tree.data.max_y - self.tree.data.min_y
         self.vertices_count = 0
@@ -110,7 +112,12 @@ class MonteCarloTreeDrawDataRetriever:
         fraction = visits / self.tree.data.max_visits_count
         if fraction < 0.3:
             fraction += 0.3
-        red = ((1 - fraction) * 255) / 255
-        green = (fraction * 255) / 255
-        # print(f"Visits: {visits}/{self.max_visits_count} -> ({red}, {green}, {0})Fraction: {fraction}")
-        return red, green, 0, 1
+
+        red_diff = fraction * (self.most_visited_color[0] - self.least_visited_color[0])
+        green_diff = fraction * (self.most_visited_color[1] - self.least_visited_color[1])
+        blue_diff = fraction * (self.most_visited_color[2] - self.least_visited_color[2])
+
+        red = (self.least_visited_color[0] + red_diff) / 255
+        green = (self.least_visited_color[1] + green_diff) / 255
+        blue = (self.least_visited_color[2] + blue_diff) / 255
+        return red, green, blue, 1

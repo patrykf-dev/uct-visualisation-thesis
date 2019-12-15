@@ -1,10 +1,13 @@
 import os
 
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor, QPen
+from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QColorDialog
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
-    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, gray_out_radiobutton_text, show_eror_dialog, get_box_background_stylesheet
+    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, gray_out_radiobutton_text, show_eror_dialog, \
+    get_box_background_stylesheet
 from src.main_application.enums import GameMode, Game
 from src.main_application.gui_settings import MonteCarloSettings, DisplaySettings
 
@@ -31,6 +34,8 @@ class MainApplicationWindowLayout:
         self.max_iterations_button = get_radiobutton("Max iterations before move")
         self.max_time_button = get_radiobutton("Max time for move (ms)")
         self.animate_check = get_checkbox("Animate tree growth")
+        self.most_visited_label = QLabel()
+        self.least_visited_label = QLabel()
         self._create_layout()
         self._set_events()
         self._load_defaults()
@@ -65,6 +70,8 @@ class MainApplicationWindowLayout:
 
         display_settings = DisplaySettings()
         display_settings.animate = self.animate_check.isChecked()
+        display_settings.most_visited_color = self._most_visited_color
+        display_settings.least_visited_color = self._least_visited_color
         return mc_settings, display_settings
 
     def _set_events(self):
@@ -72,6 +79,8 @@ class MainApplicationWindowLayout:
         self.max_iterations_button.toggled.connect(self._react_to_limit_button_click)
         self.max_time_button.toggled.connect(self._react_to_limit_button_click)
         self.animate_check.toggled.connect(self._react_to_animate_button_click)
+        self.most_visited_label.mousePressEvent = self._react_to_most_visited_label_click
+        self.least_visited_label.mousePressEvent = self._react_to_least_visited_label_click
 
     def _load_defaults(self):
         self.mancala_button.setChecked(True)
@@ -84,6 +93,13 @@ class MainApplicationWindowLayout:
         self.max_moves_edit.setText(str(settings.max_moves_per_iteration))
         self.max_iterations_button.setChecked(settings.limit_iterations)
         self.max_time_button.setChecked(not settings.limit_iterations)
+
+        display_settings = DisplaySettings()
+        self.animate_check.setChecked(display_settings.animate)
+        self._set_color_to_label(self.most_visited_label, display_settings.most_visited_color)
+        self._set_color_to_label(self.least_visited_label, display_settings.least_visited_color)
+        self._most_visited_color = display_settings.most_visited_color
+        self._least_visited_color = display_settings.least_visited_color
 
     def _create_layout(self):
         main_layout = QGridLayout()
@@ -152,8 +168,12 @@ class MainApplicationWindowLayout:
         new_widget = QWidget()
         layout = QGridLayout()
         new_widget.setLayout(layout)
-        layout.addWidget(get_non_resizable_label("Display settings"), 0, 0, alignment=QtCore.Qt.AlignLeft)
-        layout.addWidget(self.animate_check, 1, 0, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(get_non_resizable_label("Display settings"), 0, 0, 1, 2, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.animate_check, 1, 0, 1, 2, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.most_visited_label, 2, 0)
+        layout.addWidget(self.least_visited_label, 3, 0)
+        layout.addWidget(get_non_resizable_label("Most visited edge color"), 2, 1, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(get_non_resizable_label("Least visited edge color"), 3, 1, alignment=QtCore.Qt.AlignLeft)
         main_layout.addWidget(new_widget, 2, 0, 1, 2)
 
     def _react_to_moves_limit_click(self):
@@ -182,8 +202,38 @@ class MainApplicationWindowLayout:
         else:
             self._add_warning_to_animation_check(False)
 
+    def _react_to_most_visited_label_click(self, event):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self._set_color_to_label(self.most_visited_label, color.getRgb())
+            self._most_visited_color = color.getRgb()
+
+    def _react_to_least_visited_label_click(self, event):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self._set_color_to_label(self.least_visited_label, color.getRgb())
+            self._least_visited_color = color.getRgb()
+
     def _add_warning_to_animation_check(self, warning):
+        text = ""
         if warning:
-            self.animate_check.setText("Animate tree growth (reducing algorithm's performance)")
+            text += "Animate tree growth (reducing algorithm's performance)"
         else:
-            self.animate_check.setText("Animate tree growth")
+            text += "Animate tree growth"
+        self.animate_check.setText(text)
+
+    def _set_color_to_label(self, label, color):
+        width = 30
+        height = 20
+        label.setFixedWidth(width)
+        label.setFixedHeight(height)
+        pixmap = QtGui.QPixmap(width, height)
+        pixmap.fill(QColor(*color))
+        painter = QtGui.QPainter(pixmap)
+        pen = QPen(Qt.black)
+        pen.setWidth(1)
+        painter.setPen(pen)
+        painter.drawRect(0, 0, width - 1, height - 1)
+        pixmap.detach()
+        label.setPixmap(pixmap)
+        painter.end()

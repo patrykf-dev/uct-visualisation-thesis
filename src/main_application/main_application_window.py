@@ -89,7 +89,8 @@ class MainApplicationWindow(QMainWindow):
         self.loading_window.show()
 
     def _handle_sequence_loaded(self, sender, trees_info):
-        window = MonteCarloTreeWindow(self, trees_info=trees_info)
+        _, display_settings = self.layout.get_settings()
+        window = MonteCarloTreeWindow(self, display_settings=display_settings, trees_info=trees_info)
         self.loading_window.close()
         window.show()
 

@@ -23,3 +23,5 @@ class MonteCarloSettings:
 class DisplaySettings:
     def __init__(self):
         self.animate = False
+        self.most_visited_color = (0, 255, 0, 255)
+        self.least_visited_color = (255, 0, 0, 255)
