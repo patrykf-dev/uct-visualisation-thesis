@@ -56,16 +56,21 @@ class MonteCarloTreeDrawDataRetriever:
                                                         ("a_radius", np.float32),
                                                         ("a_linewidth", np.float32)])
 
-        vertices["a_fg_color"] = (0, 0, 0, 1)
-        vertices["a_bg_color"] = (1, 1, 1, 1)
         vertices["a_radius"] = 16 * ps
         vertices["a_linewidth"] = 2.0 * ps
+        vertices["a_fg_color"] = (0.1, 0.1, 0.1, 1)
 
         for i in range(self.vertices_count):
             n = tmp_vertices[i]
             pos = (n.vis_details.x, n.vis_details.y, 1)
             vertices[i]["a_position"] = pos
-            vertices[i]["a_bg_color"] = (0, 0, 0, 1)
+            if n.move:
+                if n.move.player == 1:
+                    vertices[i]["a_bg_color"] = (1, 1, 1, 1)
+                else:
+                    vertices[i]["a_bg_color"] = (0, 0, 0, 1)
+            else:
+                vertices[i]["a_bg_color"] = (0, 0, 0, 1)
 
         edges = np.asarray(tmp_edges, dtype=self.edge_type_desc)
 
