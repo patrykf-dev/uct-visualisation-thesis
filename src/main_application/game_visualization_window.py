@@ -18,6 +18,7 @@ class GameVisualizationWindow(GameWindow):
         self.iteration_progress_widget = IterationProgressWidget()
         main_layout.addWidget(self.iteration_progress_widget, 0, 1)
         main_layout.addWidget(self.tree_widget, 1, 1)
+        self.initial_iteration = True
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
 
     def _handle_start_over_button(self):
@@ -35,7 +36,11 @@ class GameVisualizationWindow(GameWindow):
             self.manager.mc_manager.tree.reset_vis_data()
             self.tree_widget.layout.canvas.use_tree_data(self.manager.mc_manager.tree)
             self.tree_widget.layout.fill_tree_details_panel_info(self.manager.mc_manager.tree.data.vertices_count)
+        if self.initial_iteration:
+            self.tree_widget.layout.reset_node_panel_info()
+            self.initial_iteration = False
         if earg == 1:
             self.manager.mc_manager.tree.reset_vis_data()
             self.tree_widget.layout.canvas.use_tree_data(self.manager.mc_manager.tree)
             self.tree_widget.layout.fill_tree_details_panel_info(self.manager.mc_manager.tree.data.vertices_count)
+            self.initial_iteration = True
