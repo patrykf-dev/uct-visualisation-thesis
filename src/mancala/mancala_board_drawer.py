@@ -22,6 +22,8 @@ class MancalaBoardDrawer:
         self.hole_centers = []
         self.stones_centers = []
         self.initial_draw = True
+        self.store1_rectangle = None
+        self.store2_rectangle = None
 
     def draw_board(self, painter: QPainter, board: MancalaBoard):
         self.fill_background(painter)
@@ -67,11 +69,11 @@ class MancalaBoardDrawer:
         pixmap = QtGui.QPixmap.fromImage(image)
         pixmap.detach()
         stores_y = self.top_padding
-        point = QRect(0, stores_y, self.hole_radius * 3, self.hole_radius * 5)
-        painter.drawPixmap(point, pixmap)
-        point = QRect(15 * self.hole_radius + 7 * self.hole_padding, stores_y,
+        self.store1_rectangle = QRect(0, stores_y, self.hole_radius * 3, self.hole_radius * 5)
+        painter.drawPixmap(self.store1_rectangle, pixmap)
+        self.store2_rectangle = QRect(15 * self.hole_radius + 7 * self.hole_padding, stores_y,
                       self.hole_radius * 3, self.hole_radius * 5)
-        painter.drawPixmap(point, pixmap)
+        painter.drawPixmap(self.store2_rectangle, pixmap)
 
     def draw_numbers(self, painter: QPainter, board: MancalaBoard):
         font = painter.font()
@@ -143,13 +145,26 @@ class MancalaBoardDrawer:
                 y = hole_y + y_diff
                 self.stones_centers.append((x, y))
 
+    def generate_store_stones_centers(self, board: MancalaBoard):
+        padding = 20
+        store = self.store2_rectangle
+        for i in range(board.board_values[6]):
+            random_x = random.uniform(store.left() + padding, store.right() - padding)
+            random_y = random.uniform(store.top() + padding, store.bottom() - padding)
+            self.stones_centers.append((random_x, random_y))
+        store = self.store1_rectangle
+        for i in range(board.board_values[13]):
+            random_x = random.uniform(store.left() + padding, store.right() - padding)
+            random_y = random.uniform(store.top() + padding, store.bottom() - padding)
+            self.stones_centers.append((random_x, random_y))
+
     def draw_stones(self, painter, board: MancalaBoard):
         if len(self.stones_centers) == 0:
             self.generate_stones_centers(board)
+            self.generate_store_stones_centers(board)
 
         brush = QBrush(QColor(0, 180, 100, 150), Qt.SolidPattern)
         painter.setBrush(brush)
         painter.setRenderHint(QPainter.Antialiasing, True)
         for center in self.stones_centers:
             painter.drawEllipse(QPoint(*center), self.stone_radius * 2, self.stone_radius * 2)
-
