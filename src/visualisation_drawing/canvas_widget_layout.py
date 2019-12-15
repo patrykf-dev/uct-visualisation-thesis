@@ -22,6 +22,7 @@ class MonteCarloTreeWidgetLayout:
             ["Vertices count", None]]
         self.node_labels = [
             ["Id", None],
+            ["Child count", None],
             ["State name", None],
             ["Move name", None],
             ["Visits count", None],
@@ -46,15 +47,16 @@ class MonteCarloTreeWidgetLayout:
         else:
             self._set_node_panel_color((255, 255, 255))
             self.node_labels[0][1].setText(str(node.id))
+            self.node_labels[1][1].setText(str(len(node.children)))
             if node.details:
-                self.node_labels[1][1].setText(node.details.state_name)
-                self.node_labels[2][1].setText(node.details.move_name)
-                self.node_labels[3][1].setText(str(node.details.visits_count))
-                self.node_labels[4][1].setText(str(node.details.visits_count_pre_modified))
-                self.node_labels[5][1].setText(str(node.details.win_score))
-                self.node_labels[6][1].setText(str(node.details.average_prize))
+                self.node_labels[2][1].setText(node.details.state_name)
+                self.node_labels[3][1].setText(node.details.move_name)
+                self.node_labels[4][1].setText(str(node.details.visits_count))
+                self.node_labels[5][1].setText(str(node.details.visits_count_pre_modified))
+                self.node_labels[6][1].setText(str(node.details.win_score))
+                self.node_labels[7][1].setText(str(node.details.average_prize))
             if node.move:
-                self.node_labels[7][1].setText(str(node.move.player))
+                self.node_labels[8][1].setText(str(node.move.player))
 
     def _create_left_right_button_widget(self):
         self.left_button = get_button("<<", 35)
