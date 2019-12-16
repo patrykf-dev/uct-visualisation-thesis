@@ -42,8 +42,9 @@ class MonteCarloTree:
     def reset_vis_data(self):
         self._reset_vis_data_internal(self.root)
 
-    def _reset_vis_data_internal(self, node: MonteCarloNode):
+    def _reset_vis_data_internal(self, node: MonteCarloNode, depth=0):
         node.vis_details.x = -1
+        node.vis_details.y = depth
         node.vis_details.thread = None
         node.vis_details.mod = 0
         node.vis_details.ancestor = self
@@ -51,7 +52,7 @@ class MonteCarloTree:
         node.vis_details.shift = 0
         node._left_most_sibling = None
         for child in node.children:
-            self._reset_vis_data_internal(child)
+            self._reset_vis_data_internal(child, depth + 1)
 
 
 class TreeData:
@@ -61,7 +62,7 @@ class TreeData:
         self.min_y = 0
         self.max_y = 0
         self.vertices_count = 0
-        self.max_visits_count = 0
+        self.max_visits = [-1]
 
     def update_tree_visual_data(self, node: MonteCarloNode):
         self.vertices_count += 1
@@ -73,7 +74,10 @@ class TreeData:
         self.min_y = min(y, self.min_y)
 
     def update_tree_visits_data(self, node: MonteCarloNode):
-        self.max_visits_count = max(node.details.visits_count, self.max_visits_count)
+        if len(self.max_visits) <= self.max_y + 1:
+            self.max_visits.append(0)
+        depth = int(node.vis_details.y)
+        self.max_visits[depth] = max(self.max_visits[depth], node.details.visits_count)
 
     def reset_to_defaults(self):
         self.min_x = 0
@@ -81,4 +85,4 @@ class TreeData:
         self.min_y = 0
         self.max_y = 0
         self.vertices_count = 0
-        self.max_visits_count = 0
+        self.max_visits = [-1]

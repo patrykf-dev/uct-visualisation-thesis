@@ -80,23 +80,24 @@ class MonteCarloTreeDrawDataRetriever:
         data.vertices_list = tmp_vertices
         return data
 
-    def walk_tree(self, node: MonteCarloNode, vertices, edges):
+    def walk_tree(self, node: MonteCarloNode, vertices, edges, children_depth=0):
         """
         Update vis_details based on max values
         """
+        children_depth += 1
         self._scale_coordinates(node)
         self.vertices_count += 1
         vertices.append(node)
         for child in node.children:
-            self.walk_tree(child, vertices, edges)
-            self._add_edge(node, child, edges)
+            self.walk_tree(child, vertices, edges, children_depth)
+            self._add_edge(node, child, edges, children_depth)
             self.edges_count += 1
 
-    def _add_edge(self, parent: MonteCarloNode, child: MonteCarloNode, edges):
+    def _add_edge(self, parent: MonteCarloNode, child: MonteCarloNode, edges, child_depth):
         """
         Add edges based on fixed vis_details
         """
-        edge_color = self.get_edge_color(child.details.visits_count)
+        edge_color = self.get_edge_color(child.details.visits_count, child_depth, child.id)
         edge1 = np.array((parent.vis_details.x, parent.vis_details.y, edge_color, 1), dtype=self.edge_type_desc)
         edge2 = np.array((child.vis_details.x, child.vis_details.y, edge_color, 1), dtype=self.edge_type_desc)
         edges.append(edge1)
@@ -113,8 +114,12 @@ class MonteCarloTreeDrawDataRetriever:
         node.vis_details.x = new_x
         node.vis_details.y = new_y
 
-    def get_edge_color(self, visits):
-        fraction = visits / self.tree.data.max_visits_count
+    def get_edge_color(self, visits, level, id):
+        max_visits_on_level = self.tree.data.max_visits[int(level)]
+        if max_visits_on_level == 0:
+            fraction = 1
+        else:
+            fraction = visits / max_visits_on_level
 
         red_diff = fraction * (self.most_visited_color[0] - self.least_visited_color[0])
         green_diff = fraction * (self.most_visited_color[1] - self.least_visited_color[1])
