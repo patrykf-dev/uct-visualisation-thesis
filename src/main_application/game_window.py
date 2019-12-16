@@ -45,8 +45,8 @@ class GameWindow(QMainWindow):
             self.close()
 
     def update_game_status_label(self, game_status):
-        if game_status == GamePhase.IN_PROGRESS:
-            label_text = "Game in progress"
+        if game_status == GamePhase.IN_PROGRESS or self.game_status_label.text() != "Game in progress":
+            return
         else:
             self.game_status_label.setFont(LARGE_FONT_BOLD)
             if game_status == GamePhase.PLAYER1_WON:
