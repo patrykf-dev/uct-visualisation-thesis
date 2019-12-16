@@ -1,4 +1,6 @@
 import copy
+from multiprocessing import Pool, cpu_count
+from itertools import chain
 
 from src.chess.chessboard import Chessboard
 from src.chess.enums import GameStatus
@@ -57,27 +59,38 @@ def is_there_a_draw(board: Chessboard):
     return False
 
 
+def process_func(args):
+    figure, board = args
+    figure_moves = figure.check_moves(board.figures)
+    reduce_move_range_when_check(board, figure, figure_moves)
+
+    for move in figure_moves:
+        move.player = get_player_from_color(board.current_player_color)
+
+        f_color = str(figure.color).split(".")[1].lower()
+        f_type = str(figure.figure_type).split(".")[1].lower()
+        move.description = f"{f_color} {f_type} {move.position_from} -> {move.position_to}"
+
+    return figure_moves
+
+
 def get_all_possible_moves(board: Chessboard):
+    figure_list_current_color = [fig for fig in board.figures.figures_list if board.current_player_color == fig.color]
+    parallel_calls = cpu_count()
+    pool = Pool(processes=parallel_calls)
+    args = [(figure, copy.deepcopy(board)) for figure in figure_list_current_color]
+
     all_possible_moves = []
-    figures_list = board.figures.figures_list
-    copied_figures_list = copy.deepcopy(board.figures.figures_list)
-    for i, copied_figure in enumerate(copied_figures_list):
-        if figures_list[i].color != board.current_player_color:
-            continue
+    situations_number = len(args)
+    counter = 0
+    while counter <= situations_number:
+        real_args = args[counter: counter + parallel_calls]
+        possible_moves = pool.map(process_func, real_args)
+        all_possible_moves.extend(possible_moves)
+        counter += parallel_calls
+    pool.close()
 
-        figure_moves = figures_list[i].check_moves(board.figures)
-        reduce_move_range_when_check(board, figures_list[i], figure_moves)
-
-        for move in figure_moves:
-            move.player = get_player_from_color(board.current_player_color)
-
-            f_color = str(copied_figure.color).split(".")[1].lower()
-            f_type = str(copied_figure.figure_type).split(".")[1].lower()
-            move.description = f"{f_color} {f_type} {move.position_from} -> {move.position_to}"
-
-        if figure_moves:
-            all_possible_moves.extend(figure_moves)
-
+    all_possible_moves = list(chain(*all_possible_moves))
     return all_possible_moves
 
 
