@@ -186,14 +186,10 @@ class MainApplicationWindowLayout:
         if self.max_iterations_button.isChecked():
             self.max_iterations_edit.setEnabled(True)
             self.max_time_edit.setEnabled(False)
-            gray_out_radiobutton_text(self.max_time_button, True)
-            gray_out_radiobutton_text(self.max_iterations_button, False)
             self._add_warning_to_animation_check(False)
         else:
             self.max_iterations_edit.setEnabled(False)
             self.max_time_edit.setEnabled(True)
-            gray_out_radiobutton_text(self.max_time_button, False)
-            gray_out_radiobutton_text(self.max_iterations_button, True)
             self._add_warning_to_animation_check(self.animate_check.isChecked())
 
     def _react_to_animate_button_click(self):
