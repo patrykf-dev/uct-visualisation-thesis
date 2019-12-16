@@ -1,4 +1,5 @@
 import csv
+import io
 
 from src.serialization.serializator_base import BaseSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
@@ -15,7 +16,7 @@ class CsvSerializator(BaseSerializator):
             self._encode_node(writer, node)
 
     def get_node_from_path(self, path):
-        with open(path, newline='') as csvfile:
+        with open(path, newline='', buffering=io.DEFAULT_BUFFER_SIZE) as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='|')
             node = self._decode_node(reader)
         return node
@@ -32,11 +33,11 @@ class CsvSerializator(BaseSerializator):
         row = next(reader)
         node = MonteCarloNode()
         d = node.details
-        d.move_name = row[0]
+        d.move_name = self.get_string(row[0])
         d.visits_count = int(row[1])
         d.visits_count_pre_modified = int(row[2])
         d.average_prize = float(row[3])
-        d.state_name = row[4]
+        d.state_name = self.get_string(row[4])
         children = int(row[5])
         for i in range(children):
             child = self._decode_node(reader, depth+1)

@@ -1,3 +1,5 @@
+import io
+
 import src.serialization.codec_binary as BinaryCodec
 from src.serialization.serializator_base import BaseSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
@@ -18,7 +20,7 @@ class BinarySerializator(BaseSerializator):
                 file.write(bin_array)
 
     def get_node_from_path(self, path):
-        with open(path, "rb") as file:
+        with open(path, "rb", buffering=io.DEFAULT_BUFFER_SIZE) as file:
             node, _ = self._decode_node(file)
         return node
 
@@ -36,13 +38,13 @@ class BinarySerializator(BaseSerializator):
 
     def _decode_node(self, file):
         rc = MonteCarloNode()
-        state_name = BinaryCodec.read_string(file)
+        state_name = self.get_string(BinaryCodec.read_string(file))
         rc.details.state_name = state_name
 
         children_count = BinaryCodec.read_integer(file)
         for i in range(children_count):
             details = MonteCarloNodeDetails()
-            details.move_name = BinaryCodec.read_string(file)
+            details.move_name = self.get_string(BinaryCodec.read_string(file))
             details.visits_count = BinaryCodec.read_integer(file)
             details.visits_count_pre_modified = BinaryCodec.read_integer(file)
             details.average_prize = BinaryCodec.read_float(file)
