@@ -1,5 +1,4 @@
 import os
-import re
 import sys
 
 from PyQt5 import QtWidgets
@@ -10,10 +9,6 @@ from src.main_application.GUI_utils import TREES_PATH, center_window_on_screen, 
 from src.main_application.game_window_creator import create_proper_window
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.main_application.mc_tree_window import MonteCarloTreeWindow
-from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
-from src.serialization.serializator_binary import BinarySerializator
-from src.serialization.serializator_csv import CsvSerializator
-from src.main_application.sequence_loading_window import SequenceLoadingWindow
 
 
 class MainApplicationWindow(QMainWindow):
@@ -84,15 +79,11 @@ class MainApplicationWindow(QMainWindow):
         """
         Displays the window with a UCT tree visualization.
         """
-        self.loading_window = SequenceLoadingWindow(self, self.layout.chosen_trees_paths)
-        self.loading_window.finished_event += self._handle_sequence_loaded
-        self.loading_window.show()
-
-    def _handle_sequence_loaded(self, sender, trees_info):
         _, display_settings = self.layout.get_settings()
-        window = MonteCarloTreeWindow(self, display_settings=display_settings, trees_info=trees_info)
-        self.loading_window.close()
+        window = MonteCarloTreeWindow(self, display_settings=display_settings,
+                                      trees_paths=self.layout.chosen_trees_paths)
         window.show()
+
 
 def launch_application():
     """

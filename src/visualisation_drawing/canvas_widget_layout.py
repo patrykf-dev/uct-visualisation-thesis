@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
 from src.main_application.GUI_utils import get_button, get_non_resizable_label, \
     get_box_background_stylesheet
 from src.uct.algorithm.mc_node import MonteCarloNode
+from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
 
 
@@ -67,7 +68,7 @@ class MonteCarloTreeWidgetLayout:
         left_right_layout = QGridLayout()
         self.left_right_widget.setLayout(left_right_layout)
         left_right_layout.addWidget(self.tree_info_filename_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
-        if len(self.canvas.trees_info) > 1:
+        if len(self.canvas.trees_paths) > 1:
             left_right_layout.addWidget(self.tree_info_number_label, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
             left_right_layout.addWidget(self.left_button, 2, 0)
             left_right_layout.addWidget(self.right_button, 2, 1)
@@ -86,11 +87,11 @@ class MonteCarloTreeWidgetLayout:
 
         if sequences:
             self._create_left_right_button_widget()
-            if len(self.canvas.trees_info) >= 1:
-                tree = self.canvas.trees_info[0].tree
+            if len(self.canvas.trees_paths) >= 1:
+                tree = MonteCarloTree(root=self.canvas.tree.root)
                 self.canvas.use_tree_data(tree)
                 self.fill_tree_details_panel_info(tree.data.vertices_count)
-                if len(self.canvas.trees_info) == 1:
+                if len(self.canvas.trees_paths) == 1:
                     self.right_button.setEnabled(False)
             self.left_button.setEnabled(False)
 

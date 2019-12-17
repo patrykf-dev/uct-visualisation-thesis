@@ -4,7 +4,8 @@ from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QApplication
 
 from src import vispy
-from src.main_application.sequence_utils import MonteCarloNodeSequenceInfo
+from src.serialization.serializator_binary import BinarySerializator
+from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.utils.custom_event import CustomEvent
 from src.vispy import app as VispyApp
@@ -16,14 +17,16 @@ from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
 
 
 class MonteCarloTreeCanvas(VispyApp.Canvas):
-    def __init__(self, tree: MonteCarloTree = None, trees_info: MonteCarloNodeSequenceInfo = None,
+    def __init__(self, tree: MonteCarloTree = None, trees_paths=None,
                  display_settings=None, **kwargs):
         VispyApp.Canvas.__init__(self, **kwargs)
         self.previous_mouse_pos = None
         self.tree = tree
         self.display_settings = display_settings
-        self.trees_info = trees_info
+        self.trees_paths = trees_paths
         self.tree_index = 0
+        self.binary_serializator = BinarySerializator()
+        self.csv_serializator = CsvSerializator()
         self._setup_widget()
         if self.tree:
             self.use_tree_data(self.tree)
@@ -38,18 +41,24 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.update()
 
     def make_next_tree_as_root(self):
-        if self.tree_index + 1 < len(self.trees_info):
+        if self.tree_index + 1 < len(self.trees_paths):
             self.tree_index += 1
-            self.tree = self.trees_info[self.tree_index].tree
+            self.set_current_tree()
             return True
         return False
 
     def make_previous_tree_as_root(self):
         if self.tree_index >= 1:
             self.tree_index -= 1
-            self.tree = self.trees_info[self.tree_index].tree
+            self.set_current_tree()
             return True
         return False
+
+    def set_current_tree(self):
+        path = self.trees_paths[self.tree_index]
+        serializator = self.binary_serializator if path.endswith("tree") else self.csv_serializator
+        root = serializator.get_node_from_path(path)
+        self.tree = MonteCarloTree(root=root)
 
     def on_resize(self, event):
         set_viewport(0, 0, event.physical_size[0], event.physical_size[1])

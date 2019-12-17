@@ -1,3 +1,5 @@
+import os
+
 from PyQt5.QtWidgets import QWidget, QFileDialog
 
 from src.main_application.GUI_utils import TREES_PATH
@@ -11,9 +13,9 @@ from src.visualisation_drawing.canvas_widget_layout import MonteCarloTreeWidgetL
 
 
 class MonteCarloTreeCanvasWidget(QWidget):
-    def __init__(self, sequences, display_settings, trees_info=None):
+    def __init__(self, sequences, display_settings, trees_paths=None):
         super().__init__()
-        self._setup_widget(sequences, display_settings, trees_info)
+        self._setup_widget(sequences, display_settings, trees_paths)
 
     def _handle_node_clicked_event(self, sender, node: MonteCarloNode):
         self.layout.fill_node_panel_info(node)
@@ -47,10 +49,11 @@ class MonteCarloTreeCanvasWidget(QWidget):
 
     def _update_tree_info_labels(self):
         current_tree_index = self.canvas.tree_index
-        number_of_trees = len(self.canvas.trees_info)
+        number_of_trees = len(self.canvas.trees_paths)
         text = f"Tree {current_tree_index + 1} of {number_of_trees}"
         self.layout.tree_info_number_label.setText(text)
-        self.layout.tree_info_filename_label.setText(self.canvas.trees_info[self.canvas.tree_index].filename)
+        tree_name = os.path.basename(self.canvas.trees_paths[self.canvas.tree_index])
+        self.layout.tree_info_filename_label.setText(tree_name)
 
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
@@ -59,8 +62,9 @@ class MonteCarloTreeCanvasWidget(QWidget):
             self.canvas.tree.reset_vis_data()
             self._make_arrow_buttons_enabled_or_disabled()
             self._update_tree_info_labels()
-            self.canvas.use_tree_data(self.canvas.tree)
-            self.layout.fill_tree_details_panel_info(self.canvas.tree.data.vertices_count)
+            tree = self.canvas.tree
+            self.canvas.use_tree_data(tree)
+            self.layout.fill_tree_details_panel_info(tree.data.vertices_count)
 
     def _handle_right_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_next_tree_as_root()
@@ -79,13 +83,14 @@ class MonteCarloTreeCanvasWidget(QWidget):
             self.layout.left_button.setEnabled(False)
         elif current_tree_index == 1:
             self.layout.left_button.setEnabled(True)
-        if current_tree_index == len(self.canvas.trees_info) - 1:
+        if current_tree_index == len(self.canvas.trees_paths) - 1:
             self.layout.right_button.setEnabled(False)
-        elif current_tree_index == len(self.canvas.trees_info) - 2:
+        elif current_tree_index == len(self.canvas.trees_paths) - 2:
             self.layout.right_button.setEnabled(True)
 
-    def _setup_widget(self, sequences, display_settings, trees_info=None):
-        self.canvas = MonteCarloTreeCanvas(trees_info=trees_info, display_settings=display_settings)
+    def _setup_widget(self, sequences, display_settings, trees_paths=None):
+        self.canvas = MonteCarloTreeCanvas(trees_paths=trees_paths, display_settings=display_settings)
+        self.canvas.set_current_tree()
         self.layout = MonteCarloTreeWidgetLayout(self, self.canvas, sequences)
         self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
         self.layout.serialize_csv_button.clicked.connect(self._handle_serialize_csv_button_clicked_event)
