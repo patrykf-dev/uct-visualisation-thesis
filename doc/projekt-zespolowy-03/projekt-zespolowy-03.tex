@@ -247,7 +247,7 @@ Testy akceptacyjne zostały przeprowadzone w celu sprawdzenia, czy aplikacja spe
 \begin{tabular}{|l|p{0.6\linewidth}|}
 	\hline
 	Testowane wymaganie & \modulename{Użytkownik będzie mógł wybrać jedną z dwóch przykładowych gier, a do wyboru będzie miał trzy tryby rozgrywki.} \\ \hline
-	Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz opcję \modulename{Chess}. \item Z menu głównego aplikacji wybierz opcję \modulename{Player vs player} i sprawdź tryb rozgrywki dla dwóch graczy oraz możliwość rozpoczęcia gry od nowa. \item Z menu głównego aplikacji wybierz opcję \modulename{Player vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz opcję \modulename{PC vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz opcję {Mancala} i powtórz kroki 2-5. \end{enumerate} \\ \hline
+	Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz opcję \modulename{Chess}. \item Z menu głównego aplikacji wybierz opcję \modulename{Player vs player} i sprawdź tryb rozgrywki dla dwóch graczy. \item Z menu głównego aplikacji wybierz opcję \modulename{Player vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz opcję \modulename{PC vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz \modulename{Mancala} i powtórz kroki 2-5. \end{enumerate} \\ \hline
 	Wynik & Pozytywny. \\ \hline
 \end{tabular}
 \caption{Raport z pierwszego testu}
@@ -259,7 +259,7 @@ Testy akceptacyjne zostały przeprowadzone w celu sprawdzenia, czy aplikacja spe
 	\begin{tabular}{|l|p{0.6\linewidth}|}
 		\hline
 		Testowane wymaganie & \modulename{Użytkownik będzie mógł zapisać analizowane drzewa do pliku csv, do pliku binarnego oraz do bitmapy.} \\ \hline
-		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z drzewem. \item Naciśnij przycisk \modulename{Inspect tree}. \item Naciśnij przycisk \modulename{Save to csv file}. \item Naciśnij przycisk \modulename{Save to binary file}. \item Naciśnij przycisk \modulename{Save to bitmap file}. \item Z menu głównego aplikacji wybierz ścieżkę plików wygenerowanych w kroku 3 i 4, żeby sprawdzić, czy zapisane drzewa wizualizowane są tak samo jak w początkowym pliku. \end{enumerate} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z zserializowanym drzewem. \item Naciśnij przycisk \modulename{Inspect tree}. \item Naciśnij przycisk \modulename{Save to csv file}. \item Naciśnij przycisk \modulename{Save to binary file}. \item Naciśnij przycisk \modulename{Save to bitmap file}. \item Sprawdź, czy bitmapa wygenerowana w kroku 5 odpowiada drzewu z pliku początkowego. \item Z menu głównego aplikacji wybierz ścieżkę plików wygenerowanych w kroku 3 i 4, żeby sprawdzić, czy zapisane drzewa wizualizowane są tak samo jak w początkowym pliku. \end{enumerate} \\ \hline
 		Wynik & Pozytywny. \\ \hline
 	\end{tabular}
 	\caption{Raport z drugiego testu}
@@ -273,7 +273,7 @@ Testy akceptacyjne zostały przeprowadzone w celu sprawdzenia, czy aplikacja spe
 	\begin{tabular}{|l|p{0.6\linewidth}|}
 		\hline
 		Testowane wymaganie & \modulename{Użytkownik będzie mógł wyświetlić informacje związane z wybranym węzłem drzewa, a także przybliżać i oddalać cały graf.} \\ \hline
-		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z drzewem. \item Naciśnij przycisk \modulename{Inspect tree}. \item Przy użyciu prawego przycisku myszki poruszaj się po obszarze rysowania. \item Używając kółka myszki, przybliż i oddal wizualizowane drzewo. \item Kliknij dowolny wierzchołek drzewa lewym przyskiem myszki i sprawdź, czy panel z prawej strony wyświetla informacje związane z wybranym wierzchołkiem. \end{enumerate} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z drzewem. \item Naciśnij przycisk \modulename{Inspect tree}. \item Przy użyciu prawego przycisku myszki chwyć za obszar rysowania i poruszaj się po wizualizacji. \item Używając kółka myszki, przybliż i oddal wizualizowane drzewo. \item Kliknij dowolny wierzchołek drzewa lewym przyskiem myszki i sprawdź, czy panel z prawej strony wyświetla informacje związane z wybranym wierzchołkiem. \end{enumerate} \\ \hline
 		Wynik & Pozytywny. \\ \hline
 	\end{tabular}
 	\caption{Raport z trzeciego testu}
