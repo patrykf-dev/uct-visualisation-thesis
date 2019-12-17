@@ -25,7 +25,7 @@ def read_integer(file):
 
 def read_float(file):
     content_bytes = file.read(_FLOAT_SIZE)
-    return struct.unpack(_FLOAT_PACK_FORMAT, content_bytes)
+    return struct.unpack(_FLOAT_PACK_FORMAT, content_bytes)[0]
 
 
 _INT_SIZE = 4
