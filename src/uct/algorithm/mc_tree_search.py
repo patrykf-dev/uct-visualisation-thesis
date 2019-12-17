@@ -35,10 +35,14 @@ class MonteCarloTreeSearch:
         start_time = time.time()
         elapsed_time_ms = 0
         max_time = self.settings.get_internal_time()
+        progress_fraction = 0
         while elapsed_time_ms < max_time:
             self._perform_iteration()
             elapsed_time_ms = (time.time() - start_time) * 1000
-            self.iteration_performed.fire(self, elapsed_time_ms / max_time)
+            progress_fraction = elapsed_time_ms / max_time
+            self.iteration_performed.fire(self, progress_fraction)
+        if progress_fraction != 1:
+            self.iteration_performed.fire(self, 1)
         return self._select_result_node()
 
     def _perform_iteration(self):
