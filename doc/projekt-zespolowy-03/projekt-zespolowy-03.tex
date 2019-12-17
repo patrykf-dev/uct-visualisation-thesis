@@ -10,6 +10,7 @@
 \usepackage{caption}
 \captionsetup[table]{name=Tab.}
 \captionsetup[figure]{name=Rys.}
+\usepackage{hyperref}
 
 % Don't know why, it starts from 2
 \addtocounter{table}{-1}
@@ -104,6 +105,31 @@
 \tableofcontents
 	
 \section{Instrukcja uruchamiania}
+Aplikacja została napisana w języku \textit{Python}, zatem klient powinien zainstalować jego interpreter, który może znaleźć na stronie: \url{https://www.python.org/downloads/}. Wymagana wersja to Python 3.7.2 lub nowsza.\\
+Do tak ściągniętego interpretera załączony jest również \textit{pip} - menedżer pakietów Python. Za jego pomocą należy pobrać niezbędny pakiet. Przed pobraniem pakietów zalecane jest uaktualnienie menedżera następującą komendą:
+\begin{itemize}
+	\item na Windowsie:
+	\begin{lstlisting}
+	python -m pip install -U pip\end{lstlisting}
+	\item na Linuxie:
+	\begin{lstlisting}
+	pip install -U pip\end{lstlisting}
+\end{itemize}
+Następnie, należy uruchomić następującą komendę w konsoli, aby pobrać pakiet PyQt5, o którym więcej będzie w ostatnim rozdziale dokumentu:
+\begin{lstlisting}
+pip install PyQt5
+\end{lstlisting}
+Ze względu na fakt, iż Python jest językiem interpretowanym, program również należy uruchomić \underline{z poziomu konsoli}. 
+Należy zatem przejść do katalogu \textbf{/uct-visualization/src/main\_application} i wpisać komendę:
+\begin{lstlisting}
+python main_application_window.py
+\end{lstlisting}
+lub uruchomić program z głównego katalogu aplikacji \textbf{/uct-visualization}:
+\begin{lstlisting}
+python /uct-visualization/src/main_application/main_application_window.py
+\end{lstlisting}
+Po uruchomieniu powinniśmy zobaczyć główne okno aplikacji o nazwie \textit{UCT Visualizer}.
+
 \section{Poradnik użytkowania}
 \section{Architektura systemu}
 \section{Użyte technologie}
