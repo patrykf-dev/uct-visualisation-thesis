@@ -55,10 +55,11 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         return False
 
     def set_current_tree(self):
-        path = self.trees_paths[self.tree_index]
-        serializator = self.binary_serializator if path.endswith("tree") else self.csv_serializator
-        root = serializator.get_node_from_path(path)
-        self.tree = MonteCarloTree(root=root)
+        if self.trees_paths:
+            path = self.trees_paths[self.tree_index]
+            serializator = self.binary_serializator if path.endswith("tree") else self.csv_serializator
+            root = serializator.get_node_from_path(path)
+            self.tree = MonteCarloTree(root=root)
 
     def on_resize(self, event):
         set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
