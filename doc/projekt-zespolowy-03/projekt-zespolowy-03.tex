@@ -75,7 +75,7 @@
 	breaklines=true,                 
 	captionpos=b,                    
 	keepspaces=true,                 
-	numbers=left,                    
+	numbers=none,                    
 	numbersep=5pt,                  
 	showspaces=false,                
 	showstringspaces=false,
@@ -149,10 +149,12 @@ Dostępne funkcje:\\
 	\item Wybór jednego z trzech trybów gry:
 	\subitem $\bullet$ \textit{gracz vs PC} - po wykonanym ruchu gracza algorytm oblicza ruch komputera i wykonuje go
 	\subitem $\bullet$ \textit{PC vs PC }- użytkownik decyduje, kiedy mają wykonać się ruchy komputera
-	\subitem $\bullet$ \textit{gracz vs gracz} - rozgrywka dwóch graczy, co wiąże się z brakiem wizualizacji.\\
+	\subitem $\bullet$ \textit{gracz vs gracz} - rozgrywka dwóch graczy, co wiąże się z brakiem wizualizacji.\\\\\\
 	\item Ustawienie parametrów ruchu algorytmu UCT:
-	\subitem $\bullet$ ilość wykonanych iteracji - im więcej ich będzie, tym więcej razy powtórzone będą kroki symulacji kolejnego ruchu przez komputer, co przekłada się na jego większą dokładność i trafność. Minusem jest większy czas oczekiwania na wykonaniu ruchu. (przedział: 1-10000)
-	\subitem $\bullet$ maksymalny czas na wykonanie ruchu przez komputer - opcja alternatywna dla powyższej. Zamiast podawać odgórnie ilość iteracji, użytkownik może podać czas, w jakim komputer będzie wyznaczał ruch. Po upłynięciu czasu ostatnia symulacja jest dogrywana. (przedział: 1000ms - 30000ms).\\
+	\begin{itemize}
+		\item ilość wykonanych iteracji - im więcej ich będzie, tym więcej razy powtórzone będą kroki symulacji kolejnego ruchu przez komputer, co przekłada się na jego większą dokładność i trafność. Minusem jest większy czas oczekiwania na wykonaniu ruchu. (przedział: 1-10000)
+		\item maksymalny czas na wykonanie ruchu przez komputer - opcja alternatywna dla powyższej. Zamiast podawać odgórnie ilość iteracji, użytkownik może podać czas, w jakim komputer będzie wyznaczał ruch. Po upłynięciu czasu ostatnia symulacja jest dogrywana. (przedział: 1000ms - 30000ms).\\
+	\end{itemize}
 	\item Ucięcie iteracji po przekroczeniu arbitralnie ustalonej liczby ruchów danego ``playoutu'' (symulacji rozgrywki w obrębie iteracji). Opcja może być włączona lub wyłączona. Dla tego drugiego przypadku gra kończy się tylko wtedy, gdy symulacja gry zakończy się w naturalny sposób.\\
 	\item Włączenie animacji rozrostu drzewa - pozwala obserwować jak zmieniało się drzewo w trakcie symulacji ruchu - drzewo wyświetlane jest po każdej iteracji algorytmu. W przypadku wybrania opcji maksymalnego czasu na wykonanie ruchu przez komputer ta opcja uwzględni również czas rysowania wszystkich drzew, co wiąże się ze stratą wydajności algorytmu.\\
 	\item Wybór kolorów krawędzi - dla ruchów najczęściej i najrzadziej odwiedzanych przez algorytm. Kolory pozostałych krawędzi będą gradientami podanych kolorów - dla powyższego przykłądowego okna, krawędzie częściej odwiedzanych węzłów będą bardziej zielone i mniej czerwone.\\
