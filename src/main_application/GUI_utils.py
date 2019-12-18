@@ -14,14 +14,17 @@ PYQT_KEY_CODE_RIGHT = 16777236
 TREES_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "trees")
 
 
-def center_window_on_screen(window):
+def amend_window_position_on_screen(window, top_padding=40):
     """
-    Function is responsible for centering the given window on the screen.
+    Function is responsible for centering X of the given window on the screen.
+    Y position is default 40, can be changed with the parameter 'top_padding'
+    :param window: window we are going to center
+    :param top_padding: number of pixels the window will be under the upper bound of the screen
     """
     bounds = window.frameGeometry()
     screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
     center_point = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
-    center_point.setY(int(bounds.height() / 2))  # Just for debugging purposes
+    center_point.setY(int(bounds.height() / 2) + top_padding)
     bounds.moveCenter(center_point)
     window.move(bounds.topLeft())
 

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QMessageBox
 
 from src.chess.algorithm_relay.chess_state import ChessState
 from src.chess.chess_canvas import ChessCanvas
-from src.main_application.GUI_utils import center_window_on_screen, get_button, get_non_resizable_label, \
+from src.main_application.GUI_utils import amend_window_position_on_screen, get_button, get_non_resizable_label, \
     LARGE_FONT_BOLD, show_dialog
 from src.main_application.enums import Game
 from src.main_application.mc_window_manager import MonteCarloWindowManager
@@ -62,4 +62,4 @@ class GameWindow(QMainWindow):
 
     def showEvent(self, event):
         super().showEvent(event)
-        center_window_on_screen(self)
+        amend_window_position_on_screen(self)

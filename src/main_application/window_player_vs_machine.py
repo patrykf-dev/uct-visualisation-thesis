@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QGridLayout
 from src.main_application.game_visualization_window import GameVisualizationWindow
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
 
-from src.main_application.GUI_utils import center_window_on_screen
+from src.main_application.GUI_utils import amend_window_position_on_screen
 from src.main_application.gui_settings import DisplaySettings
 from src.main_application.mc_window_manager import MonteCarloWindowManager
 
