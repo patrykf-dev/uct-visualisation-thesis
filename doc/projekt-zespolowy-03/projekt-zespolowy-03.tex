@@ -100,7 +100,8 @@
 \end{titlingpage}
 
 \begin{versionhistory}
-	\vhEntry{1.0}{10.12.2019}{PF|GK}{stworzenie szkicu dokumentu}
+	\vhEntry{1.0}{14.12.2019}{PF|GK}{stworzenie szkicu dokumentu}
+	\vhEntry{1.1}{17.12.2019}{PF|GK}{stworzenie pierwszej wersji dokumentu}
 \end{versionhistory}
 \tableofcontents
 	
@@ -198,5 +199,172 @@ Dostępne funkcje:\\
 Zamknięcie tego okna również nie kończy programu - okno menu głównego jest ciągle aktywne i może być wykorzystane ponownie.
 
 \section{Architektura systemu}
+Aplikacja jest podzielona na pięć oddzielnych modułów: \modulename{algorytm}, \modulename{serializacja}, \modulename{wizualizacja}, \modulename{gry}, które będą funkcjonować w obrębie nadrzędnego modułu - \modulename{aplikacji głównej}. 
+
+
+\subsection{Diagram klas głównych komponentów}
+
+\noindent Rysunek \ref{rys:umldiagrammain} ukazuje diagram klas najważniejszych komponentów związanych z modułami \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.9\textwidth]{umldiagram}
+	\caption{Diagram klas głównych komponentów}
+	\label{rys:umldiagrammain}
+\end{figure}
+\noindent Zgodnie z diagramem, klasy \code{MonteCarloTreeSearch}, \code{TreeVisualiser} oraz \code{Serializator} są pośrednio lub bezpośrednie zależne od klasy \code{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \modulename{Algorytm}, \modulename{Wizualizacja} i \modulename{Serializacja}. Klasa \code{MonteCarloNode} przechowuje referencję do swojego rodzica oraz wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa.\\
+
+\noindent Metoda \code{calculate\textunderscore next\textunderscore move} klasy \code{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Algorytm zapisuje informacje o rozgrywanych playoutach w polach klasy \code{MonteCarloNodeDetails} analizowanych wierzchołków. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \code{GameMove} i \code{GameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \code{GamePhase}.
+
+\clearpage
+
+\noindent \code{TreeVisualiser} jest głównym komponentem modułu \modulename{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka, takie jak jego współrzędne czy kolor, zawarte są w polach klasy \code{MonteCarloVisualisationDetails}.\\
+
+\noindent \code{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
+
+
+\subsection{Diagram stanów aplikacji}
+\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \modulename{człowiek kontra maszyna}. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{statediagram}
+	\caption{Diagram stanów aplikacji}
+	\label{rys:statediagram}
+\end{figure}
+
+\noindent Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu \modulename{Rozgrywka}, zawierającego cztery wewnętrzne stany. Będac w stanie \modulename{Rozgrywka}, aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
+
+\noindent Istotna z punktu widzenia użytkownika jest możliwość serializowania wygenerowanego drzewa lub jego wizualizacja zaraz po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany \modulename{Serializacja wygenerowanego drzewa} oraz \modulename{Wyświetlanie wygenerowanego drzewa}.
+\clearpage
+
+\subsection{Diagram sekwencji rozgrywki}
+Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \modulename{człowiek kontra maszyna}.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{play_with_pc_sequence}
+	\caption{Diagram sekwencji rozgrywki}
+	\label{rys:sequencegame}
+\end{figure}
+
+\noindent Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły \modulename{Aplikacja główna}, \modulename{Gra} i \modulename{Algorytm}. Zgodnie z założeniami, \modulename{Aplikacja główna} jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
+
+\noindent Użytkownik końcowy za pomocą menu aplikacji głównej może ustawić parametry gry i następnie włączyć ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC - wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \modulename{Algorytm} (i vice versa). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika poprzez okno aplikacji głównej.\\
+
+\noindent Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \modulename{Algorytm}, który pobiera stan rozgrywki z modułu \modulename{Gra}.
+
+\clearpage
+\subsection{Diagram sekwencji eksportu drzewa}
+Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na rysunku \ref{rys:sequencegame}. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{serialize_sequence_simplified}
+	\caption{Diagram sekwencji eksportu drzewa}
+	\label{rys:sequenceserialize}
+\end{figure}
+
+\noindent Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do specjalnego folderu na tego typu pliki i posiada datę wygenerowania.\\
+
+\noindent Jest to diagram dla ustawienia \modulename{człowiek kontra maszyna}, jednak w przypadku \modulename{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
+
+\clearpage
+\subsection{Diagram sekwencji wizualizacji}
+Rysunek \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i wykonywania ruchów wygląda tak jak na rysunku \ref{rys:sequencegame}. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{visualization_sequence_simplified}
+	\caption{Diagram sekwencji wizualizacji}
+	\label{rys:sequencevisualise}
+\end{figure}
+
+\noindent Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Gdy żądanie jest z poziomu rozgrywki, komponent \modulename{Aplikacja główna} komunikuje się z komponentem \modulename{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi w nowym oknie. \\
+
+\noindent Drugi sposób (żądanie analizy drzewa z menu głównego) wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia - wymaga to komunikacji modułu \modulename{Wizualizacja} i \modulename{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanym drzewem.\\
+
+\noindent Interakcja wyżej wymienionych komponentów wygląda tak samo również w przypadku, gdy użytkownik poprosi o przeanalizowanie większej ilości drzew za jednym razem.
+
+
+\section{Raport z testów akceptacyjnych}
+Testy akceptacyjne zostały przeprowadzone w celu sprawdzenia, czy aplikacja spełnia założenia opisane w dokumentacji wymagań projektu. Test \ref{tab:test1} konfrontuje założenia modułu \modulename{Gry}, test \ref{tab:test2} - modułu \modulename{Serializacja}, a pozostałe testy weryfikują założenia modułu \modulename{Wizualizacja}. \\
+
+\noindent Testy akceptacyjne zostały wykonane na komputerze:
+\begin{itemize}
+	\item z zainstalowanym systemem operacyjnym \modulename{Windows 10 Education N},
+	\item z zainstalowanym interpreterem języka \modulename{Python 3.7.2} i biblioteką \modulename{PyQt5},
+	\item wyposażonym w procesor \modulename{Intel Core i7-8700k @3.70 GHz},
+	\item wyposażonym w kartę graficzną \modulename{NVIDIA GeForce GTX 1060 6GB},
+	\item wyposażonym w 32GB pamięci RAM.
+\end{itemize}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|p{0.6\linewidth}|}
+	\hline
+	Testowane wymaganie & \modulename{Użytkownik będzie mógł wybrać jedną z dwóch przykładowych gier, a do wyboru będzie miał trzy tryby rozgrywki.} \\ \hline
+	Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz opcję \modulename{Chess}. \item Z menu głównego aplikacji wybierz opcję \modulename{Player vs player} i sprawdź tryb rozgrywki dla dwóch graczy. \item Z menu głównego aplikacji wybierz opcję \modulename{Player vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz opcję \modulename{PC vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz \modulename{Mancala} i powtórz kroki 2-5. \end{enumerate} \\ \hline
+	Wynik & Pozytywny. \\ \hline
+\end{tabular}
+\caption{Raport z pierwszego testu}
+\label{tab:test1}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|p{0.6\linewidth}|}
+		\hline
+		Testowane wymaganie & \modulename{Użytkownik będzie mógł zapisać analizowane drzewa do pliku csv, do pliku binarnego oraz do bitmapy.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z zserializowanym drzewem. \item Naciśnij przycisk \modulename{Inspect tree}. \item Naciśnij przycisk \modulename{Save to csv file}. \item Naciśnij przycisk \modulename{Save to binary file}. \item Naciśnij przycisk \modulename{Save to bitmap file}. \item Sprawdź, czy bitmapa wygenerowana w kroku 5 odpowiada drzewu z pliku początkowego. \item Z menu głównego aplikacji wybierz ścieżkę plików wygenerowanych w kroku 3 i 4, żeby sprawdzić, czy zapisane drzewa wizualizowane są tak samo jak w początkowym pliku. \end{enumerate} \\ \hline
+		Wynik & Pozytywny. \\ \hline
+	\end{tabular}
+	\caption{Raport z drugiego testu}
+	\label{tab:test2}
+\end{table}
+
+\clearpage
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|p{0.6\linewidth}|}
+		\hline
+		Testowane wymaganie & \modulename{Użytkownik będzie mógł wyświetlić informacje związane z wybranym węzłem drzewa, a także przybliżać i oddalać cały graf.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z drzewem. \item Naciśnij przycisk \modulename{Inspect tree}. \item Przy użyciu prawego przycisku myszki chwyć za obszar rysowania i poruszaj się po wizualizacji. \item Używając kółka myszki, przybliż i oddal wizualizowane drzewo. \item Kliknij dowolny wierzchołek drzewa lewym przyskiem myszki i sprawdź, czy panel z prawej strony wyświetla informacje związane z wybranym wierzchołkiem. \end{enumerate} \\ \hline
+		Wynik & Pozytywny. \\ \hline
+	\end{tabular}
+	\caption{Raport z trzeciego testu}
+	\label{tab:test3}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|p{0.6\linewidth}|}
+		\hline
+		Testowane wymaganie & \modulename{Dla drzew do 100 000 wierzchołków wizualizacja nie powinna zajmować więcej niż 3s.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do pliku \modulename{tree\textunderscore 100k.csv}. \item Naciśnij przycisk \modulename{Inspect tree}. \end{enumerate} \\ \hline
+		Wynik & Pozytywny - deserializacja, ulepszony algorytm Walkera i wyświetlenie drzewa z pliku zajęło 2.802s. \\ \hline
+	\end{tabular}
+	\caption{Raport z czwartego testu}
+	\label{tab:test4}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|p{0.6\linewidth}|}
+		\hline
+		Testowane wymaganie & \modulename{Dla drzew do 250 000 wierzchołków wizualizacja nie powinna zajmować więcej niż 5s.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do pliku \modulename{tree\textunderscore 250k.csv}. \item Naciśnij przycisk \modulename{Inspect tree}. \end{enumerate} \\ \hline
+		Wynik & Pozytywny - deserializacja, ulepszony algorytm Walkera i wyświetlenie drzewa z pliku zajęło 4.626s. \\ \hline
+	\end{tabular}
+	\caption{Raport z piątego testu}
+	\label{tab:test5}
+\end{table}
+
+Wszystkie testy akceptacyjne zakończyły się pozytywnie, a więc wymagania zostały spełnione.
+
+
 \section{Użyte technologie}
+W naszym projekcie zdecydowaliśmy się skorzystać z:
+\begin{enumerate}
+	\item Języka \modulename{Python} w wersji 3.7.2.
+	\item Biblioteki \modulename{VisPy} w wersji 0.6.3, która udostępnia komponenty związane z wizualizacją graficzną. Wykorzystujemy tę bibliotekę w połączeniu z \modulename{OpenGL} w wersji 2.1. Biblioteka \modulename{VisPy} jest stworzona w oparciu o licencję \modulename{BSD}, co w kontekście projektu na pracę inżynierską pozwala na modyfikowanie i wykorzystywanie jej.
+	\item \modulename{PyQt5} - nakładki na bibliotekę Qt, umożliwiającą tworzenie interfejsu graficznego. Dla projektów takich jak praca inżynierska, \modulename{PyQt} dystrybuowana jest na zasadach \modulename{GNU General Public License}.
+\end{enumerate}
 \end{document}
