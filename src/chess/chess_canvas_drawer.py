@@ -35,8 +35,6 @@ class ChessCanvasDrawer:
                                  tile.tile_width, tile.tile_height,
                                  QColor(tile.color[0], tile.color[1], tile.color[2], 255))
                 tile_figure = self.chess_manager.board.figures.get_figure_at((i, j))
-                tile_text = f"{(i, j)}"
-                painter.drawText(tile.start_position[0], tile.start_position[1], 100, 100, 0, tile_text)
                 self._draw_figure(tile_figure, tile.start_position, painter)
 
         self._draw_moves(painter)
