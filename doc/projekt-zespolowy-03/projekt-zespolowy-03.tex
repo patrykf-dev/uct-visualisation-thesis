@@ -130,7 +130,7 @@ python /uct-visualization/src/main_application/main_application_window.py
 \end{lstlisting}
 Po uruchomieniu powinniśmy zobaczyć główne okno aplikacji o nazwie \textit{UCT Visualizer}.
 
-\section{Poradnik użytkowania}
+\section{Poradnik użytkowania i opis funkcjonalności}
 Dla wygodnej interakcji użytkownika z programem przygotowany został specjalny interfejs graficzny. Możemy wyróżnić trzy główne okna.
 \subsection{Okno startowe aplikacji}
 Jest to główne okno programu, w którym użytkownik może wybrać, czy chce zagrać w grę, czy wczytać i obejrzeć przygotowane wcześniej pliki drzew. Okno prezentuje się następująco:
@@ -141,26 +141,51 @@ Dostępne funkcje:\\
 \begin{enumerate}
 	\item Wybór jednej z dwóch gier:
 	\subitem $\bullet$ mancala
-	\subitem $\bullet$ szachy\\
+	\subitem $\bullet$ szachy.\\
 	\item Wybór jednego z trzech trybów gry:
 	\subitem $\bullet$ gracz vs PC - po wykonanym ruchu gracza algorytm oblicza ruch komputera i wykonuje go
 	\subitem $\bullet$ PC vs PC - użytkownik decyduje, kiedy mają wykonać się ruchy komputera
-	\subitem $\bullet$ gracz vs gracz - rozgrywka dwóch graczy, co wiąże się z brakiem wizualizacji\\
+	\subitem $\bullet$ gracz vs gracz - rozgrywka dwóch graczy, co wiąże się z brakiem wizualizacji.\\
 	\item Ustawienie parametrów ruchu algorytmu UCT:
 	\subitem $\bullet$ ilość wykonanych iteracji - im więcej ich będzie, tym więcej razy powtórzone będą kroki symulacji kolejnego ruchu przez komputer, co przekłada się na jego większą dokładność i trafność. Minusem jest większy czas oczekiwania na wykonaniu ruchu. (przedział: 1-10000)
-	\subitem $\bullet$ maksymalny czas na wykonanie ruchu przez komputer - opcja alternatywna dla powyższej. Zamiast podawać odgórnie ilość iteracji, użytkownik może podać czas, w jakim komputer będzie wyznaczał ruch. Po upłynięciu czasu ostatnia symulacja jest dogrywana. (przedział: 1000ms - 30000ms)\\
+	\subitem $\bullet$ maksymalny czas na wykonanie ruchu przez komputer - opcja alternatywna dla powyższej. Zamiast podawać odgórnie ilość iteracji, użytkownik może podać czas, w jakim komputer będzie wyznaczał ruch. Po upłynięciu czasu ostatnia symulacja jest dogrywana. (przedział: 1000ms - 30000ms).\\
 	\item Ucięcie iteracji po przekroczeniu arbitralnie ustalonej liczby ruchów danego ``playoutu'' (symulacji rozgrywki w obrębie iteracji). Opcja może być włączona lub wyłączona. Dla tego drugiego przypadku gra kończy się tylko wtedy, gdy symulacja gry zakończy się w naturalny sposób.\\
 	\item Włączenie animacji rozrostu drzewa - pozwala obserwować jak zmieniało się drzewo w trakcie symulacji ruchu - drzewo wyświetlane jest po każdej iteracji algorytmu. W przypadku wybrania opcji maksymalnego czasu na wykonanie ruchu przez komputer ta opcja uwzględni również czas rysowania wszystkich drzew, co wiąże się ze stratą wydajności algorytmu.\\
 	\item Wybór kolorów krawędzi - dla ruchów najczęściej i najrzadziej odwiedzanych przez algorytm. Kolory pozostałych krawędzi będą gradientami podanych kolorów - dla powyższego przykłądowego okna, krawędzie częściej odwiedzanych węzłów będą bardziej zielone i mniej czerwone.\\
-	\item Wybór drzew do przeglądu - po kliknięciu przycisku \textit{Select} otwiera się dodatkowe okno, które prosi użytkownika o wybranie pliku bądź zestawu plików drzew do analizy. Przyjmowane będą pliki w formacie .csv i .tree, w ktorych dane zapisane będą według ustalonego schematu. Zakładamy poprawność wczytywanych plików.
+	\item Wybór drzew do przeglądu - po kliknięciu przycisku \textit{Select} otwiera się dodatkowe okno, które prosi użytkownika o wybranie pliku bądź zestawu plików drzew do analizy. Przyjmowane będą pliki w formacie .csv i binarnym (.tree), w ktorych dane zapisane będą według ustalonego schematu. Zakładamy poprawność wczytywanych plików. W polu tekstowym wyświetli się wówczas ścieżka do wczytanego pliku lub liczba plików w przypadku wczytania ich większej liczby.\\
 \end{enumerate}
+Aby rozpocząć rozgrywkę, należy nacisnąć przycisk \textit{Play}. Aby wizualizować wczytane drzewa - \textit{Inspect tree}.
 \subsection{Okno podglądu drzewa}
-\begin{center}
-	\includegraphics[width=\textwidth]{game-window}
-\end{center}
-\subsection{Okno gry i wizualizacji}
+Okno to umożliwia wizualizację drzew z wczytanych plików oraz sprawne poruszanie się po niej, wraz z możliwością wyświetlania statystyk poszczególnych węzłów:
 \begin{center}
 	\includegraphics[width=0.8\textwidth]{tree-window}
+\end{center}
+Dostępne funkcje:\\
+\begin{enumerate}
+	\item Przybliżanie i oddalanie drzewa za pomocą scrolla. Kursor musi znajdować się nad częścią okna, gdzie wyświetlane jest drzewo.\\
+	\item Przesuwanie drzewa - należy przytrzymać prawy przycisk myszy i poruszać myszką.\\
+	\item Wyświetlenie statystyk węzła - należy kliknąć lewym przyciskiem myszy na dany węzeł. Po wybraniu węzła, po prawej stronie wyświetlają się jego statystyki:
+	\subitem $\bullet$ ilość wszystkich wierzchołków drzewa
+	\subitem $\bullet$ identyfikator węzłą
+	\subitem $\bullet$ ilość węzłów-dzieci
+	\subitem $\bullet$ nazwa stanu
+	\subitem $\bullet$ nazwa ruchu
+	\subitem $\bullet$ liczba odwiedzin węzła przez algorytm
+	\subitem $\bullet$ suma wszystkich wygranych (łącznie wyniki poztywne i negatywne)
+	\subitem $\bullet$ średnia wygrana - suma wygranych $\div$ ilość odwiedzin. Wartość z przedziału $[0, 1]$
+	\subitem $\bullet$ numer gracza, który wykonał ruch dla danego węzła (1 lub 2).\\
+	\item Wyśrodkowanie drzewa - resetuje stopień przybliżenie i przesunięcia.\\
+	\item Zapis drzewa:
+	\subitem $\bullet$ w formacie .csv
+	\subitem $\bullet$ w formacie binarnym (.tree)
+	\subitem $\bullet$ jako bitmapa (.png).\\
+	\item Zmiana drzewa w sekwencji - możemy robić to za pomocą przycisków \textit{<<} i \textit{>>} na ekranie lub za pomocą strzałek na klawiaturze. Wyświetlana jest nazwa aktualnie przeglądanego pliku oraz to, którym jest on plikiem z kolei.\\
+\end{enumerate}
+Zamknięcie tego okna nie kończy programu - okno menu głównego jest ciągle aktywne i może być wykorzystane ponownie.
+
+\subsection{Okno gry i wizualizacji}
+\begin{center}
+	\includegraphics[width=\textwidth]{game-window}
 \end{center}
 
 \section{Architektura systemu}
