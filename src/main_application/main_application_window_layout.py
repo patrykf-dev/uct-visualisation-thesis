@@ -137,8 +137,8 @@ class MainApplicationWindowLayout:
         layout = QGridLayout()
         new_widget.setLayout(layout)
         layout.addWidget(get_non_resizable_label("Game"), 0, 0)
-        layout.addWidget(self.chess_button, 1, 0)
-        layout.addWidget(self.mancala_button, 2, 0)
+        layout.addWidget(self.mancala_button, 1, 0)
+        layout.addWidget(self.chess_button, 2, 0)
         main_layout.addWidget(new_widget, 0, 0, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
 
     def _add_right_panel(self, main_layout):

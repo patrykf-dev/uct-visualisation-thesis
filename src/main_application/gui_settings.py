@@ -2,7 +2,7 @@ class MonteCarloSettings:
     def __init__(self):
         self.max_iterations = 30
         self.max_time = 4 * 1000
-        self.max_moves_per_iteration = 50
+        self.max_moves_per_iteration = 25
         self.limit_iterations = True
         self.limit_moves = True
 
