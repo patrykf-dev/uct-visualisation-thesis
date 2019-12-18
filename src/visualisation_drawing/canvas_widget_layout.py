@@ -14,9 +14,9 @@ class MonteCarloTreeWidgetLayout:
     def __init__(self, main_widget, canvas: MonteCarloTreeCanvas, sequences):
         self.canvas = canvas
         self.reset_button = get_button("Reset view")
-        self.serialize_csv_radiobutton = get_radiobutton("Save to csv file")
-        self.serialize_binary_radiobutton = get_radiobutton("Save to binary file")
-        self.save_image_radiobutton = get_radiobutton("Save to bitmap")
+        self.serialize_csv_radiobutton = get_radiobutton("Save as csv file")
+        self.serialize_binary_radiobutton = get_radiobutton("Save as binary file")
+        self.save_image_radiobutton = get_radiobutton("Save as bitmap")
         self.serialize_button = get_button("Save tree")
         self.node_panel_widget = None
         self.tree_details_panel_widget = None
@@ -77,6 +77,15 @@ class MonteCarloTreeWidgetLayout:
             left_right_layout.addWidget(self.left_button, 1, 0)
             left_right_layout.addWidget(self.right_button, 1, 1)
 
+    def _create_serialization_button_layout(self):
+        self.serialization_widget = QWidget()
+        serialization_layout = QGridLayout()
+        self.serialization_widget.setLayout(serialization_layout)
+        serialization_layout.addWidget(self.serialize_csv_radiobutton, 0, 0)
+        serialization_layout.addWidget(self.serialize_binary_radiobutton, 1, 0)
+        serialization_layout.addWidget(self.save_image_radiobutton, 2, 0)
+        serialization_layout.addWidget(self.serialize_button, 1, 1, alignment=QtCore.Qt.AlignCenter)
+
     def _create_layout(self, main_widget, sequences):
         self.serialize_csv_radiobutton.setChecked(True)
 
@@ -88,6 +97,7 @@ class MonteCarloTreeWidgetLayout:
         self._set_tree_details_panel_color((160, 160, 160))
         self._set_node_panel_color((160, 160, 160))
 
+        self._create_serialization_button_layout()
         if sequences:
             self._create_left_right_button_widget()
             if len(self.canvas.trees_paths) >= 1:
@@ -108,12 +118,9 @@ class MonteCarloTreeWidgetLayout:
 
         main_layout.addWidget(panels_widget, 0, 1)
         main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.serialize_csv_radiobutton, 2, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.serialize_binary_radiobutton, 3, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.save_image_radiobutton, 4, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.serialize_button, 5, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.serialization_widget, 2, 0, alignment=QtCore.Qt.AlignCenter)
         if sequences:
-            main_layout.addWidget(self.left_right_widget, 6, 0, alignment=QtCore.Qt.AlignCenter)
+            main_layout.addWidget(self.left_right_widget, 3, 0, alignment=QtCore.Qt.AlignCenter)
 
     def _get_panel(self, labels, width, height):
         rc = QWidget()
