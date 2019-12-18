@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
 
 from src.main_application.GUI_utils import get_button, get_non_resizable_label, \
-    get_box_background_stylesheet
+    get_box_background_stylesheet, get_radiobutton
 from src.uct.algorithm.mc_node import MonteCarloNode
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
@@ -14,9 +14,10 @@ class MonteCarloTreeWidgetLayout:
     def __init__(self, main_widget, canvas: MonteCarloTreeCanvas, sequences):
         self.canvas = canvas
         self.reset_button = get_button("Reset view")
-        self.serialize_csv_button = get_button("Save to csv file")
-        self.serialize_binary_button = get_button("Save to binary file")
-        self.save_image_button = get_button("Save to bitmap")
+        self.serialize_csv_radiobutton = get_radiobutton("Save to csv file")
+        self.serialize_binary_radiobutton = get_radiobutton("Save to binary file")
+        self.save_image_radiobutton = get_radiobutton("Save to bitmap")
+        self.serialize_button = get_button("Save tree")
         self.node_panel_widget = None
         self.tree_details_panel_widget = None
         self.tree_details_labels = [
@@ -77,6 +78,8 @@ class MonteCarloTreeWidgetLayout:
             left_right_layout.addWidget(self.right_button, 1, 1)
 
     def _create_layout(self, main_widget, sequences):
+        self.serialize_csv_radiobutton.setChecked(True)
+
         main_layout = QGridLayout()
         main_widget.setLayout(main_layout)
 
@@ -105,11 +108,12 @@ class MonteCarloTreeWidgetLayout:
 
         main_layout.addWidget(panels_widget, 0, 1)
         main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.serialize_csv_button, 2, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.serialize_binary_button, 3, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.save_image_button, 4, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.serialize_csv_radiobutton, 2, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.serialize_binary_radiobutton, 3, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.save_image_radiobutton, 4, 0, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(self.serialize_button, 5, 0, alignment=QtCore.Qt.AlignCenter)
         if sequences:
-            main_layout.addWidget(self.left_right_widget, 5, 0, alignment=QtCore.Qt.AlignCenter)
+            main_layout.addWidget(self.left_right_widget, 6, 0, alignment=QtCore.Qt.AlignCenter)
 
     def _get_panel(self, labels, width, height):
         rc = QWidget()

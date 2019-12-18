@@ -23,7 +23,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def _handle_reset_button_clicked_event(self):
         self.layout.canvas.reset_view()
 
-    def _handle_serialize_csv_button_clicked_event(self):
+    def serialize_csv(self):
         if not self.layout.canvas.tree:
             show_eror_dialog("Cannot save an empty tree!")
             return
@@ -32,7 +32,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
             serializator = CsvSerializator()
             serializator.save_node_to_path(self.layout.canvas.tree.root, path)
 
-    def _handle_serialize_binary_button_clicked_event(self):
+    def serialize_binary(self):
         if not self.layout.canvas.tree:
             show_eror_dialog("Cannot save an empty tree!")
             return
@@ -41,11 +41,19 @@ class MonteCarloTreeCanvasWidget(QWidget):
             serializator = BinarySerializator()
             serializator.save_node_to_path(self.layout.canvas.tree.root, path)
 
-    def _handle_save_image_button_clicked_event(self):
+    def save_image(self):
         path, category = QFileDialog.getSaveFileName(self, "Serialize tree", TREES_PATH, "Png files (*.png)")
         if path:
             image = self.layout.canvas.render()
             io.write_png(path, image)
+
+    def _handle_serialize_button_clicked_event(self):
+        if self.layout.serialize_csv_radiobutton.isChecked():
+            self.serialize_csv()
+        elif self.layout.serialize_binary_radiobutton.isChecked():
+            self.serialize_binary()
+        else:
+            return self.save_image()
 
     def _update_tree_info_labels(self):
         current_tree_index = self.canvas.tree_index
@@ -99,9 +107,7 @@ class MonteCarloTreeCanvasWidget(QWidget):
         self.canvas.set_current_tree()
         self.layout = MonteCarloTreeWidgetLayout(self, self.canvas, sequences)
         self.layout.canvas.on_node_clicked += self._handle_node_clicked_event
-        self.layout.serialize_csv_button.clicked.connect(self._handle_serialize_csv_button_clicked_event)
-        self.layout.serialize_binary_button.clicked.connect(self._handle_serialize_binary_button_clicked_event)
-        self.layout.save_image_button.clicked.connect(self._handle_save_image_button_clicked_event)
+        self.layout.serialize_button.clicked.connect(self._handle_serialize_button_clicked_event)
         self.layout.reset_button.clicked.connect(self._handle_reset_button_clicked_event)
         if sequences:
             self._update_tree_info_labels()
