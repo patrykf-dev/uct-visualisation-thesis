@@ -143,9 +143,9 @@ Dostępne funkcje:\\
 	\subitem $\bullet$ mancala
 	\subitem $\bullet$ szachy.\\
 	\item Wybór jednego z trzech trybów gry:
-	\subitem $\bullet$ gracz vs PC - po wykonanym ruchu gracza algorytm oblicza ruch komputera i wykonuje go
-	\subitem $\bullet$ PC vs PC - użytkownik decyduje, kiedy mają wykonać się ruchy komputera
-	\subitem $\bullet$ gracz vs gracz - rozgrywka dwóch graczy, co wiąże się z brakiem wizualizacji.\\
+	\subitem $\bullet$ \textit{gracz vs PC} - po wykonanym ruchu gracza algorytm oblicza ruch komputera i wykonuje go
+	\subitem $\bullet$ \textit{PC vs PC }- użytkownik decyduje, kiedy mają wykonać się ruchy komputera
+	\subitem $\bullet$ \textit{gracz vs gracz} - rozgrywka dwóch graczy, co wiąże się z brakiem wizualizacji.\\
 	\item Ustawienie parametrów ruchu algorytmu UCT:
 	\subitem $\bullet$ ilość wykonanych iteracji - im więcej ich będzie, tym więcej razy powtórzone będą kroki symulacji kolejnego ruchu przez komputer, co przekłada się na jego większą dokładność i trafność. Minusem jest większy czas oczekiwania na wykonaniu ruchu. (przedział: 1-10000)
 	\subitem $\bullet$ maksymalny czas na wykonanie ruchu przez komputer - opcja alternatywna dla powyższej. Zamiast podawać odgórnie ilość iteracji, użytkownik może podać czas, w jakim komputer będzie wyznaczał ruch. Po upłynięciu czasu ostatnia symulacja jest dogrywana. (przedział: 1000ms - 30000ms).\\
@@ -184,9 +184,18 @@ Dostępne funkcje:\\
 Zamknięcie tego okna nie kończy programu - okno menu głównego jest ciągle aktywne i może być wykorzystane ponownie.
 
 \subsection{Okno gry i wizualizacji}
+Jest to połączenie gry oraz okna podglądu drzewa opisanego powyżej. Znajduje się tu interfejs graficzny toczącej się gry, w którą może ingerować użytkownik i wykonywać swoje ruchy. W górnej części znajduje się pasek postępu, który odzwierciedla ilość wykonanych przez algorytm iteracji podczas wyznaczania następnego ruchu. Po jego wyznaczeniu w środkowej częsci okna ukazuje się wygenerowane drzewo. Jeżeli użytkownik włączył opcję animacji drzew w menu głównym, dodatkowo po każdej iteracji będzie mógł on oglądać rozrost drzewa.\\
 \begin{center}
 	\includegraphics[width=\textwidth]{game-window}
 \end{center}
+Dostępne funkcje:\\
+\begin{enumerate}
+	\item Wszystkie funkcje dostępne w oknie podglądu drzewa poza sekwencjami.\\
+	\item Wykonanie ruchu z pomocą GUI gry, np. kliknięcie danego pola w szachach lub dołka w mancali. Nie dotyczy trybu \textit{gracz vs PC}. Po zakończonej rozgrywce napis \textit{Game in progress} pod polem gry zmienia wartość i oznajmia użytkownikowi, która strona wygrała (lub czy jest remis).\\
+	\item Rozegranie gry od nowa - kliknięcie przycisku \textit{Start over}.\\
+	\item Wykonanie następnego ruchu za pomocą przycisku - tylko w trybie \textit{PC vs PC}. Pozwala na spowodowanie postępu w symulacji rozgrywki komputera z samym sobą. Ruchy za pomocą GUI są wówczas zablokowane.\\
+\end{enumerate}
+Zamknięcie tego okna również nie kończy programu - okno menu głównego jest ciągle aktywne i może być wykorzystane ponownie.
 
 \section{Architektura systemu}
 \section{Użyte technologie}
