@@ -55,27 +55,24 @@ class MonteCarloTreeCanvasWidget(QWidget):
         tree_name = os.path.basename(self.canvas.trees_paths[self.canvas.tree_index])
         self.layout.tree_info_filename_label.setText(tree_name)
 
+    def change_tree_in_sequence(self):
+        self.layout.reset_node_panel_info()
+        self.canvas.tree.reset_vis_data()
+        self._make_arrow_buttons_enabled_or_disabled()
+        self._update_tree_info_labels()
+        tree = self.canvas.tree
+        self.canvas.use_tree_data(tree)
+        self.layout.fill_tree_details_panel_info(tree.data.vertices_count)
+
     def _handle_left_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_previous_tree_as_root()
         if tree_changed:
-            self.layout.reset_node_panel_info()
-            self.canvas.tree.reset_vis_data()
-            self._make_arrow_buttons_enabled_or_disabled()
-            self._update_tree_info_labels()
-            tree = self.canvas.tree
-            self.canvas.use_tree_data(tree)
-            self.layout.fill_tree_details_panel_info(tree.data.vertices_count)
+            self.change_tree_in_sequence()
 
     def _handle_right_arrow_button_clicked_event(self):
         tree_changed = self.canvas.make_next_tree_as_root()
         if tree_changed:
-            self.layout.reset_node_panel_info()
-            self.canvas.tree.reset_vis_data()
-            self._make_arrow_buttons_enabled_or_disabled()
-            self._update_tree_info_labels()
-            tree = self.canvas.tree
-            self.canvas.use_tree_data(tree)
-            self.layout.fill_tree_details_panel_info(tree.data.vertices_count)
+            self.change_tree_in_sequence()
 
     def _make_arrow_buttons_enabled_or_disabled(self):
         current_tree_index = self.canvas.tree_index
