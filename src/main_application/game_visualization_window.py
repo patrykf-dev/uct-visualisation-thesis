@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QGridLayout, QMessageBox
 
 from src.main_application.GUI_utils import show_dialog
-from src.main_application.enums import Game
 from src.main_application.game_window import GameWindow
 from src.main_application.gui_settings import DisplaySettings
 from src.main_application.iteration_progress_widget import IterationProgressWidget

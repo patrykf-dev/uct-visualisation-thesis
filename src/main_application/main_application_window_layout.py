@@ -6,7 +6,7 @@ from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QColorDialog
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
-    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, gray_out_radiobutton_text, show_eror_dialog, \
+    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, show_eror_dialog, \
     get_box_background_stylesheet
 from src.main_application.enums import GameMode, Game
 from src.main_application.gui_settings import MonteCarloSettings, DisplaySettings
