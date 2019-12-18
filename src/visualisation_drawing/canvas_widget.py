@@ -2,7 +2,7 @@ import os
 
 from PyQt5.QtWidgets import QWidget, QFileDialog
 
-from src.main_application.GUI_utils import TREES_PATH
+from src.main_application.GUI_utils import TREES_PATH, PYQT_KEY_CODE_RIGHT, PYQT_KEY_CODE_LEFT
 from src.main_application.GUI_utils import show_eror_dialog
 from src.serialization.serializator_binary import BinarySerializator
 from src.serialization.serializator_csv import CsvSerializator
@@ -85,6 +85,15 @@ class MonteCarloTreeCanvasWidget(QWidget):
         elif current_tree_index == len(self.canvas.trees_paths) - 2:
             self.layout.right_button.setEnabled(True)
 
+    def handle_key_press_event(self, event):
+        if event.key() == PYQT_KEY_CODE_RIGHT:
+            self._handle_right_arrow_button_clicked_event()
+        elif event.key() == PYQT_KEY_CODE_LEFT:
+            self._handle_left_arrow_button_clicked_event()
+
+    def setup_arrow_event_handler(self):
+        self.canvas.native.keyPressEvent = self.handle_key_press_event
+
     def _setup_widget(self, sequences, display_settings, trees_paths=None):
         self.canvas = MonteCarloTreeCanvas(trees_paths=trees_paths, display_settings=display_settings)
         self.canvas.set_current_tree()
@@ -98,3 +107,4 @@ class MonteCarloTreeCanvasWidget(QWidget):
             self._update_tree_info_labels()
             self.layout.left_button.clicked.connect(self._handle_left_arrow_button_clicked_event)
             self.layout.right_button.clicked.connect(self._handle_right_arrow_button_clicked_event)
+            self.setup_arrow_event_handler()
