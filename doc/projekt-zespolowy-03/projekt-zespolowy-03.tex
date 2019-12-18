@@ -157,8 +157,8 @@ Dostępne funkcje:\\
 	\end{itemize}
 	\item Ucięcie iteracji po przekroczeniu arbitralnie ustalonej liczby ruchów danego ``playoutu'' (symulacji rozgrywki w obrębie iteracji). Opcja może być włączona lub wyłączona. Dla tego drugiego przypadku gra kończy się tylko wtedy, gdy symulacja gry zakończy się w naturalny sposób.\\
 	\item Włączenie animacji rozrostu drzewa - pozwala obserwować jak zmieniało się drzewo w trakcie symulacji ruchu - drzewo wyświetlane jest po każdej iteracji algorytmu. W przypadku wybrania opcji maksymalnego czasu na wykonanie ruchu przez komputer ta opcja uwzględni również czas rysowania wszystkich drzew, co wiąże się ze stratą wydajności algorytmu.\\
-	\item Wybór kolorów krawędzi - dla ruchów najczęściej i najrzadziej odwiedzanych przez algorytm. Kolory pozostałych krawędzi będą gradientami podanych kolorów - dla powyższego przykłądowego okna, krawędzie częściej odwiedzanych węzłów będą bardziej zielone i mniej czerwone.\\
-	\item Wybór drzew do przeglądu - po kliknięciu przycisku \textit{Select} otwiera się dodatkowe okno, które prosi użytkownika o wybranie pliku bądź zestawu plików drzew do analizy. Przyjmowane będą pliki w formacie .csv i binarnym (.tree), w ktorych dane zapisane będą według ustalonego schematu. Zakładamy poprawność wczytywanych plików. W polu tekstowym wyświetli się wówczas ścieżka do wczytanego pliku lub liczba plików w przypadku wczytania ich większej liczby.\\
+	\item Wybór kolorów krawędzi - dla ruchów najczęściej i najrzadziej odwiedzanych przez algorytm. Kolory pozostałych krawędzi będą gradientem podanych kolorów - dla powyższego przykładowego okna, krawędzie częściej odwiedzanych węzłów będą bardziej zielone i mniej czerwone.\\
+	\item Wybór drzew do przeglądu - po kliknięciu przycisku \textit{Select} otwiera się dodatkowe okno, które prosi użytkownika o wybranie pliku bądź zestawu plików drzew do analizy. Przyjmowane będą pliki w formacie .csv i binarnym (.tree), w ktorych dane zapisane będą według ustalonego schematu. Wczytanie większej liczby plików może nastąpić poprzez zaznaczenie tych plików lub poprzez zaznaczenie folderu, w którym znajdują się te pliki. Zakładamy poprawność wczytywanych plików. W polu tekstowym wyświetli się wówczas ścieżka do wczytanego pliku lub liczba plików w przypadku wczytania ich większej liczby.\\
 \end{enumerate}
 Aby rozpocząć rozgrywkę, należy nacisnąć przycisk \textit{Play}. Aby wizualizować wczytane drzewa - \textit{Inspect tree}.
 \pagebreak
@@ -176,7 +176,7 @@ Dostępne funkcje:\\
 	\item Przesuwanie drzewa - należy przytrzymać prawy przycisk myszy i poruszać myszką.\\
 	\item Wyświetlenie statystyk węzła - należy kliknąć lewym przyciskiem myszy na dany węzeł. Po wybraniu węzła, po prawej stronie wyświetlają się jego statystyki:
 	\subitem $\bullet$ ilość wszystkich wierzchołków drzewa
-	\subitem $\bullet$ identyfikator węzłą
+	\subitem $\bullet$ identyfikator węzła
 	\subitem $\bullet$ ilość węzłów-dzieci
 	\subitem $\bullet$ nazwa stanu
 	\subitem $\bullet$ nazwa ruchu
@@ -184,7 +184,7 @@ Dostępne funkcje:\\
 	\subitem $\bullet$ suma wszystkich wygranych (łącznie wyniki poztywne i negatywne)
 	\subitem $\bullet$ średnia wygrana - suma wygranych $\div$ ilość odwiedzin. Wartość z przedziału $[0, 1]$
 	\subitem $\bullet$ numer gracza, który wykonał ruch dla danego węzła (1 lub 2).\\
-	\item Wyśrodkowanie drzewa - resetuje stopień przybliżenie i przesunięcia.\\
+	\item Wyśrodkowanie drzewa - resetuje stopień przybliżenia i przesunięcia.\\
 	\item Zapis drzewa:
 	\subitem $\bullet$ w formacie .csv
 	\subitem $\bullet$ w formacie binarnym (.tree)
@@ -204,9 +204,9 @@ Jest to połączenie gry oraz okna podglądu drzewa opisanego powyżej. Znajduje
 Dostępne funkcje:\\
 \begin{enumerate}
 	\item Wszystkie funkcje dostępne w oknie podglądu drzewa poza sekwencjami.\\
-	\item Wykonanie ruchu z pomocą GUI gry, np. kliknięcie danego pola w szachach lub dołka w mancali. Nie dotyczy trybu \textit{gracz vs PC}. Po zakończonej rozgrywce napis \textit{Game in progress} pod polem gry zmienia wartość i oznajmia użytkownikowi, która strona wygrała (lub czy jest remis).\\
+	\item Wykonanie ruchu z pomocą GUI gry, np. kliknięcie danego pola w szachach lub dołka w mancali. Nie dotyczy trybu \textit{PC vs PC}. Po zakończonej rozgrywce napis \textit{Game in progress} pod polem gry zmienia wartość i oznajmia użytkownikowi, która strona wygrała (lub czy jest remis).\\
 	\item Rozegranie gry od nowa - kliknięcie przycisku \textit{Start over}.\\
-	\item Wykonanie następnego ruchu za pomocą przycisku - tylko w trybie \textit{PC vs PC}. Pozwala na spowodowanie postępu w symulacji rozgrywki komputera z samym sobą. Ruchy za pomocą GUI są wówczas zablokowane.\\
+	\item Wykonanie następnego ruchu za pomocą przycisku - tylko w trybie \textit{PC vs PC}. Pozwala na spowodowanie postępu w symulacji rozgrywki komputera z samym sobą. Ruchy za pomocą GUI są wówczas zablokowane. Przycisk \textit{Make next move} odpowiedzialny za to znajduje się w lewej dolnej części okna. \\
 \end{enumerate}
 Zamknięcie tego okna również nie kończy programu - okno menu głównego jest ciągle aktywne i może być wykorzystane ponownie.
 
