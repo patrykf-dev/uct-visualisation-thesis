@@ -131,17 +131,36 @@ python /uct-visualization/src/main_application/main_application_window.py
 Po uruchomieniu powinniśmy zobaczyć główne okno aplikacji o nazwie \textit{UCT Visualizer}.
 
 \section{Poradnik użytkowania}
-\subsection{Okno główne aplikacji}
+Dla wygodnej interakcji użytkownika z programem przygotowany został specjalny interfejs graficzny. Możemy wyróżnić trzy główne okna.
+\subsection{Okno startowe aplikacji}
+Jest to główne okno programu, w którym użytkownik może wybrać, czy chce zagrać w grę, czy wczytać i obejrzeć przygotowane wcześniej pliki drzew. Okno prezentuje się następująco:
 \begin{center}
-	\includegraphics[width=0.6\textwidth]{main-app-window}
+	\includegraphics[width=0.45\textwidth]{main-app-window}
 \end{center}
+Dostępne funkcje:\\
+\begin{enumerate}
+	\item Wybór jednej z dwóch gier:
+	\subitem $\bullet$ mancala
+	\subitem $\bullet$ szachy\\
+	\item Wybór jednego z trzech trybów gry:
+	\subitem $\bullet$ gracz vs PC - po wykonanym ruchu gracza algorytm oblicza ruch komputera i wykonuje go
+	\subitem $\bullet$ PC vs PC - użytkownik decyduje, kiedy mają wykonać się ruchy komputera
+	\subitem $\bullet$ gracz vs gracz - rozgrywka dwóch graczy, co wiąże się z brakiem wizualizacji\\
+	\item Ustawienie parametrów ruchu algorytmu UCT:
+	\subitem $\bullet$ ilość wykonanych iteracji - im więcej ich będzie, tym więcej razy powtórzone będą kroki symulacji kolejnego ruchu przez komputer, co przekłada się na jego większą dokładność i trafność. Minusem jest większy czas oczekiwania na wykonaniu ruchu. (przedział: 1-10000)
+	\subitem $\bullet$ maksymalny czas na wykonanie ruchu przez komputer - opcja alternatywna dla powyższej. Zamiast podawać odgórnie ilość iteracji, użytkownik może podać czas, w jakim komputer będzie wyznaczał ruch. Po upłynięciu czasu ostatnia symulacja jest dogrywana. (przedział: 1000ms - 30000ms)\\
+	\item Ucięcie iteracji po przekroczeniu arbitralnie ustalonej liczby ruchów danego ``playoutu'' (symulacji rozgrywki w obrębie iteracji). Opcja może być włączona lub wyłączona. Dla tego drugiego przypadku gra kończy się tylko wtedy, gdy symulacja gry zakończy się w naturalny sposób.\\
+	\item Włączenie animacji rozrostu drzewa - pozwala obserwować jak zmieniało się drzewo w trakcie symulacji ruchu - drzewo wyświetlane jest po każdej iteracji algorytmu. W przypadku wybrania opcji maksymalnego czasu na wykonanie ruchu przez komputer ta opcja uwzględni również czas rysowania wszystkich drzew, co wiąże się ze stratą wydajności algorytmu.\\
+	\item Wybór kolorów krawędzi - dla ruchów najczęściej i najrzadziej odwiedzanych przez algorytm. Kolory pozostałych krawędzi będą gradientami podanych kolorów - dla powyższego przykłądowego okna, krawędzie częściej odwiedzanych węzłów będą bardziej zielone i mniej czerwone.\\
+	\item Wybór drzew do przeglądu - po kliknięciu przycisku \textit{Select} otwiera się dodatkowe okno, które prosi użytkownika o wybranie pliku bądź zestawu plików drzew do analizy. Przyjmowane będą pliki w formacie .csv i .tree, w ktorych dane zapisane będą według ustalonego schematu. Zakładamy poprawność wczytywanych plików.
+\end{enumerate}
 \subsection{Okno podglądu drzewa}
 \begin{center}
-	\includegraphics[width=1\textwidth]{game-window}
+	\includegraphics[width=\textwidth]{game-window}
 \end{center}
 \subsection{Okno gry i wizualizacji}
 \begin{center}
-	\includegraphics[width=1\textwidth]{tree-window}
+	\includegraphics[width=0.8\textwidth]{tree-window}
 \end{center}
 
 \section{Architektura systemu}
