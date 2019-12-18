@@ -7,6 +7,7 @@ from src.main_application.game_canvas import GameCanvas
 from src.mancala.algorithm_relay.mancala_move import MancalaMove
 from src.mancala.mancala_board import MancalaBoard
 from src.mancala.mancala_board_drawer import MancalaBoardDrawer
+from src.uct.algorithm.enums import GamePhase
 
 
 class MancalaCanvas(GameCanvas):
@@ -38,7 +39,7 @@ class MancalaCanvas(GameCanvas):
             self.moves_sequence.append(moved_index)
         self.repaint()
 
-        if not extra_turn and player_moved:
+        if not extra_turn and player_moved or self.board.phase != GamePhase.IN_PROGRESS:
             player = 1 if self.board.current_player == 2 else 2
             player_move = MancalaMove(copy.deepcopy(self.moves_sequence), player)
             print(f"PLAYER WENT FOR {player_move}")
