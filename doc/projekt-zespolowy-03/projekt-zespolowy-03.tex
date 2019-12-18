@@ -134,10 +134,13 @@ Po uruchomieniu powinniśmy zobaczyć główne okno aplikacji o nazwie \textit{U
 \section{Poradnik użytkowania i opis funkcjonalności}
 Dla wygodnej interakcji użytkownika z programem przygotowany został specjalny interfejs graficzny. Możemy wyróżnić trzy główne okna.
 \subsection{Okno startowe aplikacji}
-Jest to główne okno programu, w którym użytkownik może wybrać, czy chce zagrać w grę, czy wczytać i obejrzeć przygotowane wcześniej pliki drzew. Okno prezentuje się następująco:
-\begin{center}
+Jest to główne okno programu, w którym użytkownik może wybrać, czy chce zagrać w grę, czy wczytać i obejrzeć przygotowane wcześniej pliki drzew. Wygląd okna jest przedstawiony na rysunku \ref{rys:mainappwindow}.
+\begin{figure}[h]
+	\centering
 	\includegraphics[width=0.45\textwidth]{main-app-window}
-\end{center}
+	\caption{Okno startowe aplikacji}
+	\label{rys:mainappwindow}
+\end{figure}\\
 Dostępne funkcje:\\
 \begin{enumerate}
 	\item Wybór jednej z dwóch gier:
@@ -156,11 +159,15 @@ Dostępne funkcje:\\
 	\item Wybór drzew do przeglądu - po kliknięciu przycisku \textit{Select} otwiera się dodatkowe okno, które prosi użytkownika o wybranie pliku bądź zestawu plików drzew do analizy. Przyjmowane będą pliki w formacie .csv i binarnym (.tree), w ktorych dane zapisane będą według ustalonego schematu. Zakładamy poprawność wczytywanych plików. W polu tekstowym wyświetli się wówczas ścieżka do wczytanego pliku lub liczba plików w przypadku wczytania ich większej liczby.\\
 \end{enumerate}
 Aby rozpocząć rozgrywkę, należy nacisnąć przycisk \textit{Play}. Aby wizualizować wczytane drzewa - \textit{Inspect tree}.
+\pagebreak
 \subsection{Okno podglądu drzewa}
-Okno to umożliwia wizualizację drzew z wczytanych plików oraz sprawne poruszanie się po niej, wraz z możliwością wyświetlania statystyk poszczególnych węzłów:
-\begin{center}
+Okno (rys. \ref{rys:treewindow}) umożliwia wizualizację drzew z wczytanych plików oraz sprawne poruszanie się po niej, wraz z możliwością wyświetlania statystyk poszczególnych węzłów.
+\begin{figure}[h]
+	\centering
 	\includegraphics[width=0.8\textwidth]{tree-window}
-\end{center}
+	\caption{Okno podglądu drzewa}
+	\label{rys:treewindow}
+\end{figure}\\
 Dostępne funkcje:\\
 \begin{enumerate}
 	\item Przybliżanie i oddalanie drzewa za pomocą scrolla. Kursor musi znajdować się nad częścią okna, gdzie wyświetlane jest drzewo.\\
@@ -183,12 +190,15 @@ Dostępne funkcje:\\
 	\item Zmiana drzewa w sekwencji - możemy robić to za pomocą przycisków \textit{<<} i \textit{>>} na ekranie lub za pomocą strzałek na klawiaturze. Wyświetlana jest nazwa aktualnie przeglądanego pliku oraz to, którym jest on plikiem z kolei.\\
 \end{enumerate}
 Zamknięcie tego okna nie kończy programu - okno menu głównego jest ciągle aktywne i może być wykorzystane ponownie.
-
+\pagebreak
 \subsection{Okno gry i wizualizacji}
 Jest to połączenie gry oraz okna podglądu drzewa opisanego powyżej. Znajduje się tu interfejs graficzny toczącej się gry, w którą może ingerować użytkownik i wykonywać swoje ruchy. W górnej części znajduje się pasek postępu, który odzwierciedla ilość wykonanych przez algorytm iteracji podczas wyznaczania następnego ruchu. Po jego wyznaczeniu w środkowej częsci okna ukazuje się wygenerowane drzewo. Jeżeli użytkownik włączył opcję animacji drzew w menu głównym, dodatkowo po każdej iteracji będzie mógł on oglądać rozrost drzewa.\\
-\begin{center}
+\begin{figure}[h]
+	\centering
 	\includegraphics[width=\textwidth]{game-window}
-\end{center}
+	\caption{Okno gry i wizualizacji}
+	\label{rys:gamewindow}
+\end{figure}\\
 Dostępne funkcje:\\
 \begin{enumerate}
 	\item Wszystkie funkcje dostępne w oknie podglądu drzewa poza sekwencjami.\\
