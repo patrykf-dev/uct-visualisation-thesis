@@ -24,6 +24,7 @@ class ChessCanvas(GameCanvas):
         self.react_to_player_click(x, y)
 
     def perform_algorithm_move(self, move):
+        self.chess_manager.deselect_last_moved()
         self.chess_manager.deselect_king()
         self.chess_manager.board.perform_legal_move(move)
         self.chess_manager.reset_selected_tile()

@@ -24,7 +24,6 @@ class MonteCarloWindowManager:
         alg_move = self.mc_manager.calculate_next_move()
         self.canvas.perform_algorithm_move(alg_move)
         if self.game == Game.Chess:
-            self.canvas.chess_manager.deselect_last_moved()
             phase = ChessState.cast_chess_phase_to_abstract_phase(self.canvas.chess_manager.board.game_status)
         elif self.game == Game.Mancala:
             phase = self.canvas.board.phase
