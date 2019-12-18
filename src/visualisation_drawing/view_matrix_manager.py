@@ -5,7 +5,7 @@ from src.utils.math_utils import expotential_function, normalize
 
 class ViewMatrixManager:
     SMOOTH_TRANSLATION_MODIFIER = 2
-    MAX_ZOOM_IN_TICS = 35
+    MAX_ZOOM_IN_TICS = 75
     MAX_ZOOM_OUT_TICS = -20
 
     def __init__(self):
