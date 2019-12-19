@@ -6,8 +6,7 @@ from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QColorDialog
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
-    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, show_eror_dialog, \
-    get_box_background_stylesheet
+    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, show_eror_dialog
 from src.main_application.enums import GameMode, Game
 from src.main_application.gui_settings import MonteCarloSettings, DisplaySettings
 
@@ -110,8 +109,6 @@ class MainApplicationWindowLayout:
     def _get_first_row(self):
         rc = QWidget()
         main_layout = QGridLayout()
-        rc.setObjectName("box")
-        rc.setStyleSheet(get_box_background_stylesheet())
         rc.setLayout(main_layout)
 
         self._add_left_panel(main_layout)
@@ -124,8 +121,6 @@ class MainApplicationWindowLayout:
     def _get_second_row(self):
         rc = QWidget()
         main_layout = QGridLayout()
-        rc.setObjectName("box")
-        rc.setStyleSheet(get_box_background_stylesheet())
         rc.setLayout(main_layout)
         main_layout.addWidget(self.tree_path_edit, 0, 0)
         main_layout.addWidget(self.select_tree_path_button, 0, 1)
