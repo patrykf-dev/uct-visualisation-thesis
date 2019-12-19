@@ -59,6 +59,21 @@ def get_button(caption="", padding_width=50, padding_height=0):
     return rc
 
 
+def get_resizable_button(caption="", padding_width=50, padding_height=0):
+    """
+    Returns PyQt resizable button with given parameters. It means it fills its parent-layout entirely.
+    :param caption: text on button
+    :param padding_width:
+    :param padding_height:
+    :return: customized button
+    """
+    rc = QPushButton(caption)
+    rc.setFont(DEFAULT_FONT)
+    rc.setMinimumWidth(rc.sizeHint().width() + padding_width)
+    rc.setMinimumHeight(rc.sizeHint().height() + padding_height)
+    return rc
+
+
 def get_checkbox(caption=""):
     """
     Returns default PyQt checkbox.

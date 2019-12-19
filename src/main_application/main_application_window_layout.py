@@ -6,7 +6,7 @@ from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QColorDialog
 
 from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
-    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, show_eror_dialog
+    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, show_eror_dialog, get_resizable_button
 from src.main_application.enums import GameMode, Game
 from src.main_application.gui_settings import MonteCarloSettings, DisplaySettings
 
@@ -18,7 +18,8 @@ class MainApplicationWindowLayout:
         self.draw_opengl_button = get_button("Inspect tree")
         self.tree_path_edit = get_hint_line_edit(os.path.join(TREES_PATH, "example_tree_05.csv"))
         self.chosen_trees_paths = [os.path.join(TREES_PATH, "example_tree_05.csv")]
-        self.select_tree_path_button = get_button("Select")
+        self.select_tree_path_button_files = get_resizable_button("Select files")
+        self.select_tree_path_button_directories = get_resizable_button("Select directory")
         self.chess_button = get_radiobutton("Chess")
         self.mancala_button = get_radiobutton("Mancala")
         self.player_vs_player_button = get_radiobutton("Player vs player")
@@ -118,12 +119,20 @@ class MainApplicationWindowLayout:
         main_layout.addWidget(self.play_button, 3, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
         return rc
 
+    def _set_file_buttons_widget(self):
+        file_buttons_layout = QGridLayout()
+        self.file_buttons_widget = QWidget()
+        self.file_buttons_widget.setLayout(file_buttons_layout)
+        file_buttons_layout.addWidget(self.select_tree_path_button_files, 0, 0)
+        file_buttons_layout.addWidget(self.select_tree_path_button_directories, 1, 0)
+
     def _get_second_row(self):
         rc = QWidget()
         main_layout = QGridLayout()
         rc.setLayout(main_layout)
+        self._set_file_buttons_widget()
         main_layout.addWidget(self.tree_path_edit, 0, 0)
-        main_layout.addWidget(self.select_tree_path_button, 0, 1)
+        main_layout.addWidget(self.file_buttons_widget, 0, 1)
         main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
         return rc
 

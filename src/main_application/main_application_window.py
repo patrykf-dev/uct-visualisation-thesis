@@ -28,7 +28,7 @@ class MainApplicationWindow(QMainWindow):
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
-        self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
+        self.layout.select_tree_path_button_files.clicked.connect(self._handle_select_tree_path_button_files)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def showEvent(self, event):
@@ -60,7 +60,7 @@ class MainApplicationWindow(QMainWindow):
         window.on_close_request += self._handle_close_request
         window.show()
 
-    def _handle_select_tree_path_button(self):
+    def _handle_select_tree_path_button_files(self):
         """
         Handles button that enables user to load his own trees from file system.
         When one file is chosen, its name will appear in the edit line.
