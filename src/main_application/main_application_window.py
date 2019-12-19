@@ -9,6 +9,7 @@ from src.main_application.GUI_utils import TREES_PATH, amend_window_position_on_
 from src.main_application.game_window_creator import create_proper_window
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.main_application.mc_tree_window import MonteCarloTreeWindow
+from src.main_application.utils import extract_serializable_files_from
 
 
 class MainApplicationWindow(QMainWindow):
@@ -29,6 +30,7 @@ class MainApplicationWindow(QMainWindow):
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
         self.layout.select_tree_path_button_files.clicked.connect(self._handle_select_tree_path_button_files)
+        self.layout.select_tree_path_button_directories.clicked.connect(self._handle_select_tree_path_button_directories)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def showEvent(self, event):
@@ -74,6 +76,24 @@ class MainApplicationWindow(QMainWindow):
             self.layout.tree_path_edit.setText(f"Files chosen: {len(paths)}")
         if paths:
             self.layout.chosen_trees_paths = paths
+
+    def _handle_select_tree_path_button_directories(self):
+        """
+        Handles button that enables user to load his own trees from file system.
+        All trees from the selected directory (non recursively) will be loaded to the application.
+        User can choose a directory, and its path will be shown on the textfield.
+        """
+        path = QFileDialog.getExistingDirectory(self, "Open a directory with tree files", TREES_PATH, QFileDialog.ShowDirsOnly)
+        if not path:
+            return
+        files = extract_serializable_files_from(path)
+        if len(files) == 0:
+            show_eror_dialog(f"No tree files found inside {path}")
+            return
+        paths = list(map(lambda _path: os.path.join(TREES_PATH, _path), files))
+
+        self.layout.tree_path_edit.setText(path)
+        self.layout.chosen_trees_paths = paths
 
     def _handle_opengl_button(self):
         """
