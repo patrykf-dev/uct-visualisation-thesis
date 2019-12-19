@@ -11,8 +11,6 @@ import os
 import ctypes
 
 from . import _copy_gl_functions
-from ._constants import *  # noqa
-
 
 ## Ctypes stuff
 

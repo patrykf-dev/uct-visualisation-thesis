@@ -89,9 +89,9 @@ def use(app=None, gl=None):
 
     # Apply now
     if gl:
-        from .. import gloo, config
+        from .. import config
         config['gl_backend'] = gl
-        gloo.gl.use_gl(gl)
+        vispy.gloo.gl.use_gl(gl)
     if app:
         from ..app import use_app
         use_app(app)

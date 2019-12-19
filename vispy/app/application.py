@@ -15,7 +15,6 @@ import sys
 from . import backends, inputhook
 from .backends import CORE_BACKENDS, BACKEND_NAMES, BACKENDMAP, TRIED_BACKENDS
 from .. import config
-from .base import BaseApplicationBackend as ApplicationBackend  # noqa
 from ..util import logger
 from ..ext import six
 
