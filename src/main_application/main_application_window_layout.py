@@ -121,6 +121,7 @@ class MainApplicationWindowLayout:
 
     def _set_file_buttons_widget(self):
         file_buttons_layout = QGridLayout()
+        file_buttons_layout.setSpacing(5)
         self.file_buttons_widget = QWidget()
         self.file_buttons_widget.setLayout(file_buttons_layout)
         file_buttons_layout.addWidget(self.select_tree_path_button_files, 0, 0)
