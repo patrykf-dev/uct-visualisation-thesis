@@ -18,5 +18,5 @@ class MachineVsMachineWindow(GameVisualizationWindow):
     def handle_next_move_button(self, sender):
         if not self.manager.canvas.game_ended:
             self.manager.perform_algorithm_move()
-        else:
+        if self.manager.canvas.game_ended:
             self.next_move_button.setEnabled(False)
