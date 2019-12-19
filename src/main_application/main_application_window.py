@@ -90,7 +90,7 @@ class MainApplicationWindow(QMainWindow):
         if len(files) == 0:
             show_eror_dialog(f"No tree files found inside {path}")
             return
-        paths = list(map(lambda _path: os.path.join(TREES_PATH, _path), files))
+        paths = list(map(lambda filename: os.path.join(path, filename), files))
 
         self.layout.tree_path_edit.setText(path)
         self.layout.chosen_trees_paths = paths
