@@ -12,7 +12,6 @@ import OpenGL.GL.framebufferobjects as _FBO
 from ...util import logger
 
 from . import _copy_gl_functions
-from ._constants import *  # noqa
 
 
 def _patch():

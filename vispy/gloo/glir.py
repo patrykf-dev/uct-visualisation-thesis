@@ -366,6 +366,7 @@ from distutils.version import LooseVersion
 import numpy as np
 
 from . import gl
+from .gl import _constants
 from ..ext.six import string_types
 from ..util import logger
 
@@ -742,7 +743,7 @@ class GlirParser(BaseGlirParser):
             self.env.clear()
             self._gl_initialize()
             self.env['fbo'] = args[0]
-            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, args[0])
+            gl.glBindFramebuffer(_constants.GL_FRAMEBUFFER, args[0])
         elif cmd == 'FUNC':
             # GL function call
             args = [as_enum(a) for a in args]
@@ -841,9 +842,9 @@ class GlirParser(BaseGlirParser):
             gl.glEnable(GL_VERTEX_PROGRAM_POINT_SIZE)
             gl.glEnable(GL_POINT_SPRITE)
         if self.capabilities['max_texture_size'] is None:  # only do once
-            self.capabilities['gl_version'] = gl.glGetParameter(gl.GL_VERSION)
+            self.capabilities['gl_version'] = gl.glGetParameter(_constants.GL_VERSION)
             self.capabilities['max_texture_size'] = \
-                gl.glGetParameter(gl.GL_MAX_TEXTURE_SIZE)
+                gl.glGetParameter(_constants.GL_MAX_TEXTURE_SIZE)
             this_version = self.capabilities['gl_version'].split(' ')
             if this_version[0] == "OpenGL":
                 # For OpenGL ES, the version string has the format:
@@ -927,7 +928,7 @@ class GlirShader(GlirObject):
 
         gl.glShaderSource(self._handle, code)
         gl.glCompileShader(self._handle)
-        status = gl.glGetShaderParameter(self._handle, gl.GL_COMPILE_STATUS)
+        status = gl.glGetShaderParameter(self._handle, _constants.GL_COMPILE_STATUS)
         if not status:
             errors = gl.glGetShaderInfoLog(self._handle)
             errormsg = self._get_error(code, errors, 4)
@@ -990,11 +991,11 @@ class GlirShader(GlirObject):
 
 
 class GlirVertexShader(GlirShader):
-    _target = gl.GL_VERTEX_SHADER
+    _target = _constants.GL_VERTEX_SHADER
 
 
 class GlirFragmentShader(GlirShader):
-    _target = gl.GL_FRAGMENT_SHADER
+    _target = _constants.GL_FRAGMENT_SHADER
 
 
 class GlirGeometryShader(GlirShader):
@@ -1006,7 +1007,7 @@ class GlirGeometryShader(GlirShader):
         if not hasattr(gl, 'GL_GEOMETRY_SHADER'):
             raise RuntimeError("GL2 backend does not support geometry shaders."
                                " Try gloo.gl.use_gl('gl+').")
-        GlirGeometryShader._target = gl.GL_GEOMETRY_SHADER
+        GlirGeometryShader._target = _constants.GL_GEOMETRY_SHADER
         GlirShader.__init__(self, *args, **kwargs)
 
 
@@ -1041,12 +1042,12 @@ class GlirProgram(GlirObject):
     }
 
     ATYPEINFO = {
-        'float': (1, gl.GL_FLOAT, np.float32),
-        'vec2': (2, gl.GL_FLOAT, np.float32),
-        'vec3': (3, gl.GL_FLOAT, np.float32),
-        'vec4': (4, gl.GL_FLOAT, np.float32),
-        'int': (1, gl.GL_INT, np.int32),
-        'bool': (1, gl.GL_BOOL, np.int32)
+        'float': (1, _constants.GL_FLOAT, np.float32),
+        'vec2': (2, _constants.GL_FLOAT, np.float32),
+        'vec3': (3, _constants.GL_FLOAT, np.float32),
+        'vec4': (4, _constants.GL_FLOAT, np.float32),
+        'int': (1, _constants.GL_INT, np.int32),
+        'bool': (1, _constants.GL_BOOL, np.int32)
     }
 
     def create(self):
@@ -1111,7 +1112,7 @@ class GlirProgram(GlirObject):
         linked.
         """
         gl.glLinkProgram(self._handle)
-        if not gl.glGetProgramParameter(self._handle, gl.GL_LINK_STATUS):
+        if not gl.glGetProgramParameter(self._handle, _constants.GL_LINK_STATUS):
             raise RuntimeError('Program linking error:\n%s'
                                % gl.glGetProgramInfoLog(self._handle))
 
@@ -1135,13 +1136,13 @@ class GlirProgram(GlirObject):
         # This match a name of the form "name[size]" (= array)
         regex = re.compile(r"""(?P<name>\w+)\s*(\[(?P<size>\d+)\])\s*""")
         # Get how many active attributes and uniforms there are
-        cu = gl.glGetProgramParameter(self._handle, gl.GL_ACTIVE_UNIFORMS)
-        ca = gl.glGetProgramParameter(self.handle, gl.GL_ACTIVE_ATTRIBUTES)
+        cu = gl.glGetProgramParameter(self._handle, _constants.ACTIVE_UNIFORMS)
+        ca = gl.glGetProgramParameter(self.handle, _constants.GL_ACTIVE_ATTRIBUTES)
         # Get info on each one
         attributes = []
         uniforms = []
-        for container, count, func in [(attributes, ca, gl.glGetActiveAttrib),
-                                       (uniforms, cu, gl.glGetActiveUniform)]:
+        for container, count, func in [(attributes, ca, _constants.glGetActiveAttrib),
+                                       (uniforms, cu, _constants.glGetActiveUniform)]:
             for i in range(count):
                 name, size, gtype = func(self._handle, i)
                 m = regex.match(name)  # Check if xxx[0] instead of xx
@@ -1269,23 +1270,23 @@ class GlirProgram(GlirObject):
                 raise RuntimeError('Could not find VBO with id %i' % vbo_id)
             # Set data
             func = gl.glVertexAttribPointer
-            args = size, gtype, gl.GL_FALSE, stride, offset
+            args = size, gtype, _constants.GL_FALSE, stride, offset
             self._attributes[name] = vbo.handle, handle, func, args
 
     def _pre_draw(self):
         self.activate()
         # Activate textures
         for tex_target, tex_handle, unit in self._samplers.values():
-            gl.glActiveTexture(gl.GL_TEXTURE0 + unit)
+            gl.glActiveTexture(_constants.GL_TEXTURE0 + unit)
             gl.glBindTexture(tex_target, tex_handle)
         # Activate attributes
         for vbo_handle, attr_handle, func, args in self._attributes.values():
             if vbo_handle:
-                gl.glBindBuffer(gl.GL_ARRAY_BUFFER, vbo_handle)
+                gl.glBindBuffer(_constants.GL_ARRAY_BUFFER, vbo_handle)
                 gl.glEnableVertexAttribArray(attr_handle)
                 func(attr_handle, *args)
             else:
-                gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
+                gl.glBindBuffer(_constants.GL_ARRAY_BUFFER, 0)
                 gl.glDisableVertexAttribArray(attr_handle)
                 func(attr_handle, *args)
         # Validate. We need to validate after textures units get assigned
@@ -1301,14 +1302,14 @@ class GlirProgram(GlirObject):
         # Validate via OpenGL
         gl.glValidateProgram(self._handle)
         if not gl.glGetProgramParameter(self._handle,
-                                        gl.GL_VALIDATE_STATUS):
+                                        _constants.GL_VALIDATE_STATUS):
             raise RuntimeError('Program validation error:\n%s'
                                % gl.glGetProgramInfoLog(self._handle))
 
     def _post_draw(self):
         # No need to deactivate each texture/buffer, just set to 0
-        gl.glBindBuffer(gl.GL_ARRAY_BUFFER, 0)
-        gl.glBindTexture(gl.GL_TEXTURE_2D, 0)
+        gl.glBindBuffer(_constants.GL_ARRAY_BUFFER, 0)
+        gl.glBindTexture(_constants.GL_TEXTURE_2D, 0)
         if USE_TEX_3D:
             gl.glBindTexture(GL_TEXTURE_3D, 0)
             gl.glBindTexture(GL_TEXTURE_1D, 0)
@@ -1349,7 +1350,7 @@ class GlirProgram(GlirObject):
 
 class GlirBuffer(GlirObject):
     _target = None
-    _usage = gl.GL_DYNAMIC_DRAW  # STATIC_DRAW, STREAM_DRAW or DYNAMIC_DRAW
+    _usage = _constants.GL_DYNAMIC_DRAW  # STATIC_DRAW, STREAM_DRAW or DYNAMIC_DRAW
 
     def create(self):
         self._handle = gl.glCreateBuffer()
@@ -1377,7 +1378,7 @@ class GlirBuffer(GlirObject):
 
         # Determine whether to check errors to try handling the ATI bug
         check_ati_bug = ((not self._bufferSubDataOk) and
-                         (gl.current_backend is gl.gl2) and
+                         (gl.current_backend is vispy.gloo.gl.gl2) and
                          sys.platform.startswith('win'))
 
         # flush any pending errors
@@ -1401,26 +1402,26 @@ class GlirBuffer(GlirObject):
 
 
 class GlirVertexBuffer(GlirBuffer):
-    _target = gl.GL_ARRAY_BUFFER
+    _target = _constants.GL_ARRAY_BUFFER
 
 
 class GlirIndexBuffer(GlirBuffer):
-    _target = gl.GL_ELEMENT_ARRAY_BUFFER
+    _target = _constants.GL_ELEMENT_ARRAY_BUFFER
 
 
 class GlirTexture(GlirObject):
     _target = None
 
     _types = {
-        np.dtype(np.int8): gl.GL_BYTE,
-        np.dtype(np.uint8): gl.GL_UNSIGNED_BYTE,
-        np.dtype(np.int16): gl.GL_SHORT,
-        np.dtype(np.uint16): gl.GL_UNSIGNED_SHORT,
-        np.dtype(np.int32): gl.GL_INT,
-        np.dtype(np.uint32): gl.GL_UNSIGNED_INT,
-        # np.dtype(np.float16) : gl.GL_HALF_FLOAT,
-        np.dtype(np.float32): gl.GL_FLOAT,
-        # np.dtype(np.float64) : gl.GL_DOUBLE
+        np.dtype(np.int8): _constants.GL_BYTE,
+        np.dtype(np.uint8): _constants.GL_UNSIGNED_BYTE,
+        np.dtype(np.int16): _constants.GL_SHORT,
+        np.dtype(np.uint16): _constants.GL_UNSIGNED_SHORT,
+        np.dtype(np.int32): _constants.GL_INT,
+        np.dtype(np.uint32): _constants.GL_UNSIGNED_INT,
+        # np.dtype(np.float16) : _constants.GL_HALF_FLOAT,
+        np.dtype(np.float32): _constants.GL_FLOAT,
+        # np.dtype(np.float64) : _constants.GL_DOUBLE
     }
 
     def create(self):
@@ -1464,14 +1465,14 @@ class GlirTexture(GlirObject):
             gl.glTexParameterf(self._target, GL_TEXTURE_WRAP_R, wrapping[0])
         if len(wrapping) >= 2:
             gl.glTexParameterf(self._target,
-                               gl.GL_TEXTURE_WRAP_S, wrapping[-2])
-        gl.glTexParameterf(self._target, gl.GL_TEXTURE_WRAP_T, wrapping[-1])
+                               _constants.GL_TEXTURE_WRAP_S, wrapping[-2])
+        gl.glTexParameterf(self._target, _constants.GL_TEXTURE_WRAP_T, wrapping[-1])
 
     def set_interpolation(self, min, mag):
         self.activate()
         min, mag = as_enum(min), as_enum(mag)
-        gl.glTexParameterf(self._target, gl.GL_TEXTURE_MIN_FILTER, min)
-        gl.glTexParameterf(self._target, gl.GL_TEXTURE_MAG_FILTER, mag)
+        gl.glTexParameterf(self._target, _constants.GL_TEXTURE_MIN_FILTER, min)
+        gl.glTexParameterf(self._target, _constants.GL_TEXTURE_MAG_FILTER, mag)
 
 # these should be auto generated in _constants.py. But that doesn't seem
 # to be happening. TODO - figure out why the C parser in (createglapi.py)
@@ -1497,7 +1498,7 @@ class GlirTexture1D(GlirTexture):
             self.activate()
             self._shape_formats = shape, format, internalformat
             glTexImage1D(self._target, 0, internalformat, format,
-                         gl.GL_BYTE, shape[:1])
+                         _constants.GL_BYTE, shape[:1])
 
     def set_data(self, offset, data):
         self.activate()
@@ -1510,16 +1511,16 @@ class GlirTexture1D(GlirTexture):
         # Set alignment (width is nbytes_per_pixel * npixels_per_line)
         alignment = self._get_alignment(data.shape[-1] * data.itemsize)
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, alignment)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, alignment)
         # Upload
         glTexSubImage1D(self._target, 0, x, format, gtype, data)
         # Set alignment back
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, 4)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, 4)
 
 
 class GlirTexture2D(GlirTexture):
-    _target = gl.GL_TEXTURE_2D
+    _target = _constants.GL_TEXTURE_2D
 
     def set_size(self, shape, format, internalformat):
         # Shape is height, width
@@ -1530,7 +1531,7 @@ class GlirTexture2D(GlirTexture):
             self._shape_formats = shape, format, internalformat
             self.activate()
             gl.glTexImage2D(self._target, 0, internalformat, format,
-                            gl.GL_UNSIGNED_BYTE, shape[:2])
+                            _constants.GL_UNSIGNED_BYTE, shape[:2])
 
     def set_data(self, offset, data):
         self.activate()
@@ -1543,12 +1544,12 @@ class GlirTexture2D(GlirTexture):
         # Set alignment (width is nbytes_per_pixel * npixels_per_line)
         alignment = self._get_alignment(data.shape[-2] * data.shape[-1] * data.itemsize)
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, alignment)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, alignment)
         # Upload
         gl.glTexSubImage2D(self._target, 0, x, y, format, gtype, data)
         # Set alignment back
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, 4)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, 4)
 
 
 GL_SAMPLER_3D = gl.Enum('GL_SAMPLER_3D', 35679)
@@ -1626,7 +1627,7 @@ class GlirTexture3D(GlirTexture):
             self.activate()
             self._shape_formats = shape, format, internalformat
             glTexImage3D(self._target, 0, internalformat, format,
-                         gl.GL_BYTE, shape[:3])
+                         _constants.GL_BYTE, shape[:3])
 
     def set_data(self, offset, data):
         self.activate()
@@ -1639,23 +1640,23 @@ class GlirTexture3D(GlirTexture):
         # Set alignment (width is nbytes_per_pixel * npixels_per_line)
         alignment = self._get_alignment(data.shape[-2] * data.shape[-1] * data.itemsize)
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, alignment)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, alignment)
         # Upload
         glTexSubImage3D(self._target, 0, x, y, z, format, gtype, data)
         # Set alignment back
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, 4)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, 4)
 
 
 class GlirTextureCube(GlirTexture):
-    _target = gl.GL_TEXTURE_CUBE_MAP
+    _target = _constants.GL_TEXTURE_CUBE_MAP
     _cube_targets = [
-        gl.GL_TEXTURE_CUBE_MAP_POSITIVE_X,
-        gl.GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-        gl.GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
-        gl.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-        gl.GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
-        gl.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+        _constants.GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+        _constants.GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+        _constants.GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+        _constants.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+        _constants.GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+        _constants.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
     ]
 
     def set_size(self, shape, format, internalformat):
@@ -1667,7 +1668,7 @@ class GlirTextureCube(GlirTexture):
             self.activate()
             for target in self._cube_targets:
                 gl.glTexImage2D(target, 0, internalformat, format,
-                                gl.GL_UNSIGNED_BYTE, shape[1:3])
+                                _constants.GL_UNSIGNED_BYTE, shape[1:3])
 
     def set_data(self, offset, data):
         shape, format, internalformat = self._shape_formats
@@ -1680,13 +1681,13 @@ class GlirTextureCube(GlirTexture):
         # Set alignment (width is nbytes_per_pixel * npixels_per_line)
         alignment = self._get_alignment(data.shape[-2] * data.shape[-1] * data.itemsize)
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, alignment)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, alignment)
         # Upload
         for i, target in enumerate(self._cube_targets):
             gl.glTexSubImage2D(target, 0, x, y, format, gtype, data[i])
         # Set alignment back
         if alignment != 4:
-            gl.glPixelStorei(gl.GL_UNPACK_ALIGNMENT, 4)
+            gl.glPixelStorei(_constants.GL_UNPACK_ALIGNMENT, 4)
 
 
 class GlirRenderBuffer(GlirObject):
@@ -1699,10 +1700,10 @@ class GlirRenderBuffer(GlirObject):
         gl.glDeleteRenderbuffer(self._handle)
 
     def activate(self):
-        gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, self._handle)
+        gl.glBindRenderbuffer(_constants.GL_RENDERBUFFER, self._handle)
 
     def deactivate(self):
-        gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, 0)
+        gl.glBindRenderbuffer(_constants.GL_RENDERBUFFER, 0)
 
     def set_size(self, shape, format):
         if isinstance(format, string_types):
@@ -1710,16 +1711,16 @@ class GlirRenderBuffer(GlirObject):
         if (shape, format) != self._shape_format:
             self._shape_format = shape, format
             self.activate()
-            gl.glRenderbufferStorage(gl.GL_RENDERBUFFER, format,
+            gl.glRenderbufferStorage(_constants.GL_RENDERBUFFER, format,
                                      shape[1], shape[0])
 
 
 class GlirFrameBuffer(GlirObject):
 
-    # todo: on ES 2.0 -> gl.gl_RGBA4
-    _formats = {'color': (gl.GL_COLOR_ATTACHMENT0, gl.GL_RGBA),
-                'depth': (gl.GL_DEPTH_ATTACHMENT, gl.GL_DEPTH_COMPONENT16),
-                'stencil': (gl.GL_STENCIL_ATTACHMENT, gl.GL_STENCIL_INDEX8)}
+    # todo: on ES 2.0 -> _constants.GL_RGBA4
+    _formats = {'color': (_constants.GL_COLOR_ATTACHMENT0, _constants.GL_RGBA),
+                'depth': (_constants.GL_DEPTH_ATTACHMENT, _constants.GL_DEPTH_COMPONENT16),
+                'stencil': (_constants.GL_STENCIL_ATTACHMENT, _constants.GL_STENCIL_INDEX8)}
 
     def create(self):
         #self._parser._fb_stack = [0]  # To keep track of active FB
@@ -1743,21 +1744,21 @@ class GlirFrameBuffer(GlirObject):
                                             [self._parser.env['fbo']])
         if stack[-1] != self._handle:
             stack.append(self._handle)
-            gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, self._handle)
+            gl.glBindFramebuffer(_constants.GL_FRAMEBUFFER, self._handle)
 
     def deactivate(self):
         stack = self._parser.env.setdefault('fb_stack',
                                             [self._parser.env['fbo']])
         while self._handle in stack:
             stack.remove(self._handle)
-        gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, stack[-1])
+        gl.glBindFramebuffer(_constants.GL_FRAMEBUFFER, stack[-1])
 
     def attach(self, attachment, buffer_id):
         attachment = GlirFrameBuffer._formats[attachment][0]
         self.activate()
         if buffer_id == 0:
-            gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, attachment,
-                                         gl.GL_RENDERBUFFER, 0)
+            gl.glFramebufferRenderbuffer(_constants.GL_FRAMEBUFFER, attachment,
+                                         _constants.GL_RENDERBUFFER, 0)
         else:
             buffer = self._parser.get_object(buffer_id)
             if buffer == JUST_DELETED:
@@ -1767,14 +1768,14 @@ class GlirFrameBuffer(GlirObject):
                                  buffer_id)
             elif isinstance(buffer, GlirRenderBuffer):
                 buffer.activate()
-                gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, attachment,
-                                             gl.GL_RENDERBUFFER, buffer.handle)
+                gl.glFramebufferRenderbuffer(_constants.GL_FRAMEBUFFER, attachment,
+                                             _constants.GL_RENDERBUFFER, buffer.handle)
                 buffer.deactivate()
             elif isinstance(buffer, GlirTexture2D):
                 buffer.activate()
                 # INFO: 0 is for mipmap level 0 (default) of the texture
-                gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, attachment,
-                                          gl.GL_TEXTURE_2D, buffer.handle, 0)
+                gl.glFramebufferTexture2D(_constants.GL_FRAMEBUFFER, attachment,
+                                          _constants.GL_TEXTURE_2D, buffer.handle, 0)
                 buffer.deactivate()
             else:
                 raise ValueError("Invalid attachment: %s" % type(buffer))
@@ -1782,20 +1783,20 @@ class GlirFrameBuffer(GlirObject):
         self.deactivate()
 
     def _validate(self):
-        res = gl.glCheckFramebufferStatus(gl.GL_FRAMEBUFFER)
-        if res == gl.GL_FRAMEBUFFER_COMPLETE:
+        res = gl.glCheckFramebufferStatus(_constants.GL_FRAMEBUFFER)
+        if res == _constants.GL_FRAMEBUFFER_COMPLETE:
             return
         _bad_map = {
             0: 'Target not equal to GL_FRAMEBUFFER',
-            gl.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+            _constants.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
                 'FrameBuffer attachments are incomplete.',
-            gl.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+            _constants.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
                 'No valid attachments in the FrameBuffer.',
-            gl.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+            _constants.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
                 'attachments do not have the same width and height.',
-            # gl.GL_FRAMEBUFFER_INCOMPLETE_FORMATS: \  # not in es 2.0
+            # _constants.GL_FRAMEBUFFER_INCOMPLETE_FORMATS: \  # not in es 2.0
             #     'Internal format of attachment is not renderable.'
-            gl.GL_FRAMEBUFFER_UNSUPPORTED:
+            _constants.GL_FRAMEBUFFER_UNSUPPORTED:
                 'Combination of internal formats used by attachments is '
                 'not supported.',
         }

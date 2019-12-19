@@ -7,7 +7,7 @@ from src.main_application.GUI_utils import show_eror_dialog
 from src.serialization.serializator_binary import BinarySerializator
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_node import MonteCarloNode
-from src.vispy import io
+from vispy import io
 from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
 from src.visualisation_drawing.canvas_widget_layout import MonteCarloTreeWidgetLayout
 

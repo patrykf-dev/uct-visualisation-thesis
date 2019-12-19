@@ -3,13 +3,13 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QApplication
 
-from src import vispy
+import vispy
 from src.serialization.serializator_binary import BinarySerializator
 from src.serialization.serializator_csv import CsvSerializator
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.utils.custom_event import CustomEvent
-from src.vispy import app as VispyApp
-from src.vispy.gloo import set_viewport, clear, set_state
+from vispy import app as VispyApp
+from vispy.gloo import set_viewport, clear, set_state
 from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
 from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
 from src.visualisation_drawing.shaders.shader_reader import ShaderReader

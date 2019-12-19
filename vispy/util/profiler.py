@@ -126,7 +126,7 @@ class Profiler(object):
         self._finished = True
         if msg is not None:
             self(msg)
-        self._new_msg("< Exiting %s, total time: %0.4f ms", 
+        self._new_msg("< Exiting %s, total time: %0.4f ms",
                       self._name, (ptime.time() - self._firstTime) * 1000)
         type(self)._depth -= 1
         if self._depth < 1:
