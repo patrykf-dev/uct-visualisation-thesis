@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.chess.chess_utils API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.chess.chess_utils</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import copy
+
+from src.chess.chessboard import Chessboard
+from src.chess.enums import GameStatus
+from src.chess.figures import *
+
+
+class PastMove:
+    def __init__(self, position_to, was_check, figure_moved, was_capture, position_from):
+        self.position_to = position_to
+        self.was_check = was_check
+        self.figure_moved = figure_moved
+        self.was_capture = was_capture
+        self.position_from = position_from
+
+    def __str__(self):
+        return f&#39;Move {self.figure_moved} to: {self.position_to}, check: {self.was_check}, capture: {self.was_capture}&#39;
+
+
+def do_pawn_double_move(board: Chessboard, move: ChessMove, figure_moved):
+    figure_moved.set_can_be_captured_en_passant(True)
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)
+
+
+def do_en_passant_move(board: Chessboard, move: ChessMove, figure_moved: Figure):
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)
+    Figure.remove_figure_on_position(board.figures, move.help_dict[&#39;opponent-pawn-pos&#39;])
+
+
+def do_castling(board: Chessboard, move: ChessMove, figure_moved: Figure):
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)  # TODO to or from?
+    rook = move.help_dict[&#39;rook&#39;]
+    board.figures.move_figure_to(rook, move.help_dict[&#39;rook-end-pos&#39;])
+    figure_moved.set_is_able_to_castle(False)
+    rook.set_is_able_to_castle(False)
+
+
+def is_fifty_move_rule(board: Chessboard):
+    if len(board.past_moves) &lt; 100:
+        return False
+    for past_move in board.past_moves[::-1][:100]:
+        if past_move.was_capture or past_move.figure_moved.figure_type == FigureType.PAWN:
+            return False
+    return True
+
+
+def is_there_a_draw(board: Chessboard):
+    if not are_the_figures_left_capable_of_checkmate(board):
+        board.game_status = GameStatus.DRAW
+        return True
+    if is_fifty_move_rule(board):
+        board.game_status = GameStatus.FIFTY_MOVE_RULE
+        return True
+    return False
+
+
+def get_all_possible_moves(board: Chessboard):
+    all_possible_moves = []
+    figures_list = board.figures.figures_list
+    copied_figures_list = copy.deepcopy(board.figures.figures_list)
+    for i, copied_figure in enumerate(copied_figures_list):
+        if figures_list[i].color != board.current_player_color:
+            continue
+
+        figure_moves = figures_list[i].check_moves(board.figures)
+        reduce_move_range_when_check(board, figures_list[i], figure_moves)
+
+        for move in figure_moves:
+            move.player = get_player_from_color(board.current_player_color)
+
+            f_color = str(copied_figure.color).split(&#34;.&#34;)[1].lower()
+            f_type = str(copied_figure.figure_type).split(&#34;.&#34;)[1].lower()
+            move.description = f&#34;{f_color} {f_type} {move.position_from} -&gt; {move.position_to}&#34;
+
+        if figure_moves:
+            all_possible_moves.extend(figure_moves)
+
+    return all_possible_moves
+
+
+def take_off_potential_figure(board: Chessboard, move: ChessMove):
+    figure = board.figures.get_figure_at(move.position_to)
+    list_index = 0
+    if figure:
+        list_index = Figure.remove_figure(board.figures, figure)
+    elif move.move_type == MoveType.EN_PASSANT:
+        opponent_figure_position = move.help_dict[&#39;opponent-pawn-pos&#39;]
+        figure = board.figures.get_figure_at(opponent_figure_position)
+        list_index = Figure.remove_figure(board.figures, figure)
+    return figure, list_index
+
+
+def put_back_potential_figure(board: Chessboard, figure: Figure, figure_index):
+    if figure:
+        board.figures.add_figure(figure, figure_index)
+
+
+def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
+    bad_moves = []
+    figs = board.figures
+    king = figs.get_king(board.current_player_color)
+    previous_position = figure.position
+    for i in range(len(moves)):
+        move = moves[i]
+        potential_figure, figure_index = take_off_potential_figure(board, move)
+        figs.move_figure_to(figure, move.position_to)
+        king.update_check_mask(figs)
+        if king.check_mask[king.position]:
+            bad_moves.append(i)
+        figs.move_figure_to(figure, previous_position)
+        put_back_potential_figure(board, potential_figure, figure_index)
+
+    for bad_move in bad_moves[::-1]:
+        moves.pop(bad_move)
+
+
+def is_king_selected_to_move_in_check(board: Chessboard, selected_tile):
+    figure = board.figures.get_figure_at(selected_tile)
+    return figure and figure.figure_type == FigureType.KING and figure.color == board.current_player_color and board.check
+
+
+def get_king_position(board: Chessboard, color: Color):
+    return board.figures.get_king_position(color)
+
+
+def do_normal_move(board: Chessboard, move, figure_moved: Figure):
+    if (figure_moved.figure_type == FigureType.KING or figure_moved.figure_type == FigureType.ROOK) and \
+            figure_moved.is_able_to_castle:
+        figure_moved.set_is_able_to_castle(False)
+    potential_figure = board.figures.get_figure_at(move.position_to)
+    if potential_figure:
+        Figure.remove_figure(board.figures, potential_figure)
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)
+
+
+def do_promotion(board: Chessboard, move, figure_moved: Figure):
+    # TODO: Grzesiek, extract it from game logic
+    # while True:
+    #     figure_type_chosen = input(&#34;Choose figure: (Q)ueen, (R)ook, (K)night, (B)ishop\n&#34;).lower()
+    #     if figure_type_chosen in [&#34;q&#34;, &#34;r&#34;, &#34;k&#34;, &#34;b&#34;]:
+    #         break
+    figure_type_chosen = &#34;q&#34;
+    do_normal_move(board, move, figure_moved)
+    pos = figure_moved.position
+    Figure.remove_figure(board.figures, figure_moved)
+    if figure_type_chosen == &#34;q&#34;:
+        new_figure = Queen
+    elif figure_type_chosen == &#34;r&#34;:
+        new_figure = Rook
+    elif figure_type_chosen == &#34;k&#34;:
+        new_figure = Knight
+    elif figure_type_chosen == &#34;b&#34;:
+        new_figure = Bishop
+    else:
+        new_figure = Queen
+    board.figures.add_figure(new_figure(board.current_player_color, pos))
+
+
+def are_the_figures_left_capable_of_checkmate(board: Chessboard):
+    figures_left_count = len(board.figures.figures_list)
+    if figures_left_count &gt; 4:
+        return True
+    if figures_left_count == 2:
+        return False
+    figures_except_kings = list(filter(lambda x: x.figure_type != FigureType.KING, board.figures.figures_list))
+    if len(figures_except_kings) == 1:
+        return not (figures_except_kings[0].figure_type == FigureType.KNIGHT or figures_except_kings[
+            0].figure_type == FigureType.BISHOP)
+    figure_1 = figures_except_kings[0]
+    figure_2 = figures_except_kings[1]
+    if figure_1.figure_type == FigureType.BISHOP and figure_2.figure_type == FigureType.BISHOP and \
+            figure_1.color != figure_2.color and figure_1.light_squared == figure_2.light_squared:
+        return False
+    return True
+
+
+def is_there_any_possible_move(board: Chessboard):
+    for figure in board.figures.figures_list:
+        if figure.color != board.current_player_color:
+            continue
+
+        possible_moves = figure.check_moves(board.figures)
+        reduce_move_range_when_check(board, figure, possible_moves)
+        if possible_moves:
+            return True
+    return False
+
+
+def get_player_from_color(color: Color):
+    return 1 if color == Color.WHITE else 2</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="src.chess.chess_utils.are_the_figures_left_capable_of_checkmate"><code class="name flex">
+<span>def <span class="ident">are_the_figures_left_capable_of_checkmate</span></span>(<span>board)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def are_the_figures_left_capable_of_checkmate(board: Chessboard):
+    figures_left_count = len(board.figures.figures_list)
+    if figures_left_count &gt; 4:
+        return True
+    if figures_left_count == 2:
+        return False
+    figures_except_kings = list(filter(lambda x: x.figure_type != FigureType.KING, board.figures.figures_list))
+    if len(figures_except_kings) == 1:
+        return not (figures_except_kings[0].figure_type == FigureType.KNIGHT or figures_except_kings[
+            0].figure_type == FigureType.BISHOP)
+    figure_1 = figures_except_kings[0]
+    figure_2 = figures_except_kings[1]
+    if figure_1.figure_type == FigureType.BISHOP and figure_2.figure_type == FigureType.BISHOP and \
+            figure_1.color != figure_2.color and figure_1.light_squared == figure_2.light_squared:
+        return False
+    return True</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.do_castling"><code class="name flex">
+<span>def <span class="ident">do_castling</span></span>(<span>board, move, figure_moved)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_castling(board: Chessboard, move: ChessMove, figure_moved: Figure):
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)  # TODO to or from?
+    rook = move.help_dict[&#39;rook&#39;]
+    board.figures.move_figure_to(rook, move.help_dict[&#39;rook-end-pos&#39;])
+    figure_moved.set_is_able_to_castle(False)
+    rook.set_is_able_to_castle(False)</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.do_en_passant_move"><code class="name flex">
+<span>def <span class="ident">do_en_passant_move</span></span>(<span>board, move, figure_moved)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_en_passant_move(board: Chessboard, move: ChessMove, figure_moved: Figure):
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)
+    Figure.remove_figure_on_position(board.figures, move.help_dict[&#39;opponent-pawn-pos&#39;])</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.do_normal_move"><code class="name flex">
+<span>def <span class="ident">do_normal_move</span></span>(<span>board, move, figure_moved)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_normal_move(board: Chessboard, move, figure_moved: Figure):
+    if (figure_moved.figure_type == FigureType.KING or figure_moved.figure_type == FigureType.ROOK) and \
+            figure_moved.is_able_to_castle:
+        figure_moved.set_is_able_to_castle(False)
+    potential_figure = board.figures.get_figure_at(move.position_to)
+    if potential_figure:
+        Figure.remove_figure(board.figures, potential_figure)
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.do_pawn_double_move"><code class="name flex">
+<span>def <span class="ident">do_pawn_double_move</span></span>(<span>board, move, figure_moved)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_pawn_double_move(board: Chessboard, move: ChessMove, figure_moved):
+    figure_moved.set_can_be_captured_en_passant(True)
+    # figure_moved.move(move.position_to)
+    board.figures.move_figure_to(figure_moved, move.position_to)</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.do_promotion"><code class="name flex">
+<span>def <span class="ident">do_promotion</span></span>(<span>board, move, figure_moved)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_promotion(board: Chessboard, move, figure_moved: Figure):
+    # TODO: Grzesiek, extract it from game logic
+    # while True:
+    #     figure_type_chosen = input(&#34;Choose figure: (Q)ueen, (R)ook, (K)night, (B)ishop\n&#34;).lower()
+    #     if figure_type_chosen in [&#34;q&#34;, &#34;r&#34;, &#34;k&#34;, &#34;b&#34;]:
+    #         break
+    figure_type_chosen = &#34;q&#34;
+    do_normal_move(board, move, figure_moved)
+    pos = figure_moved.position
+    Figure.remove_figure(board.figures, figure_moved)
+    if figure_type_chosen == &#34;q&#34;:
+        new_figure = Queen
+    elif figure_type_chosen == &#34;r&#34;:
+        new_figure = Rook
+    elif figure_type_chosen == &#34;k&#34;:
+        new_figure = Knight
+    elif figure_type_chosen == &#34;b&#34;:
+        new_figure = Bishop
+    else:
+        new_figure = Queen
+    board.figures.add_figure(new_figure(board.current_player_color, pos))</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.get_all_possible_moves"><code class="name flex">
+<span>def <span class="ident">get_all_possible_moves</span></span>(<span>board)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_all_possible_moves(board: Chessboard):
+    all_possible_moves = []
+    figures_list = board.figures.figures_list
+    copied_figures_list = copy.deepcopy(board.figures.figures_list)
+    for i, copied_figure in enumerate(copied_figures_list):
+        if figures_list[i].color != board.current_player_color:
+            continue
+
+        figure_moves = figures_list[i].check_moves(board.figures)
+        reduce_move_range_when_check(board, figures_list[i], figure_moves)
+
+        for move in figure_moves:
+            move.player = get_player_from_color(board.current_player_color)
+
+            f_color = str(copied_figure.color).split(&#34;.&#34;)[1].lower()
+            f_type = str(copied_figure.figure_type).split(&#34;.&#34;)[1].lower()
+            move.description = f&#34;{f_color} {f_type} {move.position_from} -&gt; {move.position_to}&#34;
+
+        if figure_moves:
+            all_possible_moves.extend(figure_moves)
+
+    return all_possible_moves</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.get_king_position"><code class="name flex">
+<span>def <span class="ident">get_king_position</span></span>(<span>board, color)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_king_position(board: Chessboard, color: Color):
+    return board.figures.get_king_position(color)</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.get_player_from_color"><code class="name flex">
+<span>def <span class="ident">get_player_from_color</span></span>(<span>color)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_player_from_color(color: Color):
+    return 1 if color == Color.WHITE else 2</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.is_fifty_move_rule"><code class="name flex">
+<span>def <span class="ident">is_fifty_move_rule</span></span>(<span>board)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_fifty_move_rule(board: Chessboard):
+    if len(board.past_moves) &lt; 100:
+        return False
+    for past_move in board.past_moves[::-1][:100]:
+        if past_move.was_capture or past_move.figure_moved.figure_type == FigureType.PAWN:
+            return False
+    return True</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.is_king_selected_to_move_in_check"><code class="name flex">
+<span>def <span class="ident">is_king_selected_to_move_in_check</span></span>(<span>board, selected_tile)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_king_selected_to_move_in_check(board: Chessboard, selected_tile):
+    figure = board.figures.get_figure_at(selected_tile)
+    return figure and figure.figure_type == FigureType.KING and figure.color == board.current_player_color and board.check</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.is_there_a_draw"><code class="name flex">
+<span>def <span class="ident">is_there_a_draw</span></span>(<span>board)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_there_a_draw(board: Chessboard):
+    if not are_the_figures_left_capable_of_checkmate(board):
+        board.game_status = GameStatus.DRAW
+        return True
+    if is_fifty_move_rule(board):
+        board.game_status = GameStatus.FIFTY_MOVE_RULE
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.is_there_any_possible_move"><code class="name flex">
+<span>def <span class="ident">is_there_any_possible_move</span></span>(<span>board)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_there_any_possible_move(board: Chessboard):
+    for figure in board.figures.figures_list:
+        if figure.color != board.current_player_color:
+            continue
+
+        possible_moves = figure.check_moves(board.figures)
+        reduce_move_range_when_check(board, figure, possible_moves)
+        if possible_moves:
+            return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.put_back_potential_figure"><code class="name flex">
+<span>def <span class="ident">put_back_potential_figure</span></span>(<span>board, figure, figure_index)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def put_back_potential_figure(board: Chessboard, figure: Figure, figure_index):
+    if figure:
+        board.figures.add_figure(figure, figure_index)</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.reduce_move_range_when_check"><code class="name flex">
+<span>def <span class="ident">reduce_move_range_when_check</span></span>(<span>board, figure, moves)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
+    bad_moves = []
+    figs = board.figures
+    king = figs.get_king(board.current_player_color)
+    previous_position = figure.position
+    for i in range(len(moves)):
+        move = moves[i]
+        potential_figure, figure_index = take_off_potential_figure(board, move)
+        figs.move_figure_to(figure, move.position_to)
+        king.update_check_mask(figs)
+        if king.check_mask[king.position]:
+            bad_moves.append(i)
+        figs.move_figure_to(figure, previous_position)
+        put_back_potential_figure(board, potential_figure, figure_index)
+
+    for bad_move in bad_moves[::-1]:
+        moves.pop(bad_move)</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chess_utils.take_off_potential_figure"><code class="name flex">
+<span>def <span class="ident">take_off_potential_figure</span></span>(<span>board, move)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def take_off_potential_figure(board: Chessboard, move: ChessMove):
+    figure = board.figures.get_figure_at(move.position_to)
+    list_index = 0
+    if figure:
+        list_index = Figure.remove_figure(board.figures, figure)
+    elif move.move_type == MoveType.EN_PASSANT:
+        opponent_figure_position = move.help_dict[&#39;opponent-pawn-pos&#39;]
+        figure = board.figures.get_figure_at(opponent_figure_position)
+        list_index = Figure.remove_figure(board.figures, figure)
+    return figure, list_index</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.chess.chess_utils.PastMove"><code class="flex name class">
+<span>class <span class="ident">PastMove</span></span>
+<span>(</span><span>position_to, was_check, figure_moved, was_capture, position_from)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PastMove:
+    def __init__(self, position_to, was_check, figure_moved, was_capture, position_from):
+        self.position_to = position_to
+        self.was_check = was_check
+        self.figure_moved = figure_moved
+        self.was_capture = was_capture
+        self.position_from = position_from
+
+    def __str__(self):
+        return f&#39;Move {self.figure_moved} to: {self.position_to}, check: {self.was_check}, capture: {self.was_capture}&#39;</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.chess" href="index.html">src.chess</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.chess.chess_utils.are_the_figures_left_capable_of_checkmate" href="#src.chess.chess_utils.are_the_figures_left_capable_of_checkmate">are_the_figures_left_capable_of_checkmate</a></code></li>
+<li><code><a title="src.chess.chess_utils.do_castling" href="#src.chess.chess_utils.do_castling">do_castling</a></code></li>
+<li><code><a title="src.chess.chess_utils.do_en_passant_move" href="#src.chess.chess_utils.do_en_passant_move">do_en_passant_move</a></code></li>
+<li><code><a title="src.chess.chess_utils.do_normal_move" href="#src.chess.chess_utils.do_normal_move">do_normal_move</a></code></li>
+<li><code><a title="src.chess.chess_utils.do_pawn_double_move" href="#src.chess.chess_utils.do_pawn_double_move">do_pawn_double_move</a></code></li>
+<li><code><a title="src.chess.chess_utils.do_promotion" href="#src.chess.chess_utils.do_promotion">do_promotion</a></code></li>
+<li><code><a title="src.chess.chess_utils.get_all_possible_moves" href="#src.chess.chess_utils.get_all_possible_moves">get_all_possible_moves</a></code></li>
+<li><code><a title="src.chess.chess_utils.get_king_position" href="#src.chess.chess_utils.get_king_position">get_king_position</a></code></li>
+<li><code><a title="src.chess.chess_utils.get_player_from_color" href="#src.chess.chess_utils.get_player_from_color">get_player_from_color</a></code></li>
+<li><code><a title="src.chess.chess_utils.is_fifty_move_rule" href="#src.chess.chess_utils.is_fifty_move_rule">is_fifty_move_rule</a></code></li>
+<li><code><a title="src.chess.chess_utils.is_king_selected_to_move_in_check" href="#src.chess.chess_utils.is_king_selected_to_move_in_check">is_king_selected_to_move_in_check</a></code></li>
+<li><code><a title="src.chess.chess_utils.is_there_a_draw" href="#src.chess.chess_utils.is_there_a_draw">is_there_a_draw</a></code></li>
+<li><code><a title="src.chess.chess_utils.is_there_any_possible_move" href="#src.chess.chess_utils.is_there_any_possible_move">is_there_any_possible_move</a></code></li>
+<li><code><a title="src.chess.chess_utils.put_back_potential_figure" href="#src.chess.chess_utils.put_back_potential_figure">put_back_potential_figure</a></code></li>
+<li><code><a title="src.chess.chess_utils.reduce_move_range_when_check" href="#src.chess.chess_utils.reduce_move_range_when_check">reduce_move_range_when_check</a></code></li>
+<li><code><a title="src.chess.chess_utils.take_off_potential_figure" href="#src.chess.chess_utils.take_off_potential_figure">take_off_potential_figure</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.chess.chess_utils.PastMove" href="#src.chess.chess_utils.PastMove">PastMove</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

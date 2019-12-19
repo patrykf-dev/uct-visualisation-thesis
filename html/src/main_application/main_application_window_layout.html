@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.main_application.main_application_window_layout API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.main_application.main_application_window_layout</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor, QPen
+from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QColorDialog
+
+from src.main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
+    get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, show_eror_dialog
+from src.main_application.enums import GameMode, Game
+from src.main_application.gui_settings import MonteCarloSettings, DisplaySettings
+
+
+class MainApplicationWindowLayout:
+    def __init__(self):
+        self.main_widget = QWidget()
+        self.play_button = get_button(&#34;Play&#34;, 80, 30)
+        self.draw_opengl_button = get_button(&#34;Inspect tree&#34;)
+        self.tree_path_edit = get_hint_line_edit(os.path.join(TREES_PATH, &#34;example_tree_05.csv&#34;))
+        self.chosen_trees_paths = [os.path.join(TREES_PATH, &#34;example_tree_05.csv&#34;)]
+        self.select_tree_path_button = get_button(&#34;Select&#34;)
+        self.chess_button = get_radiobutton(&#34;Chess&#34;)
+        self.mancala_button = get_radiobutton(&#34;Mancala&#34;)
+        self.player_vs_player_button = get_radiobutton(&#34;Player vs player&#34;)
+        self.player_vs_pc_button = get_radiobutton(&#34;Player vs PC&#34;)
+        self.pc_vs_pc_button = get_radiobutton(&#34;PC vs PC&#34;)
+        self.limit_moves_check = get_checkbox(&#34;Limit moves in playouts&#34;)
+        self.player_vs_player_button = get_radiobutton(&#34;Player vs player&#34;)
+        self.player_vs_pc_button = get_radiobutton(&#34;Player vs PC&#34;)
+        self.max_iterations_edit = get_line_edit()
+        self.max_time_edit = get_line_edit()
+        self.max_moves_edit = get_line_edit()
+        self.max_iterations_button = get_radiobutton(&#34;Max iterations before move&#34;)
+        self.max_time_button = get_radiobutton(&#34;Max time for move (ms)&#34;)
+        self.animate_check = get_checkbox(&#34;Animate tree growth&#34;)
+        self.most_visited_label = QLabel()
+        self.least_visited_label = QLabel()
+        self._create_layout()
+        self._set_events()
+        self._load_defaults()
+
+    def get_chosen_game(self):
+        if self.mancala_button.isChecked():
+            return Game.Mancala
+        else:
+            return Game.Chess
+
+    def get_chosen_game_mode(self):
+        if self.pc_vs_pc_button.isChecked():
+            return GameMode.PC_VS_PC
+        elif self.player_vs_player_button.isChecked():
+            return GameMode.PLAYER_VS_PLAYER
+        elif self.player_vs_pc_button.isChecked():
+            return GameMode.PLAYER_VS_PC
+        else:
+            return GameMode.PLAYER_VS_PC
+
+    def get_settings(self) -&gt; (MonteCarloSettings, DisplaySettings):
+        mc_settings = MonteCarloSettings()
+        mc_settings.limit_moves = self.limit_moves_check.isChecked()
+        mc_settings.limit_iterations = self.max_iterations_button.isChecked()
+        try:
+            mc_settings.max_iterations = int(self.max_iterations_edit.text())
+            mc_settings.max_time = int(self.max_time_edit.text())
+            mc_settings.max_moves_per_iteration = int(self.max_moves_edit.text())
+        except ValueError:
+            show_eror_dialog(&#34;Non numeric values passed.&#34;)
+            return None
+
+        display_settings = DisplaySettings()
+        display_settings.animate = self.animate_check.isChecked()
+        display_settings.most_visited_color = self._most_visited_color
+        display_settings.least_visited_color = self._least_visited_color
+        return mc_settings, display_settings
+
+    def _set_events(self):
+        self.limit_moves_check.toggled.connect(self._react_to_moves_limit_click)
+        self.max_iterations_button.toggled.connect(self._react_to_limit_button_click)
+        self.max_time_button.toggled.connect(self._react_to_limit_button_click)
+        self.animate_check.toggled.connect(self._react_to_animate_button_click)
+        self.most_visited_label.mousePressEvent = self._react_to_most_visited_label_click
+        self.least_visited_label.mousePressEvent = self._react_to_least_visited_label_click
+
+    def _load_defaults(self):
+        self.mancala_button.setChecked(True)
+        self.player_vs_pc_button.setChecked(True)
+
+        settings = MonteCarloSettings()
+        self.limit_moves_check.setChecked(settings.limit_moves)
+        self.max_iterations_edit.setText(str(settings.max_iterations))
+        self.max_time_edit.setText(str(settings.max_time))
+        self.max_moves_edit.setText(str(settings.max_moves_per_iteration))
+        self.max_iterations_button.setChecked(settings.limit_iterations)
+        self.max_time_button.setChecked(not settings.limit_iterations)
+
+        display_settings = DisplaySettings()
+        self.animate_check.setChecked(display_settings.animate)
+        self._set_color_to_label(self.most_visited_label, display_settings.most_visited_color)
+        self._set_color_to_label(self.least_visited_label, display_settings.least_visited_color)
+        self._most_visited_color = display_settings.most_visited_color
+        self._least_visited_color = display_settings.least_visited_color
+
+    def _create_layout(self):
+        main_layout = QGridLayout()
+        self.main_widget.setLayout(main_layout)
+        main_layout.addWidget(self._get_first_row(), 0, 0)
+        main_layout.addWidget(self._get_second_row(), 1, 0)
+
+    def _get_first_row(self):
+        rc = QWidget()
+        main_layout = QGridLayout()
+        rc.setLayout(main_layout)
+
+        self._add_left_panel(main_layout)
+        self._add_right_panel(main_layout)
+        self._add_uct_panel(main_layout)
+        self._add_display_settings_panel(main_layout)
+        main_layout.addWidget(self.play_button, 3, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        return rc
+
+    def _get_second_row(self):
+        rc = QWidget()
+        main_layout = QGridLayout()
+        rc.setLayout(main_layout)
+        main_layout.addWidget(self.tree_path_edit, 0, 0)
+        main_layout.addWidget(self.select_tree_path_button, 0, 1)
+        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        return rc
+
+    def _add_left_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;Game&#34;), 0, 0)
+        layout.addWidget(self.mancala_button, 1, 0)
+        layout.addWidget(self.chess_button, 2, 0)
+        main_layout.addWidget(new_widget, 0, 0, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+
+    def _add_right_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;Mode&#34;), 0, 0)
+        layout.addWidget(self.player_vs_player_button, 1, 0)
+        layout.addWidget(self.player_vs_pc_button, 2, 0)
+        layout.addWidget(self.pc_vs_pc_button, 3, 0)
+        main_layout.addWidget(new_widget, 0, 1, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+
+    def _add_uct_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;UCT parameters&#34;), 0, 0)
+        layout.addWidget(self.max_iterations_button, 1, 0)
+        layout.addWidget(self.max_time_button, 2, 0)
+        layout.addWidget(self.limit_moves_check, 3, 0, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.max_iterations_edit, 1, 1)
+        layout.addWidget(self.max_time_edit, 2, 1)
+        layout.addWidget(self.max_moves_edit, 3, 1)
+        main_layout.addWidget(new_widget, 1, 0, 1, 2)
+
+    def _add_display_settings_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;Display settings&#34;), 0, 0, 1, 2, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.animate_check, 1, 0, 1, 2, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.most_visited_label, 2, 0)
+        layout.addWidget(self.least_visited_label, 3, 0)
+        layout.addWidget(get_non_resizable_label(&#34;Most visited edge color&#34;), 2, 1, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(get_non_resizable_label(&#34;Least visited edge color&#34;), 3, 1, alignment=QtCore.Qt.AlignLeft)
+        main_layout.addWidget(new_widget, 2, 0, 1, 2)
+
+    def _react_to_moves_limit_click(self):
+        if self.limit_moves_check.isChecked():
+            self.max_moves_edit.setEnabled(True)
+        else:
+            self.max_moves_edit.setEnabled(False)
+
+    def _react_to_limit_button_click(self):
+        if self.max_iterations_button.isChecked():
+            self.max_iterations_edit.setEnabled(True)
+            self.max_time_edit.setEnabled(False)
+            self._add_warning_to_animation_check(False)
+        else:
+            self.max_iterations_edit.setEnabled(False)
+            self.max_time_edit.setEnabled(True)
+            self._add_warning_to_animation_check(self.animate_check.isChecked())
+
+    def _react_to_animate_button_click(self):
+        if self.max_time_button.isChecked() and self.animate_check.isChecked():
+            self._add_warning_to_animation_check(True)
+        else:
+            self._add_warning_to_animation_check(False)
+
+    def _react_to_most_visited_label_click(self, event):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self._set_color_to_label(self.most_visited_label, color.getRgb())
+            self._most_visited_color = color.getRgb()
+
+    def _react_to_least_visited_label_click(self, event):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self._set_color_to_label(self.least_visited_label, color.getRgb())
+            self._least_visited_color = color.getRgb()
+
+    def _add_warning_to_animation_check(self, warning):
+        text = &#34;&#34;
+        if warning:
+            text += &#34;Animate tree growth (reducing algorithm&#39;s performance)&#34;
+        else:
+            text += &#34;Animate tree growth&#34;
+        self.animate_check.setText(text)
+
+    def _set_color_to_label(self, label, color):
+        width = 30
+        height = 20
+        label.setFixedWidth(width)
+        label.setFixedHeight(height)
+        pixmap = QtGui.QPixmap(width, height)
+        pixmap.fill(QColor(*color))
+        painter = QtGui.QPainter(pixmap)
+        pen = QPen(Qt.black)
+        pen.setWidth(1)
+        painter.setPen(pen)
+        painter.drawRect(0, 0, width - 1, height - 1)
+        pixmap.detach()
+        label.setPixmap(pixmap)
+        painter.end()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.main_application.main_application_window_layout.MainApplicationWindowLayout"><code class="flex name class">
+<span>class <span class="ident">MainApplicationWindowLayout</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MainApplicationWindowLayout:
+    def __init__(self):
+        self.main_widget = QWidget()
+        self.play_button = get_button(&#34;Play&#34;, 80, 30)
+        self.draw_opengl_button = get_button(&#34;Inspect tree&#34;)
+        self.tree_path_edit = get_hint_line_edit(os.path.join(TREES_PATH, &#34;example_tree_05.csv&#34;))
+        self.chosen_trees_paths = [os.path.join(TREES_PATH, &#34;example_tree_05.csv&#34;)]
+        self.select_tree_path_button = get_button(&#34;Select&#34;)
+        self.chess_button = get_radiobutton(&#34;Chess&#34;)
+        self.mancala_button = get_radiobutton(&#34;Mancala&#34;)
+        self.player_vs_player_button = get_radiobutton(&#34;Player vs player&#34;)
+        self.player_vs_pc_button = get_radiobutton(&#34;Player vs PC&#34;)
+        self.pc_vs_pc_button = get_radiobutton(&#34;PC vs PC&#34;)
+        self.limit_moves_check = get_checkbox(&#34;Limit moves in playouts&#34;)
+        self.player_vs_player_button = get_radiobutton(&#34;Player vs player&#34;)
+        self.player_vs_pc_button = get_radiobutton(&#34;Player vs PC&#34;)
+        self.max_iterations_edit = get_line_edit()
+        self.max_time_edit = get_line_edit()
+        self.max_moves_edit = get_line_edit()
+        self.max_iterations_button = get_radiobutton(&#34;Max iterations before move&#34;)
+        self.max_time_button = get_radiobutton(&#34;Max time for move (ms)&#34;)
+        self.animate_check = get_checkbox(&#34;Animate tree growth&#34;)
+        self.most_visited_label = QLabel()
+        self.least_visited_label = QLabel()
+        self._create_layout()
+        self._set_events()
+        self._load_defaults()
+
+    def get_chosen_game(self):
+        if self.mancala_button.isChecked():
+            return Game.Mancala
+        else:
+            return Game.Chess
+
+    def get_chosen_game_mode(self):
+        if self.pc_vs_pc_button.isChecked():
+            return GameMode.PC_VS_PC
+        elif self.player_vs_player_button.isChecked():
+            return GameMode.PLAYER_VS_PLAYER
+        elif self.player_vs_pc_button.isChecked():
+            return GameMode.PLAYER_VS_PC
+        else:
+            return GameMode.PLAYER_VS_PC
+
+    def get_settings(self) -&gt; (MonteCarloSettings, DisplaySettings):
+        mc_settings = MonteCarloSettings()
+        mc_settings.limit_moves = self.limit_moves_check.isChecked()
+        mc_settings.limit_iterations = self.max_iterations_button.isChecked()
+        try:
+            mc_settings.max_iterations = int(self.max_iterations_edit.text())
+            mc_settings.max_time = int(self.max_time_edit.text())
+            mc_settings.max_moves_per_iteration = int(self.max_moves_edit.text())
+        except ValueError:
+            show_eror_dialog(&#34;Non numeric values passed.&#34;)
+            return None
+
+        display_settings = DisplaySettings()
+        display_settings.animate = self.animate_check.isChecked()
+        display_settings.most_visited_color = self._most_visited_color
+        display_settings.least_visited_color = self._least_visited_color
+        return mc_settings, display_settings
+
+    def _set_events(self):
+        self.limit_moves_check.toggled.connect(self._react_to_moves_limit_click)
+        self.max_iterations_button.toggled.connect(self._react_to_limit_button_click)
+        self.max_time_button.toggled.connect(self._react_to_limit_button_click)
+        self.animate_check.toggled.connect(self._react_to_animate_button_click)
+        self.most_visited_label.mousePressEvent = self._react_to_most_visited_label_click
+        self.least_visited_label.mousePressEvent = self._react_to_least_visited_label_click
+
+    def _load_defaults(self):
+        self.mancala_button.setChecked(True)
+        self.player_vs_pc_button.setChecked(True)
+
+        settings = MonteCarloSettings()
+        self.limit_moves_check.setChecked(settings.limit_moves)
+        self.max_iterations_edit.setText(str(settings.max_iterations))
+        self.max_time_edit.setText(str(settings.max_time))
+        self.max_moves_edit.setText(str(settings.max_moves_per_iteration))
+        self.max_iterations_button.setChecked(settings.limit_iterations)
+        self.max_time_button.setChecked(not settings.limit_iterations)
+
+        display_settings = DisplaySettings()
+        self.animate_check.setChecked(display_settings.animate)
+        self._set_color_to_label(self.most_visited_label, display_settings.most_visited_color)
+        self._set_color_to_label(self.least_visited_label, display_settings.least_visited_color)
+        self._most_visited_color = display_settings.most_visited_color
+        self._least_visited_color = display_settings.least_visited_color
+
+    def _create_layout(self):
+        main_layout = QGridLayout()
+        self.main_widget.setLayout(main_layout)
+        main_layout.addWidget(self._get_first_row(), 0, 0)
+        main_layout.addWidget(self._get_second_row(), 1, 0)
+
+    def _get_first_row(self):
+        rc = QWidget()
+        main_layout = QGridLayout()
+        rc.setLayout(main_layout)
+
+        self._add_left_panel(main_layout)
+        self._add_right_panel(main_layout)
+        self._add_uct_panel(main_layout)
+        self._add_display_settings_panel(main_layout)
+        main_layout.addWidget(self.play_button, 3, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        return rc
+
+    def _get_second_row(self):
+        rc = QWidget()
+        main_layout = QGridLayout()
+        rc.setLayout(main_layout)
+        main_layout.addWidget(self.tree_path_edit, 0, 0)
+        main_layout.addWidget(self.select_tree_path_button, 0, 1)
+        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        return rc
+
+    def _add_left_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;Game&#34;), 0, 0)
+        layout.addWidget(self.mancala_button, 1, 0)
+        layout.addWidget(self.chess_button, 2, 0)
+        main_layout.addWidget(new_widget, 0, 0, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+
+    def _add_right_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;Mode&#34;), 0, 0)
+        layout.addWidget(self.player_vs_player_button, 1, 0)
+        layout.addWidget(self.player_vs_pc_button, 2, 0)
+        layout.addWidget(self.pc_vs_pc_button, 3, 0)
+        main_layout.addWidget(new_widget, 0, 1, alignment=QtCore.Qt.AlignHCenter | QtCore.Qt.AlignTop)
+
+    def _add_uct_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;UCT parameters&#34;), 0, 0)
+        layout.addWidget(self.max_iterations_button, 1, 0)
+        layout.addWidget(self.max_time_button, 2, 0)
+        layout.addWidget(self.limit_moves_check, 3, 0, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.max_iterations_edit, 1, 1)
+        layout.addWidget(self.max_time_edit, 2, 1)
+        layout.addWidget(self.max_moves_edit, 3, 1)
+        main_layout.addWidget(new_widget, 1, 0, 1, 2)
+
+    def _add_display_settings_panel(self, main_layout):
+        new_widget = QWidget()
+        layout = QGridLayout()
+        new_widget.setLayout(layout)
+        layout.addWidget(get_non_resizable_label(&#34;Display settings&#34;), 0, 0, 1, 2, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.animate_check, 1, 0, 1, 2, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.most_visited_label, 2, 0)
+        layout.addWidget(self.least_visited_label, 3, 0)
+        layout.addWidget(get_non_resizable_label(&#34;Most visited edge color&#34;), 2, 1, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(get_non_resizable_label(&#34;Least visited edge color&#34;), 3, 1, alignment=QtCore.Qt.AlignLeft)
+        main_layout.addWidget(new_widget, 2, 0, 1, 2)
+
+    def _react_to_moves_limit_click(self):
+        if self.limit_moves_check.isChecked():
+            self.max_moves_edit.setEnabled(True)
+        else:
+            self.max_moves_edit.setEnabled(False)
+
+    def _react_to_limit_button_click(self):
+        if self.max_iterations_button.isChecked():
+            self.max_iterations_edit.setEnabled(True)
+            self.max_time_edit.setEnabled(False)
+            self._add_warning_to_animation_check(False)
+        else:
+            self.max_iterations_edit.setEnabled(False)
+            self.max_time_edit.setEnabled(True)
+            self._add_warning_to_animation_check(self.animate_check.isChecked())
+
+    def _react_to_animate_button_click(self):
+        if self.max_time_button.isChecked() and self.animate_check.isChecked():
+            self._add_warning_to_animation_check(True)
+        else:
+            self._add_warning_to_animation_check(False)
+
+    def _react_to_most_visited_label_click(self, event):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self._set_color_to_label(self.most_visited_label, color.getRgb())
+            self._most_visited_color = color.getRgb()
+
+    def _react_to_least_visited_label_click(self, event):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self._set_color_to_label(self.least_visited_label, color.getRgb())
+            self._least_visited_color = color.getRgb()
+
+    def _add_warning_to_animation_check(self, warning):
+        text = &#34;&#34;
+        if warning:
+            text += &#34;Animate tree growth (reducing algorithm&#39;s performance)&#34;
+        else:
+            text += &#34;Animate tree growth&#34;
+        self.animate_check.setText(text)
+
+    def _set_color_to_label(self, label, color):
+        width = 30
+        height = 20
+        label.setFixedWidth(width)
+        label.setFixedHeight(height)
+        pixmap = QtGui.QPixmap(width, height)
+        pixmap.fill(QColor(*color))
+        painter = QtGui.QPainter(pixmap)
+        pen = QPen(Qt.black)
+        pen.setWidth(1)
+        painter.setPen(pen)
+        painter.drawRect(0, 0, width - 1, height - 1)
+        pixmap.detach()
+        label.setPixmap(pixmap)
+        painter.end()</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_chosen_game"><code class="name flex">
+<span>def <span class="ident">get_chosen_game</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_chosen_game(self):
+    if self.mancala_button.isChecked():
+        return Game.Mancala
+    else:
+        return Game.Chess</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_chosen_game_mode"><code class="name flex">
+<span>def <span class="ident">get_chosen_game_mode</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_chosen_game_mode(self):
+    if self.pc_vs_pc_button.isChecked():
+        return GameMode.PC_VS_PC
+    elif self.player_vs_player_button.isChecked():
+        return GameMode.PLAYER_VS_PLAYER
+    elif self.player_vs_pc_button.isChecked():
+        return GameMode.PLAYER_VS_PC
+    else:
+        return GameMode.PLAYER_VS_PC</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_settings"><code class="name flex">
+<span>def <span class="ident">get_settings</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_settings(self) -&gt; (MonteCarloSettings, DisplaySettings):
+    mc_settings = MonteCarloSettings()
+    mc_settings.limit_moves = self.limit_moves_check.isChecked()
+    mc_settings.limit_iterations = self.max_iterations_button.isChecked()
+    try:
+        mc_settings.max_iterations = int(self.max_iterations_edit.text())
+        mc_settings.max_time = int(self.max_time_edit.text())
+        mc_settings.max_moves_per_iteration = int(self.max_moves_edit.text())
+    except ValueError:
+        show_eror_dialog(&#34;Non numeric values passed.&#34;)
+        return None
+
+    display_settings = DisplaySettings()
+    display_settings.animate = self.animate_check.isChecked()
+    display_settings.most_visited_color = self._most_visited_color
+    display_settings.least_visited_color = self._least_visited_color
+    return mc_settings, display_settings</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.main_application" href="index.html">src.main_application</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.main_application.main_application_window_layout.MainApplicationWindowLayout" href="#src.main_application.main_application_window_layout.MainApplicationWindowLayout">MainApplicationWindowLayout</a></code></h4>
+<ul class="">
+<li><code><a title="src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_chosen_game" href="#src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_chosen_game">get_chosen_game</a></code></li>
+<li><code><a title="src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_chosen_game_mode" href="#src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_chosen_game_mode">get_chosen_game_mode</a></code></li>
+<li><code><a title="src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_settings" href="#src.main_application.main_application_window_layout.MainApplicationWindowLayout.get_settings">get_settings</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

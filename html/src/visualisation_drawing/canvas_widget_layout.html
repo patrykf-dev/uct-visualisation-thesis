@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.visualisation_drawing.canvas_widget_layout API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.visualisation_drawing.canvas_widget_layout</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from PyQt5 import QtCore
+from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
+
+from src.main_application.GUI_utils import get_button, get_non_resizable_label, \
+    get_box_background_stylesheet, get_radiobutton
+from src.uct.algorithm.mc_node import MonteCarloNode
+from src.uct.algorithm.mc_tree import MonteCarloTree
+from src.visualisation_drawing.canvas import MonteCarloTreeCanvas
+
+
+class MonteCarloTreeWidgetLayout:
+    NO_INFO_LABEL = &#34;-NO INFO-&#34;
+
+    def __init__(self, main_widget, canvas: MonteCarloTreeCanvas, sequences):
+        self.canvas = canvas
+        self.reset_button = get_button(&#34;Reset view&#34;)
+        self.serialize_csv_radiobutton = get_radiobutton(&#34;Save as csv file&#34;)
+        self.serialize_binary_radiobutton = get_radiobutton(&#34;Save as binary file&#34;)
+        self.save_image_radiobutton = get_radiobutton(&#34;Save as bitmap&#34;)
+        self.serialize_button = get_button(&#34;Save tree&#34;)
+        self.node_panel_widget = None
+        self.tree_details_panel_widget = None
+        self.tree_details_labels = [
+            [&#34;Vertices count&#34;, None]]
+        self.node_labels = [
+            [&#34;Id&#34;, None],
+            [&#34;Child count&#34;, None],
+            [&#34;State name&#34;, None],
+            [&#34;Move name&#34;, None],
+            [&#34;Visits count&#34;, None],
+            [&#34;Visits count pre&#34;, None],
+            [&#34;Win score&#34;, None],
+            [&#34;Average prize&#34;, None],
+            [&#34;Current player&#34;, None]]
+        self._create_layout(main_widget, sequences)
+
+    def reset_node_panel_info(self):
+        self._set_node_panel_color((160, 160, 160))
+        for i in range(len(self.node_labels)):
+            self.node_labels[i][1].setText(self.NO_INFO_LABEL)
+
+    def fill_tree_details_panel_info(self, vertices_count):
+        self._set_tree_details_panel_color((255, 255, 255))
+        self.tree_details_labels[0][1].setText(str(vertices_count))
+
+    def fill_node_panel_info(self, node: MonteCarloNode):
+        if node is None:
+            self.reset_node_panel_info()
+        else:
+            self._set_node_panel_color((255, 255, 255))
+            self.node_labels[0][1].setText(str(node.id))
+            self.node_labels[1][1].setText(str(len(node.children)))
+            if node.details:
+                self.node_labels[2][1].setText(node.details.state_name)
+                self.node_labels[3][1].setText(node.details.move_name)
+                self.node_labels[4][1].setText(str(node.details.visits_count))
+                self.node_labels[5][1].setText(str(node.details.visits_count_pre_modified))
+                self.node_labels[6][1].setText(str(node.details.win_score))
+                self.node_labels[7][1].setText(str(node.details.average_prize))
+            if node.move:
+                self.node_labels[8][1].setText(str(node.move.player))
+
+    def _create_left_right_button_widget(self):
+        self.left_button = get_button(&#34;&lt;&lt;&#34;, 35)
+        self.right_button = get_button(&#34;&gt;&gt;&#34;, 35)
+        self.tree_info_number_label = get_non_resizable_label()
+        self.tree_info_filename_label = get_non_resizable_label()
+        self.left_right_widget = QWidget()
+        left_right_layout = QGridLayout()
+        self.left_right_widget.setLayout(left_right_layout)
+        left_right_layout.addWidget(self.tree_info_filename_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        if len(self.canvas.trees_paths) &gt; 1:
+            left_right_layout.addWidget(self.tree_info_number_label, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+            left_right_layout.addWidget(self.left_button, 2, 0)
+            left_right_layout.addWidget(self.right_button, 2, 1)
+        else:
+            left_right_layout.addWidget(self.left_button, 1, 0)
+            left_right_layout.addWidget(self.right_button, 1, 1)
+
+    def _create_serialization_button_layout(self):
+        self.serialization_widget = QWidget()
+        serialization_layout = QGridLayout()
+        self.serialization_widget.setLayout(serialization_layout)
+        serialization_layout.addWidget(self.serialize_csv_radiobutton, 0, 0)
+        serialization_layout.addWidget(self.serialize_binary_radiobutton, 1, 0)
+        serialization_layout.addWidget(self.save_image_radiobutton, 2, 0)
+        serialization_layout.addWidget(self.serialize_button, 1, 1, alignment=QtCore.Qt.AlignCenter)
+
+    def _create_layout(self, main_widget, sequences):
+        self.serialize_csv_radiobutton.setChecked(True)
+
+        main_layout = QGridLayout()
+        main_widget.setLayout(main_layout)
+
+        self.tree_details_panel_widget = self._get_panel(self.tree_details_labels, 400, 80)
+        self.node_panel_widget = self._get_panel(self.node_labels, 400, 250)
+        self._set_tree_details_panel_color((160, 160, 160))
+        self._set_node_panel_color((160, 160, 160))
+
+        self._create_serialization_button_layout()
+        if sequences:
+            self._create_left_right_button_widget()
+            if len(self.canvas.trees_paths) &gt;= 1:
+                tree = MonteCarloTree(root=self.canvas.tree.root)
+                self.canvas.use_tree_data(tree)
+                self.fill_tree_details_panel_info(tree.data.vertices_count)
+                if len(self.canvas.trees_paths) == 1:
+                    self.right_button.setEnabled(False)
+            self.left_button.setEnabled(False)
+
+        main_layout.addWidget(self.canvas.native, 0, 0)
+
+        panels_widget = QWidget()
+        panels_layout = QGridLayout()
+        panels_widget.setLayout(panels_layout)
+        panels_layout.addWidget(self.tree_details_panel_widget, 0, 0, alignment=QtCore.Qt.AlignBottom)
+        panels_layout.addWidget(self.node_panel_widget, 1, 0, alignment=QtCore.Qt.AlignTop)
+        panels_layout.addWidget(self.serialization_widget, 2, 0)
+
+        main_layout.addWidget(panels_widget, 0, 1)
+        main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
+        if sequences:
+            main_layout.addWidget(self.left_right_widget, 2, 0, alignment=QtCore.Qt.AlignCenter)
+
+    def _get_panel(self, labels, width, height):
+        rc = QWidget()
+        rc.setMinimumSize(width, height)
+        rc.setObjectName(&#34;box&#34;)
+        layout = QGridLayout()
+        rc.setLayout(layout)
+        rc.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+        for i, label in enumerate(labels):
+            label_title = get_non_resizable_label()
+            label_title.setText(label[0] + &#34;: &#34;)
+            label_content = get_non_resizable_label()
+            label_content.setMaximumWidth(250)
+            label_content.setText(self.NO_INFO_LABEL)
+            layout.addWidget(label_title, i, 0)
+            layout.addWidget(label_content, i, 1)
+            labels[i][1] = label_content
+        return rc
+
+    def _set_node_panel_color(self, color):
+        self.node_panel_widget.setStyleSheet(get_box_background_stylesheet(color))
+
+    def _set_tree_details_panel_color(self, color):
+        self.tree_details_panel_widget.setStyleSheet(get_box_background_stylesheet(color))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout"><code class="flex name class">
+<span>class <span class="ident">MonteCarloTreeWidgetLayout</span></span>
+<span>(</span><span>main_widget, canvas, sequences)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MonteCarloTreeWidgetLayout:
+    NO_INFO_LABEL = &#34;-NO INFO-&#34;
+
+    def __init__(self, main_widget, canvas: MonteCarloTreeCanvas, sequences):
+        self.canvas = canvas
+        self.reset_button = get_button(&#34;Reset view&#34;)
+        self.serialize_csv_radiobutton = get_radiobutton(&#34;Save as csv file&#34;)
+        self.serialize_binary_radiobutton = get_radiobutton(&#34;Save as binary file&#34;)
+        self.save_image_radiobutton = get_radiobutton(&#34;Save as bitmap&#34;)
+        self.serialize_button = get_button(&#34;Save tree&#34;)
+        self.node_panel_widget = None
+        self.tree_details_panel_widget = None
+        self.tree_details_labels = [
+            [&#34;Vertices count&#34;, None]]
+        self.node_labels = [
+            [&#34;Id&#34;, None],
+            [&#34;Child count&#34;, None],
+            [&#34;State name&#34;, None],
+            [&#34;Move name&#34;, None],
+            [&#34;Visits count&#34;, None],
+            [&#34;Visits count pre&#34;, None],
+            [&#34;Win score&#34;, None],
+            [&#34;Average prize&#34;, None],
+            [&#34;Current player&#34;, None]]
+        self._create_layout(main_widget, sequences)
+
+    def reset_node_panel_info(self):
+        self._set_node_panel_color((160, 160, 160))
+        for i in range(len(self.node_labels)):
+            self.node_labels[i][1].setText(self.NO_INFO_LABEL)
+
+    def fill_tree_details_panel_info(self, vertices_count):
+        self._set_tree_details_panel_color((255, 255, 255))
+        self.tree_details_labels[0][1].setText(str(vertices_count))
+
+    def fill_node_panel_info(self, node: MonteCarloNode):
+        if node is None:
+            self.reset_node_panel_info()
+        else:
+            self._set_node_panel_color((255, 255, 255))
+            self.node_labels[0][1].setText(str(node.id))
+            self.node_labels[1][1].setText(str(len(node.children)))
+            if node.details:
+                self.node_labels[2][1].setText(node.details.state_name)
+                self.node_labels[3][1].setText(node.details.move_name)
+                self.node_labels[4][1].setText(str(node.details.visits_count))
+                self.node_labels[5][1].setText(str(node.details.visits_count_pre_modified))
+                self.node_labels[6][1].setText(str(node.details.win_score))
+                self.node_labels[7][1].setText(str(node.details.average_prize))
+            if node.move:
+                self.node_labels[8][1].setText(str(node.move.player))
+
+    def _create_left_right_button_widget(self):
+        self.left_button = get_button(&#34;&lt;&lt;&#34;, 35)
+        self.right_button = get_button(&#34;&gt;&gt;&#34;, 35)
+        self.tree_info_number_label = get_non_resizable_label()
+        self.tree_info_filename_label = get_non_resizable_label()
+        self.left_right_widget = QWidget()
+        left_right_layout = QGridLayout()
+        self.left_right_widget.setLayout(left_right_layout)
+        left_right_layout.addWidget(self.tree_info_filename_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        if len(self.canvas.trees_paths) &gt; 1:
+            left_right_layout.addWidget(self.tree_info_number_label, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+            left_right_layout.addWidget(self.left_button, 2, 0)
+            left_right_layout.addWidget(self.right_button, 2, 1)
+        else:
+            left_right_layout.addWidget(self.left_button, 1, 0)
+            left_right_layout.addWidget(self.right_button, 1, 1)
+
+    def _create_serialization_button_layout(self):
+        self.serialization_widget = QWidget()
+        serialization_layout = QGridLayout()
+        self.serialization_widget.setLayout(serialization_layout)
+        serialization_layout.addWidget(self.serialize_csv_radiobutton, 0, 0)
+        serialization_layout.addWidget(self.serialize_binary_radiobutton, 1, 0)
+        serialization_layout.addWidget(self.save_image_radiobutton, 2, 0)
+        serialization_layout.addWidget(self.serialize_button, 1, 1, alignment=QtCore.Qt.AlignCenter)
+
+    def _create_layout(self, main_widget, sequences):
+        self.serialize_csv_radiobutton.setChecked(True)
+
+        main_layout = QGridLayout()
+        main_widget.setLayout(main_layout)
+
+        self.tree_details_panel_widget = self._get_panel(self.tree_details_labels, 400, 80)
+        self.node_panel_widget = self._get_panel(self.node_labels, 400, 250)
+        self._set_tree_details_panel_color((160, 160, 160))
+        self._set_node_panel_color((160, 160, 160))
+
+        self._create_serialization_button_layout()
+        if sequences:
+            self._create_left_right_button_widget()
+            if len(self.canvas.trees_paths) &gt;= 1:
+                tree = MonteCarloTree(root=self.canvas.tree.root)
+                self.canvas.use_tree_data(tree)
+                self.fill_tree_details_panel_info(tree.data.vertices_count)
+                if len(self.canvas.trees_paths) == 1:
+                    self.right_button.setEnabled(False)
+            self.left_button.setEnabled(False)
+
+        main_layout.addWidget(self.canvas.native, 0, 0)
+
+        panels_widget = QWidget()
+        panels_layout = QGridLayout()
+        panels_widget.setLayout(panels_layout)
+        panels_layout.addWidget(self.tree_details_panel_widget, 0, 0, alignment=QtCore.Qt.AlignBottom)
+        panels_layout.addWidget(self.node_panel_widget, 1, 0, alignment=QtCore.Qt.AlignTop)
+        panels_layout.addWidget(self.serialization_widget, 2, 0)
+
+        main_layout.addWidget(panels_widget, 0, 1)
+        main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
+        if sequences:
+            main_layout.addWidget(self.left_right_widget, 2, 0, alignment=QtCore.Qt.AlignCenter)
+
+    def _get_panel(self, labels, width, height):
+        rc = QWidget()
+        rc.setMinimumSize(width, height)
+        rc.setObjectName(&#34;box&#34;)
+        layout = QGridLayout()
+        rc.setLayout(layout)
+        rc.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+
+        for i, label in enumerate(labels):
+            label_title = get_non_resizable_label()
+            label_title.setText(label[0] + &#34;: &#34;)
+            label_content = get_non_resizable_label()
+            label_content.setMaximumWidth(250)
+            label_content.setText(self.NO_INFO_LABEL)
+            layout.addWidget(label_title, i, 0)
+            layout.addWidget(label_content, i, 1)
+            labels[i][1] = label_content
+        return rc
+
+    def _set_node_panel_color(self, color):
+        self.node_panel_widget.setStyleSheet(get_box_background_stylesheet(color))
+
+    def _set_tree_details_panel_color(self, color):
+        self.tree_details_panel_widget.setStyleSheet(get_box_background_stylesheet(color))</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.NO_INFO_LABEL"><code class="name">var <span class="ident">NO_INFO_LABEL</span></code></dt>
+<dd>
+<section class="desc"><p>str(object='') -&gt; str
+str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
+<p>Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.<strong>str</strong>() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.</p></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.fill_node_panel_info"><code class="name flex">
+<span>def <span class="ident">fill_node_panel_info</span></span>(<span>self, node)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fill_node_panel_info(self, node: MonteCarloNode):
+    if node is None:
+        self.reset_node_panel_info()
+    else:
+        self._set_node_panel_color((255, 255, 255))
+        self.node_labels[0][1].setText(str(node.id))
+        self.node_labels[1][1].setText(str(len(node.children)))
+        if node.details:
+            self.node_labels[2][1].setText(node.details.state_name)
+            self.node_labels[3][1].setText(node.details.move_name)
+            self.node_labels[4][1].setText(str(node.details.visits_count))
+            self.node_labels[5][1].setText(str(node.details.visits_count_pre_modified))
+            self.node_labels[6][1].setText(str(node.details.win_score))
+            self.node_labels[7][1].setText(str(node.details.average_prize))
+        if node.move:
+            self.node_labels[8][1].setText(str(node.move.player))</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.fill_tree_details_panel_info"><code class="name flex">
+<span>def <span class="ident">fill_tree_details_panel_info</span></span>(<span>self, vertices_count)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fill_tree_details_panel_info(self, vertices_count):
+    self._set_tree_details_panel_color((255, 255, 255))
+    self.tree_details_labels[0][1].setText(str(vertices_count))</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.reset_node_panel_info"><code class="name flex">
+<span>def <span class="ident">reset_node_panel_info</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset_node_panel_info(self):
+    self._set_node_panel_color((160, 160, 160))
+    for i in range(len(self.node_labels)):
+        self.node_labels[i][1].setText(self.NO_INFO_LABEL)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.visualisation_drawing" href="index.html">src.visualisation_drawing</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout" href="#src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout">MonteCarloTreeWidgetLayout</a></code></h4>
+<ul class="">
+<li><code><a title="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.NO_INFO_LABEL" href="#src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.NO_INFO_LABEL">NO_INFO_LABEL</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.fill_node_panel_info" href="#src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.fill_node_panel_info">fill_node_panel_info</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.fill_tree_details_panel_info" href="#src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.fill_tree_details_panel_info">fill_tree_details_panel_info</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.reset_node_panel_info" href="#src.visualisation_drawing.canvas_widget_layout.MonteCarloTreeWidgetLayout.reset_node_panel_info">reset_node_panel_info</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

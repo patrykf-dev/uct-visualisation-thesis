@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.visualisation_drawing.canvas API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.visualisation_drawing.canvas</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import numpy as np
+from PyQt5 import QtCore
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import QApplication
+
+import vispy
+from src.serialization.serializator_binary import BinarySerializator
+from src.serialization.serializator_csv import CsvSerializator
+from src.uct.algorithm.mc_tree import MonteCarloTree
+from src.utils.custom_event import CustomEvent
+from vispy import app as VispyApp
+from vispy.gloo import set_viewport, clear, set_state
+from src.visualisation_algorithm.walkers_algorithm import ImprovedWalkersAlgorithm
+from src.visualisation_drawing.draw_data import MonteCarloTreeDrawDataRetriever
+from src.visualisation_drawing.shaders.shader_reader import ShaderReader
+from src.visualisation_drawing.view_matrix_manager import ViewMatrixManager
+
+
+class MonteCarloTreeCanvas(VispyApp.Canvas):
+    def __init__(self, tree: MonteCarloTree = None, trees_paths=None,
+                 display_settings=None, **kwargs):
+        VispyApp.Canvas.__init__(self, **kwargs)
+        self.previous_mouse_pos = None
+        self.tree = tree
+        self.display_settings = display_settings
+        self.trees_paths = trees_paths
+        self.tree_index = 0
+        self.binary_serializator = BinarySerializator()
+        self.csv_serializator = CsvSerializator()
+        self._setup_widget()
+        if self.tree:
+            self.use_tree_data(self.tree)
+
+    def use_tree_data(self, tree: MonteCarloTree):
+        self.tree = tree
+        alg = ImprovedWalkersAlgorithm(self.tree)
+        alg.buchheim_algorithm()
+        self._bind_buffers()
+        self._bind_shaders()
+        self._setup_matrices()
+        self.update()
+
+    def make_next_tree_as_root(self):
+        if self.tree_index + 1 &lt; len(self.trees_paths):
+            self.tree_index += 1
+            self.set_current_tree()
+            return True
+        return False
+
+    def make_previous_tree_as_root(self):
+        if self.tree_index &gt;= 1:
+            self.tree_index -= 1
+            self.set_current_tree()
+            return True
+        return False
+
+    def set_current_tree(self):
+        if self.trees_paths:
+            path = self.trees_paths[self.tree_index]
+            serializator = self.binary_serializator if path.endswith(&#34;tree&#34;) else self.csv_serializator
+            root = serializator.get_node_from_path(path)
+            self.tree = MonteCarloTree(root=root)
+
+    def on_resize(self, event):
+        set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
+
+    def on_draw(self, event):
+        clear(color=True, depth=True)
+        if self.tree:
+            self.program_edges.draw(&#34;lines&#34;)
+            self.program_vertices.draw(&#34;points&#34;)
+
+    def handle_wheel_event(self, event):
+        if not self.tree:
+            return
+        wheel_direction = event.angleDelta().y()
+
+        if wheel_direction &lt; 0:
+            self.view_matrix_manager.zoom_out()
+        else:
+            self.view_matrix_manager.zoom_in()
+        self._update_view_matrix()
+
+    def _setup_matrices(self):
+        self.view_matrix_manager = ViewMatrixManager()
+        self.program_vertices[&#34;u_model&#34;] = np.eye(4, dtype=np.float32)
+        self.program_vertices[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_1
+        self.program_vertices[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges[&#34;u_model&#34;] = np.eye(4, dtype=np.float32)
+        self.program_edges[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_2
+        self.program_edges[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_2
+        self.program_vertices[&#34;u_radius_multiplier&#34;] = self.view_matrix_manager.scale
+
+    def _bind_shaders(self):
+        shader_reader = ShaderReader()
+        self.program_vertices = vispy.gloo.Program(shader_reader.get_vertices_vshader(),
+                                                   shader_reader.get_vertices_fshader())
+        self.program_vertices[&#34;u_radius_multiplier&#34;] = 3
+        self.program_vertices[&#34;u_antialias&#34;] = 1
+        self.program_vertices.bind(self.vertices_buffer)
+
+        self.program_edges = vispy.gloo.Program(shader_reader.get_edges_vshader(), shader_reader.get_edges_fshader())
+        self.program_edges.bind(self.edges_buffer)
+
+    def _bind_buffers(self):
+        retriever = MonteCarloTreeDrawDataRetriever(self.tree, self.display_settings.most_visited_color,
+                                                    self.display_settings.least_visited_color)
+        self.tree_draw_data = retriever.retrieve_draw_data()
+        self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
+        self.edges_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.edges)
+
+    def handle_mouse_click_event(self, event):
+        if not self.tree:
+            return
+        pos = event.pos()
+        if event.button() == QtCore.Qt.RightButton:
+            QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+            self.previous_mouse_pos = pos
+        elif event.button() == QtCore.Qt.LeftButton:
+            x_clicked = pos.x()
+            y_clicked = pos.y()
+            width = self.native.frameGeometry().width()
+            height = self.native.frameGeometry().height()
+            world_x, world_y = self.view_matrix_manager.parse_click(x_clicked, y_clicked, width, height)
+
+            clicked_node = self.tree_draw_data.get_node_at(world_x, world_y, self.view_matrix_manager.scale)
+            self.on_node_clicked.fire(self, earg=clicked_node)
+
+    def handle_mouse_move_event(self, event):
+        if not self.tree:
+            return
+        if event.buttons() == QtCore.Qt.RightButton:
+            diff = self.previous_mouse_pos - event.pos()
+
+            self.previous_mouse_pos = event.pos()
+
+            size = self.native.frameGeometry()
+            self.view_matrix_manager.translate_view(diff.x() / size.width(), diff.y() / size.height())
+            self._update_view_matrix()
+
+    def _update_view_matrix(self):
+        self.program_vertices[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_1
+        self.program_edges[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_2
+        self.program_vertices[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_2
+        self.update()
+
+    def handle_mouse_release_event(self, event):
+        QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))
+
+    def _setup_widget(self):
+        self.native.setMinimumWidth(600)
+        self.native.setMinimumHeight(600)
+        self.native.wheelEvent = self.handle_wheel_event
+        self.native.mousePressEvent = self.handle_mouse_click_event
+        self.native.mouseMoveEvent = self.handle_mouse_move_event
+        self.native.mouseReleaseEvent = self.handle_mouse_release_event
+        self.on_node_clicked = CustomEvent()
+        set_viewport(0, 0, self.physical_size[0], self.physical_size[1])
+        set_state(clear_color=(160 / 255, 160 / 255, 160 / 255, 1), depth_test=False, blend=True,
+                  blend_func=(&#34;src_alpha&#34;, &#34;one_minus_src_alpha&#34;))
+
+    def reset_view(self):
+        if self.tree:
+            self.view_matrix_manager.reset_view()
+            self._update_view_matrix()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas"><code class="flex name class">
+<span>class <span class="ident">MonteCarloTreeCanvas</span></span>
+<span>(</span><span>tree=None, trees_paths=None, display_settings=None, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Representation of a GUI element with an OpenGL context</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code></dt>
+<dd>The widget title</dd>
+<dt><strong><code>size</code></strong> :&ensp;(<code>width</code>, <code>height</code>)</dt>
+<dd>The size of the window.</dd>
+<dt><strong><code>position</code></strong> :&ensp;(<code>x</code>, <code>y</code>)</dt>
+<dd>The position of the window in screen coordinates.</dd>
+<dt><strong><code>show</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to show the widget immediately. Default False.</dd>
+<dt><strong><code>autoswap</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to swap the buffers automatically after a draw event.
+Default True. If True, the <code>swap_buffers</code> Canvas method will
+be called last (by default) by the <code>canvas.draw</code> event handler.</dd>
+<dt><strong><code>app</code></strong> :&ensp;<code>Application</code> | <code>str</code></dt>
+<dd>Give vispy Application instance to use as a backend.
+(vispy.app is used by default.) If str, then an application
+using the chosen backend (e.g., 'pyglet') will be created.
+Note the canvas application can be accessed at <code>canvas.app</code>.</dd>
+<dt><strong><code>create_native</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to create the widget immediately. Default True.</dd>
+<dt><strong><code>vsync</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Enable vertical synchronization.</dd>
+<dt><strong><code>resizable</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Allow the window to be resized.</dd>
+<dt><strong><code>decorate</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Decorate the window. Default True.</dd>
+<dt><strong><code>fullscreen</code></strong> :&ensp;<code>bool</code> | <code>int</code></dt>
+<dd>If False, windowed mode is used (default). If True, the default
+monitor is used. If int, the given monitor number is used.</dd>
+<dt><strong><code>config</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A dict with OpenGL configuration options, which is combined
+with the default configuration options and used to initialize
+the context. See <code>canvas.context.config</code> for possible
+options.</dd>
+<dt><strong><code>shared</code></strong> :&ensp;<code>Canvas</code> | <code>GLContext</code> | <code>None</code></dt>
+<dd>An existing canvas or context to share OpenGL objects with.</dd>
+<dt><strong><code>keys</code></strong> :&ensp;<code>str</code> | <code>dict</code> | <code>None</code></dt>
+<dd>Default key mapping to use. If 'interactive', escape and F11 will
+close the canvas and toggle full-screen mode, respectively.
+If dict, maps keys to functions. If dict values are strings,
+they are assumed to be <code>Canvas</code> methods, otherwise they should
+be callable.</dd>
+<dt><strong><code>parent</code></strong> :&ensp;<code>widget</code>-<code>object</code></dt>
+<dd>The parent widget if this makes sense for the used backend.</dd>
+<dt><strong><code>dpi</code></strong> :&ensp;<code>float</code> | <code>None</code></dt>
+<dd>Resolution in dots-per-inch to use for the canvas. If dpi is None,
+then the value will be determined by querying the global config first,
+and then the operating system.</dd>
+<dt><strong><code>always_on_top</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If True, try to create the window in always-on-top mode.</dd>
+<dt><strong><code>px_scale</code></strong> :&ensp;<code>int</code> &gt; <code>0</code></dt>
+<dd>A scale factor to apply between logical and physical pixels in addition
+to the actual scale factor determined by the backend. This option
+allows the scale factor to be adjusted for testing.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>The <code>Canvas</code> receives the following events:</p>
+<pre><code>* initialize
+* resize
+* draw
+* mouse_press
+* mouse_release
+* mouse_double_click
+* mouse_move
+* mouse_wheel
+* key_press
+* key_release
+* stylus
+* touch
+* close
+</code></pre>
+<p>The ordering of the mouse_double_click, mouse_press, and mouse_release
+events are not guaranteed to be consistent between backends. Only certain
+backends natively support double-clicking (currently Qt and WX); on other
+backends, they are detected manually with a fixed time delay.
+This can cause problems with accessibility, as increasing the OS detection
+time or using a dedicated double-click button will not be respected.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MonteCarloTreeCanvas(VispyApp.Canvas):
+    def __init__(self, tree: MonteCarloTree = None, trees_paths=None,
+                 display_settings=None, **kwargs):
+        VispyApp.Canvas.__init__(self, **kwargs)
+        self.previous_mouse_pos = None
+        self.tree = tree
+        self.display_settings = display_settings
+        self.trees_paths = trees_paths
+        self.tree_index = 0
+        self.binary_serializator = BinarySerializator()
+        self.csv_serializator = CsvSerializator()
+        self._setup_widget()
+        if self.tree:
+            self.use_tree_data(self.tree)
+
+    def use_tree_data(self, tree: MonteCarloTree):
+        self.tree = tree
+        alg = ImprovedWalkersAlgorithm(self.tree)
+        alg.buchheim_algorithm()
+        self._bind_buffers()
+        self._bind_shaders()
+        self._setup_matrices()
+        self.update()
+
+    def make_next_tree_as_root(self):
+        if self.tree_index + 1 &lt; len(self.trees_paths):
+            self.tree_index += 1
+            self.set_current_tree()
+            return True
+        return False
+
+    def make_previous_tree_as_root(self):
+        if self.tree_index &gt;= 1:
+            self.tree_index -= 1
+            self.set_current_tree()
+            return True
+        return False
+
+    def set_current_tree(self):
+        if self.trees_paths:
+            path = self.trees_paths[self.tree_index]
+            serializator = self.binary_serializator if path.endswith(&#34;tree&#34;) else self.csv_serializator
+            root = serializator.get_node_from_path(path)
+            self.tree = MonteCarloTree(root=root)
+
+    def on_resize(self, event):
+        set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
+
+    def on_draw(self, event):
+        clear(color=True, depth=True)
+        if self.tree:
+            self.program_edges.draw(&#34;lines&#34;)
+            self.program_vertices.draw(&#34;points&#34;)
+
+    def handle_wheel_event(self, event):
+        if not self.tree:
+            return
+        wheel_direction = event.angleDelta().y()
+
+        if wheel_direction &lt; 0:
+            self.view_matrix_manager.zoom_out()
+        else:
+            self.view_matrix_manager.zoom_in()
+        self._update_view_matrix()
+
+    def _setup_matrices(self):
+        self.view_matrix_manager = ViewMatrixManager()
+        self.program_vertices[&#34;u_model&#34;] = np.eye(4, dtype=np.float32)
+        self.program_vertices[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_1
+        self.program_vertices[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges[&#34;u_model&#34;] = np.eye(4, dtype=np.float32)
+        self.program_edges[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_2
+        self.program_edges[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_2
+        self.program_vertices[&#34;u_radius_multiplier&#34;] = self.view_matrix_manager.scale
+
+    def _bind_shaders(self):
+        shader_reader = ShaderReader()
+        self.program_vertices = vispy.gloo.Program(shader_reader.get_vertices_vshader(),
+                                                   shader_reader.get_vertices_fshader())
+        self.program_vertices[&#34;u_radius_multiplier&#34;] = 3
+        self.program_vertices[&#34;u_antialias&#34;] = 1
+        self.program_vertices.bind(self.vertices_buffer)
+
+        self.program_edges = vispy.gloo.Program(shader_reader.get_edges_vshader(), shader_reader.get_edges_fshader())
+        self.program_edges.bind(self.edges_buffer)
+
+    def _bind_buffers(self):
+        retriever = MonteCarloTreeDrawDataRetriever(self.tree, self.display_settings.most_visited_color,
+                                                    self.display_settings.least_visited_color)
+        self.tree_draw_data = retriever.retrieve_draw_data()
+        self.vertices_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.vertices)
+        self.edges_buffer = vispy.gloo.VertexBuffer(self.tree_draw_data.edges)
+
+    def handle_mouse_click_event(self, event):
+        if not self.tree:
+            return
+        pos = event.pos()
+        if event.button() == QtCore.Qt.RightButton:
+            QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+            self.previous_mouse_pos = pos
+        elif event.button() == QtCore.Qt.LeftButton:
+            x_clicked = pos.x()
+            y_clicked = pos.y()
+            width = self.native.frameGeometry().width()
+            height = self.native.frameGeometry().height()
+            world_x, world_y = self.view_matrix_manager.parse_click(x_clicked, y_clicked, width, height)
+
+            clicked_node = self.tree_draw_data.get_node_at(world_x, world_y, self.view_matrix_manager.scale)
+            self.on_node_clicked.fire(self, earg=clicked_node)
+
+    def handle_mouse_move_event(self, event):
+        if not self.tree:
+            return
+        if event.buttons() == QtCore.Qt.RightButton:
+            diff = self.previous_mouse_pos - event.pos()
+
+            self.previous_mouse_pos = event.pos()
+
+            size = self.native.frameGeometry()
+            self.view_matrix_manager.translate_view(diff.x() / size.width(), diff.y() / size.height())
+            self._update_view_matrix()
+
+    def _update_view_matrix(self):
+        self.program_vertices[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_1
+        self.program_edges[&#34;u_view&#34;] = self.view_matrix_manager.view_matrix_2
+        self.program_vertices[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_1
+        self.program_edges[&#34;u_projection&#34;] = self.view_matrix_manager.projection_matrix_2
+        self.update()
+
+    def handle_mouse_release_event(self, event):
+        QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))
+
+    def _setup_widget(self):
+        self.native.setMinimumWidth(600)
+        self.native.setMinimumHeight(600)
+        self.native.wheelEvent = self.handle_wheel_event
+        self.native.mousePressEvent = self.handle_mouse_click_event
+        self.native.mouseMoveEvent = self.handle_mouse_move_event
+        self.native.mouseReleaseEvent = self.handle_mouse_release_event
+        self.on_node_clicked = CustomEvent()
+        set_viewport(0, 0, self.physical_size[0], self.physical_size[1])
+        set_state(clear_color=(160 / 255, 160 / 255, 160 / 255, 1), depth_test=False, blend=True,
+                  blend_func=(&#34;src_alpha&#34;, &#34;one_minus_src_alpha&#34;))
+
+    def reset_view(self):
+        if self.tree:
+            self.view_matrix_manager.reset_view()
+            self._update_view_matrix()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>vispy.app.canvas.Canvas</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_click_event"><code class="name flex">
+<span>def <span class="ident">handle_mouse_click_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_mouse_click_event(self, event):
+    if not self.tree:
+        return
+    pos = event.pos()
+    if event.button() == QtCore.Qt.RightButton:
+        QApplication.setOverrideCursor(QCursor(QtCore.Qt.ClosedHandCursor))
+        self.previous_mouse_pos = pos
+    elif event.button() == QtCore.Qt.LeftButton:
+        x_clicked = pos.x()
+        y_clicked = pos.y()
+        width = self.native.frameGeometry().width()
+        height = self.native.frameGeometry().height()
+        world_x, world_y = self.view_matrix_manager.parse_click(x_clicked, y_clicked, width, height)
+
+        clicked_node = self.tree_draw_data.get_node_at(world_x, world_y, self.view_matrix_manager.scale)
+        self.on_node_clicked.fire(self, earg=clicked_node)</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_move_event"><code class="name flex">
+<span>def <span class="ident">handle_mouse_move_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_mouse_move_event(self, event):
+    if not self.tree:
+        return
+    if event.buttons() == QtCore.Qt.RightButton:
+        diff = self.previous_mouse_pos - event.pos()
+
+        self.previous_mouse_pos = event.pos()
+
+        size = self.native.frameGeometry()
+        self.view_matrix_manager.translate_view(diff.x() / size.width(), diff.y() / size.height())
+        self._update_view_matrix()</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_release_event"><code class="name flex">
+<span>def <span class="ident">handle_mouse_release_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_mouse_release_event(self, event):
+    QApplication.setOverrideCursor(QCursor(QtCore.Qt.ArrowCursor))</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_wheel_event"><code class="name flex">
+<span>def <span class="ident">handle_wheel_event</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_wheel_event(self, event):
+    if not self.tree:
+        return
+    wheel_direction = event.angleDelta().y()
+
+    if wheel_direction &lt; 0:
+        self.view_matrix_manager.zoom_out()
+    else:
+        self.view_matrix_manager.zoom_in()
+    self._update_view_matrix()</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.make_next_tree_as_root"><code class="name flex">
+<span>def <span class="ident">make_next_tree_as_root</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_next_tree_as_root(self):
+    if self.tree_index + 1 &lt; len(self.trees_paths):
+        self.tree_index += 1
+        self.set_current_tree()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.make_previous_tree_as_root"><code class="name flex">
+<span>def <span class="ident">make_previous_tree_as_root</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_previous_tree_as_root(self):
+    if self.tree_index &gt;= 1:
+        self.tree_index -= 1
+        self.set_current_tree()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.on_draw"><code class="name flex">
+<span>def <span class="ident">on_draw</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_draw(self, event):
+    clear(color=True, depth=True)
+    if self.tree:
+        self.program_edges.draw(&#34;lines&#34;)
+        self.program_vertices.draw(&#34;points&#34;)</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.on_resize"><code class="name flex">
+<span>def <span class="ident">on_resize</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_resize(self, event):
+    set_viewport(0, 0, event.physical_size[0], event.physical_size[1])</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.reset_view"><code class="name flex">
+<span>def <span class="ident">reset_view</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset_view(self):
+    if self.tree:
+        self.view_matrix_manager.reset_view()
+        self._update_view_matrix()</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.set_current_tree"><code class="name flex">
+<span>def <span class="ident">set_current_tree</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_current_tree(self):
+    if self.trees_paths:
+        path = self.trees_paths[self.tree_index]
+        serializator = self.binary_serializator if path.endswith(&#34;tree&#34;) else self.csv_serializator
+        root = serializator.get_node_from_path(path)
+        self.tree = MonteCarloTree(root=root)</code></pre>
+</details>
+</dd>
+<dt id="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.use_tree_data"><code class="name flex">
+<span>def <span class="ident">use_tree_data</span></span>(<span>self, tree)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def use_tree_data(self, tree: MonteCarloTree):
+    self.tree = tree
+    alg = ImprovedWalkersAlgorithm(self.tree)
+    alg.buchheim_algorithm()
+    self._bind_buffers()
+    self._bind_shaders()
+    self._setup_matrices()
+    self.update()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.visualisation_drawing" href="index.html">src.visualisation_drawing</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas">MonteCarloTreeCanvas</a></code></h4>
+<ul class="">
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_click_event" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_click_event">handle_mouse_click_event</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_move_event" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_move_event">handle_mouse_move_event</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_release_event" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_mouse_release_event">handle_mouse_release_event</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_wheel_event" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.handle_wheel_event">handle_wheel_event</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.make_next_tree_as_root" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.make_next_tree_as_root">make_next_tree_as_root</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.make_previous_tree_as_root" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.make_previous_tree_as_root">make_previous_tree_as_root</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.on_draw" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.on_draw">on_draw</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.on_resize" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.on_resize">on_resize</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.reset_view" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.reset_view">reset_view</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.set_current_tree" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.set_current_tree">set_current_tree</a></code></li>
+<li><code><a title="src.visualisation_drawing.canvas.MonteCarloTreeCanvas.use_tree_data" href="#src.visualisation_drawing.canvas.MonteCarloTreeCanvas.use_tree_data">use_tree_data</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
