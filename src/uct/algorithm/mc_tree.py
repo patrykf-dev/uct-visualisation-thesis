@@ -73,10 +73,9 @@ class TreeData:
         self.max_y = max(y, self.max_y)
         self.min_y = min(y, self.min_y)
 
-    def update_tree_visits_data(self, node: MonteCarloNode):
+    def update_tree_visits_data(self, node: MonteCarloNode, depth):
         if len(self.max_visits) <= self.max_y + 1:
             self.max_visits.append(0)
-        depth = int(node.vis_details.y)
         self.max_visits[depth] = max(self.max_visits[depth], node.details.visits_count)
 
     def reset_to_defaults(self):

@@ -39,7 +39,7 @@ class ImprovedWalkersAlgorithm:
         node.vis_details.y = depth
         self.tree.data.update_tree_visual_data(node)
         for child in node.children:
-            self.tree.data.update_tree_visits_data(child)
+            self.tree.data.update_tree_visits_data(child, depth + 1)
             self.second_walk(child, m + node.vis_details.mod, depth + 1)
 
     def apportion(self, node: MonteCarloNode, default_ancestor, distance):
