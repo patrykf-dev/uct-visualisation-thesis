@@ -28,3 +28,9 @@ class ChessMove(BaseGameMove):
 
     def __str__(self):
         return f'{self.position_to}, {self.move_type}'
+
+    def real_position_to(self):
+        return f"{chr(self.position_to[1] + 97)}{self.position_to[0] + 1}"
+
+    def real_position_from(self):
+        return f"{chr(self.position_from[1] + 97)}{self.position_from[0] + 1}"

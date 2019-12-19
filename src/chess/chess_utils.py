@@ -73,7 +73,7 @@ def get_all_possible_moves(board: Chessboard):
 
             f_color = str(copied_figure.color).split(".")[1].lower()
             f_type = str(copied_figure.figure_type).split(".")[1].lower()
-            move.description = f"{f_color} {f_type} {move.position_from} -> {move.position_to}"
+            move.description = f"{f_color} {f_type} {move.real_position_from()} -> {move.real_position_to()}"
 
         if figure_moves:
             all_possible_moves.extend(figure_moves)
