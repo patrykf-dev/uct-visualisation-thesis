@@ -8,9 +8,6 @@ class BaseSerializator(abc.ABC):
     def __init__(self):
         self.extension = ""
 
-    def get_file_path(self, file_name: str):
-        return "../trees/{}.{}".format(file_name, self.extension)
-
     @abc.abstractmethod
     def save_node_to_path(self, node: MonteCarloNode, path: str):
         pass
