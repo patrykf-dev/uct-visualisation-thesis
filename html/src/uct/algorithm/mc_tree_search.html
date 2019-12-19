@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.uct.algorithm.mc_tree_search API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.uct.algorithm.mc_tree_search</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import time
+
+import src.uct.algorithm.enums as Enums
+import src.uct.algorithm.mc_node_utils as NodeUtils
+import src.uct.algorithm.uct_calculation as UCT
+from src.main_application.gui_settings import MonteCarloSettings
+from src.uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
+from src.uct.algorithm.mc_tree import MonteCarloTree
+from src.uct.game.base_game_move import BaseGameMove
+from src.uct.game.base_game_state import BaseGameState
+from src.utils.custom_event import CustomEvent
+
+
+class MonteCarloTreeSearch:
+    def __init__(self, tree: MonteCarloTree, settings: MonteCarloSettings):
+        self.tree = tree
+        self.debug_print_allowed = False
+        self.settings = settings
+        self.iteration_performed = CustomEvent()
+        self.iterations = 0
+
+    def calculate_next_move(self) -&gt; (BaseGameMove, BaseGameState):
+        if self.settings.limit_iterations:
+            return self._calculate_next_move_iterations_limited()
+        else:
+            return self._calculate_next_move_time_limited()
+
+    def _calculate_next_move_iterations_limited(self):
+        while self.iterations &lt; self.settings.max_iterations:
+            self._perform_iteration()
+            self.iteration_performed.fire(self, self.iterations / self.settings.max_iterations)
+        return self._select_result_node()
+
+    def _calculate_next_move_time_limited(self):
+        start_time = time.time()
+        elapsed_time_ms = 0
+        max_time = self.settings.get_internal_time()
+        progress_fraction = 0
+        while elapsed_time_ms &lt; max_time:
+            self._perform_iteration()
+            elapsed_time_ms = (time.time() - start_time) * 1000
+            progress_fraction = elapsed_time_ms / max_time
+            self.iteration_performed.fire(self, progress_fraction)
+        if progress_fraction != 1:
+            self.iteration_performed.fire(self, 1)
+        return self._select_result_node()
+
+    def _perform_iteration(self):
+        promising_node = self._selection(self.tree.root)
+        self._expansion(promising_node)
+
+        if promising_node.has_children():
+            leaf_to_explore = NodeUtils.get_random_child(promising_node)
+        else:
+            leaf_to_explore = promising_node
+
+        simulation_result = self._simulation(leaf_to_explore)
+        self._backpropagation(leaf_to_explore, simulation_result)
+
+        self.iterations += 1
+
+    def _select_result_node(self):
+        best_child = NodeUtils.get_child_with_max_score(self.tree.root)
+        self._print_debug(&#34;Best node is {}&#34;.format(best_child.id))
+
+        result_game_state = self.tree.retrieve_node_game_state(best_child)
+        result_game_state.switch_current_player()
+        result_move = best_child.move
+        return result_move, result_game_state
+
+    def _selection(self, node):
+        &#34;&#34;&#34;
+        1st stage of MCTS
+        Start from root R and select successive child nodes until a leaf node L is reached.
+        :param node: node from which to start selection
+        :return: UCT-best leaf node
+        &#34;&#34;&#34;
+        tmp_node = node
+        while tmp_node.has_children() != 0:
+            tmp_node = UCT.find_best_child_with_UCT(tmp_node)
+
+        self._print_debug(&#34;Selection from {} led to {}&#34;.format(node.id, tmp_node.id))
+        return tmp_node
+
+    def _expansion(self, node):
+        &#34;&#34;&#34;
+        2nd stage of MCTS
+        Unless L ends the game, create one (or more) child nodes and choose node C from one of them.
+        :param node: node from which to start expanding
+        &#34;&#34;&#34;
+        node_state = self.tree.retrieve_node_game_state(node)
+        if node_state.phase != Enums.GamePhase.IN_PROGRESS:
+            self._print_debug(&#34;Cannot expand from node {}&#34;.format(node.id))
+
+        self._print_debug(&#34;Expanding from node {}&#34;.format(node.id))
+        possible_moves = node_state.get_all_possible_moves()
+        for move in possible_moves:
+            node.add_child_by_move(move)
+
+    def _simulation(self, leaf) -&gt; MonteCarloSimulationResult:
+        &#34;&#34;&#34;
+        3rd stage of MCTS
+        Complete one random playout from node C.
+        :param leaf: leaf from which to process a random playout
+        &#34;&#34;&#34;
+        leaf_state = self.tree.retrieve_node_game_state(leaf)
+        tmp_state = leaf_state.deep_copy()
+        tmp_phase = leaf_state.phase
+
+        self._print_debug(&#34;Simulating from node {}...&#34;.format(leaf.id))
+
+        moves_counter = 0
+        count_formatted = f&#34;#{str(self.iterations).ljust(4)}&#34;
+        while tmp_phase == Enums.GamePhase.IN_PROGRESS:
+            tmp_state.perform_random_move()
+            tmp_phase = tmp_state.phase
+            moves_counter = moves_counter + 1
+            if self.settings.limit_moves and moves_counter &gt;= self.settings.max_moves_per_iteration:
+                # print(
+                #     f&#34;{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}&#34;)
+                break
+
+        # if tmp_phase != Enums.GamePhase.IN_PROGRESS:
+        #     print(
+        #         f&#34;{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}&#34;)
+
+        return MonteCarloSimulationResult(tmp_state)
+
+    def _backpropagation(self, leaf, simulation_result: MonteCarloSimulationResult):
+        &#34;&#34;&#34;
+        4th stage of MCTS
+        Use the result of the playout to update information in the nodes on the path from C to R.
+        :param leaf: leaf from which to start backpropagating
+        :param simulation_result: result of random simulation simulated from :leaf:
+        &#34;&#34;&#34;
+        self._print_debug(&#34;Backpropagating from node {}&#34;.format(leaf.id))
+
+        leaf_state = self.tree.retrieve_node_game_state(leaf)
+        leaf_player = leaf_state.current_player
+        if simulation_result.phase == Enums.get_player_win(leaf_player):
+            reward = 1
+        elif simulation_result.phase == Enums.GamePhase.DRAW:
+            reward = 0.5
+        else:
+            reward = simulation_result.get_reward(leaf_player)
+
+        tmp_node = leaf
+        while tmp_node != self.tree.root:
+            tmp_node.details.mark_visit()
+            tmp_current_player = tmp_node.move.player
+            if leaf_player == tmp_current_player:
+                tmp_node.details.add_score(reward)
+            tmp_node = tmp_node.parent
+        self.tree.root.details.mark_visit()
+
+    def _print_debug(self, log):
+        if self.debug_print_allowed:
+            print(&#34;\tMCTS:&#34; + log)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.uct.algorithm.mc_tree_search.MonteCarloTreeSearch"><code class="flex name class">
+<span>class <span class="ident">MonteCarloTreeSearch</span></span>
+<span>(</span><span>tree, settings)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MonteCarloTreeSearch:
+    def __init__(self, tree: MonteCarloTree, settings: MonteCarloSettings):
+        self.tree = tree
+        self.debug_print_allowed = False
+        self.settings = settings
+        self.iteration_performed = CustomEvent()
+        self.iterations = 0
+
+    def calculate_next_move(self) -&gt; (BaseGameMove, BaseGameState):
+        if self.settings.limit_iterations:
+            return self._calculate_next_move_iterations_limited()
+        else:
+            return self._calculate_next_move_time_limited()
+
+    def _calculate_next_move_iterations_limited(self):
+        while self.iterations &lt; self.settings.max_iterations:
+            self._perform_iteration()
+            self.iteration_performed.fire(self, self.iterations / self.settings.max_iterations)
+        return self._select_result_node()
+
+    def _calculate_next_move_time_limited(self):
+        start_time = time.time()
+        elapsed_time_ms = 0
+        max_time = self.settings.get_internal_time()
+        progress_fraction = 0
+        while elapsed_time_ms &lt; max_time:
+            self._perform_iteration()
+            elapsed_time_ms = (time.time() - start_time) * 1000
+            progress_fraction = elapsed_time_ms / max_time
+            self.iteration_performed.fire(self, progress_fraction)
+        if progress_fraction != 1:
+            self.iteration_performed.fire(self, 1)
+        return self._select_result_node()
+
+    def _perform_iteration(self):
+        promising_node = self._selection(self.tree.root)
+        self._expansion(promising_node)
+
+        if promising_node.has_children():
+            leaf_to_explore = NodeUtils.get_random_child(promising_node)
+        else:
+            leaf_to_explore = promising_node
+
+        simulation_result = self._simulation(leaf_to_explore)
+        self._backpropagation(leaf_to_explore, simulation_result)
+
+        self.iterations += 1
+
+    def _select_result_node(self):
+        best_child = NodeUtils.get_child_with_max_score(self.tree.root)
+        self._print_debug(&#34;Best node is {}&#34;.format(best_child.id))
+
+        result_game_state = self.tree.retrieve_node_game_state(best_child)
+        result_game_state.switch_current_player()
+        result_move = best_child.move
+        return result_move, result_game_state
+
+    def _selection(self, node):
+        &#34;&#34;&#34;
+        1st stage of MCTS
+        Start from root R and select successive child nodes until a leaf node L is reached.
+        :param node: node from which to start selection
+        :return: UCT-best leaf node
+        &#34;&#34;&#34;
+        tmp_node = node
+        while tmp_node.has_children() != 0:
+            tmp_node = UCT.find_best_child_with_UCT(tmp_node)
+
+        self._print_debug(&#34;Selection from {} led to {}&#34;.format(node.id, tmp_node.id))
+        return tmp_node
+
+    def _expansion(self, node):
+        &#34;&#34;&#34;
+        2nd stage of MCTS
+        Unless L ends the game, create one (or more) child nodes and choose node C from one of them.
+        :param node: node from which to start expanding
+        &#34;&#34;&#34;
+        node_state = self.tree.retrieve_node_game_state(node)
+        if node_state.phase != Enums.GamePhase.IN_PROGRESS:
+            self._print_debug(&#34;Cannot expand from node {}&#34;.format(node.id))
+
+        self._print_debug(&#34;Expanding from node {}&#34;.format(node.id))
+        possible_moves = node_state.get_all_possible_moves()
+        for move in possible_moves:
+            node.add_child_by_move(move)
+
+    def _simulation(self, leaf) -&gt; MonteCarloSimulationResult:
+        &#34;&#34;&#34;
+        3rd stage of MCTS
+        Complete one random playout from node C.
+        :param leaf: leaf from which to process a random playout
+        &#34;&#34;&#34;
+        leaf_state = self.tree.retrieve_node_game_state(leaf)
+        tmp_state = leaf_state.deep_copy()
+        tmp_phase = leaf_state.phase
+
+        self._print_debug(&#34;Simulating from node {}...&#34;.format(leaf.id))
+
+        moves_counter = 0
+        count_formatted = f&#34;#{str(self.iterations).ljust(4)}&#34;
+        while tmp_phase == Enums.GamePhase.IN_PROGRESS:
+            tmp_state.perform_random_move()
+            tmp_phase = tmp_state.phase
+            moves_counter = moves_counter + 1
+            if self.settings.limit_moves and moves_counter &gt;= self.settings.max_moves_per_iteration:
+                # print(
+                #     f&#34;{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}&#34;)
+                break
+
+        # if tmp_phase != Enums.GamePhase.IN_PROGRESS:
+        #     print(
+        #         f&#34;{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}&#34;)
+
+        return MonteCarloSimulationResult(tmp_state)
+
+    def _backpropagation(self, leaf, simulation_result: MonteCarloSimulationResult):
+        &#34;&#34;&#34;
+        4th stage of MCTS
+        Use the result of the playout to update information in the nodes on the path from C to R.
+        :param leaf: leaf from which to start backpropagating
+        :param simulation_result: result of random simulation simulated from :leaf:
+        &#34;&#34;&#34;
+        self._print_debug(&#34;Backpropagating from node {}&#34;.format(leaf.id))
+
+        leaf_state = self.tree.retrieve_node_game_state(leaf)
+        leaf_player = leaf_state.current_player
+        if simulation_result.phase == Enums.get_player_win(leaf_player):
+            reward = 1
+        elif simulation_result.phase == Enums.GamePhase.DRAW:
+            reward = 0.5
+        else:
+            reward = simulation_result.get_reward(leaf_player)
+
+        tmp_node = leaf
+        while tmp_node != self.tree.root:
+            tmp_node.details.mark_visit()
+            tmp_current_player = tmp_node.move.player
+            if leaf_player == tmp_current_player:
+                tmp_node.details.add_score(reward)
+            tmp_node = tmp_node.parent
+        self.tree.root.details.mark_visit()
+
+    def _print_debug(self, log):
+        if self.debug_print_allowed:
+            print(&#34;\tMCTS:&#34; + log)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.uct.algorithm.mc_tree_search.MonteCarloTreeSearch.calculate_next_move"><code class="name flex">
+<span>def <span class="ident">calculate_next_move</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_next_move(self) -&gt; (BaseGameMove, BaseGameState):
+    if self.settings.limit_iterations:
+        return self._calculate_next_move_iterations_limited()
+    else:
+        return self._calculate_next_move_time_limited()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.uct.algorithm" href="index.html">src.uct.algorithm</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.uct.algorithm.mc_tree_search.MonteCarloTreeSearch" href="#src.uct.algorithm.mc_tree_search.MonteCarloTreeSearch">MonteCarloTreeSearch</a></code></h4>
+<ul class="">
+<li><code><a title="src.uct.algorithm.mc_tree_search.MonteCarloTreeSearch.calculate_next_move" href="#src.uct.algorithm.mc_tree_search.MonteCarloTreeSearch.calculate_next_move">calculate_next_move</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

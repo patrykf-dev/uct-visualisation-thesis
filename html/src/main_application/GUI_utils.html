@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.main_application.GUI_utils API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.main_application.GUI_utils</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioButton, QCheckBox, QMessageBox
+
+DEFAULT_FONT = QtGui.QFont(&#34;Helvetica&#34;, 10)
+DEFAULT_FONT_BOLD = QtGui.QFont(&#34;Helvetica&#34;, 10, QtGui.QFont.Bold)
+LARGE_FONT_BOLD = QtGui.QFont(&#34;Helvetica&#34;, 20, QtGui.QFont.Bold)
+DEFAULT_FONT_ITALIC = QtGui.QFont(&#34;Helvetica&#34;, 10, -1, True)
+
+PYQT_KEY_CODE_LEFT = 16777234
+PYQT_KEY_CODE_RIGHT = 16777236
+
+TREES_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), &#34;trees&#34;)
+
+
+def amend_window_position_on_screen(window, top_padding=40):
+    &#34;&#34;&#34;
+    Function is responsible for centering X of the given window on the screen.
+    Y position is default 40, can be changed with the parameter &#39;top_padding&#39;
+    :param window: window we are going to center
+    :param top_padding: number of pixels the window will be under the upper bound of the screen
+    &#34;&#34;&#34;
+    bounds = window.frameGeometry()
+    screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
+    center_point = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
+    center_point.setY(int(bounds.height() / 2) + top_padding)
+    bounds.moveCenter(center_point)
+    window.move(bounds.topLeft())
+
+
+def get_box_background_stylesheet(color=(160, 200, 150)):
+    return &#34;QWidget#box{background-color: rgb&#34; + str(color) + &#34;; margin:2px; border-radius: 10px}&#34;
+
+
+def get_non_resizable_label(caption=&#34;&#34;):
+    &#34;&#34;&#34;
+    Generates label with fixed, non-resizable policy with given caption.
+    &#34;&#34;&#34;
+    rc = QLabel(caption)
+    rc.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+    rc.setFont(DEFAULT_FONT)
+    return rc
+
+
+def get_button(caption=&#34;&#34;, padding_width=50, padding_height=0):
+    &#34;&#34;&#34;
+    Returns PyQt button with given parameters.
+    :param caption: text on button
+    :param padding_width:
+    :param padding_height:
+    :return: customized button
+    &#34;&#34;&#34;
+    rc = QPushButton(caption)
+    rc.setFont(DEFAULT_FONT)
+    rc.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+    rc.setFixedWidth(rc.sizeHint().width() + padding_width)
+    rc.setFixedHeight(rc.sizeHint().height() + padding_height)
+    return rc
+
+
+def get_checkbox(caption=&#34;&#34;):
+    &#34;&#34;&#34;
+    Returns default PyQt checkbox.
+    &#34;&#34;&#34;
+    rc = QCheckBox(caption)
+    rc.setFont(DEFAULT_FONT)
+    return rc
+
+
+def get_radiobutton(caption=&#34;&#34;):
+    &#34;&#34;&#34;
+    Returns default PyQt radiobutton.
+    &#34;&#34;&#34;
+    rc = QRadioButton(caption)
+    rc.setFont(DEFAULT_FONT)
+    return rc
+
+
+def get_line_edit(width=0):
+    &#34;&#34;&#34;
+    Returns default PyQt textfield with a given width.
+    &#34;&#34;&#34;
+    rc = QLineEdit()
+    rc.setFont(DEFAULT_FONT)
+    if width != 0:
+        rc.setFixedWidth(width)
+    return rc
+
+
+def get_hint_line_edit(text=&#34;&#34;):
+    &#34;&#34;&#34;
+    Returns default PyQt label with italic.
+    &#34;&#34;&#34;
+    rc = QLineEdit(text)
+    rc.setFont(DEFAULT_FONT_ITALIC)
+    return rc
+
+
+def gray_out_radiobutton_text(button: QRadioButton, disable):
+    &#34;&#34;&#34;
+    Function disables/enables given radiobutton.
+    &#34;&#34;&#34;
+    if disable:
+        button.setStyleSheet(&#34;color: gray&#34;)
+    else:
+        button.setStyleSheet(&#34;color: black&#34;)
+
+
+def show_eror_dialog(message):
+    &#34;&#34;&#34;
+    Function pops up a critical error message box with given text.
+    &#34;&#34;&#34;
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Critical)
+    msg.setText(message)
+    msg.setWindowTitle(&#34;Error&#34;)
+    msg.setStandardButtons(QMessageBox.Ok)
+    msg.exec_()
+
+
+def show_dialog(message):
+    &#34;&#34;&#34;
+    Function pops up a message box with given text.
+    :returns QMessageBox.Ok or QMessageBox.Cancel
+    &#34;&#34;&#34;
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Question)
+    msg.setText(message)
+    msg.setWindowTitle(&#34;Confirm&#34;)
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    return msg.exec_()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="src.main_application.GUI_utils.amend_window_position_on_screen"><code class="name flex">
+<span>def <span class="ident">amend_window_position_on_screen</span></span>(<span>window, top_padding=40)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Function is responsible for centering X of the given window on the screen.
+Y position is default 40, can be changed with the parameter 'top_padding'
+:param window: window we are going to center
+:param top_padding: number of pixels the window will be under the upper bound of the screen</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def amend_window_position_on_screen(window, top_padding=40):
+    &#34;&#34;&#34;
+    Function is responsible for centering X of the given window on the screen.
+    Y position is default 40, can be changed with the parameter &#39;top_padding&#39;
+    :param window: window we are going to center
+    :param top_padding: number of pixels the window will be under the upper bound of the screen
+    &#34;&#34;&#34;
+    bounds = window.frameGeometry()
+    screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
+    center_point = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
+    center_point.setY(int(bounds.height() / 2) + top_padding)
+    bounds.moveCenter(center_point)
+    window.move(bounds.topLeft())</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.get_box_background_stylesheet"><code class="name flex">
+<span>def <span class="ident">get_box_background_stylesheet</span></span>(<span>color=(160, 200, 150))</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_box_background_stylesheet(color=(160, 200, 150)):
+    return &#34;QWidget#box{background-color: rgb&#34; + str(color) + &#34;; margin:2px; border-radius: 10px}&#34;</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.get_button"><code class="name flex">
+<span>def <span class="ident">get_button</span></span>(<span>caption='', padding_width=50, padding_height=0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns PyQt button with given parameters.
+:param caption: text on button
+:param padding_width:
+:param padding_height:
+:return: customized button</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_button(caption=&#34;&#34;, padding_width=50, padding_height=0):
+    &#34;&#34;&#34;
+    Returns PyQt button with given parameters.
+    :param caption: text on button
+    :param padding_width:
+    :param padding_height:
+    :return: customized button
+    &#34;&#34;&#34;
+    rc = QPushButton(caption)
+    rc.setFont(DEFAULT_FONT)
+    rc.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+    rc.setFixedWidth(rc.sizeHint().width() + padding_width)
+    rc.setFixedHeight(rc.sizeHint().height() + padding_height)
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.get_checkbox"><code class="name flex">
+<span>def <span class="ident">get_checkbox</span></span>(<span>caption='')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns default PyQt checkbox.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_checkbox(caption=&#34;&#34;):
+    &#34;&#34;&#34;
+    Returns default PyQt checkbox.
+    &#34;&#34;&#34;
+    rc = QCheckBox(caption)
+    rc.setFont(DEFAULT_FONT)
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.get_hint_line_edit"><code class="name flex">
+<span>def <span class="ident">get_hint_line_edit</span></span>(<span>text='')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns default PyQt label with italic.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_hint_line_edit(text=&#34;&#34;):
+    &#34;&#34;&#34;
+    Returns default PyQt label with italic.
+    &#34;&#34;&#34;
+    rc = QLineEdit(text)
+    rc.setFont(DEFAULT_FONT_ITALIC)
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.get_line_edit"><code class="name flex">
+<span>def <span class="ident">get_line_edit</span></span>(<span>width=0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns default PyQt textfield with a given width.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_line_edit(width=0):
+    &#34;&#34;&#34;
+    Returns default PyQt textfield with a given width.
+    &#34;&#34;&#34;
+    rc = QLineEdit()
+    rc.setFont(DEFAULT_FONT)
+    if width != 0:
+        rc.setFixedWidth(width)
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.get_non_resizable_label"><code class="name flex">
+<span>def <span class="ident">get_non_resizable_label</span></span>(<span>caption='')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generates label with fixed, non-resizable policy with given caption.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_non_resizable_label(caption=&#34;&#34;):
+    &#34;&#34;&#34;
+    Generates label with fixed, non-resizable policy with given caption.
+    &#34;&#34;&#34;
+    rc = QLabel(caption)
+    rc.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+    rc.setFont(DEFAULT_FONT)
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.get_radiobutton"><code class="name flex">
+<span>def <span class="ident">get_radiobutton</span></span>(<span>caption='')</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns default PyQt radiobutton.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_radiobutton(caption=&#34;&#34;):
+    &#34;&#34;&#34;
+    Returns default PyQt radiobutton.
+    &#34;&#34;&#34;
+    rc = QRadioButton(caption)
+    rc.setFont(DEFAULT_FONT)
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.gray_out_radiobutton_text"><code class="name flex">
+<span>def <span class="ident">gray_out_radiobutton_text</span></span>(<span>button, disable)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Function disables/enables given radiobutton.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gray_out_radiobutton_text(button: QRadioButton, disable):
+    &#34;&#34;&#34;
+    Function disables/enables given radiobutton.
+    &#34;&#34;&#34;
+    if disable:
+        button.setStyleSheet(&#34;color: gray&#34;)
+    else:
+        button.setStyleSheet(&#34;color: black&#34;)</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.show_dialog"><code class="name flex">
+<span>def <span class="ident">show_dialog</span></span>(<span>message)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Function pops up a message box with given text.
+:returns QMessageBox.Ok or QMessageBox.Cancel</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_dialog(message):
+    &#34;&#34;&#34;
+    Function pops up a message box with given text.
+    :returns QMessageBox.Ok or QMessageBox.Cancel
+    &#34;&#34;&#34;
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Question)
+    msg.setText(message)
+    msg.setWindowTitle(&#34;Confirm&#34;)
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    return msg.exec_()</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.GUI_utils.show_eror_dialog"><code class="name flex">
+<span>def <span class="ident">show_eror_dialog</span></span>(<span>message)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Function pops up a critical error message box with given text.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_eror_dialog(message):
+    &#34;&#34;&#34;
+    Function pops up a critical error message box with given text.
+    &#34;&#34;&#34;
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Critical)
+    msg.setText(message)
+    msg.setWindowTitle(&#34;Error&#34;)
+    msg.setStandardButtons(QMessageBox.Ok)
+    msg.exec_()</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.main_application" href="index.html">src.main_application</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.main_application.GUI_utils.amend_window_position_on_screen" href="#src.main_application.GUI_utils.amend_window_position_on_screen">amend_window_position_on_screen</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_box_background_stylesheet" href="#src.main_application.GUI_utils.get_box_background_stylesheet">get_box_background_stylesheet</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_button" href="#src.main_application.GUI_utils.get_button">get_button</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_checkbox" href="#src.main_application.GUI_utils.get_checkbox">get_checkbox</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_hint_line_edit" href="#src.main_application.GUI_utils.get_hint_line_edit">get_hint_line_edit</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_line_edit" href="#src.main_application.GUI_utils.get_line_edit">get_line_edit</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_non_resizable_label" href="#src.main_application.GUI_utils.get_non_resizable_label">get_non_resizable_label</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_radiobutton" href="#src.main_application.GUI_utils.get_radiobutton">get_radiobutton</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.gray_out_radiobutton_text" href="#src.main_application.GUI_utils.gray_out_radiobutton_text">gray_out_radiobutton_text</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.show_dialog" href="#src.main_application.GUI_utils.show_dialog">show_dialog</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.show_eror_dialog" href="#src.main_application.GUI_utils.show_eror_dialog">show_eror_dialog</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

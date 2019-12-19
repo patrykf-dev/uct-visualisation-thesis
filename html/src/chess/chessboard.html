@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.chess.chessboard API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.chess.chessboard</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import copy
+
+import src.chess.chess_utils as ChessUtils
+from src.chess.enums import GameStatus, TileMarkArgs, TileMarkType
+from src.chess.figures import *
+from src.chess.figures_collection import ChessFiguresCollection
+from src.utils.custom_event import CustomEvent
+
+
+class Chessboard:
+    &#34;&#34;&#34;
+    Class is responsible for chess logic.
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34;
+        Initialize chess-game logic class. Set white color to start.
+        &#34;&#34;&#34;
+        self.possible_moves = []
+        self.check = False
+        self.current_player_color = Color.WHITE
+        self.figures = ChessFiguresCollection(Chessboard.create_figures())
+        self.game_status = GameStatus.IN_PROGRESS
+        self.past_moves = []
+        self.notify_tile_marked = CustomEvent()
+
+    @staticmethod
+    def create_figures():
+        &#34;&#34;&#34;
+        Arranges chess figures in their native positions.
+        :return: list of chess figures
+        &#34;&#34;&#34;
+        base_figures = [Rook(Color.WHITE, (0, 0)), Knight(Color.WHITE, (0, 1)), Bishop(Color.WHITE, (0, 2)),
+                        Queen(Color.WHITE, (0, 3)), King(Color.WHITE, (0, 4)), Bishop(Color.WHITE, (0, 5)),
+                        Knight(Color.WHITE, (0, 6)), Rook(Color.WHITE, (0, 7)), Rook(Color.BLACK, (7, 0)),
+                        Knight(Color.BLACK, (7, 1)), Bishop(Color.BLACK, (7, 2)), Queen(Color.BLACK, (7, 3)),
+                        King(Color.BLACK, (7, 4)), Bishop(Color.BLACK, (7, 5)), Knight(Color.BLACK, (7, 6)),
+                        Rook(Color.BLACK, (7, 7))]
+        for i in range(8):
+            base_figures.append(Pawn(Color.WHITE, (1, i)))
+            base_figures.append(Pawn(Color.BLACK, (6, i)))
+        return base_figures
+
+    def deep_copy(self):
+        &#34;&#34;&#34;
+        Creates a deep copy.
+        :return: deep copy
+        &#34;&#34;&#34;
+        rc = Chessboard()
+        rc.current_player_color = self.current_player_color
+        rc.check = self.check
+        rc.game_status = self.game_status
+
+        rc.possible_moves = copy.deepcopy(self.possible_moves)
+        rc.figures = copy.deepcopy(self.figures)
+        rc.past_moves = copy.deepcopy(self.past_moves)
+        return rc
+
+    def check_for_check(self, color_that_causes_check):
+        &#34;&#34;&#34;
+        Determines if player with given color threatens the opponent with check. The function updates check mask of
+        the king if this color.
+        :param color_that_causes_check: color of the king to check if threatened
+        :return: bool value telling whether there is a check
+        &#34;&#34;&#34;
+        king = self.figures.get_king(color_that_causes_check)
+        king.update_check_mask(self.figures)
+        self.check = king.check_mask[king.position]
+
+    def do_move(self, move, selected_tile):
+        &#34;&#34;&#34;
+        Does chess move and changes positions of the involved figures. Determines which move type is this.
+        Updates king&#39;s position.
+        :param move: ChessMove class object
+        :param selected_tile: tile selected to move to
+        :return: None
+        &#34;&#34;&#34;
+        figure_moved = self.figures.get_figure_at(selected_tile)
+        if move.move_type == MoveType.NORMAL:
+            ChessUtils.do_normal_move(self, move, figure_moved)
+        elif move.move_type == MoveType.PAWN_DOUBLE_MOVE:
+            ChessUtils.do_pawn_double_move(self, move, figure_moved)
+        elif move.move_type == MoveType.EN_PASSANT:
+            ChessUtils.do_en_passant_move(self, move, figure_moved)
+        elif move.move_type == MoveType.PROMOTION:
+            ChessUtils.do_promotion(self, move, figure_moved)
+        elif move.move_type == MoveType.CASTLE_SHORT or move.move_type == MoveType.CASTLE_LONG:
+            ChessUtils.do_castling(self, move, figure_moved)
+        if figure_moved.figure_type == FigureType.KING:
+            self.figures.set_king_reference(figure_moved)
+
+    def add_past_move(self, position, figures_count_before_move, old_position):
+        &#34;&#34;&#34;
+        Adds move to the &#39;historical moves&#39; list.
+        :param position: position we make move on
+        :param figures_count_before_move: to determine whether the move was a capture
+        :param old_position: position we make move from
+        :return: None
+        &#34;&#34;&#34;
+        figure = self.figures.get_figure_at(position)
+        self.past_moves.append(
+            ChessUtils.PastMove(position, self.check, figure, len(self.figures.figures_list) &lt; figures_count_before_move,
+                     old_position))
+
+    def perform_legal_move(self, move):
+        &#34;&#34;&#34;
+        Main function that does a move and updates game status afterwards.
+        It does move, checks for king-check, adds move to the list of past moves, switches current moving player
+        and updates game status. It also clears &#39;effects&#39; on pawns that could be captured en passant.
+        :param move: ChessMove object
+        :return: None
+        &#34;&#34;&#34;
+        Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player_color)
+        figures_count_before_move = len(self.figures.figures_list)
+        self.do_move(move, move.position_from)
+        self.check_for_check(self.get_opposite_color())
+        if self.check:
+            king_pos = self.figures.get_king_position(self.get_opposite_color())
+            self.notify_tile_marked.fire(self, earg=TileMarkArgs(king_pos, TileMarkType.CHECKED))
+        self.add_past_move(move.position_to, figures_count_before_move, move.position_from)
+        self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_from, TileMarkType.MOVED))
+        self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_to, TileMarkType.MOVED))
+        self.switch_current_player()
+        self.update_game_status()
+
+    def update_game_status(self):
+        &#34;&#34;&#34;
+        Determins if game is still in progress or it has ended (with checkmate, stalemate, draw, etc.)
+        :return: None
+        &#34;&#34;&#34;
+        move_is_possible = ChessUtils.is_there_any_possible_move(self)
+        if not move_is_possible:
+            if self.check:
+                self.game_status = \
+                    GameStatus.CHECKMATE_WHITE if self.current_player_color == Color.BLACK else GameStatus.CHECKMATE_BLACK
+            else:
+                self.game_status = GameStatus.STALEMATE
+        else:
+            ChessUtils.is_there_a_draw(self)
+
+    def get_opposite_color(self):
+        &#34;&#34;&#34;
+        :return: Opponent&#39;s color
+        &#34;&#34;&#34;
+        return Color.WHITE if self.current_player_color == Color.BLACK else Color.BLACK
+
+    def switch_current_player(self):
+        &#34;&#34;&#34;
+        Sets opponent as the current moving player.
+        &#34;&#34;&#34;
+        self.current_player_color = self.get_opposite_color()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.chess.chessboard.Chessboard"><code class="flex name class">
+<span>class <span class="ident">Chessboard</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class is responsible for chess logic.</p>
+<p>Initialize chess-game logic class. Set white color to start.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Chessboard:
+    &#34;&#34;&#34;
+    Class is responsible for chess logic.
+    &#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34;
+        Initialize chess-game logic class. Set white color to start.
+        &#34;&#34;&#34;
+        self.possible_moves = []
+        self.check = False
+        self.current_player_color = Color.WHITE
+        self.figures = ChessFiguresCollection(Chessboard.create_figures())
+        self.game_status = GameStatus.IN_PROGRESS
+        self.past_moves = []
+        self.notify_tile_marked = CustomEvent()
+
+    @staticmethod
+    def create_figures():
+        &#34;&#34;&#34;
+        Arranges chess figures in their native positions.
+        :return: list of chess figures
+        &#34;&#34;&#34;
+        base_figures = [Rook(Color.WHITE, (0, 0)), Knight(Color.WHITE, (0, 1)), Bishop(Color.WHITE, (0, 2)),
+                        Queen(Color.WHITE, (0, 3)), King(Color.WHITE, (0, 4)), Bishop(Color.WHITE, (0, 5)),
+                        Knight(Color.WHITE, (0, 6)), Rook(Color.WHITE, (0, 7)), Rook(Color.BLACK, (7, 0)),
+                        Knight(Color.BLACK, (7, 1)), Bishop(Color.BLACK, (7, 2)), Queen(Color.BLACK, (7, 3)),
+                        King(Color.BLACK, (7, 4)), Bishop(Color.BLACK, (7, 5)), Knight(Color.BLACK, (7, 6)),
+                        Rook(Color.BLACK, (7, 7))]
+        for i in range(8):
+            base_figures.append(Pawn(Color.WHITE, (1, i)))
+            base_figures.append(Pawn(Color.BLACK, (6, i)))
+        return base_figures
+
+    def deep_copy(self):
+        &#34;&#34;&#34;
+        Creates a deep copy.
+        :return: deep copy
+        &#34;&#34;&#34;
+        rc = Chessboard()
+        rc.current_player_color = self.current_player_color
+        rc.check = self.check
+        rc.game_status = self.game_status
+
+        rc.possible_moves = copy.deepcopy(self.possible_moves)
+        rc.figures = copy.deepcopy(self.figures)
+        rc.past_moves = copy.deepcopy(self.past_moves)
+        return rc
+
+    def check_for_check(self, color_that_causes_check):
+        &#34;&#34;&#34;
+        Determines if player with given color threatens the opponent with check. The function updates check mask of
+        the king if this color.
+        :param color_that_causes_check: color of the king to check if threatened
+        :return: bool value telling whether there is a check
+        &#34;&#34;&#34;
+        king = self.figures.get_king(color_that_causes_check)
+        king.update_check_mask(self.figures)
+        self.check = king.check_mask[king.position]
+
+    def do_move(self, move, selected_tile):
+        &#34;&#34;&#34;
+        Does chess move and changes positions of the involved figures. Determines which move type is this.
+        Updates king&#39;s position.
+        :param move: ChessMove class object
+        :param selected_tile: tile selected to move to
+        :return: None
+        &#34;&#34;&#34;
+        figure_moved = self.figures.get_figure_at(selected_tile)
+        if move.move_type == MoveType.NORMAL:
+            ChessUtils.do_normal_move(self, move, figure_moved)
+        elif move.move_type == MoveType.PAWN_DOUBLE_MOVE:
+            ChessUtils.do_pawn_double_move(self, move, figure_moved)
+        elif move.move_type == MoveType.EN_PASSANT:
+            ChessUtils.do_en_passant_move(self, move, figure_moved)
+        elif move.move_type == MoveType.PROMOTION:
+            ChessUtils.do_promotion(self, move, figure_moved)
+        elif move.move_type == MoveType.CASTLE_SHORT or move.move_type == MoveType.CASTLE_LONG:
+            ChessUtils.do_castling(self, move, figure_moved)
+        if figure_moved.figure_type == FigureType.KING:
+            self.figures.set_king_reference(figure_moved)
+
+    def add_past_move(self, position, figures_count_before_move, old_position):
+        &#34;&#34;&#34;
+        Adds move to the &#39;historical moves&#39; list.
+        :param position: position we make move on
+        :param figures_count_before_move: to determine whether the move was a capture
+        :param old_position: position we make move from
+        :return: None
+        &#34;&#34;&#34;
+        figure = self.figures.get_figure_at(position)
+        self.past_moves.append(
+            ChessUtils.PastMove(position, self.check, figure, len(self.figures.figures_list) &lt; figures_count_before_move,
+                     old_position))
+
+    def perform_legal_move(self, move):
+        &#34;&#34;&#34;
+        Main function that does a move and updates game status afterwards.
+        It does move, checks for king-check, adds move to the list of past moves, switches current moving player
+        and updates game status. It also clears &#39;effects&#39; on pawns that could be captured en passant.
+        :param move: ChessMove object
+        :return: None
+        &#34;&#34;&#34;
+        Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player_color)
+        figures_count_before_move = len(self.figures.figures_list)
+        self.do_move(move, move.position_from)
+        self.check_for_check(self.get_opposite_color())
+        if self.check:
+            king_pos = self.figures.get_king_position(self.get_opposite_color())
+            self.notify_tile_marked.fire(self, earg=TileMarkArgs(king_pos, TileMarkType.CHECKED))
+        self.add_past_move(move.position_to, figures_count_before_move, move.position_from)
+        self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_from, TileMarkType.MOVED))
+        self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_to, TileMarkType.MOVED))
+        self.switch_current_player()
+        self.update_game_status()
+
+    def update_game_status(self):
+        &#34;&#34;&#34;
+        Determins if game is still in progress or it has ended (with checkmate, stalemate, draw, etc.)
+        :return: None
+        &#34;&#34;&#34;
+        move_is_possible = ChessUtils.is_there_any_possible_move(self)
+        if not move_is_possible:
+            if self.check:
+                self.game_status = \
+                    GameStatus.CHECKMATE_WHITE if self.current_player_color == Color.BLACK else GameStatus.CHECKMATE_BLACK
+            else:
+                self.game_status = GameStatus.STALEMATE
+        else:
+            ChessUtils.is_there_a_draw(self)
+
+    def get_opposite_color(self):
+        &#34;&#34;&#34;
+        :return: Opponent&#39;s color
+        &#34;&#34;&#34;
+        return Color.WHITE if self.current_player_color == Color.BLACK else Color.BLACK
+
+    def switch_current_player(self):
+        &#34;&#34;&#34;
+        Sets opponent as the current moving player.
+        &#34;&#34;&#34;
+        self.current_player_color = self.get_opposite_color()</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="src.chess.chessboard.Chessboard.create_figures"><code class="name flex">
+<span>def <span class="ident">create_figures</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Arranges chess figures in their native positions.
+:return: list of chess figures</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def create_figures():
+    &#34;&#34;&#34;
+    Arranges chess figures in their native positions.
+    :return: list of chess figures
+    &#34;&#34;&#34;
+    base_figures = [Rook(Color.WHITE, (0, 0)), Knight(Color.WHITE, (0, 1)), Bishop(Color.WHITE, (0, 2)),
+                    Queen(Color.WHITE, (0, 3)), King(Color.WHITE, (0, 4)), Bishop(Color.WHITE, (0, 5)),
+                    Knight(Color.WHITE, (0, 6)), Rook(Color.WHITE, (0, 7)), Rook(Color.BLACK, (7, 0)),
+                    Knight(Color.BLACK, (7, 1)), Bishop(Color.BLACK, (7, 2)), Queen(Color.BLACK, (7, 3)),
+                    King(Color.BLACK, (7, 4)), Bishop(Color.BLACK, (7, 5)), Knight(Color.BLACK, (7, 6)),
+                    Rook(Color.BLACK, (7, 7))]
+    for i in range(8):
+        base_figures.append(Pawn(Color.WHITE, (1, i)))
+        base_figures.append(Pawn(Color.BLACK, (6, i)))
+    return base_figures</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="src.chess.chessboard.Chessboard.add_past_move"><code class="name flex">
+<span>def <span class="ident">add_past_move</span></span>(<span>self, position, figures_count_before_move, old_position)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds move to the 'historical moves' list.
+:param position: position we make move on
+:param figures_count_before_move: to determine whether the move was a capture
+:param old_position: position we make move from
+:return: None</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_past_move(self, position, figures_count_before_move, old_position):
+    &#34;&#34;&#34;
+    Adds move to the &#39;historical moves&#39; list.
+    :param position: position we make move on
+    :param figures_count_before_move: to determine whether the move was a capture
+    :param old_position: position we make move from
+    :return: None
+    &#34;&#34;&#34;
+    figure = self.figures.get_figure_at(position)
+    self.past_moves.append(
+        ChessUtils.PastMove(position, self.check, figure, len(self.figures.figures_list) &lt; figures_count_before_move,
+                 old_position))</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chessboard.Chessboard.check_for_check"><code class="name flex">
+<span>def <span class="ident">check_for_check</span></span>(<span>self, color_that_causes_check)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Determines if player with given color threatens the opponent with check. The function updates check mask of
+the king if this color.
+:param color_that_causes_check: color of the king to check if threatened
+:return: bool value telling whether there is a check</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_for_check(self, color_that_causes_check):
+    &#34;&#34;&#34;
+    Determines if player with given color threatens the opponent with check. The function updates check mask of
+    the king if this color.
+    :param color_that_causes_check: color of the king to check if threatened
+    :return: bool value telling whether there is a check
+    &#34;&#34;&#34;
+    king = self.figures.get_king(color_that_causes_check)
+    king.update_check_mask(self.figures)
+    self.check = king.check_mask[king.position]</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chessboard.Chessboard.deep_copy"><code class="name flex">
+<span>def <span class="ident">deep_copy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates a deep copy.
+:return: deep copy</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deep_copy(self):
+    &#34;&#34;&#34;
+    Creates a deep copy.
+    :return: deep copy
+    &#34;&#34;&#34;
+    rc = Chessboard()
+    rc.current_player_color = self.current_player_color
+    rc.check = self.check
+    rc.game_status = self.game_status
+
+    rc.possible_moves = copy.deepcopy(self.possible_moves)
+    rc.figures = copy.deepcopy(self.figures)
+    rc.past_moves = copy.deepcopy(self.past_moves)
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chessboard.Chessboard.do_move"><code class="name flex">
+<span>def <span class="ident">do_move</span></span>(<span>self, move, selected_tile)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Does chess move and changes positions of the involved figures. Determines which move type is this.
+Updates king's position.
+:param move: ChessMove class object
+:param selected_tile: tile selected to move to
+:return: None</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_move(self, move, selected_tile):
+    &#34;&#34;&#34;
+    Does chess move and changes positions of the involved figures. Determines which move type is this.
+    Updates king&#39;s position.
+    :param move: ChessMove class object
+    :param selected_tile: tile selected to move to
+    :return: None
+    &#34;&#34;&#34;
+    figure_moved = self.figures.get_figure_at(selected_tile)
+    if move.move_type == MoveType.NORMAL:
+        ChessUtils.do_normal_move(self, move, figure_moved)
+    elif move.move_type == MoveType.PAWN_DOUBLE_MOVE:
+        ChessUtils.do_pawn_double_move(self, move, figure_moved)
+    elif move.move_type == MoveType.EN_PASSANT:
+        ChessUtils.do_en_passant_move(self, move, figure_moved)
+    elif move.move_type == MoveType.PROMOTION:
+        ChessUtils.do_promotion(self, move, figure_moved)
+    elif move.move_type == MoveType.CASTLE_SHORT or move.move_type == MoveType.CASTLE_LONG:
+        ChessUtils.do_castling(self, move, figure_moved)
+    if figure_moved.figure_type == FigureType.KING:
+        self.figures.set_king_reference(figure_moved)</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chessboard.Chessboard.get_opposite_color"><code class="name flex">
+<span>def <span class="ident">get_opposite_color</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>:return: Opponent's color</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_opposite_color(self):
+    &#34;&#34;&#34;
+    :return: Opponent&#39;s color
+    &#34;&#34;&#34;
+    return Color.WHITE if self.current_player_color == Color.BLACK else Color.BLACK</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chessboard.Chessboard.perform_legal_move"><code class="name flex">
+<span>def <span class="ident">perform_legal_move</span></span>(<span>self, move)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Main function that does a move and updates game status afterwards.
+It does move, checks for king-check, adds move to the list of past moves, switches current moving player
+and updates game status. It also clears 'effects' on pawns that could be captured en passant.
+:param move: ChessMove object
+:return: None</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def perform_legal_move(self, move):
+    &#34;&#34;&#34;
+    Main function that does a move and updates game status afterwards.
+    It does move, checks for king-check, adds move to the list of past moves, switches current moving player
+    and updates game status. It also clears &#39;effects&#39; on pawns that could be captured en passant.
+    :param move: ChessMove object
+    :return: None
+    &#34;&#34;&#34;
+    Pawn.clear_en_passant_capture_ability_for_one_team(self.figures, self.current_player_color)
+    figures_count_before_move = len(self.figures.figures_list)
+    self.do_move(move, move.position_from)
+    self.check_for_check(self.get_opposite_color())
+    if self.check:
+        king_pos = self.figures.get_king_position(self.get_opposite_color())
+        self.notify_tile_marked.fire(self, earg=TileMarkArgs(king_pos, TileMarkType.CHECKED))
+    self.add_past_move(move.position_to, figures_count_before_move, move.position_from)
+    self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_from, TileMarkType.MOVED))
+    self.notify_tile_marked.fire(self, earg=TileMarkArgs(move.position_to, TileMarkType.MOVED))
+    self.switch_current_player()
+    self.update_game_status()</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chessboard.Chessboard.switch_current_player"><code class="name flex">
+<span>def <span class="ident">switch_current_player</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Sets opponent as the current moving player.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def switch_current_player(self):
+    &#34;&#34;&#34;
+    Sets opponent as the current moving player.
+    &#34;&#34;&#34;
+    self.current_player_color = self.get_opposite_color()</code></pre>
+</details>
+</dd>
+<dt id="src.chess.chessboard.Chessboard.update_game_status"><code class="name flex">
+<span>def <span class="ident">update_game_status</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Determins if game is still in progress or it has ended (with checkmate, stalemate, draw, etc.)
+:return: None</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_game_status(self):
+    &#34;&#34;&#34;
+    Determins if game is still in progress or it has ended (with checkmate, stalemate, draw, etc.)
+    :return: None
+    &#34;&#34;&#34;
+    move_is_possible = ChessUtils.is_there_any_possible_move(self)
+    if not move_is_possible:
+        if self.check:
+            self.game_status = \
+                GameStatus.CHECKMATE_WHITE if self.current_player_color == Color.BLACK else GameStatus.CHECKMATE_BLACK
+        else:
+            self.game_status = GameStatus.STALEMATE
+    else:
+        ChessUtils.is_there_a_draw(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.chess" href="index.html">src.chess</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.chess.chessboard.Chessboard" href="#src.chess.chessboard.Chessboard">Chessboard</a></code></h4>
+<ul class="">
+<li><code><a title="src.chess.chessboard.Chessboard.add_past_move" href="#src.chess.chessboard.Chessboard.add_past_move">add_past_move</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.check_for_check" href="#src.chess.chessboard.Chessboard.check_for_check">check_for_check</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.create_figures" href="#src.chess.chessboard.Chessboard.create_figures">create_figures</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.deep_copy" href="#src.chess.chessboard.Chessboard.deep_copy">deep_copy</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.do_move" href="#src.chess.chessboard.Chessboard.do_move">do_move</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.get_opposite_color" href="#src.chess.chessboard.Chessboard.get_opposite_color">get_opposite_color</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.perform_legal_move" href="#src.chess.chessboard.Chessboard.perform_legal_move">perform_legal_move</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.switch_current_player" href="#src.chess.chessboard.Chessboard.switch_current_player">switch_current_player</a></code></li>
+<li><code><a title="src.chess.chessboard.Chessboard.update_game_status" href="#src.chess.chessboard.Chessboard.update_game_status">update_game_status</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

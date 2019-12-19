@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.main_application.main_application_window API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.main_application.main_application_window</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+import sys
+
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
+
+from src.main_application.GUI_utils import TREES_PATH, amend_window_position_on_screen, show_eror_dialog
+from src.main_application.game_window_creator import create_proper_window
+from src.main_application.main_application_window_layout import MainApplicationWindowLayout
+from src.main_application.mc_tree_window import MonteCarloTreeWindow
+
+
+class MainApplicationWindow(QMainWindow):
+    &#34;&#34;&#34;
+    CLass is responsible for displaying the main window of the application.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self._setup_window()
+
+    def _setup_window(self):
+        self.setMinimumWidth(500)
+        self.setWindowTitle(&#39;UCT Visualizer&#39;)
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), &#34;icons&#34;, &#34;tree_icon.png&#34;)
+        self.setWindowIcon(QIcon(icon_path))
+        self.layout = MainApplicationWindowLayout()
+        self.setCentralWidget(self.layout.main_widget)
+        self.layout.play_button.clicked.connect(self._handle_play_button)
+        self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
+        self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        amend_window_position_on_screen(self)
+
+    def _handle_play_button(self):
+        &#34;&#34;&#34;
+        Handler for button, that initiates the game.
+        It displays the game and visualization window.
+        &#34;&#34;&#34;
+        game = self.layout.get_chosen_game()
+        game_mode = self.layout.get_chosen_game_mode()
+        ms_settings, display_settings = self.layout.get_settings()
+        if ms_settings is None or display_settings is None:
+            return
+
+        validation_string = ms_settings.validate()
+        if validation_string != &#34;&#34;:
+            show_eror_dialog(validation_string)
+            return
+
+        window = create_proper_window(self, game, game_mode, ms_settings, display_settings)
+        window.on_close_request += self._handle_close_request
+        window.show()
+
+    def _handle_close_request(self, sender, earg):
+        window = create_proper_window(self, earg[&#34;game&#34;], earg[&#34;game_mode&#34;], earg[&#34;settings&#34;], earg[&#34;display_settings&#34;])
+        window.on_close_request += self._handle_close_request
+        window.show()
+
+    def _handle_select_tree_path_button(self):
+        &#34;&#34;&#34;
+        Handles button that enables user to load his own trees from file system.
+        When one file is chosen, its name will appear in the edit line.
+        When multiple files were chosen, the user will see &#34;Multiple files chosen&#34; in the edit line.
+        &#34;&#34;&#34;
+        paths, _ = QFileDialog.getOpenFileNames(self, &#34;Open a tree file&#34;, TREES_PATH,
+                                                &#34;Tree files (*.csv *.tree)&#34;)
+        if len(paths) == 1:
+            self.layout.tree_path_edit.setText(paths[0])
+        elif len(paths) &gt; 1:
+            self.layout.tree_path_edit.setText(f&#34;Files chosen: {len(paths)}&#34;)
+        if paths:
+            self.layout.chosen_trees_paths = paths
+
+    def _handle_opengl_button(self):
+        &#34;&#34;&#34;
+        Displays the window with a UCT tree visualization.
+        &#34;&#34;&#34;
+        _, display_settings = self.layout.get_settings()
+        window = MonteCarloTreeWindow(self, display_settings=display_settings,
+                                      trees_paths=self.layout.chosen_trees_paths)
+        window.show()
+
+
+def launch_application():
+    &#34;&#34;&#34;
+    Main program function.
+    Shows menu window.
+    &#34;&#34;&#34;
+    redefine_exceptions()
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainApplicationWindow()
+    window.show()
+    sys.exit(app.exec_())
+
+
+def redefine_exceptions():
+    &#34;&#34;&#34;
+    Catches critical exceptions and displays them in message box.
+    &#34;&#34;&#34;
+
+    def catch_exceptions(t, val, tb):
+        QtWidgets.QMessageBox.critical(None,
+                                       &#34;An exception was raised&#34;,
+                                       f&#34;Exception info: [{t}] [{val}] [{tb}]&#34;)
+        old_hook(t, val, tb)
+
+    old_hook = sys.excepthook
+    sys.excepthook = catch_exceptions
+
+
+if __name__ == &#39;__main__&#39;:
+    launch_application()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="src.main_application.main_application_window.launch_application"><code class="name flex">
+<span>def <span class="ident">launch_application</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Main program function.
+Shows menu window.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def launch_application():
+    &#34;&#34;&#34;
+    Main program function.
+    Shows menu window.
+    &#34;&#34;&#34;
+    redefine_exceptions()
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainApplicationWindow()
+    window.show()
+    sys.exit(app.exec_())</code></pre>
+</details>
+</dd>
+<dt id="src.main_application.main_application_window.redefine_exceptions"><code class="name flex">
+<span>def <span class="ident">redefine_exceptions</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Catches critical exceptions and displays them in message box.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def redefine_exceptions():
+    &#34;&#34;&#34;
+    Catches critical exceptions and displays them in message box.
+    &#34;&#34;&#34;
+
+    def catch_exceptions(t, val, tb):
+        QtWidgets.QMessageBox.critical(None,
+                                       &#34;An exception was raised&#34;,
+                                       f&#34;Exception info: [{t}] [{val}] [{tb}]&#34;)
+        old_hook(t, val, tb)
+
+    old_hook = sys.excepthook
+    sys.excepthook = catch_exceptions</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.main_application.main_application_window.MainApplicationWindow"><code class="flex name class">
+<span>class <span class="ident">MainApplicationWindow</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>CLass is responsible for displaying the main window of the application.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MainApplicationWindow(QMainWindow):
+    &#34;&#34;&#34;
+    CLass is responsible for displaying the main window of the application.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self._setup_window()
+
+    def _setup_window(self):
+        self.setMinimumWidth(500)
+        self.setWindowTitle(&#39;UCT Visualizer&#39;)
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), &#34;icons&#34;, &#34;tree_icon.png&#34;)
+        self.setWindowIcon(QIcon(icon_path))
+        self.layout = MainApplicationWindowLayout()
+        self.setCentralWidget(self.layout.main_widget)
+        self.layout.play_button.clicked.connect(self._handle_play_button)
+        self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
+        self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        amend_window_position_on_screen(self)
+
+    def _handle_play_button(self):
+        &#34;&#34;&#34;
+        Handler for button, that initiates the game.
+        It displays the game and visualization window.
+        &#34;&#34;&#34;
+        game = self.layout.get_chosen_game()
+        game_mode = self.layout.get_chosen_game_mode()
+        ms_settings, display_settings = self.layout.get_settings()
+        if ms_settings is None or display_settings is None:
+            return
+
+        validation_string = ms_settings.validate()
+        if validation_string != &#34;&#34;:
+            show_eror_dialog(validation_string)
+            return
+
+        window = create_proper_window(self, game, game_mode, ms_settings, display_settings)
+        window.on_close_request += self._handle_close_request
+        window.show()
+
+    def _handle_close_request(self, sender, earg):
+        window = create_proper_window(self, earg[&#34;game&#34;], earg[&#34;game_mode&#34;], earg[&#34;settings&#34;], earg[&#34;display_settings&#34;])
+        window.on_close_request += self._handle_close_request
+        window.show()
+
+    def _handle_select_tree_path_button(self):
+        &#34;&#34;&#34;
+        Handles button that enables user to load his own trees from file system.
+        When one file is chosen, its name will appear in the edit line.
+        When multiple files were chosen, the user will see &#34;Multiple files chosen&#34; in the edit line.
+        &#34;&#34;&#34;
+        paths, _ = QFileDialog.getOpenFileNames(self, &#34;Open a tree file&#34;, TREES_PATH,
+                                                &#34;Tree files (*.csv *.tree)&#34;)
+        if len(paths) == 1:
+            self.layout.tree_path_edit.setText(paths[0])
+        elif len(paths) &gt; 1:
+            self.layout.tree_path_edit.setText(f&#34;Files chosen: {len(paths)}&#34;)
+        if paths:
+            self.layout.chosen_trees_paths = paths
+
+    def _handle_opengl_button(self):
+        &#34;&#34;&#34;
+        Displays the window with a UCT tree visualization.
+        &#34;&#34;&#34;
+        _, display_settings = self.layout.get_settings()
+        window = MonteCarloTreeWindow(self, display_settings=display_settings,
+                                      trees_paths=self.layout.chosen_trees_paths)
+        window.show()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>PyQt5.QtWidgets.QMainWindow</li>
+<li>PyQt5.QtWidgets.QWidget</li>
+<li>PyQt5.QtCore.QObject</li>
+<li>sip.wrapper</li>
+<li>PyQt5.QtGui.QPaintDevice</li>
+<li>sip.simplewrapper</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="src.main_application.main_application_window.MainApplicationWindow.showEvent"><code class="name flex">
+<span>def <span class="ident">showEvent</span></span>(<span>self, event)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>showEvent(self, QShowEvent)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def showEvent(self, event):
+    super().showEvent(event)
+    amend_window_position_on_screen(self)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.main_application" href="index.html">src.main_application</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.main_application.main_application_window.launch_application" href="#src.main_application.main_application_window.launch_application">launch_application</a></code></li>
+<li><code><a title="src.main_application.main_application_window.redefine_exceptions" href="#src.main_application.main_application_window.redefine_exceptions">redefine_exceptions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.main_application.main_application_window.MainApplicationWindow" href="#src.main_application.main_application_window.MainApplicationWindow">MainApplicationWindow</a></code></h4>
+<ul class="">
+<li><code><a title="src.main_application.main_application_window.MainApplicationWindow.showEvent" href="#src.main_application.main_application_window.MainApplicationWindow.showEvent">showEvent</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

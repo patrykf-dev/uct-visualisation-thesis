@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.trees.example_trees API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.trees.example_trees</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import random
+
+from src.uct.algorithm.mc_node import MonteCarloNode
+
+
+def create_node(name, move_name):
+    n = MonteCarloNode()
+    n.details.state_name = name
+    if len(move_name) &gt; 0:
+        n.details.move = move_name
+        n.details.visits_count = 3
+        n.details.visits_count_pre_modified = 4
+        n.details.average_prize = 4.5
+    return n
+
+
+def create_canvas_tree():
+    a = create_node(&#34;aa&#34;, &#34;&#34;)
+    b = create_node(&#34;bb&#34;, &#34;x&#34;)
+    c = create_node(&#34;cc&#34;, &#34;y&#34;)
+    d = create_node(&#34;dd&#34;, &#34;z&#34;)
+    e = create_node(&#34;ee&#34;, &#34;w&#34;)
+    a.add_child_by_node(b)
+    b.add_child_by_node(c)
+    c.add_child_by_node(d)
+    d.add_child_by_node(e)
+    a.vis_details.x = 1
+    a.vis_details.y = 1
+    b.vis_details.x = -1
+    b.vis_details.y = 1
+    c.vis_details.x = -1
+    c.vis_details.y = -1
+    d.vis_details.x = 1
+    d.vis_details.y = -1
+    e.vis_details.x = 0
+    e.vis_details.y = 0
+    return a
+
+
+def create_sample_tree_1():
+    &#34;&#34;&#34;
+    Small binary tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    left = create_node(&#34;left&#34;, &#34;asd&#34;)
+    right = create_node(&#34;right&#34;, &#34;asd&#34;)
+    root.add_child_by_node(left)
+    root.add_child_by_node(right)
+    left.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    left.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    right.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    right.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    return root
+
+
+def create_sample_tree_2():
+    &#34;&#34;&#34;
+    Small full ternary tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(3):
+        new_prevs = []
+        for node in prevs:
+            for j in range(3):
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+        prevs = new_prevs
+    return root
+
+
+def create_sample_tree_3():
+    &#34;&#34;&#34;
+    Small non full ternary tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(4):
+        new_prevs = []
+        for node in prevs:
+            for j in range(3):
+                guess = random.randint(0, 10)
+                if guess &gt; 7:
+                    continue
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+        prevs = new_prevs
+    return root
+
+
+def create_sample_tree_4():
+    &#34;&#34;&#34;
+    Left-grown tree (most of parent vertices are on the left)
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    parent_vertex = root
+    for i in range(7):
+        child_count = random.randint(8, 12)
+        for j in range(child_count):
+            new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+            parent_vertex.add_child_by_node(new_child)
+        parent_index = random.randint(0, 3)
+        parent_vertex = parent_vertex.children[parent_index]
+    return root
+
+
+def create_sample_tree_5():
+    &#34;&#34;&#34;
+    Weird tree, described below
+    :return: root of the tree
+    &#34;&#34;&#34;
+    aa = create_node(&#34;aa&#34;, &#34;&#34;)
+    bb = create_node(&#34;bb&#34;, &#34;x&#34;)
+    cc = create_node(&#34;cc&#34;, &#34;y&#34;)
+    dd = create_node(&#34;dd&#34;, &#34;z&#34;)
+    ee = create_node(&#34;ee&#34;, &#34;w&#34;)
+    ff = create_node(&#34;ee&#34;, &#34;w&#34;)
+    gg = create_node(&#34;ee&#34;, &#34;w&#34;)
+    hh = create_node(&#34;ee&#34;, &#34;w&#34;)
+
+    aa.add_child_by_node(bb)
+    aa.add_child_by_node(create_node(&#34;asd&#34;, &#34;asd&#34;))
+    aa.add_child_by_node(gg)
+    aa.add_child_by_node(cc)
+    cc.add_child_by_node(dd)
+    dd.add_child_by_node(hh)
+    cc.add_child_by_node(ee)
+    cc.add_child_by_node(ff)
+    prev1 = aa
+    prev2 = dd
+    prev3 = gg
+    for i in range(10):
+        new_node = create_node(&#34;xx&#34;, &#34;z&#34;)
+        new_node2 = create_node(&#34;xx&#34;, &#34;z&#34;)
+        prev1.add_child_by_node(new_node)
+        prev2.add_child_by_node(new_node2)
+        child_count1 = i % 4
+        child = create_node(&#34;asd&#34;, &#34;asd&#34;)
+        prev3.add_child_by_node(child)
+        for j in range(child_count1):
+            prev1.add_child_by_node(create_node(&#34;asd&#34;, &#34;asd&#34;))
+        child_count2 = i % 3
+        for j in range(child_count2):
+            prev2.add_child_by_node(create_node(&#34;asd&#34;, &#34;asd&#34;))
+        prev1 = new_node
+        prev2 = new_node2
+        prev3 = child
+    return aa
+
+
+def create_sample_tree_6():
+    &#34;&#34;&#34;
+    A rather broad tree, but more random than 8
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(4):
+        new_prevs = []
+        for node in prevs:
+            child_count = random.randint(2, 7)
+            for j in range(child_count):
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+
+        prevs = new_prevs
+
+    return root
+
+
+def create_sample_tree_7():
+    &#34;&#34;&#34;
+    Totally random tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    addable = [root]
+    for i in range(500):
+        new_node = create_node(f&#34;vertex {i}&#34;, &#34;asd&#34;)
+        parent_index = random.randint(0, len(addable) - 1)
+        addable[parent_index].add_child_by_node(new_node)
+        addable.append(new_node)
+
+    return root
+
+
+def create_sample_tree_8():
+    &#34;&#34;&#34;
+    Creates broad tree - every non-leaf vertrex contains a lot of children
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    addable = [root]
+    for i in range(100):
+        parent_index = random.randint(0, len(addable) - 1)
+        prev = addable[parent_index]
+        for j in range(10):
+            new_node = create_node(f&#34;{i} {j} coordinates&#34;, &#34;asd&#34;)
+            prev.add_child_by_node(new_node)
+        addable.append(new_node)
+    return root
+
+
+def create_sample_tree_09():
+    &#34;&#34;&#34;
+    Creates kind of &#34;chain&#34; tree - a lot of narrow paths
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    addable = [root]
+    for i in range(20):
+        parent_index = random.randint(0, len(addable) - 1)
+        prev = addable[parent_index]
+        for j in range(20):
+            new_node = create_node(f&#34;{i} {j} coordinates&#34;, &#34;asd&#34;)
+            prev.add_child_by_node(new_node)
+            prev = new_node
+        addable.append(new_node)
+    return root
+
+
+def create_sample_tree_10():
+    &#34;&#34;&#34;
+    Most UCT-like tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(5):
+        new_prevs = []
+        for node in prevs:
+            child_count = random.randint(3, 8)
+            guess = random.randint(0, 10)
+            if guess &gt; 5:
+                continue
+            for j in range(child_count):
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+
+        prevs = new_prevs
+    return root</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="src.trees.example_trees.create_canvas_tree"><code class="name flex">
+<span>def <span class="ident">create_canvas_tree</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_canvas_tree():
+    a = create_node(&#34;aa&#34;, &#34;&#34;)
+    b = create_node(&#34;bb&#34;, &#34;x&#34;)
+    c = create_node(&#34;cc&#34;, &#34;y&#34;)
+    d = create_node(&#34;dd&#34;, &#34;z&#34;)
+    e = create_node(&#34;ee&#34;, &#34;w&#34;)
+    a.add_child_by_node(b)
+    b.add_child_by_node(c)
+    c.add_child_by_node(d)
+    d.add_child_by_node(e)
+    a.vis_details.x = 1
+    a.vis_details.y = 1
+    b.vis_details.x = -1
+    b.vis_details.y = 1
+    c.vis_details.x = -1
+    c.vis_details.y = -1
+    d.vis_details.x = 1
+    d.vis_details.y = -1
+    e.vis_details.x = 0
+    e.vis_details.y = 0
+    return a</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_node"><code class="name flex">
+<span>def <span class="ident">create_node</span></span>(<span>name, move_name)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_node(name, move_name):
+    n = MonteCarloNode()
+    n.details.state_name = name
+    if len(move_name) &gt; 0:
+        n.details.move = move_name
+        n.details.visits_count = 3
+        n.details.visits_count_pre_modified = 4
+        n.details.average_prize = 4.5
+    return n</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_09"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_09</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates kind of "chain" tree - a lot of narrow paths
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_09():
+    &#34;&#34;&#34;
+    Creates kind of &#34;chain&#34; tree - a lot of narrow paths
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    addable = [root]
+    for i in range(20):
+        parent_index = random.randint(0, len(addable) - 1)
+        prev = addable[parent_index]
+        for j in range(20):
+            new_node = create_node(f&#34;{i} {j} coordinates&#34;, &#34;asd&#34;)
+            prev.add_child_by_node(new_node)
+            prev = new_node
+        addable.append(new_node)
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_1"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_1</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Small binary tree
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_1():
+    &#34;&#34;&#34;
+    Small binary tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    left = create_node(&#34;left&#34;, &#34;asd&#34;)
+    right = create_node(&#34;right&#34;, &#34;asd&#34;)
+    root.add_child_by_node(left)
+    root.add_child_by_node(right)
+    left.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    left.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    right.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    right.add_child_by_node(create_node(&#34;123&#34;, &#34;123&#34;))
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_10"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_10</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Most UCT-like tree
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_10():
+    &#34;&#34;&#34;
+    Most UCT-like tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(5):
+        new_prevs = []
+        for node in prevs:
+            child_count = random.randint(3, 8)
+            guess = random.randint(0, 10)
+            if guess &gt; 5:
+                continue
+            for j in range(child_count):
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+
+        prevs = new_prevs
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_2"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_2</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Small full ternary tree
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_2():
+    &#34;&#34;&#34;
+    Small full ternary tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(3):
+        new_prevs = []
+        for node in prevs:
+            for j in range(3):
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+        prevs = new_prevs
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_3"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_3</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Small non full ternary tree
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_3():
+    &#34;&#34;&#34;
+    Small non full ternary tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(4):
+        new_prevs = []
+        for node in prevs:
+            for j in range(3):
+                guess = random.randint(0, 10)
+                if guess &gt; 7:
+                    continue
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+        prevs = new_prevs
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_4"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_4</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Left-grown tree (most of parent vertices are on the left)
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_4():
+    &#34;&#34;&#34;
+    Left-grown tree (most of parent vertices are on the left)
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    parent_vertex = root
+    for i in range(7):
+        child_count = random.randint(8, 12)
+        for j in range(child_count):
+            new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+            parent_vertex.add_child_by_node(new_child)
+        parent_index = random.randint(0, 3)
+        parent_vertex = parent_vertex.children[parent_index]
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_5"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_5</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Weird tree, described below
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_5():
+    &#34;&#34;&#34;
+    Weird tree, described below
+    :return: root of the tree
+    &#34;&#34;&#34;
+    aa = create_node(&#34;aa&#34;, &#34;&#34;)
+    bb = create_node(&#34;bb&#34;, &#34;x&#34;)
+    cc = create_node(&#34;cc&#34;, &#34;y&#34;)
+    dd = create_node(&#34;dd&#34;, &#34;z&#34;)
+    ee = create_node(&#34;ee&#34;, &#34;w&#34;)
+    ff = create_node(&#34;ee&#34;, &#34;w&#34;)
+    gg = create_node(&#34;ee&#34;, &#34;w&#34;)
+    hh = create_node(&#34;ee&#34;, &#34;w&#34;)
+
+    aa.add_child_by_node(bb)
+    aa.add_child_by_node(create_node(&#34;asd&#34;, &#34;asd&#34;))
+    aa.add_child_by_node(gg)
+    aa.add_child_by_node(cc)
+    cc.add_child_by_node(dd)
+    dd.add_child_by_node(hh)
+    cc.add_child_by_node(ee)
+    cc.add_child_by_node(ff)
+    prev1 = aa
+    prev2 = dd
+    prev3 = gg
+    for i in range(10):
+        new_node = create_node(&#34;xx&#34;, &#34;z&#34;)
+        new_node2 = create_node(&#34;xx&#34;, &#34;z&#34;)
+        prev1.add_child_by_node(new_node)
+        prev2.add_child_by_node(new_node2)
+        child_count1 = i % 4
+        child = create_node(&#34;asd&#34;, &#34;asd&#34;)
+        prev3.add_child_by_node(child)
+        for j in range(child_count1):
+            prev1.add_child_by_node(create_node(&#34;asd&#34;, &#34;asd&#34;))
+        child_count2 = i % 3
+        for j in range(child_count2):
+            prev2.add_child_by_node(create_node(&#34;asd&#34;, &#34;asd&#34;))
+        prev1 = new_node
+        prev2 = new_node2
+        prev3 = child
+    return aa</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_6"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_6</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A rather broad tree, but more random than 8
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_6():
+    &#34;&#34;&#34;
+    A rather broad tree, but more random than 8
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    prevs = [root]
+    for i in range(4):
+        new_prevs = []
+        for node in prevs:
+            child_count = random.randint(2, 7)
+            for j in range(child_count):
+                new_child = create_node(f&#34;{i}, {j}&#34;, &#34;asd&#34;)
+                node.add_child_by_node(new_child)
+                new_prevs.append(new_child)
+
+        prevs = new_prevs
+
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_7"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_7</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Totally random tree
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_7():
+    &#34;&#34;&#34;
+    Totally random tree
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    addable = [root]
+    for i in range(500):
+        new_node = create_node(f&#34;vertex {i}&#34;, &#34;asd&#34;)
+        parent_index = random.randint(0, len(addable) - 1)
+        addable[parent_index].add_child_by_node(new_node)
+        addable.append(new_node)
+
+    return root</code></pre>
+</details>
+</dd>
+<dt id="src.trees.example_trees.create_sample_tree_8"><code class="name flex">
+<span>def <span class="ident">create_sample_tree_8</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates broad tree - every non-leaf vertrex contains a lot of children
+:return: root of the tree</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_sample_tree_8():
+    &#34;&#34;&#34;
+    Creates broad tree - every non-leaf vertrex contains a lot of children
+    :return: root of the tree
+    &#34;&#34;&#34;
+    root = create_node(&#34;root&#34;, &#34;asd&#34;)
+    addable = [root]
+    for i in range(100):
+        parent_index = random.randint(0, len(addable) - 1)
+        prev = addable[parent_index]
+        for j in range(10):
+            new_node = create_node(f&#34;{i} {j} coordinates&#34;, &#34;asd&#34;)
+            prev.add_child_by_node(new_node)
+        addable.append(new_node)
+    return root</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.trees" href="index.html">src.trees</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.trees.example_trees.create_canvas_tree" href="#src.trees.example_trees.create_canvas_tree">create_canvas_tree</a></code></li>
+<li><code><a title="src.trees.example_trees.create_node" href="#src.trees.example_trees.create_node">create_node</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_09" href="#src.trees.example_trees.create_sample_tree_09">create_sample_tree_09</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_1" href="#src.trees.example_trees.create_sample_tree_1">create_sample_tree_1</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_10" href="#src.trees.example_trees.create_sample_tree_10">create_sample_tree_10</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_2" href="#src.trees.example_trees.create_sample_tree_2">create_sample_tree_2</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_3" href="#src.trees.example_trees.create_sample_tree_3">create_sample_tree_3</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_4" href="#src.trees.example_trees.create_sample_tree_4">create_sample_tree_4</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_5" href="#src.trees.example_trees.create_sample_tree_5">create_sample_tree_5</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_6" href="#src.trees.example_trees.create_sample_tree_6">create_sample_tree_6</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_7" href="#src.trees.example_trees.create_sample_tree_7">create_sample_tree_7</a></code></li>
+<li><code><a title="src.trees.example_trees.create_sample_tree_8" href="#src.trees.example_trees.create_sample_tree_8">create_sample_tree_8</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

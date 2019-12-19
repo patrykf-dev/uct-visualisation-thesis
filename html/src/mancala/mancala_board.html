@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>src.mancala.mancala_board API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.mancala.mancala_board</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+from src.mancala.algorithm_relay.mancala_move import MancalaMove
+from src.uct.algorithm.enums import GamePhase
+
+
+class MancalaBoard:
+    &#34;&#34;&#34;
+    self.board is organized as follows:
+        12  11  10   9   8   7
+    13--------------------------6
+        0   1   2   3   4   5
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.board_values = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0]
+        # self.board = [0, 0, 0, 0, 0, 1, 24, 0, 1, 1, 1, 0, 1, 18]
+        self.current_player = 1
+        self.phase = GamePhase.IN_PROGRESS
+
+    def perform_move(self, move: MancalaMove, print_moves=True):
+        for hole_index in move.moves_sequence:
+            self.perform_move_internal(hole_index, move.player, print_moves)
+
+    def perform_move_internal(self, hole_index, player, print_moves=True):
+        if (0 &lt;= hole_index &lt;= 5 and self.current_player == 2) or (7 &lt;= hole_index &lt;= 12 and self.current_player == 1):
+            raise PermissionError(&#34;ILLEGAL MOVE!!!&#34;)
+        if player != self.current_player:
+            raise PermissionError(&#34;WRONG PLAYER!!!&#34;)
+        if self.board_values[hole_index] == 0:
+            raise PermissionError(&#34;EMPTY HOLE HERE!!!&#34;)
+
+        stones = self.board_values[hole_index]
+        self.board_values[hole_index] = 0
+        index = hole_index + 1
+        while stones &gt; 0:
+            if index == 6:
+                if self.current_player == 1:
+                    self.board_values[index] += 1
+                    stones -= 1
+            elif index == 13:
+                if self.current_player == 2:
+                    self.board_values[index] += 1
+                    stones -= 1
+            else:
+                self.board_values[index] += 1
+                stones -= 1
+
+            index = (index + 1) % 14
+
+        if index == 0:
+            index = 13
+        else:
+            index -= 1
+
+        switch_turns = True
+        opposite_hole_index = 12 - index
+        if (index == 6 and self.current_player == 1) or (index == 13 and self.current_player == 2):
+            switch_turns = False
+        elif self.board_values[index] == 1 and self.is_the_hole_of_current_player(index) and self.board_values[
+            opposite_hole_index] &gt; 0:
+            if self.current_player == 1:
+                self.board_values[6] += self.board_values[opposite_hole_index] + 1
+            else:
+                self.board_values[13] += self.board_values[opposite_hole_index] + 1
+            self.board_values[opposite_hole_index] = 0
+            self.board_values[index] = 0
+
+        self.check_if_game_ended()
+
+        if switch_turns:
+            self.current_player = 1 if self.current_player == 2 else 2
+
+        # if print_moves:
+        #     possible_moves = self.find_all_moves()
+        #     print(f&#34;Possible moves for {self.current_player}: {possible_moves}&#34;)
+
+        return not switch_turns
+
+    def determine_winner(self):
+        player1_points = self.board_values[6]
+        player2_points = self.board_values[13]
+        if player1_points &gt; player2_points:
+            self.phase = GamePhase.PLAYER1_WON
+        elif player1_points &lt; player2_points:
+            self.phase = GamePhase.PLAYER2_WON
+        else:
+            self.phase = GamePhase.DRAW
+
+    def check_if_game_ended(self):
+        game_ended = False
+        if not any(self._get_player_holes(1)):
+            self.board_values[13] += sum(self._get_player_holes(2))
+            game_ended = True
+        elif not any(self._get_player_holes(2)):
+            self.board_values[6] += sum(self._get_player_holes(1))
+            game_ended = True
+
+        if game_ended:
+            self.board_values = [0 if i != 6 and i != 13 else self.board_values[i] for i in range(14)]
+            self.determine_winner()
+
+    def get_win_score(self, player):
+        if player == 1:
+            return self.board_values[6] - self.board_values[13]
+        else:
+            return self.board_values[13] - self.board_values[6]
+
+    def _get_player_holes(self, player):
+        if player == 1:
+            return self.board_values[0:6]
+        else:
+            return self.board_values[7:13]
+
+    def deep_copy(self):
+        rc = MancalaBoard()
+        rc.current_player = self.current_player
+        for i in range(14):
+            rc.board_values[i] = self.board_values[i]
+        rc.phase = self.phase
+        return rc
+
+    def _get_hole_index(self, base_index):
+        if self.current_player == 2:
+            return base_index + 7
+        else:
+            return base_index
+
+    def find_all_moves(self):
+        all_moves = []
+        for i in self.possible_player_moves():
+            self.get_player_moves(i, MancalaMove([], self.current_player), all_moves)
+        return all_moves
+
+    def possible_player_moves(self):
+        for i, a in enumerate(self._get_player_holes(self.current_player)):
+            if a &gt; 0:
+                yield i
+
+    def get_player_moves(self, hole_index, prev_move: MancalaMove, moves):
+        hole_index = self._get_hole_index(hole_index)
+        copied_board = self.deep_copy()
+        player_pre_move = copied_board.current_player
+        next_turn = copied_board.perform_move_internal(hole_index, copied_board.current_player, print_moves=False)
+        if next_turn and list(copied_board.possible_player_moves()) and player_pre_move == copied_board.current_player:
+            for i in copied_board.possible_player_moves():
+                move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
+                copied_board.get_player_moves(i, move, moves)
+        else:
+            move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
+            move.description = str(move)
+            moves.append(move)
+            return
+
+    def is_the_hole_of_current_player(self, index):
+        if index in range(0, 6) and self.current_player == 1:
+            return True
+        if index in range(7, 13) and self.current_player == 2:
+            return True
+        return False
+
+    def is_hole_empty(self, index):
+        return self.board_values[index] == 0
+
+    def is_hole_valid(self, index):
+        return self.is_the_hole_of_current_player(index) and not self.is_hole_empty(index)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.mancala.mancala_board.MancalaBoard"><code class="flex name class">
+<span>class <span class="ident">MancalaBoard</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>self.board is organized as follows:
+12
+11
+10
+9
+8
+7
+13--------------------------6
+0
+1
+2
+3
+4
+5</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MancalaBoard:
+    &#34;&#34;&#34;
+    self.board is organized as follows:
+        12  11  10   9   8   7
+    13--------------------------6
+        0   1   2   3   4   5
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.board_values = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0]
+        # self.board = [0, 0, 0, 0, 0, 1, 24, 0, 1, 1, 1, 0, 1, 18]
+        self.current_player = 1
+        self.phase = GamePhase.IN_PROGRESS
+
+    def perform_move(self, move: MancalaMove, print_moves=True):
+        for hole_index in move.moves_sequence:
+            self.perform_move_internal(hole_index, move.player, print_moves)
+
+    def perform_move_internal(self, hole_index, player, print_moves=True):
+        if (0 &lt;= hole_index &lt;= 5 and self.current_player == 2) or (7 &lt;= hole_index &lt;= 12 and self.current_player == 1):
+            raise PermissionError(&#34;ILLEGAL MOVE!!!&#34;)
+        if player != self.current_player:
+            raise PermissionError(&#34;WRONG PLAYER!!!&#34;)
+        if self.board_values[hole_index] == 0:
+            raise PermissionError(&#34;EMPTY HOLE HERE!!!&#34;)
+
+        stones = self.board_values[hole_index]
+        self.board_values[hole_index] = 0
+        index = hole_index + 1
+        while stones &gt; 0:
+            if index == 6:
+                if self.current_player == 1:
+                    self.board_values[index] += 1
+                    stones -= 1
+            elif index == 13:
+                if self.current_player == 2:
+                    self.board_values[index] += 1
+                    stones -= 1
+            else:
+                self.board_values[index] += 1
+                stones -= 1
+
+            index = (index + 1) % 14
+
+        if index == 0:
+            index = 13
+        else:
+            index -= 1
+
+        switch_turns = True
+        opposite_hole_index = 12 - index
+        if (index == 6 and self.current_player == 1) or (index == 13 and self.current_player == 2):
+            switch_turns = False
+        elif self.board_values[index] == 1 and self.is_the_hole_of_current_player(index) and self.board_values[
+            opposite_hole_index] &gt; 0:
+            if self.current_player == 1:
+                self.board_values[6] += self.board_values[opposite_hole_index] + 1
+            else:
+                self.board_values[13] += self.board_values[opposite_hole_index] + 1
+            self.board_values[opposite_hole_index] = 0
+            self.board_values[index] = 0
+
+        self.check_if_game_ended()
+
+        if switch_turns:
+            self.current_player = 1 if self.current_player == 2 else 2
+
+        # if print_moves:
+        #     possible_moves = self.find_all_moves()
+        #     print(f&#34;Possible moves for {self.current_player}: {possible_moves}&#34;)
+
+        return not switch_turns
+
+    def determine_winner(self):
+        player1_points = self.board_values[6]
+        player2_points = self.board_values[13]
+        if player1_points &gt; player2_points:
+            self.phase = GamePhase.PLAYER1_WON
+        elif player1_points &lt; player2_points:
+            self.phase = GamePhase.PLAYER2_WON
+        else:
+            self.phase = GamePhase.DRAW
+
+    def check_if_game_ended(self):
+        game_ended = False
+        if not any(self._get_player_holes(1)):
+            self.board_values[13] += sum(self._get_player_holes(2))
+            game_ended = True
+        elif not any(self._get_player_holes(2)):
+            self.board_values[6] += sum(self._get_player_holes(1))
+            game_ended = True
+
+        if game_ended:
+            self.board_values = [0 if i != 6 and i != 13 else self.board_values[i] for i in range(14)]
+            self.determine_winner()
+
+    def get_win_score(self, player):
+        if player == 1:
+            return self.board_values[6] - self.board_values[13]
+        else:
+            return self.board_values[13] - self.board_values[6]
+
+    def _get_player_holes(self, player):
+        if player == 1:
+            return self.board_values[0:6]
+        else:
+            return self.board_values[7:13]
+
+    def deep_copy(self):
+        rc = MancalaBoard()
+        rc.current_player = self.current_player
+        for i in range(14):
+            rc.board_values[i] = self.board_values[i]
+        rc.phase = self.phase
+        return rc
+
+    def _get_hole_index(self, base_index):
+        if self.current_player == 2:
+            return base_index + 7
+        else:
+            return base_index
+
+    def find_all_moves(self):
+        all_moves = []
+        for i in self.possible_player_moves():
+            self.get_player_moves(i, MancalaMove([], self.current_player), all_moves)
+        return all_moves
+
+    def possible_player_moves(self):
+        for i, a in enumerate(self._get_player_holes(self.current_player)):
+            if a &gt; 0:
+                yield i
+
+    def get_player_moves(self, hole_index, prev_move: MancalaMove, moves):
+        hole_index = self._get_hole_index(hole_index)
+        copied_board = self.deep_copy()
+        player_pre_move = copied_board.current_player
+        next_turn = copied_board.perform_move_internal(hole_index, copied_board.current_player, print_moves=False)
+        if next_turn and list(copied_board.possible_player_moves()) and player_pre_move == copied_board.current_player:
+            for i in copied_board.possible_player_moves():
+                move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
+                copied_board.get_player_moves(i, move, moves)
+        else:
+            move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
+            move.description = str(move)
+            moves.append(move)
+            return
+
+    def is_the_hole_of_current_player(self, index):
+        if index in range(0, 6) and self.current_player == 1:
+            return True
+        if index in range(7, 13) and self.current_player == 2:
+            return True
+        return False
+
+    def is_hole_empty(self, index):
+        return self.board_values[index] == 0
+
+    def is_hole_valid(self, index):
+        return self.is_the_hole_of_current_player(index) and not self.is_hole_empty(index)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.mancala.mancala_board.MancalaBoard.check_if_game_ended"><code class="name flex">
+<span>def <span class="ident">check_if_game_ended</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_if_game_ended(self):
+    game_ended = False
+    if not any(self._get_player_holes(1)):
+        self.board_values[13] += sum(self._get_player_holes(2))
+        game_ended = True
+    elif not any(self._get_player_holes(2)):
+        self.board_values[6] += sum(self._get_player_holes(1))
+        game_ended = True
+
+    if game_ended:
+        self.board_values = [0 if i != 6 and i != 13 else self.board_values[i] for i in range(14)]
+        self.determine_winner()</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.deep_copy"><code class="name flex">
+<span>def <span class="ident">deep_copy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deep_copy(self):
+    rc = MancalaBoard()
+    rc.current_player = self.current_player
+    for i in range(14):
+        rc.board_values[i] = self.board_values[i]
+    rc.phase = self.phase
+    return rc</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.determine_winner"><code class="name flex">
+<span>def <span class="ident">determine_winner</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def determine_winner(self):
+    player1_points = self.board_values[6]
+    player2_points = self.board_values[13]
+    if player1_points &gt; player2_points:
+        self.phase = GamePhase.PLAYER1_WON
+    elif player1_points &lt; player2_points:
+        self.phase = GamePhase.PLAYER2_WON
+    else:
+        self.phase = GamePhase.DRAW</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.find_all_moves"><code class="name flex">
+<span>def <span class="ident">find_all_moves</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_all_moves(self):
+    all_moves = []
+    for i in self.possible_player_moves():
+        self.get_player_moves(i, MancalaMove([], self.current_player), all_moves)
+    return all_moves</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.get_player_moves"><code class="name flex">
+<span>def <span class="ident">get_player_moves</span></span>(<span>self, hole_index, prev_move, moves)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_player_moves(self, hole_index, prev_move: MancalaMove, moves):
+    hole_index = self._get_hole_index(hole_index)
+    copied_board = self.deep_copy()
+    player_pre_move = copied_board.current_player
+    next_turn = copied_board.perform_move_internal(hole_index, copied_board.current_player, print_moves=False)
+    if next_turn and list(copied_board.possible_player_moves()) and player_pre_move == copied_board.current_player:
+        for i in copied_board.possible_player_moves():
+            move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
+            copied_board.get_player_moves(i, move, moves)
+    else:
+        move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
+        move.description = str(move)
+        moves.append(move)
+        return</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.get_win_score"><code class="name flex">
+<span>def <span class="ident">get_win_score</span></span>(<span>self, player)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_win_score(self, player):
+    if player == 1:
+        return self.board_values[6] - self.board_values[13]
+    else:
+        return self.board_values[13] - self.board_values[6]</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.is_hole_empty"><code class="name flex">
+<span>def <span class="ident">is_hole_empty</span></span>(<span>self, index)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_hole_empty(self, index):
+    return self.board_values[index] == 0</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.is_hole_valid"><code class="name flex">
+<span>def <span class="ident">is_hole_valid</span></span>(<span>self, index)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_hole_valid(self, index):
+    return self.is_the_hole_of_current_player(index) and not self.is_hole_empty(index)</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.is_the_hole_of_current_player"><code class="name flex">
+<span>def <span class="ident">is_the_hole_of_current_player</span></span>(<span>self, index)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_the_hole_of_current_player(self, index):
+    if index in range(0, 6) and self.current_player == 1:
+        return True
+    if index in range(7, 13) and self.current_player == 2:
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.perform_move"><code class="name flex">
+<span>def <span class="ident">perform_move</span></span>(<span>self, move, print_moves=True)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def perform_move(self, move: MancalaMove, print_moves=True):
+    for hole_index in move.moves_sequence:
+        self.perform_move_internal(hole_index, move.player, print_moves)</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.perform_move_internal"><code class="name flex">
+<span>def <span class="ident">perform_move_internal</span></span>(<span>self, hole_index, player, print_moves=True)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def perform_move_internal(self, hole_index, player, print_moves=True):
+    if (0 &lt;= hole_index &lt;= 5 and self.current_player == 2) or (7 &lt;= hole_index &lt;= 12 and self.current_player == 1):
+        raise PermissionError(&#34;ILLEGAL MOVE!!!&#34;)
+    if player != self.current_player:
+        raise PermissionError(&#34;WRONG PLAYER!!!&#34;)
+    if self.board_values[hole_index] == 0:
+        raise PermissionError(&#34;EMPTY HOLE HERE!!!&#34;)
+
+    stones = self.board_values[hole_index]
+    self.board_values[hole_index] = 0
+    index = hole_index + 1
+    while stones &gt; 0:
+        if index == 6:
+            if self.current_player == 1:
+                self.board_values[index] += 1
+                stones -= 1
+        elif index == 13:
+            if self.current_player == 2:
+                self.board_values[index] += 1
+                stones -= 1
+        else:
+            self.board_values[index] += 1
+            stones -= 1
+
+        index = (index + 1) % 14
+
+    if index == 0:
+        index = 13
+    else:
+        index -= 1
+
+    switch_turns = True
+    opposite_hole_index = 12 - index
+    if (index == 6 and self.current_player == 1) or (index == 13 and self.current_player == 2):
+        switch_turns = False
+    elif self.board_values[index] == 1 and self.is_the_hole_of_current_player(index) and self.board_values[
+        opposite_hole_index] &gt; 0:
+        if self.current_player == 1:
+            self.board_values[6] += self.board_values[opposite_hole_index] + 1
+        else:
+            self.board_values[13] += self.board_values[opposite_hole_index] + 1
+        self.board_values[opposite_hole_index] = 0
+        self.board_values[index] = 0
+
+    self.check_if_game_ended()
+
+    if switch_turns:
+        self.current_player = 1 if self.current_player == 2 else 2
+
+    # if print_moves:
+    #     possible_moves = self.find_all_moves()
+    #     print(f&#34;Possible moves for {self.current_player}: {possible_moves}&#34;)
+
+    return not switch_turns</code></pre>
+</details>
+</dd>
+<dt id="src.mancala.mancala_board.MancalaBoard.possible_player_moves"><code class="name flex">
+<span>def <span class="ident">possible_player_moves</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def possible_player_moves(self):
+    for i, a in enumerate(self._get_player_holes(self.current_player)):
+        if a &gt; 0:
+            yield i</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.mancala" href="index.html">src.mancala</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.mancala.mancala_board.MancalaBoard" href="#src.mancala.mancala_board.MancalaBoard">MancalaBoard</a></code></h4>
+<ul class="">
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.check_if_game_ended" href="#src.mancala.mancala_board.MancalaBoard.check_if_game_ended">check_if_game_ended</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.deep_copy" href="#src.mancala.mancala_board.MancalaBoard.deep_copy">deep_copy</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.determine_winner" href="#src.mancala.mancala_board.MancalaBoard.determine_winner">determine_winner</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.find_all_moves" href="#src.mancala.mancala_board.MancalaBoard.find_all_moves">find_all_moves</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.get_player_moves" href="#src.mancala.mancala_board.MancalaBoard.get_player_moves">get_player_moves</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.get_win_score" href="#src.mancala.mancala_board.MancalaBoard.get_win_score">get_win_score</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.is_hole_empty" href="#src.mancala.mancala_board.MancalaBoard.is_hole_empty">is_hole_empty</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.is_hole_valid" href="#src.mancala.mancala_board.MancalaBoard.is_hole_valid">is_hole_valid</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.is_the_hole_of_current_player" href="#src.mancala.mancala_board.MancalaBoard.is_the_hole_of_current_player">is_the_hole_of_current_player</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.perform_move" href="#src.mancala.mancala_board.MancalaBoard.perform_move">perform_move</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.perform_move_internal" href="#src.mancala.mancala_board.MancalaBoard.perform_move_internal">perform_move_internal</a></code></li>
+<li><code><a title="src.mancala.mancala_board.MancalaBoard.possible_player_moves" href="#src.mancala.mancala_board.MancalaBoard.possible_player_moves">possible_player_moves</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
