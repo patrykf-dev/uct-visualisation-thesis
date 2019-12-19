@@ -15,7 +15,7 @@ class GameVisualizationWindow(GameWindow):
         self.display_settings = display_settings
         self.tree_widget = MonteCarloTreeCanvasWidget(sequences=False, display_settings=display_settings)
         self.iteration_progress_widget = IterationProgressWidget()
-        main_layout.addWidget(self.iteration_progress_widget, 0, 1)
+        main_layout.addWidget(self.iteration_progress_widget, 0, 0, 1, 2)
         main_layout.addWidget(self.tree_widget, 1, 1)
         self.initial_iteration = True
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed

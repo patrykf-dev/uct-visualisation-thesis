@@ -115,12 +115,12 @@ class MonteCarloTreeWidgetLayout:
         panels_widget.setLayout(panels_layout)
         panels_layout.addWidget(self.tree_details_panel_widget, 0, 0, alignment=QtCore.Qt.AlignBottom)
         panels_layout.addWidget(self.node_panel_widget, 1, 0, alignment=QtCore.Qt.AlignTop)
+        panels_layout.addWidget(self.serialization_widget, 2, 0)
 
         main_layout.addWidget(panels_widget, 0, 1)
         main_layout.addWidget(self.reset_button, 1, 0, alignment=QtCore.Qt.AlignCenter)
-        main_layout.addWidget(self.serialization_widget, 2, 0, alignment=QtCore.Qt.AlignCenter)
         if sequences:
-            main_layout.addWidget(self.left_right_widget, 3, 0, alignment=QtCore.Qt.AlignCenter)
+            main_layout.addWidget(self.left_right_widget, 2, 0, alignment=QtCore.Qt.AlignCenter)
 
     def _get_panel(self, labels, width, height):
         rc = QWidget()

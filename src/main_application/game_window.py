@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout, QMessageBox
+from PyQt5 import QtCore
 
 from src.main_application.GUI_utils import amend_window_position_on_screen, get_button, get_non_resizable_label, \
     LARGE_FONT_BOLD, show_dialog
@@ -14,7 +15,7 @@ class GameWindow(QMainWindow):
         self.manager = manager
         self.main_widget = QWidget()
         self._create_game_layout()
-        main_layout.addWidget(self.game_widget, 0, 0, 2, 1)
+        main_layout.addWidget(self.game_widget, 1, 0, alignment=QtCore.Qt.AlignTop)
         self.main_widget.setLayout(main_layout)
         self.setCentralWidget(self.main_widget)
         self.on_close_request = CustomEvent()
@@ -23,15 +24,17 @@ class GameWindow(QMainWindow):
         self.manager.on_update_tree += self.change_game_status_label
 
     def _create_game_layout(self):
-        game_layout = QGridLayout()
+        self.game_layout = QGridLayout()
+        # self.game_layout.setContentsMargins(0, 20, 20, 20)
+        self.game_layout.setSpacing(20)
         self.game_widget = QWidget()
-        self.game_widget.setLayout(game_layout)
+        self.game_widget.setLayout(self.game_layout)
         self.start_over_button = get_button("Start over")
         self.start_over_button.clicked.connect(self._handle_start_over_button)
         self.game_status_label = get_non_resizable_label("Game in progress")
-        game_layout.addWidget(self.manager.canvas, 0, 0)
-        game_layout.addWidget(self.game_status_label, 1, 0)
-        game_layout.addWidget(self.start_over_button, 2, 0)
+        self.game_layout.addWidget(self.manager.canvas, 0, 0)
+        self.game_layout.addWidget(self.game_status_label, 1, 0, alignment=QtCore.Qt.AlignCenter)
+        self.game_layout.addWidget(self.start_over_button, 2, 0, alignment=QtCore.Qt.AlignCenter)
 
     def _handle_start_over_button(self):
         answer = show_dialog("Do you want to restart the game?")
