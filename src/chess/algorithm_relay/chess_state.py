@@ -1,3 +1,5 @@
+from math import pi, atan
+
 import src.chess.chess_utils as ChessUtils
 import src.utils.random_utils as RandomUtils
 from src.chess.chessboard import Chessboard
@@ -16,11 +18,21 @@ class ChessState(BaseGameState):
         self.current_player = ChessUtils.get_player_from_color(board.current_player_color)
 
     def get_win_score(self, player):
+        """
+        diff - difference between figure values on board. Range: [-39; 39]
+        Function used - atan(0.25*x)
+        :param player:
+        :return: values range [0.2; 0.8], middle value = 0.5
+        """
+        player1_value = min(39, self.board.figures.player1_value)
+        player2_value = min(39, self.board.figures.player2_value)
         if player == 1:
-            diff = self.board.figures.player1_value - self.board.figures.player2_value
+            diff = player1_value - player2_value
         else:
-            diff = self.board.figures.player2_value - self.board.figures.player1_value
-        return self.MAX_REWARD_FOR_DRAW * (diff / ChessFiguresCollection.FIGURES_MAX_VALUE)
+            diff = player2_value - player1_value
+
+        diff_normalized = 0.6 * (((2 / pi) * atan(0.25 * diff) + 1) / 2) + 0.2
+        return diff_normalized
 
     def get_all_possible_moves(self):
         return ChessUtils.get_all_possible_moves(self.board)
