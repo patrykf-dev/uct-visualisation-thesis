@@ -148,7 +148,7 @@ class MancalaBoard:
                 copied_board.get_player_moves(i, move, moves)
         else:
             move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
-            move.description = str(move)
+            move.description = str(f"player {move.player} went: {move.moves_sequence}")
             moves.append(move)
             return
 
