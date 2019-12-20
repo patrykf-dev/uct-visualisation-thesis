@@ -26,9 +26,17 @@ class MancalaState(BaseGameState):
         self.phase = self.board.phase
 
     def get_win_score(self, player):
+        """
+        diff - difference between figure values on board. Range: [-48; 48]
+        Linear function is used.
+        :param player:
+        :return: values range [0.2; 0.8], middle value = 0.5
+        """
         max_score_diff = 48
         diff = self.board.get_win_score(player)
-        return diff / max_score_diff
+        a = 0.6 / (max_score_diff * 2)
+        diff_normalized = a * diff + 0.5
+        return diff_normalized
 
     def deep_copy(self):
         new_board = self.board.deep_copy()
