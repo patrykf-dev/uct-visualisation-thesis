@@ -85,6 +85,21 @@ def get_button(caption=&#34;&#34;, padding_width=50, padding_height=0):
     return rc
 
 
+def get_resizable_button(caption=&#34;&#34;, padding_width=50, padding_height=0):
+    &#34;&#34;&#34;
+    Returns PyQt resizable button with given parameters. It means it fills its parent-layout entirely.
+    :param caption: text on button
+    :param padding_width:
+    :param padding_height:
+    :return: customized button
+    &#34;&#34;&#34;
+    rc = QPushButton(caption)
+    rc.setFont(DEFAULT_FONT)
+    rc.setMinimumWidth(rc.sizeHint().width() + padding_width)
+    rc.setMinimumHeight(rc.sizeHint().height() + padding_height)
+    return rc
+
+
 def get_checkbox(caption=&#34;&#34;):
     &#34;&#34;&#34;
     Returns default PyQt checkbox.
@@ -327,6 +342,34 @@ Y position is default 40, can be changed with the parameter 'top_padding'
     return rc</code></pre>
 </details>
 </dd>
+<dt id="src.main_application.GUI_utils.get_resizable_button"><code class="name flex">
+<span>def <span class="ident">get_resizable_button</span></span>(<span>caption='', padding_width=50, padding_height=0)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns PyQt resizable button with given parameters. It means it fills its parent-layout entirely.
+:param caption: text on button
+:param padding_width:
+:param padding_height:
+:return: customized button</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_resizable_button(caption=&#34;&#34;, padding_width=50, padding_height=0):
+    &#34;&#34;&#34;
+    Returns PyQt resizable button with given parameters. It means it fills its parent-layout entirely.
+    :param caption: text on button
+    :param padding_width:
+    :param padding_height:
+    :return: customized button
+    &#34;&#34;&#34;
+    rc = QPushButton(caption)
+    rc.setFont(DEFAULT_FONT)
+    rc.setMinimumWidth(rc.sizeHint().width() + padding_width)
+    rc.setMinimumHeight(rc.sizeHint().height() + padding_height)
+    return rc</code></pre>
+</details>
+</dd>
 <dt id="src.main_application.GUI_utils.gray_out_radiobutton_text"><code class="name flex">
 <span>def <span class="ident">gray_out_radiobutton_text</span></span>(<span>button, disable)</span>
 </code></dt>
@@ -416,6 +459,7 @@ Y position is default 40, can be changed with the parameter 'top_padding'
 <li><code><a title="src.main_application.GUI_utils.get_line_edit" href="#src.main_application.GUI_utils.get_line_edit">get_line_edit</a></code></li>
 <li><code><a title="src.main_application.GUI_utils.get_non_resizable_label" href="#src.main_application.GUI_utils.get_non_resizable_label">get_non_resizable_label</a></code></li>
 <li><code><a title="src.main_application.GUI_utils.get_radiobutton" href="#src.main_application.GUI_utils.get_radiobutton">get_radiobutton</a></code></li>
+<li><code><a title="src.main_application.GUI_utils.get_resizable_button" href="#src.main_application.GUI_utils.get_resizable_button">get_resizable_button</a></code></li>
 <li><code><a title="src.main_application.GUI_utils.gray_out_radiobutton_text" href="#src.main_application.GUI_utils.gray_out_radiobutton_text">gray_out_radiobutton_text</a></code></li>
 <li><code><a title="src.main_application.GUI_utils.show_dialog" href="#src.main_application.GUI_utils.show_dialog">show_dialog</a></code></li>
 <li><code><a title="src.main_application.GUI_utils.show_eror_dialog" href="#src.main_application.GUI_utils.show_eror_dialog">show_eror_dialog</a></code></li>

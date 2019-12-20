@@ -41,8 +41,7 @@ class MonteCarloNode:
         self.children = []
         self.parent = None
         self.vis_details = Vis.MonteCarloNodeVisualisationDetails(self)
-        self._left_most_sibling = None
-        # this is the number of the node in its group of siblings 1..n
+        self.left_most_sibling = None
         self.number = 1
 
     def add_child_by_move(self, move):
@@ -103,22 +102,20 @@ class MonteCarloNode:
             rc = self.vis_details.thread
         return rc
 
-    def lbrother(self):
-        n = None
+    def left_sibling(self):
+        left_node = None
         if self.parent:
             for node in self.parent.children:
                 if node == self:
-                    return n
+                    return left_node
                 else:
-                    n = node
-        return n
+                    left_node = node
+        return left_node
 
-    def get_lmost_sibling(self):
-        if not self._left_most_sibling and self.parent and self != self.parent.children[0]:
-            self._left_most_sibling = self.parent.children[0]
-        return self._left_most_sibling
-
-    lmost_sibling = property(get_lmost_sibling)</code></pre>
+    def leftmost_sibling(self):
+        if not self.left_most_sibling and self.parent and self != self.parent.children[0]:
+            self.left_most_sibling = self.parent.children[0]
+        return self.left_most_sibling</code></pre>
 </details>
 </section>
 <section>
@@ -152,8 +149,7 @@ class MonteCarloNode:
         self.children = []
         self.parent = None
         self.vis_details = Vis.MonteCarloNodeVisualisationDetails(self)
-        self._left_most_sibling = None
-        # this is the number of the node in its group of siblings 1..n
+        self.left_most_sibling = None
         self.number = 1
 
     def add_child_by_move(self, move):
@@ -214,22 +210,20 @@ class MonteCarloNode:
             rc = self.vis_details.thread
         return rc
 
-    def lbrother(self):
-        n = None
+    def left_sibling(self):
+        left_node = None
         if self.parent:
             for node in self.parent.children:
                 if node == self:
-                    return n
+                    return left_node
                 else:
-                    n = node
-        return n
+                    left_node = node
+        return left_node
 
-    def get_lmost_sibling(self):
-        if not self._left_most_sibling and self.parent and self != self.parent.children[0]:
-            self._left_most_sibling = self.parent.children[0]
-        return self._left_most_sibling
-
-    lmost_sibling = property(get_lmost_sibling)</code></pre>
+    def leftmost_sibling(self):
+        if not self.left_most_sibling and self.parent and self != self.parent.children[0]:
+            self.left_most_sibling = self.parent.children[0]
+        return self.left_most_sibling</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
@@ -260,22 +254,6 @@ def create_root():
 def generate_next_id():
     MonteCarloNode._node_counter = MonteCarloNode._node_counter + 1
     return MonteCarloNode._node_counter</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="src.uct.algorithm.mc_node.MonteCarloNode.lmost_sibling"><code class="name">var <span class="ident">lmost_sibling</span></code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_lmost_sibling(self):
-    if not self._left_most_sibling and self.parent and self != self.parent.children[0]:
-        self._left_most_sibling = self.parent.children[0]
-    return self._left_most_sibling</code></pre>
 </details>
 </dd>
 </dl>
@@ -314,21 +292,6 @@ def generate_next_id():
     child.number = len(self.children)</code></pre>
 </details>
 </dd>
-<dt id="src.uct.algorithm.mc_node.MonteCarloNode.get_lmost_sibling"><code class="name flex">
-<span>def <span class="ident">get_lmost_sibling</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_lmost_sibling(self):
-    if not self._left_most_sibling and self.parent and self != self.parent.children[0]:
-        self._left_most_sibling = self.parent.children[0]
-    return self._left_most_sibling</code></pre>
-</details>
-</dd>
 <dt id="src.uct.algorithm.mc_node.MonteCarloNode.has_children"><code class="name flex">
 <span>def <span class="ident">has_children</span></span>(<span>self)</span>
 </code></dt>
@@ -340,26 +303,6 @@ def generate_next_id():
 </summary>
 <pre><code class="python">def has_children(self):
     return len(self.children) &gt; 0</code></pre>
-</details>
-</dd>
-<dt id="src.uct.algorithm.mc_node.MonteCarloNode.lbrother"><code class="name flex">
-<span>def <span class="ident">lbrother</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def lbrother(self):
-    n = None
-    if self.parent:
-        for node in self.parent.children:
-            if node == self:
-                return n
-            else:
-                n = node
-    return n</code></pre>
 </details>
 </dd>
 <dt id="src.uct.algorithm.mc_node.MonteCarloNode.left"><code class="name flex">
@@ -380,6 +323,41 @@ def generate_next_id():
     else:
         rc = self.vis_details.thread
     return rc</code></pre>
+</details>
+</dd>
+<dt id="src.uct.algorithm.mc_node.MonteCarloNode.left_sibling"><code class="name flex">
+<span>def <span class="ident">left_sibling</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def left_sibling(self):
+    left_node = None
+    if self.parent:
+        for node in self.parent.children:
+            if node == self:
+                return left_node
+            else:
+                left_node = node
+    return left_node</code></pre>
+</details>
+</dd>
+<dt id="src.uct.algorithm.mc_node.MonteCarloNode.leftmost_sibling"><code class="name flex">
+<span>def <span class="ident">leftmost_sibling</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def leftmost_sibling(self):
+    if not self.left_most_sibling and self.parent and self != self.parent.children[0]:
+        self.left_most_sibling = self.parent.children[0]
+    return self.left_most_sibling</code></pre>
 </details>
 </dd>
 <dt id="src.uct.algorithm.mc_node.MonteCarloNode.right"><code class="name flex">
@@ -427,11 +405,10 @@ def generate_next_id():
 <li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.add_child_by_node" href="#src.uct.algorithm.mc_node.MonteCarloNode.add_child_by_node">add_child_by_node</a></code></li>
 <li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.create_root" href="#src.uct.algorithm.mc_node.MonteCarloNode.create_root">create_root</a></code></li>
 <li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.generate_next_id" href="#src.uct.algorithm.mc_node.MonteCarloNode.generate_next_id">generate_next_id</a></code></li>
-<li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.get_lmost_sibling" href="#src.uct.algorithm.mc_node.MonteCarloNode.get_lmost_sibling">get_lmost_sibling</a></code></li>
 <li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.has_children" href="#src.uct.algorithm.mc_node.MonteCarloNode.has_children">has_children</a></code></li>
-<li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.lbrother" href="#src.uct.algorithm.mc_node.MonteCarloNode.lbrother">lbrother</a></code></li>
 <li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.left" href="#src.uct.algorithm.mc_node.MonteCarloNode.left">left</a></code></li>
-<li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.lmost_sibling" href="#src.uct.algorithm.mc_node.MonteCarloNode.lmost_sibling">lmost_sibling</a></code></li>
+<li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.left_sibling" href="#src.uct.algorithm.mc_node.MonteCarloNode.left_sibling">left_sibling</a></code></li>
+<li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.leftmost_sibling" href="#src.uct.algorithm.mc_node.MonteCarloNode.leftmost_sibling">leftmost_sibling</a></code></li>
 <li><code><a title="src.uct.algorithm.mc_node.MonteCarloNode.right" href="#src.uct.algorithm.mc_node.MonteCarloNode.right">right</a></code></li>
 </ul>
 </li>

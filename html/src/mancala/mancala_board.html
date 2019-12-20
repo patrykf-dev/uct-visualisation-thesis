@@ -174,7 +174,7 @@ class MancalaBoard:
                 copied_board.get_player_moves(i, move, moves)
         else:
             move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
-            move.description = str(move)
+            move.description = str(f&#34;player {move.player} went: {move.moves_sequence}&#34;)
             moves.append(move)
             return
 
@@ -367,7 +367,7 @@ class MancalaBoard:
                 copied_board.get_player_moves(i, move, moves)
         else:
             move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
-            move.description = str(move)
+            move.description = str(f&#34;player {move.player} went: {move.moves_sequence}&#34;)
             moves.append(move)
             return
 
@@ -483,7 +483,7 @@ class MancalaBoard:
             copied_board.get_player_moves(i, move, moves)
     else:
         move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
-        move.description = str(move)
+        move.description = str(f&#34;player {move.player} went: {move.moves_sequence}&#34;)
         moves.append(move)
         return</code></pre>
 </details>

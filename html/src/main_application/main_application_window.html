@@ -35,6 +35,7 @@ from src.main_application.GUI_utils import TREES_PATH, amend_window_position_on_
 from src.main_application.game_window_creator import create_proper_window
 from src.main_application.main_application_window_layout import MainApplicationWindowLayout
 from src.main_application.mc_tree_window import MonteCarloTreeWindow
+from src.main_application.utils import extract_serializable_files_from
 
 
 class MainApplicationWindow(QMainWindow):
@@ -54,7 +55,8 @@ class MainApplicationWindow(QMainWindow):
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
-        self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
+        self.layout.select_tree_path_button_files.clicked.connect(self._handle_select_tree_path_button_files)
+        self.layout.select_tree_path_button_directories.clicked.connect(self._handle_select_tree_path_button_directories)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def showEvent(self, event):
@@ -86,7 +88,7 @@ class MainApplicationWindow(QMainWindow):
         window.on_close_request += self._handle_close_request
         window.show()
 
-    def _handle_select_tree_path_button(self):
+    def _handle_select_tree_path_button_files(self):
         &#34;&#34;&#34;
         Handles button that enables user to load his own trees from file system.
         When one file is chosen, its name will appear in the edit line.
@@ -100,6 +102,24 @@ class MainApplicationWindow(QMainWindow):
             self.layout.tree_path_edit.setText(f&#34;Files chosen: {len(paths)}&#34;)
         if paths:
             self.layout.chosen_trees_paths = paths
+
+    def _handle_select_tree_path_button_directories(self):
+        &#34;&#34;&#34;
+        Handles button that enables user to load his own trees from file system.
+        All trees from the selected directory (non recursively) will be loaded to the application.
+        User can choose a directory, and its path will be shown on the textfield.
+        &#34;&#34;&#34;
+        path = QFileDialog.getExistingDirectory(self, &#34;Open a directory with tree files&#34;, TREES_PATH, QFileDialog.ShowDirsOnly)
+        if not path:
+            return
+        files = extract_serializable_files_from(path)
+        if len(files) == 0:
+            show_eror_dialog(f&#34;No tree files found inside {path}&#34;)
+            return
+        paths = list(map(lambda filename: os.path.join(path, filename), files))
+
+        self.layout.tree_path_edit.setText(path)
+        self.layout.chosen_trees_paths = paths
 
     def _handle_opengl_button(self):
         &#34;&#34;&#34;
@@ -226,7 +246,8 @@ Shows menu window.</p></section>
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)
-        self.layout.select_tree_path_button.clicked.connect(self._handle_select_tree_path_button)
+        self.layout.select_tree_path_button_files.clicked.connect(self._handle_select_tree_path_button_files)
+        self.layout.select_tree_path_button_directories.clicked.connect(self._handle_select_tree_path_button_directories)
         self.layout.draw_opengl_button.clicked.connect(self._handle_opengl_button)
 
     def showEvent(self, event):
@@ -258,7 +279,7 @@ Shows menu window.</p></section>
         window.on_close_request += self._handle_close_request
         window.show()
 
-    def _handle_select_tree_path_button(self):
+    def _handle_select_tree_path_button_files(self):
         &#34;&#34;&#34;
         Handles button that enables user to load his own trees from file system.
         When one file is chosen, its name will appear in the edit line.
@@ -272,6 +293,24 @@ Shows menu window.</p></section>
             self.layout.tree_path_edit.setText(f&#34;Files chosen: {len(paths)}&#34;)
         if paths:
             self.layout.chosen_trees_paths = paths
+
+    def _handle_select_tree_path_button_directories(self):
+        &#34;&#34;&#34;
+        Handles button that enables user to load his own trees from file system.
+        All trees from the selected directory (non recursively) will be loaded to the application.
+        User can choose a directory, and its path will be shown on the textfield.
+        &#34;&#34;&#34;
+        path = QFileDialog.getExistingDirectory(self, &#34;Open a directory with tree files&#34;, TREES_PATH, QFileDialog.ShowDirsOnly)
+        if not path:
+            return
+        files = extract_serializable_files_from(path)
+        if len(files) == 0:
+            show_eror_dialog(f&#34;No tree files found inside {path}&#34;)
+            return
+        paths = list(map(lambda filename: os.path.join(path, filename), files))
+
+        self.layout.tree_path_edit.setText(path)
+        self.layout.chosen_trees_paths = paths
 
     def _handle_opengl_button(self):
         &#34;&#34;&#34;

@@ -70,7 +70,9 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def save_image(self):
         path, category = QFileDialog.getSaveFileName(self, &#34;Save tree as image&#34;, TREES_PATH, &#34;Png files (*.png)&#34;)
         if path:
+            self.layout.canvas._smooth_enabled = False
             image = self.layout.canvas.render()
+            self.layout.canvas._smooth_enabled = True
             io.write_png(path, image)
 
     def _handle_serialize_button_clicked_event(self):
@@ -193,7 +195,9 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def save_image(self):
         path, category = QFileDialog.getSaveFileName(self, &#34;Save tree as image&#34;, TREES_PATH, &#34;Png files (*.png)&#34;)
         if path:
+            self.layout.canvas._smooth_enabled = False
             image = self.layout.canvas.render()
+            self.layout.canvas._smooth_enabled = True
             io.write_png(path, image)
 
     def _handle_serialize_button_clicked_event(self):
@@ -321,7 +325,9 @@ class MonteCarloTreeCanvasWidget(QWidget):
 <pre><code class="python">def save_image(self):
     path, category = QFileDialog.getSaveFileName(self, &#34;Save tree as image&#34;, TREES_PATH, &#34;Png files (*.png)&#34;)
     if path:
+        self.layout.canvas._smooth_enabled = False
         image = self.layout.canvas.render()
+        self.layout.canvas._smooth_enabled = True
         io.write_png(path, image)</code></pre>
 </details>
 </dd>

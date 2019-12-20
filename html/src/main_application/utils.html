@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.7.2" />
-<title>src.serialization.serializator_base API documentation</title>
+<title>src.main_application.utils API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
@@ -17,30 +17,28 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>src.serialization.serializator_base</code></h1>
+<h1 class="title">Module <code>src.main_application.utils</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import abc
-
-from src.uct.algorithm.mc_node import MonteCarloNode
+<pre><code class="python">from os import walk
 
 
-class BaseSerializator(abc.ABC):
-    @abc.abstractmethod
-    def __init__(self):
-        self.extension = &#34;&#34;
+def extract_serializable_files_from(path):
+    files = []
+    for dir_path, dirnames, filenames in walk(path):
+        files.extend(filenames)
+        break
 
-    @abc.abstractmethod
-    def save_node_to_path(self, node: MonteCarloNode, path: str):
-        pass
+    acceptable_files = []
+    for filename in files:
+        if filename.endswith((&#39;.csv&#39;, &#39;.tree&#39;)):
+            acceptable_files.append(filename)
 
-    @abc.abstractmethod
-    def get_node_from_path(self, path: str) -&gt; MonteCarloNode:
-        pass</code></pre>
+    return acceptable_files</code></pre>
 </details>
 </section>
 <section>
@@ -48,46 +46,10 @@ class BaseSerializator(abc.ABC):
 <section>
 </section>
 <section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="src.serialization.serializator_base.BaseSerializator"><code class="flex name class">
-<span>class <span class="ident">BaseSerializator</span></span>
-</code></dt>
-<dd>
-<section class="desc"><p>Helper class that provides a standard way to create an ABC using
-inheritance.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class BaseSerializator(abc.ABC):
-    @abc.abstractmethod
-    def __init__(self):
-        self.extension = &#34;&#34;
-
-    @abc.abstractmethod
-    def save_node_to_path(self, node: MonteCarloNode, path: str):
-        pass
-
-    @abc.abstractmethod
-    def get_node_from_path(self, path: str) -&gt; MonteCarloNode:
-        pass</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>abc.ABC</li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="src.serialization.serializator_binary.BinarySerializator" href="serializator_binary.html#src.serialization.serializator_binary.BinarySerializator">BinarySerializator</a></li>
-<li><a title="src.serialization.serializator_csv.CsvSerializator" href="serializator_csv.html#src.serialization.serializator_csv.CsvSerializator">CsvSerializator</a></li>
-</ul>
-<h3>Methods</h3>
-<dl>
-<dt id="src.serialization.serializator_base.BaseSerializator.get_node_from_path"><code class="name flex">
-<span>def <span class="ident">get_node_from_path</span></span>(<span>self, path)</span>
+<dt id="src.main_application.utils.extract_serializable_files_from"><code class="name flex">
+<span>def <span class="ident">extract_serializable_files_from</span></span>(<span>path)</span>
 </code></dt>
 <dd>
 <section class="desc"></section>
@@ -95,28 +57,23 @@ inheritance.</p></section>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@abc.abstractmethod
-def get_node_from_path(self, path: str) -&gt; MonteCarloNode:
-    pass</code></pre>
-</details>
-</dd>
-<dt id="src.serialization.serializator_base.BaseSerializator.save_node_to_path"><code class="name flex">
-<span>def <span class="ident">save_node_to_path</span></span>(<span>self, node, path)</span>
-</code></dt>
-<dd>
-<section class="desc"></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@abc.abstractmethod
-def save_node_to_path(self, node: MonteCarloNode, path: str):
-    pass</code></pre>
+<pre><code class="python">def extract_serializable_files_from(path):
+    files = []
+    for dir_path, dirnames, filenames in walk(path):
+        files.extend(filenames)
+        break
+
+    acceptable_files = []
+    for filename in files:
+        if filename.endswith((&#39;.csv&#39;, &#39;.tree&#39;)):
+            acceptable_files.append(filename)
+
+    return acceptable_files</code></pre>
 </details>
 </dd>
 </dl>
-</dd>
-</dl>
+</section>
+<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -127,18 +84,12 @@ def save_node_to_path(self, node: MonteCarloNode, path: str):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="src.serialization" href="index.html">src.serialization</a></code></li>
+<li><code><a title="src.main_application" href="index.html">src.main_application</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="src.serialization.serializator_base.BaseSerializator" href="#src.serialization.serializator_base.BaseSerializator">BaseSerializator</a></code></h4>
+<li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="src.serialization.serializator_base.BaseSerializator.get_node_from_path" href="#src.serialization.serializator_base.BaseSerializator.get_node_from_path">get_node_from_path</a></code></li>
-<li><code><a title="src.serialization.serializator_base.BaseSerializator.save_node_to_path" href="#src.serialization.serializator_base.BaseSerializator.save_node_to_path">save_node_to_path</a></code></li>
-</ul>
-</li>
+<li><code><a title="src.main_application.utils.extract_serializable_files_from" href="#src.main_application.utils.extract_serializable_files_from">extract_serializable_files_from</a></code></li>
 </ul>
 </li>
 </ul>

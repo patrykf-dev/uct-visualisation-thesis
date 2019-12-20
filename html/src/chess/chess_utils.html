@@ -99,7 +99,7 @@ def get_all_possible_moves(board: Chessboard):
 
             f_color = str(copied_figure.color).split(&#34;.&#34;)[1].lower()
             f_type = str(copied_figure.figure_type).split(&#34;.&#34;)[1].lower()
-            move.description = f&#34;{f_color} {f_type} {move.position_from} -&gt; {move.position_to}&#34;
+            move.description = f&#34;{f_color} {f_type} {move.real_position_from()} -&gt; {move.real_position_to()}&#34;
 
         if figure_moves:
             all_possible_moves.extend(figure_moves)
@@ -379,7 +379,7 @@ def get_player_from_color(color: Color):
 
             f_color = str(copied_figure.color).split(&#34;.&#34;)[1].lower()
             f_type = str(copied_figure.figure_type).split(&#34;.&#34;)[1].lower()
-            move.description = f&#34;{f_color} {f_type} {move.position_from} -&gt; {move.position_to}&#34;
+            move.description = f&#34;{f_color} {f_type} {move.real_position_from()} -&gt; {move.real_position_to()}&#34;
 
         if figure_moves:
             all_possible_moves.extend(figure_moves)

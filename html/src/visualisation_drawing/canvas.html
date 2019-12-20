@@ -53,6 +53,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.tree_index = 0
         self.binary_serializator = BinarySerializator()
         self.csv_serializator = CsvSerializator()
+        self._smooth_enabled = True
         self._setup_widget()
         if self.tree:
             self.use_tree_data(self.tree)
@@ -91,7 +92,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
 
     def on_draw(self, event):
-        clear(color=True, depth=True)
+        clear(color=True, depth=True, enable_smoothing=self._smooth_enabled)
         if self.tree:
             self.program_edges.draw(&#34;lines&#34;)
             self.program_vertices.draw(&#34;points&#34;)
@@ -300,6 +301,7 @@ time or using a dedicated double-click button will not be respected.</p></sectio
         self.tree_index = 0
         self.binary_serializator = BinarySerializator()
         self.csv_serializator = CsvSerializator()
+        self._smooth_enabled = True
         self._setup_widget()
         if self.tree:
             self.use_tree_data(self.tree)
@@ -338,7 +340,7 @@ time or using a dedicated double-click button will not be respected.</p></sectio
         set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
 
     def on_draw(self, event):
-        clear(color=True, depth=True)
+        clear(color=True, depth=True, enable_smoothing=self._smooth_enabled)
         if self.tree:
             self.program_edges.draw(&#34;lines&#34;)
             self.program_vertices.draw(&#34;points&#34;)
@@ -571,7 +573,7 @@ time or using a dedicated double-click button will not be respected.</p></sectio
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_draw(self, event):
-    clear(color=True, depth=True)
+    clear(color=True, depth=True, enable_smoothing=self._smooth_enabled)
     if self.tree:
         self.program_edges.draw(&#34;lines&#34;)
         self.program_vertices.draw(&#34;points&#34;)</code></pre>
