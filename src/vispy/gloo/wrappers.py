@@ -177,7 +177,7 @@ class BaseGlooFunctions(object):
     # glClear, glClearColor, glClearDepthf, glClearStencil
     #
 
-    def clear(self, color=True, depth=True, stencil=True):
+    def clear(self, color=True, depth=True, stencil=True, enable_smoothing=True):
         """Clear the screen buffers
 
         This is a wrapper for gl.glClear.
@@ -193,6 +193,8 @@ class BaseGlooFunctions(object):
         stencil : bool | int
             Clear the stencil buffer bit. If int, ``set_clear_stencil`` will
             be used to set the stencil clear index.
+        enable_smoothing:
+            To temporarily disable smoothing flag
         """
         bits = 0
         if isinstance(color, np.ndarray) or bool(color):
@@ -208,6 +210,11 @@ class BaseGlooFunctions(object):
                 self.set_clear_stencil(stencil)
             bits |= gl.GL_STENCIL_BUFFER_BIT
         self.glir.command('FUNC', 'glClear', bits)
+        GL_LINE_SMOOTH = 0xB20
+        if enable_smoothing:
+            self.glir.command('FUNC', 'glEnable', GL_LINE_SMOOTH)
+        else:
+            self.glir.command('FUNC', 'glDisable', GL_LINE_SMOOTH)
 
     def set_clear_color(self, color='black', alpha=None):
         """Set the screen clear color
