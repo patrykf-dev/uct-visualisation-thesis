@@ -27,6 +27,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.tree_index = 0
         self.binary_serializator = BinarySerializator()
         self.csv_serializator = CsvSerializator()
+        self._smooth_enabled = True
         self._setup_widget()
         if self.tree:
             self.use_tree_data(self.tree)
@@ -65,7 +66,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         set_viewport(0, 0, event.physical_size[0], event.physical_size[1])
 
     def on_draw(self, event):
-        clear(color=True, depth=True)
+        clear(color=True, depth=True, enable_smoothing=self._smooth_enabled)
         if self.tree:
             self.program_edges.draw("lines")
             self.program_vertices.draw("points")

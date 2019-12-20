@@ -44,7 +44,9 @@ class MonteCarloTreeCanvasWidget(QWidget):
     def save_image(self):
         path, category = QFileDialog.getSaveFileName(self, "Save tree as image", TREES_PATH, "Png files (*.png)")
         if path:
+            self.layout.canvas._smooth_enabled = False
             image = self.layout.canvas.render()
+            self.layout.canvas._smooth_enabled = True
             io.write_png(path, image)
 
     def _handle_serialize_button_clicked_event(self):
