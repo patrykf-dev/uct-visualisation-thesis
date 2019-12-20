@@ -15,8 +15,7 @@ class MonteCarloNode:
         self.children = []
         self.parent = None
         self.vis_details = Vis.MonteCarloNodeVisualisationDetails(self)
-        self._left_most_sibling = None
-        # this is the number of the node in its group of siblings 1..n
+        self.left_most_sibling = None
         self.number = 1
 
     def add_child_by_move(self, move):
@@ -77,19 +76,17 @@ class MonteCarloNode:
             rc = self.vis_details.thread
         return rc
 
-    def lbrother(self):
-        n = None
+    def left_sibling(self):
+        left_node = None
         if self.parent:
             for node in self.parent.children:
                 if node == self:
-                    return n
+                    return left_node
                 else:
-                    n = node
-        return n
+                    left_node = node
+        return left_node
 
-    def get_lmost_sibling(self):
-        if not self._left_most_sibling and self.parent and self != self.parent.children[0]:
-            self._left_most_sibling = self.parent.children[0]
-        return self._left_most_sibling
-
-    lmost_sibling = property(get_lmost_sibling)
+    def leftmost_sibling(self):
+        if not self.left_most_sibling and self.parent and self != self.parent.children[0]:
+            self.left_most_sibling = self.parent.children[0]
+        return self.left_most_sibling

@@ -50,7 +50,7 @@ class MonteCarloTree:
         node.vis_details.ancestor = self
         node.vis_details.change = 0
         node.vis_details.shift = 0
-        node._left_most_sibling = None
+        node.left_most_sibling = None
         for child in node.children:
             self._reset_vis_data_internal(child, depth + 1)
 
