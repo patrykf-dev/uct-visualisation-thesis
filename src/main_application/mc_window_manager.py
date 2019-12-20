@@ -27,7 +27,7 @@ class MonteCarloWindowManager:
             phase = ChessState.cast_chess_phase_to_abstract_phase(self.canvas.chess_manager.board.game_status)
         elif self.game == Game.Mancala:
             phase = self.canvas.board.phase
-        move_info = {"phase": phase}
+        move_info = {"phase": phase, "node": self.mc_manager.chosen_node}
         self.on_update_tree.fire(self, earg=move_info)
 
         if self.game_mode == GameMode.PC_VS_PC:

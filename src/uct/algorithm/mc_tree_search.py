@@ -66,7 +66,7 @@ class MonteCarloTreeSearch:
         result_game_state = self.tree.retrieve_node_game_state(best_child)
         result_game_state.switch_current_player()
         result_move = best_child.move
-        return result_move, result_game_state
+        return result_move, result_game_state, best_child
 
     def _selection(self, node):
         """

@@ -13,6 +13,7 @@ class MonteCarloGameManager:
         self.settings = settings
         self.first_move = True
         self.previous_move_calculated = None
+        self.chosen_node = None
         self.iteration_performed = CustomEvent()
 
     def notify_move_performed(self, move: BaseGameMove):
@@ -31,7 +32,8 @@ class MonteCarloGameManager:
     def calculate_next_move(self):
         mcts = MonteCarloTreeSearch(self.tree, self.settings)
         mcts.iteration_performed += self._handle_iteration_performed
-        move, state = mcts.calculate_next_move()
+        move, state, best_node = mcts.calculate_next_move()
+        self.chosen_node = best_node
         self.previous_move_calculated = move
         return move
 

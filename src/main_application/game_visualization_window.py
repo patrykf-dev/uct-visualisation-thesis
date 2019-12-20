@@ -19,6 +19,7 @@ class GameVisualizationWindow(GameWindow):
         main_layout.addWidget(self.tree_widget, 1, 1)
         self.initial_iteration = True
         self.manager.mc_manager.iteration_performed += self._handle_iteration_performed
+        self.manager.on_update_tree += self._handle_fill_node_info
 
     def _handle_start_over_button(self):
         answer = show_dialog("Do you want to restart the game?")
@@ -43,3 +44,8 @@ class GameVisualizationWindow(GameWindow):
             self.tree_widget.layout.canvas.use_tree_data(self.manager.mc_manager.tree)
             self.tree_widget.layout.fill_tree_details_panel_info(self.manager.mc_manager.tree.data.vertices_count)
             self.initial_iteration = True
+
+    def _handle_fill_node_info(self, sender, move_info):
+        node = move_info.get('node', None)
+        if node:
+            self.tree_widget.layout.fill_node_panel_info(node)
