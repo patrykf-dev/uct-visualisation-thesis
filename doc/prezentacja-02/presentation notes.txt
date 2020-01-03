@@ -6,3 +6,6 @@
 3. Doświadczenia, problemy, wnioski
 	a) Python = wolny
 4. Możliwości dalszego rozwoju
+	a) dodawanie kolejnych gier
+	b) przepisanie modułów odpowiedzialnych za obliczenia do C/C++
+	c) usprawnienie logiki szachów
