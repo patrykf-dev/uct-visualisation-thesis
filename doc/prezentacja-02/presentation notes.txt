@@ -1,0 +1,8 @@
+1. Przypomnienie tematu
+	a) Działanie algorytmu
+	b) Docelowe komponenty
+2. Stan z ostatniej prezentacji, progres
+	a) Brak sekwencji
+3. Doświadczenia, problemy, wnioski
+	a) Python = wolny
+4. Możliwości dalszego rozwoju
