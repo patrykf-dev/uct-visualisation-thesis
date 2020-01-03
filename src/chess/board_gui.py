@@ -61,9 +61,9 @@ class Tile:
     """
     Class responsible for keeping information about specific GUI board tile - its position and color
     """
-    SELECTED_COLOR = (75, 225, 35)
-    CHECKED_COLOR = (230, 30, 50)
-    LAST_MOVED_COLOR = (160, 160, 160)
+    _SELECTED_COLOR = (75, 225, 35)
+    _CHECKED_COLOR = (230, 30, 50)
+    _LAST_MOVED_COLOR = (160, 160, 160)
 
     def __init__(self, color, start_position, tile_width, tile_height):
         self.primary_color = color
@@ -76,7 +76,7 @@ class Tile:
         """
         When the user clicks on tile in GUI, it should be seen as selected.
         """
-        self.color = Tile.SELECTED_COLOR
+        self.color = Tile._SELECTED_COLOR
 
     def deselect(self, when_checked=False):
         """
@@ -84,17 +84,17 @@ class Tile:
          be deselected. The same idea is when th user moves.
         :param when_checked: When check, tile below the king is marked as well. When deselecting, we need to keep it.
         """
-        self.color = self.primary_color if not when_checked else Tile.CHECKED_COLOR
+        self.color = self.primary_color if not when_checked else Tile._CHECKED_COLOR
 
     def set_color_when_checked(self):
         """
         Marks tile on the king position to signalize check.
         """
-        self.color = Tile.CHECKED_COLOR
+        self.color = Tile._CHECKED_COLOR
 
     def set_color_when_moved(self):
         """
         When the move is done, we need to inform user in GUI which one was it. Ols and new moved figure's positions are
         marked.
         """
-        self.color = Tile.LAST_MOVED_COLOR
+        self.color = Tile._LAST_MOVED_COLOR
