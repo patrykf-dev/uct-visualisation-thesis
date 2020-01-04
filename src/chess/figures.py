@@ -138,7 +138,6 @@ class Pawn(Figure):
         possible_moves = []
         move_setup = Pawn.MOVE_SETUPS[self.color]
 
-        # pawn at the end - should not happen
         if self.position[0] == move_setup["last_line"]:
             print('! Pawn should not be allowed to stay in the end line')
         else:
@@ -150,7 +149,6 @@ class Pawn(Figure):
                 else:
                     move = ChessMove(pos, self.position, MoveType.PROMOTION)
                 possible_moves.append(move)
-                # double move at the beginning
                 double_move = move_setup["step_forward"](self.position[0], 2), self.position[1]
                 if self.position[0] == move_setup["start_line"] and not figures.get_figure_at(double_move):
                     possible_moves.append(ChessMove(double_move, self.position, MoveType.PAWN_DOUBLE_MOVE))
@@ -172,12 +170,9 @@ class Pawn(Figure):
             figure = figures.get_figure_at(_pos)
             if figure:
                 if figure.color == opposite_color or threat_for_king:
-                    # if figure.figure_type == FigureType.KING and figure.color == opposite_color:
-                    #     print('! Capture of a king should not be possible')
                     return MoveType.NORMAL if _pos[0] != move_setup["last_line"] else MoveType.PROMOTION
             elif threat_for_king:
                 return MoveType.NORMAL if _pos[0] != move_setup["last_line"] else MoveType.PROMOTION
-            # capture en passant
             else:
                 opponent_pawn_pos = (move_setup["step_backward"](_pos[0], 1), _pos[1])
                 figure = figures.get_figure_at(opponent_pawn_pos)
@@ -223,6 +218,9 @@ class Pawn(Figure):
 
 
 class Knight(Figure):
+    """
+    Class representing knight chess figure.
+    """
     def __init__(self, color, position):
         self.value = 3
         image_file = 'knight-white.png' if color == Color.WHITE else 'knight-black.png'
@@ -253,6 +251,9 @@ class Knight(Figure):
 
 
 class Bishop(FigureWithLinearMovement):
+    """
+    Class representing bishop chess figure.
+    """
     def __init__(self, color, position):
         self.value = 3
         self.light_squared = (position[0] + position[1]) % 2 == 1
@@ -265,6 +266,9 @@ class Bishop(FigureWithLinearMovement):
 
 
 class Rook(FigureWithLinearMovement):
+    """
+    Class representing rook chess figure.
+    """
     def __init__(self, color, position):
         self.value = 5
         self.is_able_to_castle = True
@@ -285,6 +289,9 @@ class Rook(FigureWithLinearMovement):
 
 
 class Queen(FigureWithLinearMovement):
+    """
+    Class representing queen chess figure.
+    """
     def __init__(self, color, position):
         self.value = 9
         image_file = 'queen-white.png' if color == Color.WHITE else 'queen-black.png'
@@ -296,6 +303,10 @@ class Queen(FigureWithLinearMovement):
 
 
 class King(Figure):
+    """
+    Class representing king chess figure.
+    It contains the information about chessboard fields, on which king would be under check in 'check_mask'.
+    """
     def __init__(self, color, position):
         self.is_able_to_castle = True
         self.initial_position = (0, 4) if color == Color.WHITE else (7, 4)
@@ -305,6 +316,12 @@ class King(Figure):
         super().__init__(color, FigureType.KING, image_file, position)
 
     def update_check_mask_around_rival_king(self, figures: ChessFiguresCollection):
+        """
+        Fills the numpy array of check mask with chessboard fields around the rival king, because kings cannot stand
+        next to each other.
+        :param figures: ChessFiguresCollection object
+        :return: None
+        """
         opposite_color = Color.WHITE if self.color == Color.BLACK else Color.BLACK
         rival_king_position = figures.get_king_position(opposite_color)
         directions = [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, -1), (0, 1)]
@@ -330,8 +347,12 @@ class King(Figure):
         for move in moves:
             self.check_mask[move.position_to] = True
 
-    # check if at least one of all possible rival's moves coincide with 'position';
     def update_check_mask(self, figures: ChessFiguresCollection):
+        """
+        Fills the numpy array of check mask with chessboard fields on which king would be under check.
+        :param figures: ChessFiguresCollection object
+        :return: None
+        """
         self.reset_check_mask()
         previous_position = self.position
         figures.temporarily_disable(self)
@@ -340,13 +361,10 @@ class King(Figure):
 
         for figure in figures.figures_list:
             attacked_fields = []
-            # only look for checks from the opposite color
             if figure.color == self.color:
                 continue
-            # pawns have different capture rules
             if figure.figure_type == FigureType.PAWN:
                 attacked_fields = figure.check_captures(figures, True)
-            # to avoid recursion
             elif figure.figure_type != FigureType.KING:
                 attacked_fields = figure.check_moves(figures, True)
 
@@ -356,6 +374,16 @@ class King(Figure):
         figures.restore(self, previous_position)
 
     def possibility_to_castle(self, figures: ChessFiguresCollection):
+        """
+        Checks whether the king is able to make long or short castling.
+        Conditions checked:
+        - king did not move before
+        - rook did not move before
+        - no obstacles are standing on the way from king to rook
+        - there is no possible check on the way from king to rook
+        :param figures: ChessFiguresCollection object
+        :return: list of possible castling moves of ChessMove class.
+        """
         def _possibility_to_castle_one_side(move_type):
             if self.position != self.initial_position:
                 return
