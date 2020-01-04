@@ -203,23 +203,15 @@ class TestChess(unittest.TestCase):
         self.make_moves_from_queue(moves)
         self.assertNotIn((2, 3), [move.position_to for move in self.chessboard.possible_moves])
 
-    # def test_promotion(self):
-    #     figures = [King(Color.WHITE, (1, 0)), Pawn(Color.WHITE, (6, 4)), King(Color.BLACK, (6, 7)),
-    #                Pawn(Color.BLACK, (1, 3))]
-    #     self.chessboard.figures = ChessFiguresCollection(figures)
-    #     moves = [Move((6, 4), (7, 4))]
-    #     with patch('builtins.input', side_effect="q"):
-    #         self.make_moves_from_queue(moves)
-    #     figure = Figure.get_figure(self.chessboard.figures, (7, 4))
-    #     self.assertIsNotNone(figure)
-    #     self.assertEqual(figure.figure_type, FigureType.QUEEN)
-    #
-    #     moves = [Move((1, 3), (0, 3))]
-    #     with patch('builtins.input', side_effect="b"):
-    #         self.make_moves_from_queue(moves)
-    #     figure = Figure.get_figure(self.chessboard.figures, (0, 3))
-    #     self.assertIsNotNone(figure)
-    #     self.assertEqual(figure.figure_type, FigureType.BISHOP)
+    def test_promotion(self):
+        figures = [King(Color.WHITE, (1, 0)), Pawn(Color.WHITE, (6, 4)), King(Color.BLACK, (6, 7)),
+                   Pawn(Color.BLACK, (1, 3))]
+        self.chessboard.figures = ChessFiguresCollection(figures)
+        moves = [Move((6, 4), (7, 4))]
+        self.make_moves_from_queue(moves)
+        figure = Figure.get_figure(self.chessboard.figures, (7, 4))
+        self.assertIsNotNone(figure)
+        self.assertEqual(figure.figure_type, FigureType.QUEEN)
 
     def test_prevent_from_short_castling_when_fields_on_the_way_are_attacked(self):
         figures = [King(Color.WHITE, (0, 4)), Rook(Color.BLACK, (3, 5)),
