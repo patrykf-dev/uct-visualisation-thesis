@@ -8,6 +8,9 @@ from src.chess.figures_collection import ChessFiguresCollection
 
 
 class Figure(ABC):
+    """
+    Abstract class for chess figures.
+    """
     def __init__(self, color, figure_type, image_file, position):
         self.color = color
         self.figure_type = figure_type
@@ -17,31 +20,68 @@ class Figure(ABC):
 
     @abstractmethod
     def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
+        """
+        Checks all possible moves.
+        :param figures: ChessFiguresCollection object
+        :param threat_for_king: bool flag, de facto extends possible moves by those that are not causing direct check,
+        but king cannot move in those positions anyway. Example: pawn cannot move diagonally unless the opponent's
+        figure stands one diagonal tile away, otherwise this is not a possible pawn's move. Despite this is not the
+        possible pawn's move, king cannot move to such tile anyway.
+        """
         pass
 
     @staticmethod
     def is_move_valid(move_pos):
+        """
+        :param move_pos: tuple indicating chessboard tile
+        :return: bool - is each component of a tuple inside range [0; 7]
+        """
         return 0 <= move_pos[0] <= 7 and 0 <= move_pos[1] <= 7
 
     @staticmethod
     def get_figure(figures: ChessFiguresCollection, position):
+        """
+        :param figures: ChessFiguresCollection object
+        :param position: tuple indicating chessboard tile
+        :return: figure (or None)
+        """
         return figures.get_figure_at(position)
 
     @staticmethod
     def remove_figure_on_position(figures: ChessFiguresCollection, position):
+        """
+        :param figures: ChessFiguresCollection object
+        :param position: tuple indicating chessboard tile
+        :return: None
+        """
         figures.remove_figure_at(position)
 
     @staticmethod
     def remove_figure(figures: ChessFiguresCollection, figure):
+        """
+        :param figures: ChessFiguresCollection object
+        :param figure: Figure object
+        :return: index of where the figure was placed in the list
+        """
         return figures.remove(figure)
 
 
 class FigureWithLinearMovement(Figure):
+    """
+    Abstract class for similarly-behaving chess figures with linear movement: Bishop, Rook and Queen.
+    """
     @abstractmethod
     def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
         pass
 
     def check_moves_linear(self, figures: ChessFiguresCollection, directions, threat_for_king=False):
+        """
+        Foreach direction possible figure's moves are checked.
+        :param figures: ChessFiguresCollection object
+        :param directions: list of direction tuples
+        :param threat_for_king: bool flag
+        :return: possible moves, but without reducing those that uncover the king
+        """
         possible_moves = []
         pos_x = self.position[0]
         pos_y = self.position[1]
@@ -62,6 +102,9 @@ class FigureWithLinearMovement(Figure):
 
 
 class Pawn(Figure):
+    """
+    Class representing pawn chess figure.
+    """
     MOVE_SETUPS = {
         Color.WHITE: {
             "start_line": 1,
@@ -84,6 +127,11 @@ class Pawn(Figure):
         super().__init__(color, FigureType.PAWN, image_file, position)
 
     def set_can_be_captured_en_passant(self, val):
+        """
+        Setter.
+        :param val: bool
+        :return: None
+        """
         self.can_be_captured_en_passant = val
 
     def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
@@ -110,7 +158,13 @@ class Pawn(Figure):
         return possible_moves
 
     def check_captures(self, figures: ChessFiguresCollection, threat_for_king=False):
-        def move_diagonally(_pos, color):
+        """
+        Check possible pawn's captures in both sides.
+        :param figures: ChessFiguresCollection object
+        :param threat_for_king: bool flag
+        :return: possible captures, but without reducing those that uncover the king
+        """
+        def _move_diagonally(_pos, color):
             move_setup = Pawn.MOVE_SETUPS[self.color]
             opposite_color = Color.BLACK if color == Color.WHITE else Color.WHITE
             if not self.is_move_valid(_pos):
@@ -136,10 +190,10 @@ class Pawn(Figure):
                     return MoveType.EN_PASSANT
             return None
 
-        def check_capture_on_one_side(pos_height, color):
+        def _check_capture_on_one_side(pos_height, color):
             move_setup = Pawn.MOVE_SETUPS[self.color]
             _pos = move_setup["step_forward"](self.position[0], 1), pos_height
-            move_type = move_diagonally(_pos, color)
+            move_type = _move_diagonally(_pos, color)
             if move_type:
                 if move_type == MoveType.NORMAL or move_type == MoveType.PROMOTION:
                     possible_captures.append(ChessMove(_pos, self.position, move_type))
@@ -150,13 +204,19 @@ class Pawn(Figure):
 
         possible_captures = []
         if self.position[1] > 0:
-            check_capture_on_one_side(self.position[1] - 1, self.color)
+            _check_capture_on_one_side(self.position[1] - 1, self.color)
         if self.position[1] < 7:
-            check_capture_on_one_side(self.position[1] + 1, self.color)
+            _check_capture_on_one_side(self.position[1] + 1, self.color)
         return possible_captures
 
     @staticmethod
     def clear_en_passant_capture_ability_for_one_team(figures: ChessFiguresCollection, color):
+        """
+        Disables ability to be captured en passant for each pawn of given color.
+        :param figures: ChessFiguresCollection object
+        :param color: Color enum object
+        :return: None
+        """
         for figure in figures.figures_list:
             if figure.figure_type == FigureType.PAWN and color == figure.color:
                 figure.set_can_be_captured_en_passant(False)
@@ -169,7 +229,7 @@ class Knight(Figure):
         super().__init__(color, FigureType.KNIGHT, image_file, position)
 
     def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
-        def wipe_out_bad_moves(move_positions):
+        def _wipe_out_bad_moves(move_positions):
             toret = []
             for move_position in move_positions:
                 if not self.is_move_valid(move_position):
@@ -189,7 +249,7 @@ class Knight(Figure):
             (self.position[0] + 1, self.position[1] + 2),
             (self.position[0] - 1, self.position[1] + 2),
             (self.position[0] - 1, self.position[1] - 2)]
-        return wipe_out_bad_moves(possible_moves_positions)
+        return _wipe_out_bad_moves(possible_moves_positions)
 
 
 class Bishop(FigureWithLinearMovement):
@@ -216,6 +276,11 @@ class Rook(FigureWithLinearMovement):
         return self.check_moves_linear(figures, directions, threat_for_king)
 
     def set_is_able_to_castle(self, val):
+        """
+        Setter.
+        :param val: bool
+        :return: None
+        """
         self.is_able_to_castle = val
 
 
@@ -250,9 +315,18 @@ class King(Figure):
         self.check_mask[rival_king_position] = True
 
     def reset_check_mask(self):
+        """
+        Resets check mask with False values.
+        :return: None
+        """
         self.check_mask = zeros(shape=(8, 8), dtype=bool)
 
     def update_check_mask_by_given_moves(self, moves):
+        """
+        Updates check mask by positions of given moves.
+        :param moves: list of ChessMove objects
+        :return: None
+        """
         for move in moves:
             self.check_mask[move.position_to] = True
 
@@ -282,7 +356,7 @@ class King(Figure):
         figures.restore(self, previous_position)
 
     def possibility_to_castle(self, figures: ChessFiguresCollection):
-        def possibility_to_castle_one_side(move_type):
+        def _possibility_to_castle_one_side(move_type):
             if self.position != self.initial_position:
                 return
 
@@ -329,8 +403,8 @@ class King(Figure):
 
         possible_moves = []
         if self.is_able_to_castle:
-            possibility_to_castle_one_side(MoveType.CASTLE_SHORT)
-            possibility_to_castle_one_side(MoveType.CASTLE_LONG)
+            _possibility_to_castle_one_side(MoveType.CASTLE_SHORT)
+            _possibility_to_castle_one_side(MoveType.CASTLE_LONG)
         return possible_moves
 
     def check_moves(self, figures: ChessFiguresCollection, threat_for_king=False):
@@ -354,4 +428,9 @@ class King(Figure):
         return possible_moves
 
     def set_is_able_to_castle(self, val):
+        """
+        Setter.
+        :param val: bool
+        :return: None
+        """
         self.is_able_to_castle = val
