@@ -9,6 +9,10 @@ from src.utils.custom_event import CustomEvent
 
 
 class GameWindow(QMainWindow):
+    """
+    Class responsible for game window management.
+    It provides 'Start over' button that resets the window.
+    """
     def __init__(self, parent: QMainWindow, manager: MonteCarloWindowManager, main_layout: QGridLayout):
         super(GameWindow, self).__init__(parent)
         self.parent = parent
@@ -45,6 +49,11 @@ class GameWindow(QMainWindow):
             self.close()
 
     def update_game_status_label(self, game_status):
+        """
+        Changes game status label depending on the status given" Player 1 WINS/Player 2 WINS/DRAW.
+        :param game_status: GamePhase enum object
+        :return: None
+        """
         if game_status == GamePhase.IN_PROGRESS or self.game_status_label.text() != "Game in progress":
             return
         else:
@@ -58,8 +67,19 @@ class GameWindow(QMainWindow):
         self.game_status_label.setText(label_text)
 
     def change_game_status_label(self, sender, move_info):
+        """
+        Changes label with information about game status - in progress or finished
+        :param sender: info about object sending the notification
+        :param move_info: dictionary with information about move, e.g. game phase it caused
+        :return: None
+        """
         self.update_game_status_label(move_info['phase'])
 
     def showEvent(self, event):
+        """
+        Overrides base class. Shows window and centers it in relation to parent window.
+        :param event: QShowEvent, information about window-showing event
+        :return: None
+        """
         super().showEvent(event)
         amend_window_position_on_screen(self)
