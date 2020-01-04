@@ -9,8 +9,9 @@ from src.uct.game.base_game_state import BaseGameState
 
 
 class ChessState(BaseGameState):
-    MAX_REWARD_FOR_DRAW = 0.8
-
+    """
+    Class is implementing BaseGameState class methods in relation to chess game.
+    """
     def __init__(self, board: Chessboard):
         super().__init__()
         self.board = board
