@@ -1,7 +1,7 @@
 import copy
 
 from src.chess.chessboard import Chessboard
-from src.chess.enums import GameStatus
+from src.chess.enums import GameStatus, TileMarkType
 from src.chess.figures import *
 
 
@@ -15,6 +15,19 @@ class PastMove:
 
     def __str__(self):
         return f'Move {self.figure_moved} to: {self.position_to}, check: {self.was_check}, capture: {self.was_capture}'
+
+
+class TileMarkArgs:
+    """
+    CLass contains information about tile-marking type and its position.
+    Tile can be:
+    - selected, when a figure is selected
+    - marked as check
+    - marked as a past move
+    """
+    def __init__(self, pos, tile_mark_type: TileMarkType):
+        self.pos = pos
+        self.tile_mark_type = tile_mark_type
 
 
 def do_pawn_double_move(board: Chessboard, move: ChessMove, figure_moved):
