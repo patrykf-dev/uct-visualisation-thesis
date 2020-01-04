@@ -5,6 +5,10 @@ from src.main_application.mc_window_manager import MonteCarloWindowManager
 
 
 class PlayerVsPlayerWindow(GameWindow):
+    """
+    Class responsible for player vs player game window creation.
+    """
+
     def __init__(self, parent: QMainWindow, manager: MonteCarloWindowManager):
         self.main_layout = QGridLayout()
         super(PlayerVsPlayerWindow, self).__init__(parent, manager, self.main_layout)
