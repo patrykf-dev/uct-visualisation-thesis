@@ -9,6 +9,9 @@ from src.utils.custom_event import CustomEvent
 
 
 class MonteCarloWindowManager:
+    """
+    Class responsible for managing visualization window information.
+    """
     def __init__(self, canvas: GameCanvas, game_mode: GameMode, start_state: BaseGameState,
                  settings: MonteCarloSettings, game: Game):
         self.canvas = canvas
@@ -21,6 +24,13 @@ class MonteCarloWindowManager:
         self.on_update_tree += self._handle_machine_move_performed
 
     def perform_algorithm_move(self):
+        """
+        Calculates next PC's move and performs it. It notifies other methods to update information in window, such as:
+        - game status label
+        - chosen node info.
+        It also informs whether the game is still in progress. If not, player cannot click and needs to start over.
+        :return: None
+        """
         alg_move = self.mc_manager.calculate_next_move()
         self.canvas.perform_algorithm_move(alg_move)
         if self.game == Game.Chess:
