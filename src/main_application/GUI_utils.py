@@ -30,6 +30,10 @@ def amend_window_position_on_screen(window, top_padding=40):
 
 
 def get_box_background_stylesheet(color=(160, 200, 150)):
+    """
+    :param color: tuple of RGB values
+    :return: string with css-like settings
+    """
     return "QWidget#box{background-color: rgb" + str(color) + "; margin:2px; border-radius: 10px}"
 
 
