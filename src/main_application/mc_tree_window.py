@@ -5,6 +5,9 @@ from src.visualisation_drawing.canvas_widget import MonteCarloTreeCanvasWidget
 
 
 class MonteCarloTreeWindow(QMainWindow):
+    """
+    Class is responsible for creation of a window that contains tree preview from files chosen.
+    """
     def __init__(self, parent=None, trees_paths=None, display_settings=None):
         super(MonteCarloTreeWindow, self).__init__(parent)
         self._setup_window(display_settings=display_settings, trees_paths=trees_paths)
@@ -20,5 +23,10 @@ class MonteCarloTreeWindow(QMainWindow):
         self.setCentralWidget(main_widget)
 
     def showEvent(self, event):
+        """
+        Overrides base class. Shows window and centers it in relation to parent window.
+        :param event: QShowEvent, information about window-showing event
+        :return: None
+        """
         super().showEvent(event)
         amend_window_position_on_screen(self)
