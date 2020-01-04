@@ -7,15 +7,28 @@ from src.chess.algorithm_relay.chess_state import ChessState
 
 
 class ChessCanvas(GameCanvas):
+    """
+    Class represents chess GUI.
+    """
     def __init__(self):
         super().__init__()
         self.chess_manager = ChessGameManager(self.WIDTH, self.HEIGHT)
 
     def paintEvent(self, event: QtGui.QPaintEvent):
+        """
+        Repaints board. Overrides the base class.
+        :param event: QtGui.QPaintEvent object, event that caused the repaint
+        :return: None
+        """
         super().paintEvent(event)
         self.chess_manager.canvas_drawer.draw_board(QPainter(self))
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
+        """
+        Handler to player's click event. Overrides the base class.
+        :param event: QtGui.QMouseEvent with information about click
+        :return: None
+        """
         if not self.player_can_click:
             return
         super().mousePressEvent(event)
@@ -24,6 +37,11 @@ class ChessCanvas(GameCanvas):
         self.react_to_player_click(x, y)
 
     def perform_algorithm_move(self, move):
+        """
+        Performs PC's move and causes a board repaint.
+        :param move: ChessMove object
+        :return: None
+        """
         self.chess_manager.deselect_last_moved()
         self.chess_manager.deselect_king()
         self.chess_manager.board.perform_legal_move(move)
@@ -32,6 +50,13 @@ class ChessCanvas(GameCanvas):
         self.repaint()
 
     def react_to_player_click(self, x, y):
+        """
+        Reacts to player's click on chessboard based on its coordinates.
+        If a move was made - it notifies the move handler.
+        :param x: x-coordinate of a click
+        :param y: y-coordinate of a click
+        :return: None
+        """
         grid_pos = self.chess_manager.canvas_drawer.grid_click_to_tile(x, y)
         player_moved, player_move = self.chess_manager.react_to_tile_click(grid_pos)
         self.repaint()
