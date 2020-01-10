@@ -4,6 +4,9 @@ from src.uct.game.base_game_state import BaseGameState
 
 
 class MonteCarloTree:
+    """
+    Class stores the information of the root of the Monte Carlo tree and about game state, and visualization data.
+    """
     def __init__(self, game_state: BaseGameState = None, root: MonteCarloNode = None):
         if game_state is not None:
             self.root = MonteCarloNode.create_root()
@@ -14,6 +17,12 @@ class MonteCarloTree:
         self.data = TreeData()
 
     def retrieve_node_game_state(self, node: MonteCarloNode):
+        """
+        Returns game state after the move from the given node was executed. This is an optimization to save memory and
+        to not keep track of every game state from every possible move.
+        :param node: MonteCarloNode object
+        :return: BaseGameState object, deep copy of the state with applied moves from the root to the given node
+        """
         tmp_node = node
         moves = []
         while tmp_node != self.root:
@@ -25,6 +34,12 @@ class MonteCarloTree:
         return rc
 
     def perform_move_on_root(self, move: BaseGameMove):
+        """
+        Moves the root to the node with newly executed move.
+        If the node was absent, even though it was chosen by the algorithm, it is artificially added.
+        :param move: BaseGameMove object with move to be performed
+        :return: None
+        """
         next_root = None
         for child in self.root.children:
             if move.move_equal(child.move):
@@ -32,7 +47,6 @@ class MonteCarloTree:
                 break
 
         if next_root is None:
-            # Couldn't find the move specified
             self.root.add_child_by_move(move)
             if len(self.root.children) > 1:
                 raise RuntimeError("Why wouldn't you find your move?")
@@ -40,6 +54,10 @@ class MonteCarloTree:
         self.root = next_root
 
     def reset_vis_data(self):
+        """
+        Resets visualization data of all nodes of the tree.
+        :return: None
+        """
         self._reset_vis_data_internal(self.root)
 
     def _reset_vis_data_internal(self, node: MonteCarloNode, depth=0):
@@ -56,6 +74,10 @@ class MonteCarloTree:
 
 
 class TreeData:
+    """
+    Class stores the visualization information associated with the tree, such as the number of nodes or edge coordinates
+    values.
+    """
     def __init__(self):
         self.min_x = 0
         self.max_x = 0
@@ -65,6 +87,11 @@ class TreeData:
         self.max_visits = [-1]
 
     def update_tree_visual_data(self, node: MonteCarloNode):
+        """
+        Increments counter of vertices and edge coordinates values.
+        :param node: MonteCarloNode object
+        :return: None
+        """
         self.vertices_count += 1
         x = node.vis_details.x
         y = node.vis_details.y
@@ -74,11 +101,21 @@ class TreeData:
         self.min_y = min(y, self.min_y)
 
     def update_tree_visits_data(self, node: MonteCarloNode, depth):
+        """
+        Updates the value of the most visited node at the given depth of the tree.
+        :param node: MonteCarloNode object
+        :param depth: level of the tree that is being considered
+        :return: None
+        """
         if len(self.max_visits) <= self.max_y + 1:
             self.max_visits.append(0)
         self.max_visits[depth] = max(self.max_visits[depth], node.details.visits_count)
 
     def reset_to_defaults(self):
+        """
+        Resets all data associated with the tree.
+        :return: None
+        """
         self.min_x = 0
         self.max_x = 0
         self.min_y = 0
