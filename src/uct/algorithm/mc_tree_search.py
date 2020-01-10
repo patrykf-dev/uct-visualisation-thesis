@@ -4,6 +4,7 @@ import src.uct.algorithm.enums as Enums
 import src.uct.algorithm.mc_node_utils as NodeUtils
 import src.uct.algorithm.uct_calculation as UCT
 from src.main_application.gui_settings import MonteCarloSettings
+from src.uct.algorithm.mc_node import MonteCarloNode
 from src.uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
 from src.uct.algorithm.mc_tree import MonteCarloTree
 from src.uct.game.base_game_move import BaseGameMove
@@ -12,6 +13,9 @@ from src.utils.custom_event import CustomEvent
 
 
 class MonteCarloTreeSearch:
+    """
+    Class responsible for executing four steps of the Monte Carlo Tree Search method in an iterative way.
+    """
     def __init__(self, tree: MonteCarloTree, settings: MonteCarloSettings):
         self.tree = tree
         self.debug_print_allowed = False
@@ -19,19 +23,36 @@ class MonteCarloTreeSearch:
         self.iteration_performed = CustomEvent()
         self.iterations = 0
 
-    def calculate_next_move(self) -> (BaseGameMove, BaseGameState):
+    def calculate_next_move(self) -> (BaseGameMove, BaseGameState, MonteCarloNode):
+        """
+        Depending on the user settings, function calculates the best move for a computer using UCT algorithm.\
+        It is calculated by limiting maximum iterations number or by the given time limit.
+        The calculation process covers 4 phases: selection, expansion, simulation and backpropagation.
+        :return: tuple of (BaseGameMove, BaseGameState, MonteCarloNode) of the chosen move
+        """
         if self.settings.limit_iterations:
             return self._calculate_next_move_iterations_limited()
         else:
             return self._calculate_next_move_time_limited()
 
     def _calculate_next_move_iterations_limited(self):
+        """
+        Calculates the best move for a computer using UCT algorithm for a given number of iterations.
+        After the calculation an event that signalizes the end of iteration is triggered.
+        :return: tuple of (BaseGameMove, BaseGameState, MonteCarloNode) of the chosen move
+        """
         while self.iterations < self.settings.max_iterations:
             self._perform_iteration()
             self.iteration_performed.fire(self, self.iterations / self.settings.max_iterations)
         return self._select_result_node()
 
     def _calculate_next_move_time_limited(self):
+        """
+        Calculates the best move for a computer using UCT algorithm for a given amount of time.
+        After the calculation an event that signalizes the end of iteration is triggered.
+        When the time is over during calculation, the last iteration is calculated to the end.
+        :return: tuple of (BaseGameMove, BaseGameState, MonteCarloNode) of the chosen move
+        """
         start_time = time.time()
         elapsed_time_ms = 0
         max_time = self.settings.get_internal_time()
@@ -46,6 +67,11 @@ class MonteCarloTreeSearch:
         return self._select_result_node()
 
     def _perform_iteration(self):
+        """
+        Performs single UCT algorithm iteration.
+        Execution consists of four steps: selection, expansion, simulation and backpropagation.
+        :return: None
+        """
         promising_node = self._selection(self.tree.root)
         self._expansion(promising_node)
 
@@ -60,6 +86,11 @@ class MonteCarloTreeSearch:
         self.iterations += 1
 
     def _select_result_node(self):
+        """
+        Selects the best UCT node and retrieves game state of that node. The turn is switched afterwards in the
+        resulting game state.
+        :return: tuple of (BaseGameMove, BaseGameState, MonteCarloNode) of the chosen move
+        """
         best_child = NodeUtils.get_child_with_max_score(self.tree.root)
         self._print_debug("Best node is {}".format(best_child.id))
 
@@ -70,8 +101,8 @@ class MonteCarloTreeSearch:
 
     def _selection(self, node):
         """
-        1st stage of MCTS
-        Start from root R and select successive child nodes until a leaf node L is reached.
+        Executes 1st stage of MCTS.
+        Starts from root R and selects successive child nodes until a leaf node L is reached.
         :param node: node from which to start selection
         :return: UCT-best leaf node
         """
@@ -84,9 +115,10 @@ class MonteCarloTreeSearch:
 
     def _expansion(self, node):
         """
-        2nd stage of MCTS
-        Unless L ends the game, create one (or more) child nodes and choose node C from one of them.
+        Executes 2nd stage of MCTS.
+        Unless L ends the game, creates one (or more) child nodes and chooses node C from one of them.
         :param node: node from which to start expanding
+        :return: None
         """
         node_state = self.tree.retrieve_node_game_state(node)
         if node_state.phase != Enums.GamePhase.IN_PROGRESS:
@@ -99,9 +131,10 @@ class MonteCarloTreeSearch:
 
     def _simulation(self, leaf) -> MonteCarloSimulationResult:
         """
-        3rd stage of MCTS
-        Complete one random playout from node C.
+        Executes 3rd stage of MCTS.
+        Complete a random playout from node C.
         :param leaf: leaf from which to process a random playout
+        :return: None
         """
         leaf_state = self.tree.retrieve_node_game_state(leaf)
         tmp_state = leaf_state.deep_copy()
@@ -110,28 +143,21 @@ class MonteCarloTreeSearch:
         self._print_debug("Simulating from node {}...".format(leaf.id))
 
         moves_counter = 0
-        count_formatted = f"#{str(self.iterations).ljust(4)}"
         while tmp_phase == Enums.GamePhase.IN_PROGRESS:
             tmp_state.perform_random_move()
             tmp_phase = tmp_state.phase
             moves_counter = moves_counter + 1
             if self.settings.limit_moves and moves_counter >= self.settings.max_moves_per_iteration:
-                # print(
-                #     f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
                 break
-
-        # if tmp_phase != Enums.GamePhase.IN_PROGRESS:
-        #     print(
-        #         f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
-
         return MonteCarloSimulationResult(tmp_state)
 
     def _backpropagation(self, leaf, simulation_result: MonteCarloSimulationResult):
         """
-        4th stage of MCTS
-        Use the result of the playout to update information in the nodes on the path from C to R.
+        Executes 4th stage of MCTS.
+        Uses the result of the playout to update information in the nodes on the path from C to R.
         :param leaf: leaf from which to start backpropagating
         :param simulation_result: result of random simulation simulated from :leaf:
+        :return: None
         """
         self._print_debug("Backpropagating from node {}".format(leaf.id))
 
