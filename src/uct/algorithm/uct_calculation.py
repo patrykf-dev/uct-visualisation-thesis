@@ -4,6 +4,13 @@ _HUGE_VALUE = 1000000
 
 
 def find_best_child_with_UCT(node):
+    """
+    Calculates UCT value for children of a given node, with the formula:
+    uct_value = (win_score / visits) + 1.41 * sqrt(log(parent_visit) / visits)
+    and returns the most profitable one.
+    :param node: MonteCarloNode object
+    :return: MonteCarloNode node with the best UCT calculated value
+    """
     parent_visit = node.details.visits_count
     return max(node.children, key=lambda n: _UCT_value(n, parent_visit))
 
