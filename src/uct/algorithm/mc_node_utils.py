@@ -3,6 +3,11 @@ from src.uct.algorithm.mc_node import MonteCarloNode
 
 
 def get_random_child(node: MonteCarloNode):
+    """
+    Returns random child of the node. Exception is raised if node has no children.
+    :param node: MonteCarloNode object
+    :return: MonteCarloNode object, random child of the given node
+    """
     if not node.has_children():
         raise Exception("Node does not have any child nodes")
     else:
@@ -11,6 +16,11 @@ def get_random_child(node: MonteCarloNode):
 
 
 def get_child_with_max_score(node: MonteCarloNode):
+    """
+    Returns child with biggest average prize. Exception is raised if node has no children.
+    :param node: MonteCarloNode object
+    :return: MonteCarloNode object, child with biggest average prize
+    """
     if not node.has_children():
         raise Exception("Node does not have any child nodes")
     else:
