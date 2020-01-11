@@ -15,9 +15,11 @@ class MainApplicationWindowLayout:
     def __init__(self):
         self.main_widget = QWidget()
         self.play_button = get_button("Play", 80, 30)
-        self.draw_opengl_button = get_button("Inspect trees")
-        self.tree_path_edit = get_hint_line_edit(os.path.join(TREES_PATH, "example_tree_05.csv"))
-        self.chosen_trees_paths = [os.path.join(TREES_PATH, "example_tree_05.csv")]
+        self.draw_opengl_button = get_button("Inspect trees", enabled=False)
+        self.tree_path_edit = get_hint_line_edit()
+        self.tree_path_edit.textChanged[str].connect(
+            lambda: self.draw_opengl_button.setEnabled(self.tree_path_edit.text() != ""))
+        self.chosen_trees_paths = []
         self.select_tree_path_button_files = get_resizable_button("Select files")
         self.select_tree_path_button_directories = get_resizable_button("Select directory")
         self.chess_button = get_radiobutton("Chess")

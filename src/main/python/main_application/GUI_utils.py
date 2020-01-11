@@ -43,15 +43,16 @@ def get_non_resizable_label(caption=""):
     return rc
 
 
-def get_button(caption="", padding_width=50, padding_height=0):
+def get_button(caption="", padding_width=50, padding_height=0, enabled=True):
     """
     Returns PyQt button with given parameters.
     :param caption: text on button
     :param padding_width:
     :param padding_height:
+    :param enabled: bool, is button initially enabled
     :return: customized button
     """
-    rc = QPushButton(caption)
+    rc = QPushButton(caption, enabled=enabled)
     rc.setFont(DEFAULT_FONT)
     rc.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
     rc.setFixedWidth(rc.sizeHint().width() + padding_width)
