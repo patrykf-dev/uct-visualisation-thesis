@@ -79,12 +79,12 @@ class MonteCarloTreeWidgetLayout:
         self.left_right_widget = QWidget()
         left_right_layout = QGridLayout()
         self.left_right_widget.setLayout(left_right_layout)
+        self._create_jump_to_widget()
         left_right_layout.addWidget(self.tree_info_filename_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
         if len(self.canvas.trees_paths) > 1:
             left_right_layout.addWidget(self.tree_info_number_label, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
             left_right_layout.addWidget(self.left_button, 2, 0, alignment=QtCore.Qt.AlignRight)
             left_right_layout.addWidget(self.right_button, 2, 1, alignment=QtCore.Qt.AlignLeft)
-            self._create_jump_to_widget()
             left_right_layout.addWidget(self.jump_to_widget, 3, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
 
     def _create_serialization_button_layout(self):

@@ -99,11 +99,11 @@ class MonteCarloTreeCanvasWidget(QWidget):
         current_tree_index = self.canvas.tree_index
         if current_tree_index == 0:
             self.layout.left_button.setEnabled(False)
-        elif current_tree_index == 1:
+        elif current_tree_index > 0:
             self.layout.left_button.setEnabled(True)
         if current_tree_index == len(self.canvas.trees_paths) - 1:
             self.layout.right_button.setEnabled(False)
-        elif current_tree_index == len(self.canvas.trees_paths) - 2:
+        elif current_tree_index < len(self.canvas.trees_paths) - 1:
             self.layout.right_button.setEnabled(True)
 
     def handle_key_press_event(self, event):
