@@ -33,6 +33,7 @@ class MainApplicationWindowLayout:
         self.max_iterations_edit = get_line_edit()
         self.max_time_edit = get_line_edit()
         self.max_moves_edit = get_line_edit()
+        self.exploration_parameter_label = get_non_resizable_label("Exploration parameter")
         self.exploration_parameter_edit = get_line_edit()
         self.max_iterations_button = get_radiobutton("Max iterations before move")
         self.max_time_button = get_radiobutton("Max time for move (ms)")
@@ -40,6 +41,7 @@ class MainApplicationWindowLayout:
         self.most_visited_label = QLabel()
         self.least_visited_label = QLabel()
         self._create_layout()
+        self._add_tooltips()
         self._set_events()
         self._load_defaults()
 
@@ -170,7 +172,7 @@ class MainApplicationWindowLayout:
         layout.addWidget(self.max_iterations_button, 1, 0)
         layout.addWidget(self.max_time_button, 2, 0)
         layout.addWidget(self.limit_moves_check, 3, 0, alignment=QtCore.Qt.AlignLeft)
-        layout.addWidget(get_non_resizable_label("Exploration parameter"), 4, 0, alignment=QtCore.Qt.AlignLeft)
+        layout.addWidget(self.exploration_parameter_label, 4, 0, alignment=QtCore.Qt.AlignLeft)
         layout.addWidget(self.max_iterations_edit, 1, 1)
         layout.addWidget(self.max_time_edit, 2, 1)
         layout.addWidget(self.max_moves_edit, 3, 1)
@@ -246,3 +248,13 @@ class MainApplicationWindowLayout:
         pixmap.detach()
         label.setPixmap(pixmap)
         painter.end()
+
+    def _add_tooltips(self):
+        self.max_iterations_button.setToolTip("Indicates how many iterations can algorithm\n"
+                                              "perform before choosing the best move.")
+        self.max_time_button.setToolTip("Indicates how much time can algorithm\n"
+                                        "run before choosing the best move.")
+        self.limit_moves_check.setToolTip("Indicates whether and how early should a random playout be\n"
+                                          "stopped. This can result in better algorithm's performance.")
+        self.exploration_parameter_label.setToolTip("UCT exploration parameter indicates how much should\n"
+                                                    "algorithm explore moves with lower visit rate.")
