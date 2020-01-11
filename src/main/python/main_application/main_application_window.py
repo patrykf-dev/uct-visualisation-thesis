@@ -99,6 +99,9 @@ class MainApplicationWindow(QMainWindow):
         """
         Displays the window with a UCT tree visualization.
         """
+        if not self.layout.chosen_trees_paths:
+            show_eror_dialog(f"Please choose a valid path!")
+            return
         _, display_settings = self.layout.get_settings()
         window = MonteCarloTreeWindow(self, display_settings=display_settings,
                                       trees_paths=self.layout.chosen_trees_paths)
