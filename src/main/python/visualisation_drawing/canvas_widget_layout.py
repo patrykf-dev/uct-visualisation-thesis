@@ -2,7 +2,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
 
 from main_application.GUI_utils import get_button, get_non_resizable_label, \
-    get_box_background_stylesheet, get_radiobutton
+    get_box_background_stylesheet, get_radiobutton, get_line_edit
 from uct.algorithm.mc_node import MonteCarloNode
 from uct.algorithm.mc_tree import MonteCarloTree
 from visualisation_drawing.canvas import MonteCarloTreeCanvas
@@ -60,9 +60,20 @@ class MonteCarloTreeWidgetLayout:
             if node.move:
                 self.node_labels[8][1].setText(str(node.move.player))
 
+    def _create_jump_to_widget(self):
+        self.jump_to_widget = QWidget()
+        self.jump_label = get_non_resizable_label("Jump to tree with number: ")
+        self.jump_edit_line = get_line_edit(60)
+        self.jump_button = get_button("OK", width=20)
+        jump_to_layout = QGridLayout()
+        self.jump_to_widget.setLayout(jump_to_layout)
+        jump_to_layout.addWidget(self.jump_label, 0, 0)
+        jump_to_layout.addWidget(self.jump_edit_line, 0, 1)
+        jump_to_layout.addWidget(self.jump_button, 0, 2)
+
     def _create_left_right_button_widget(self):
-        self.left_button = get_button("<<", 35)
-        self.right_button = get_button(">>", 35)
+        self.left_button = get_button("<<", width=40)
+        self.right_button = get_button(">>", width=40)
         self.tree_info_number_label = get_non_resizable_label()
         self.tree_info_filename_label = get_non_resizable_label()
         self.left_right_widget = QWidget()
@@ -71,8 +82,10 @@ class MonteCarloTreeWidgetLayout:
         left_right_layout.addWidget(self.tree_info_filename_label, 0, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
         if len(self.canvas.trees_paths) > 1:
             left_right_layout.addWidget(self.tree_info_number_label, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
-            left_right_layout.addWidget(self.left_button, 2, 0)
-            left_right_layout.addWidget(self.right_button, 2, 1)
+            left_right_layout.addWidget(self.left_button, 2, 0, alignment=QtCore.Qt.AlignRight)
+            left_right_layout.addWidget(self.right_button, 2, 1, alignment=QtCore.Qt.AlignLeft)
+            self._create_jump_to_widget()
+            left_right_layout.addWidget(self.jump_to_widget, 3, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
 
     def _create_serialization_button_layout(self):
         self.serialization_widget = QWidget()
