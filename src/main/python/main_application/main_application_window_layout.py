@@ -134,9 +134,10 @@ class MainApplicationWindowLayout:
         main_layout = QGridLayout()
         rc.setLayout(main_layout)
         self._set_file_buttons_widget()
-        main_layout.addWidget(self.tree_path_edit, 0, 0)
-        main_layout.addWidget(self.file_buttons_widget, 0, 1)
-        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(get_non_resizable_label("Path:"), 0, 0)
+        main_layout.addWidget(self.tree_path_edit, 0, 1)
+        main_layout.addWidget(self.file_buttons_widget, 0, 2)
+        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 3, alignment=QtCore.Qt.AlignCenter)
         return rc
 
     def _add_left_panel(self, main_layout):
