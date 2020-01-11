@@ -1,8 +1,8 @@
 import time
+from math import sqrt, log
 
 import uct.algorithm.enums as Enums
 import uct.algorithm.mc_node_utils as NodeUtils
-import uct.algorithm.uct_calculation as UCT
 from main_application.gui_settings import MonteCarloSettings
 from uct.algorithm.mc_simulation_result import MonteCarloSimulationResult
 from uct.algorithm.mc_tree import MonteCarloTree
@@ -14,7 +14,6 @@ from utils.custom_event import CustomEvent
 class MonteCarloTreeSearch:
     def __init__(self, tree: MonteCarloTree, settings: MonteCarloSettings):
         self.tree = tree
-        self.debug_print_allowed = False
         self.settings = settings
         self.iteration_performed = CustomEvent()
         self.iterations = 0
@@ -61,7 +60,6 @@ class MonteCarloTreeSearch:
 
     def _select_result_node(self):
         best_child = NodeUtils.get_child_with_max_score(self.tree.root)
-        self._print_debug("Best node is {}".format(best_child.id))
 
         result_game_state = self.tree.retrieve_node_game_state(best_child)
         result_game_state.switch_current_player()
@@ -77,9 +75,7 @@ class MonteCarloTreeSearch:
         """
         tmp_node = node
         while tmp_node.has_children() != 0:
-            tmp_node = UCT.find_best_child_with_UCT(tmp_node)
-
-        self._print_debug("Selection from {} led to {}".format(node.id, tmp_node.id))
+            tmp_node = self._find_best_child_with_uct(tmp_node)
         return tmp_node
 
     def _expansion(self, node):
@@ -89,10 +85,6 @@ class MonteCarloTreeSearch:
         :param node: node from which to start expanding
         """
         node_state = self.tree.retrieve_node_game_state(node)
-        if node_state.phase != Enums.GamePhase.IN_PROGRESS:
-            self._print_debug("Cannot expand from node {}".format(node.id))
-
-        self._print_debug("Expanding from node {}".format(node.id))
         possible_moves = node_state.get_all_possible_moves()
         for move in possible_moves:
             node.add_child_by_move(move)
@@ -107,23 +99,11 @@ class MonteCarloTreeSearch:
         tmp_state = leaf_state.deep_copy()
         tmp_phase = leaf_state.phase
 
-        self._print_debug("Simulating from node {}...".format(leaf.id))
-
         moves_counter = 0
-        count_formatted = f"#{str(self.iterations).ljust(4)}"
         while tmp_phase == Enums.GamePhase.IN_PROGRESS:
             tmp_state.perform_random_move()
             tmp_phase = tmp_state.phase
             moves_counter = moves_counter + 1
-            if self.settings.limit_moves and moves_counter >= self.settings.max_moves_per_iteration:
-                # print(
-                #     f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
-                break
-
-        # if tmp_phase != Enums.GamePhase.IN_PROGRESS:
-        #     print(
-        #         f"{count_formatted}: node id {leaf.id}, moves performed {moves_counter}, {tmp_state.generate_description()}")
-
         return MonteCarloSimulationResult(tmp_state)
 
     def _backpropagation(self, leaf, simulation_result: MonteCarloSimulationResult):
@@ -133,7 +113,6 @@ class MonteCarloTreeSearch:
         :param leaf: leaf from which to start backpropagating
         :param simulation_result: result of random simulation simulated from :leaf:
         """
-        self._print_debug("Backpropagating from node {}".format(leaf.id))
 
         leaf_state = self.tree.retrieve_node_game_state(leaf)
         leaf_player = leaf_state.current_player
@@ -153,6 +132,15 @@ class MonteCarloTreeSearch:
             tmp_node = tmp_node.parent
         self.tree.root.details.mark_visit()
 
-    def _print_debug(self, log):
-        if self.debug_print_allowed:
-            print("\tMCTS:" + log)
+    def _find_best_child_with_uct(self, node):
+        def uct_value(n, p_visit, exp_par):
+            visits = n.details.visits_count
+            win_score = n.details.win_score
+            if visits == 0:
+                return 10000000  # TODO: won't 2 be enough?
+            else:
+                uct_val = (win_score / visits) + exp_par * sqrt(log(p_visit) / visits)
+                return uct_val
+
+        parent_visit = node.details.visits_count
+        return max(node.children, key=lambda n: uct_value(n, parent_visit, self.settings.exploration_parameter))
