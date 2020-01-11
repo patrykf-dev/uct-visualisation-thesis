@@ -55,6 +55,13 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
             return True
         return False
 
+    def make_selected_tree_as_root(self, index):
+        if 0 <= index < len(self.trees_paths):
+            self.tree_index = index
+            self.set_current_tree()
+            return True
+        return False
+
     def set_current_tree(self):
         if self.trees_paths:
             path = self.trees_paths[self.tree_index]

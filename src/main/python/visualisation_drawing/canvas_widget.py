@@ -84,6 +84,17 @@ class MonteCarloTreeCanvasWidget(QWidget):
         if tree_changed:
             self.change_tree_in_sequence()
 
+    def _handle_jump_to_button_clicked_event(self):
+        index = self.layout.jump_edit_line.text()
+        if not index.isdigit():
+            show_eror_dialog("Invalid tree number!")
+            return
+        tree_changed = self.canvas.make_selected_tree_as_root(int(index) - 1)
+        if tree_changed:
+            self.change_tree_in_sequence()
+        else:
+            show_eror_dialog("Invalid tree number!")
+
     def _make_arrow_buttons_enabled_or_disabled(self):
         current_tree_index = self.canvas.tree_index
         if current_tree_index == 0:
@@ -115,4 +126,5 @@ class MonteCarloTreeCanvasWidget(QWidget):
             self._update_tree_info_labels()
             self.layout.left_button.clicked.connect(self._handle_left_arrow_button_clicked_event)
             self.layout.right_button.clicked.connect(self._handle_right_arrow_button_clicked_event)
+            self.layout.jump_button.clicked.connect(self._handle_jump_to_button_clicked_event)
             self.setup_arrow_event_handler()
