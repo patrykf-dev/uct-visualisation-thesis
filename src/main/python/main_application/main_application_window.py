@@ -44,16 +44,16 @@ class MainApplicationWindow(QMainWindow):
         """
         game = self.layout.get_chosen_game()
         game_mode = self.layout.get_chosen_game_mode()
-        ms_settings, display_settings = self.layout.get_settings()
-        if ms_settings is None or display_settings is None:
+        mc_settings, display_settings = self.layout.get_settings()
+        if mc_settings is None or display_settings is None:
             return
 
-        validation_string = ms_settings.validate()
+        validation_string = mc_settings.validate()
         if validation_string != "":
             show_eror_dialog(validation_string)
             return
 
-        window = create_proper_window(self, game, game_mode, ms_settings, display_settings)
+        window = create_proper_window(self, game, game_mode, mc_settings, display_settings)
         window.on_close_request += self._handle_close_request
         window.show()
 

@@ -4,6 +4,7 @@ from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioButton, QCheckBox, QMessageBox
 
 DEFAULT_FONT = QtGui.QFont("Helvetica", 10)
+TITLE_FONT = QtGui.QFont("Helvetica", 12, QtGui.QFont.Bold)
 DEFAULT_FONT_BOLD = QtGui.QFont("Helvetica", 10, QtGui.QFont.Bold)
 LARGE_FONT_BOLD = QtGui.QFont("Helvetica", 20, QtGui.QFont.Bold)
 DEFAULT_FONT_ITALIC = QtGui.QFont("Helvetica", 10, -1, True)
@@ -33,13 +34,16 @@ def get_box_background_stylesheet(color=(160, 200, 150)):
     return "QWidget#box{background-color: rgb" + str(color) + "; margin:2px; border-radius: 10px}"
 
 
-def get_non_resizable_label(caption=""):
+def get_non_resizable_label(caption="", title_font=False):
     """
     Generates label with fixed, non-resizable policy with given caption.
     """
     rc = QLabel(caption)
     rc.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-    rc.setFont(DEFAULT_FONT)
+    if title_font:
+        rc.setFont(TITLE_FONT)
+    else:
+        rc.setFont(DEFAULT_FONT)
     return rc
 
 
