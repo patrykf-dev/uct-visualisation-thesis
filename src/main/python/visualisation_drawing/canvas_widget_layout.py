@@ -73,9 +73,6 @@ class MonteCarloTreeWidgetLayout:
             left_right_layout.addWidget(self.tree_info_number_label, 1, 0, 1, 2, alignment=QtCore.Qt.AlignCenter)
             left_right_layout.addWidget(self.left_button, 2, 0)
             left_right_layout.addWidget(self.right_button, 2, 1)
-        else:
-            left_right_layout.addWidget(self.left_button, 1, 0)
-            left_right_layout.addWidget(self.right_button, 1, 1)
 
     def _create_serialization_button_layout(self):
         self.serialization_widget = QWidget()
