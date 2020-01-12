@@ -1,6 +1,8 @@
 import time
 from math import sqrt, log
 
+from PyQt5.QtWidgets import QApplication
+
 import uct.algorithm.enums as Enums
 import uct.algorithm.mc_node_utils as NodeUtils
 from main_application.gui_settings import MonteCarloSettings
@@ -45,6 +47,7 @@ class MonteCarloTreeSearch:
         return self._select_result_node()
 
     def _perform_iteration(self):
+        QApplication.processEvents()
         promising_node = self._selection(self.tree.root)
         self._expansion(promising_node)
 
