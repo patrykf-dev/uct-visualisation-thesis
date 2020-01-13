@@ -12,16 +12,28 @@
 
 % ------------------- 2. WSTĘP ---------------------
 \chapter{Wstęp i cel pracy}
-\section{Opis problemu klienta}
-
 \section{Cel biznesowy}
 Algorytm UCT, będący usprawnieniem MCTS, jest powszechnie stosowanym algorytmem w sztucznej inteligencji. Jest metodą analizującą obiecujące ruchy na podstawie generowanego drzewa, która równoważy eksploatację najbardziej korzystnych z eksploracją mniej korzystnych decyzji. Każdemu wierzchołkowi drzewa odpowiada pewien stan rozgrywki, z którego algorytm rozgrywa losowe symulacje, rozszerzając potem drzewo o kolejne możliwe stany. Sposób, w jaki rozrasta się opisywane drzewo, jest kluczowy dla podejmowania przez algorytm jak najlepszych decyzji.\\
 
-Celem projektu jest stworzenie aplikacji pozwalającej na wizualizację drzew algorytmu UCT. Aplikacja będzie pozwalała na wizualizowanie drzew generowanych podczas rozgrywania dwóch przykładowych gier (pozwalając przetestować rozwiązanie). Aplikacja powinna pozwalać na wizualizację drzew, ich sekwencji i róznic między kolejnymi drzewami w sekwencji. Powinna być możliwość płynnego przybliżania/oddalania i przewijania wizualizacji oraz zapisu aktualnego stanu do pliku graficznego - wszystko, aby klient mógł wygodnie korzystać z naszego programu.\\
-
-Taki produkt pozwoliłby zrozumieć klientowi ideę i sposób działania algorytmu UCT.
+Celem projektu jest stworzenie aplikacji pozwalającej na wizualizację drzew algorytmu UCT. Aplikacja będzie pozwalała na wizualizowanie drzew generowanych podczas rozgrywania dwóch przykładowych gier (pozwalając przetestować rozwiązanie). Aplikacja powinna pozwalać na wizualizację drzew, ich sekwencji i róznic między kolejnymi drzewami w sekwencji. Powinna być możliwość płynnego przybliżania/oddalania i przewijania wizualizacji oraz zapisu aktualnego stanu do pliku graficznego - wszystko, aby klient mógł wygodnie korzystać z naszego programu. Taki produkt pozwoliłby zrozumieć klientowi ideę i sposób działania algorytmu UCT.
 \section{Założenia projektowe}
 \subsection{Założenia funkcjonalne}
+Użytkownik korzystający z naszej aplikacji będzie mógł wybrać jedną z dwóch gier deterministycznych, a do wyboru będzie miał trzy tryby rozgrywki:
+\begin{enumerate}
+	\item Gracz vs PC -- użytkownik będzie decydował o swoich posunięciach i zmierzy się on z zaimplementowanym algorytmem,
+	\item PC vs PC -- użytkownik będzie świadkiem symulacji algorytmu, który rozgrywa partię z samym sobą,
+	\item Gracz vs Gracz -- rozgrywka dwóch graczy, bez wizualizacji.\\
+\end{enumerate}
+Zanim jednak przejdzie do rozgrywki, będzie on miał możliwość ustawienia parametrów algorytmu, tj. liczbę iteracji podczas tworzenia drzewa, czy też maksymalny czas na ruch przeciwnika.
+Druga opcja, którą będzie dysponować użytkownik, to możliwość wczytania drzewa w formacie zarówno binarnym jak i CSV.
+a następnie możliwość jego dogłębnej analizy. Będzie on mógł wyświetlać informacje na temat wybranego węzła, a także przybliżać i oddalać całą wygenerowaną strukturę. Podczas samej rozgrywki, po wykonanym ruchu przeciwnika gracz będzie mógł analizować drzewo w sposób opisany powyżej, a także wyeksportować je. Będzie też miał możliwość zapisania go w wyżej wymienionych formatach, a także w formacie rastrowym. Użytkownik będzie mógł oglądać animację rozrostu drzewa. Powyższe rzeczy dotyczą trybów gry z udziałem algorytmu i każdej z gier. \\\\
+Diagram przypadków użycia, który ilustruje przedstawione możliwości, znajduje się na rysunku \ref{rys:usecase}.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth, trim={0 6.5cm 0 0},clip]{aplikacja-use-case-eps}
+	\caption{Diagram przypadków użycia}
+	\label{rys:usecase}
+\end{figure}
 \subsection{Założenia niefunkcjonalne}
 
 
