@@ -26,7 +26,8 @@ Użytkownik korzystający z naszej aplikacji będzie mógł wybrać jedną z dw�
 \end{enumerate}
 Zanim jednak przejdzie do rozgrywki, będzie on miał możliwość ustawienia parametrów algorytmu, tj. liczbę iteracji podczas tworzenia drzewa, czy też maksymalny czas na ruch przeciwnika.
 Druga opcja, którą będzie dysponować użytkownik, to możliwość wczytania drzewa w formacie zarówno binarnym jak i CSV.
-a następnie możliwość jego dogłębnej analizy. Będzie on mógł wyświetlać informacje na temat wybranego węzła, a także przybliżać i oddalać całą wygenerowaną strukturę. Podczas samej rozgrywki, po wykonanym ruchu przeciwnika gracz będzie mógł analizować drzewo w sposób opisany powyżej, a także wyeksportować je. Będzie też miał możliwość zapisania go w wyżej wymienionych formatach, a także w formacie rastrowym. Użytkownik będzie mógł oglądać animację rozrostu drzewa. Powyższe rzeczy dotyczą trybów gry z udziałem algorytmu i każdej z gier. \\\\
+a następnie możliwość jego dogłębnej analizy. Będzie on mógł wyświetlać informacje na temat wybranego węzła, a także przybliżać i oddalać całą wygenerowaną strukturę. Podczas samej rozgrywki, po wykonanym ruchu przeciwnika gracz będzie mógł analizować drzewo w sposób opisany powyżej, a także wyeksportować je. Będzie też miał możliwość zapisania go w wyżej wymienionych formatach, a także w formacie rastrowym. Użytkownik będzie mógł oglądać animację rozrostu drzewa. Powyższe rzeczy dotyczą trybów gry z udziałem algorytmu i każdej z gier.\\\\
+Aplikacja będzie potrzebować procesora graficznego. Dostęp do sieci nie jest potrzebny dla poprawnego działania aplikacji. \\\\
 Diagram przypadków użycia, który ilustruje przedstawione możliwości, znajduje się na rysunku \ref{rys:usecase}.
 \begin{figure}[h!]
 	\centering
@@ -35,7 +36,21 @@ Diagram przypadków użycia, który ilustruje przedstawione możliwości, znajdu
 	\label{rys:usecase}
 \end{figure}
 \subsection{Założenia niefunkcjonalne}
+Wymagania niefunkcjonalne opisane są w tabeli \ref{tab:furps} przy użyciu metody FURPS. Zawiera ona między innymi opis wymagań sprzętowych aplikacji oraz jej ograniczenia wydajnościowe.
 
+\begin{table}[h!]
+	\caption{Analiza FURPS}
+	\label{tab:furps}
+	\centering
+	\begin{tabular}{|l|p{0.7\linewidth}|}
+		\hline
+		Obszar         & \textbf{Opis} \\ \hline
+		Używalność     & Aplikacja działa w jednym oknie wyposażonym w przejrzysty interfejs dla użytkownika. Ponadto, dostarczona jest instrukcja instalacji i obsługi programu.  \\ \hline
+		Niezawodność   & Aplikacja działa na komputerze lokalnym i po zainstalowaniu jest dostępna cały czas. Potencjalne błędy nie powinny zamykać aplikacji, a jedynie wyświetlić komunikat dla użytkownika.\\ \hline
+		Wydajność      & Aplikacja koryszta głównie z pamięci RAM, procesora i procesora graficznego. Dla drzew do 100 000 wierzchołków wizualizacja nie powinna zajmować więcej niż 3s, a dla 250 000 ---  5s. Wszystkie obliczenia i wizualizacje są przeprowadzane wewnątrz jednej maszyny.\\ \hline
+		Wsparcie       & Aplikacja jest przeznaczona dla komputerów z systemami operacyjnymi Windows oraz Linux. \\ \hline
+	\end{tabular}
+\end{table}
 
 % ------------------- 3. TEORIA ---------------------
 \chapter{Teoria}
