@@ -2,11 +2,18 @@
 
 % ------------------- 1. SŁOWNICZEK ---------------------
 \chapter{Wykaz najważniejszych oznaczeń i skrótów}
-
+\begin{itemize}
+	\item \textbf{MCTS} (Monte Carlo Tree Search) - heurystyka podejmowania decyzji w pewnych zadaniach sztucznej inteligencji, np. ruchów w grach. Najczęściej MCTS opiera się na wariancie metody UCT.
+	\item \textbf{UCT} (Upper Confidence Bound Applied to Trees) - algorytm przeszukujący drzewo stanów rozgrywki w poszukiwaniu najbardziej opłacalnych ruchów. Algorytm stara się zachować równowagę między eksploatacją ruchów po ruchach o wysokiej średniej wygranej a eksploracją tych mało sprawdzonych.
+	\item \textbf{Podstawowa wizualizacja} - możliwość wyświetlenia całego drzewa stanów. W podstawowej wizualizacji wygląd wierzchołków i krawędzi jest nieistotny.
+	\item \textbf{Zaawansowana wizualizacja} - podstawowa wizualizacja wzbogacona o możliwość analizowania statystyk poszczególnych wierzchołków. Kolor wierzchołków będzie reprezentował aktualnego gracza, a kolor krawędzi częstość odwiedzin danego węzła. Możliwe powinno być też przewijanie, przybliżanie oraz oddalanie podglądu drzewa.
+	\item \textbf{CSV} - plik w formacie .csv (ang. \textit{comma-separated values}) służący do przechowywania danych w plikach tekstowych, gdzie separatorem jest przecinek.
+\end{itemize}
 
 % ------------------- 2. WSTĘP ---------------------
 \chapter{Wstęp i cel pracy}
 \section{Opis problemu klienta}
+
 \section{Cel biznesowy}
 Algorytm UCT, będący usprawnieniem MCTS, jest powszechnie stosowanym algorytmem w sztucznej inteligencji. Jest metodą analizującą obiecujące ruchy na podstawie generowanego drzewa, która równoważy eksploatację najbardziej korzystnych z eksploracją mniej korzystnych decyzji. Każdemu wierzchołkowi drzewa odpowiada pewien stan rozgrywki, z którego algorytm rozgrywa losowe symulacje, rozszerzając potem drzewo o kolejne możliwe stany. Sposób, w jaki rozrasta się opisywane drzewo, jest kluczowy dla podejmowania przez algorytm jak najlepszych decyzji.\\
 
