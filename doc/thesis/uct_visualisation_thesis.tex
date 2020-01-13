@@ -1,6 +1,7 @@
 \documentclass[a4paper,11pt,twoside]{report}
 % KOMPILOWAĆ ZA POMOCĄ pdfLaTeXa, PRZEZ XeLaTeXa MOŻE NIE BYĆ POLSKICH ZNAKÓW
 
+\usepackage{subfiles}
 % -------------- Kodowanie znaków, język polski -------------
 
 \usepackage[utf8]{inputenc}
@@ -270,148 +271,8 @@ samodzielnie, co poświadczam własnoręcznym podpisem.
 \pagenumbering{arabic}
 \setcounter{page}{11} % JEŻELI Z POWODU DUŻEJ ILOŚCI STRON W SPISIE TREŚCI SIĘ NIE ZGADZA, TRZEBA ZMODYFIKOWAĆ RĘCZNIE
 
-\chapter*{Wstęp}
-\markboth{}{Wstęp}
-\addcontentsline{toc}{chapter}{Wstęp}
 
-O czym jest praca? Co się w niej znajduje? Jaki jest wkład autora?
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-\chapter{Rozdział pokazowy -- być może przydatne informacje}
-
-Jeżeli ktoś kompiluje na komputerach wydziałowych -- na Windowsie może nie być w TeXMakerze kompilatora XeLaTeX do skompilowania strony tytułowej, ale na Arch Linuksie powinien być. Ten plik kompilujemy pdfLaTeXem (domyślnie szybka kompilacja, czyli F1).
-
-Ten plik kompilujemy zaś za pomocą pdfLaTeXa, przy kompilacji XeLaTeXem mogą nie pojawiać się polskie znaki. Jeżeli ktoś korzysta z Overleafa czy Sharelatexa, niech sprawdzi w ustawieniach metodę kompilacji.
-
-W celu napisania dobrze zredagowanej pracy, można zapoznać się z \texttt{http://www.gagolewski.com/teaching/diplomas/uwagi\_latex.pdf}.
-
-Zanim zaczniemy panikować, że się nie kompiluje, warto spróbować skompilować jeszcze raz (czasami działa).
-
-
-\section{Przykładowy podrozdział}
-
-\begin{definition}[Definicja]
-\textit{Definicją} nazywamy wypowiedź o określonej budowie, w której informuje się o znaczeniu pewnego wyrażenia przez wskazanie innego wyrażenia należącego do danego języka i posiadającego to samo znaczenie.
-\end{definition}
-
-\subsection{Przykładowy punkt}
-
-Poniżej punktu nie schodzimy.
-
-\begin{definition}[Równanie]
-\textit{Równaniem} nazywamy formę zdaniową postaci $t_1 = t_2$, gdzie $t_1, t_2$ są termami przynajmniej jeden z nich zawiera pewną zmienną.
-\end{definition}
-
-\begin{example}
-Przykładem równania jest:
-\begin{equation}
-2+2=4.
-\end{equation}
-
-Jeśli nie chcemy numerka przy równaniu, piszemy:
-\begin{equation*}
-2+2=4.
-\end{equation*}
-
-Można też:
-\[
-2+2=4.
-\]
-
-Równanie (\ref{rownanie}) jest fałszywe. Referencje (i kilka innych rzeczy) działają po dwukrotnym przekompilowaniu \TeX -a.
-
-\begin{equation}\label{rownanie}
-\int \limits_{0}^{1} x \; dx = \frac{3}{2}.
-\end{equation}
-
-\end{example}
-
-Twierdzenie \ref{Pitagoras} jest bardzo ciekawe.
-
-\begin{theorem}[Twierdzenie Pitagorasa]\label{Pitagoras}
-Niech będzie dany trójkąt prostokątny o przyprostokątnych długości $a$ i $b$ oraz przeciwprostokątnej długości $c$. Wówczas
-$$
-a^2 + b^2 = c^2.
-$$
-\end{theorem}
-
-\begin{proof}
-Dowód został zaprezentowany w \cite{Ktos} oraz \cite{Innyktos}. Czyli w sumie mogę napisać, że w \cite{Ktos, Innyktos}. Albo że łatwo pokazać.
-\end{proof}
-
-\begin{corollary}
-Doszedłem do jakiegoś wniosku i daję temu wyraz.
-\end{corollary}
-
-
-
-
-\begin{remark}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-\end{remark}
-
-\begin{lemma}[Lemacik]
-Ten lemat jest nie na temat.
-\end{lemma}
-\begin{proof} Dowód przez indukcję.
-\end{proof}
-
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-
-
-\section{Tabele i rysunki}
-
-\begin{table}% Koniecznie label po caption, inaczej jest zła numeracja
-\caption[Opis skrócony]{Opcje dodatkowe dla tabel i rysunków}
-\label{opcje}
-\centering
-\begin{tabular}{|c|p{0.8\textwidth}|}
-\hline
-symbol opcji & efekt \\ \hline
-\texttt{h} & bez przemieszczenia, dokładnie w miejscu użycia (użyteczne w odniesieniu do niewielkich wstawek); raczej niestosowane \\
-\texttt{t} & na górze strony; stosowane najczęściej \\
-\texttt{b} & na dole strony \\
-\texttt{p} & na stronie zawierającej wyłącznie wstawki \\
-\texttt{!} & ignorując większość parametrów kontrolujacych umieszczanie wstawek, przekroczenie wartosci, których może nie pozwolić na umieszczanie nastepnych wstawek na stronie \\ \hline
-\end{tabular}
-\end{table}
-
-W tablicy \ref{opcje} znajdują się opcje dodatkowe otoczeń \texttt{table} i \texttt{figure}.
-
-\begin{figure}[h!]
-
-\begin{center}
-    \setlength{\unitlength}{1mm}
-
-    \begin{picture}(40, 30)
-        \put(20,1){\line(0,1){20}} % linia
-
-        % dół
-        \put(20,1){\circle*{2}}
-        \put(25,1){0}
-
-        % góra
-        \put(20,21){\circle*{2}}
-        \put(25,21){1}
-    \end{picture}
-
-\end{center}
-\caption{Przykładowy rysunek, który można wygenerować w \LaTeX -u}
-\end{figure}
-
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elit, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-
-
-
-\chapter{Następny rozdział}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elit, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
+\subfile{thesis_content}
 
 
 % -------------------- 6. Bibliografia -----------------------
