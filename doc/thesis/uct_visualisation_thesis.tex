@@ -22,6 +22,10 @@
 \graphicspath{{grafiki/}{../grafiki/}}
 
 
+% ---------------- Tabele ------------------
+
+\usepackage{float} % for "H" placement specifier
+
 % ---------------- Marginesy, akapity, interlinia ------------------
 
 \usepackage[inner=20mm, outer=20mm, bindingoffset=10mm, top=25mm, bottom=25mm]{geometry}
@@ -314,11 +318,9 @@ samodzielnie, co poświadczam własnoręcznym podpisem.
 \begin{thebibliography}{20}%jak ktoś ma więcej książek, to niech wpisze większą liczbę
 % \bibitem[numerek]{referencja} Autor, \emph{Tytuł}, Wydawnictwo, rok, strony
 % cytowanie: \cite{referencja1, referencja 2,...}
+\bibitem[1]{banditbased} Levente Kocsis, Csaba Szepesvári, \emph{Bandit based Monte-Carlo Planning}, Berlin, Germany, September 18–22, 2006.
+\bibitem[2]{impwalkers} Christop Buchheim, Michael Jünger, Sebastian Leipert \emph{Improving Walker's Algorithm to Run in Linear Time}, Universität zu Köln, Institut für Informatik, 2002.
 
-\bibitem[1]{Ktos} A. Author, \emph{Title of a book}, Publisher, year, page--page.
-\bibitem[2]{Innyktos} J. Bobkowski, S. Dobkowski, Jak stworzyć bibliografię w BibTeX-u, \emph{Czasopismo nr}, rok, strona--strona.
-\bibitem[3]{B} C. Brink, Power structures, \emph{Algebra Universalis 30(2)}, 1993, 177--216.
-\bibitem[4]{H} F. Burris, H. P. Sankappanavar, \emph{A Course of Universal Algebra}, Springer-Verlag, Nowy Jork, 1981.
 \end{thebibliography}
 
 \thispagestyle{empty}
@@ -342,14 +344,12 @@ Jak nie występują, usunąć.
 % ----- 8. Spis rysunków - jeśli nie ma, zakomentować --------
 \listoffigures
 \thispagestyle{empty}
-Jak nie występują, usunąć.
 
 
 % ------------ 9. Spis tabel - jak wyżej ------------------
 \renewcommand{\listtablename}{Spis tabel}
 \listoftables
 \thispagestyle{empty}
-Jak nie występują, usunąć.
 
 
 % 10. Spis załączników - jak nie ma załączników, to zakomentować lub usunąć
