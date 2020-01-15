@@ -55,13 +55,60 @@ Wymagania niefunkcjonalne opisane są w tabeli \ref{tab:furps} przy użyciu meto
 % ------------------- 3. TEORIA ---------------------
 \chapter{Teoria}
 \section{Algorytmy MCTS}
-\subsection{Opis grupy algorytmów}
 \textbf{MCTS} (Monte Carlo Tree Search) - heurystyka podejmowania decyzji w pewnych zadaniach sztucznej inteligencji, np. ruchów w grach. Najczęściej MCTS opiera się na jakimś wariancie metody UCT.
+
+\subsection{Opis grupy algorytmów}
+Algorytm jest opisany w formie pseudokodu w listingu \ref{lst:mcts}. Nasza implementacja będzie oparta o pracę \textbf{Bandit based Monte-Carlo Planning}\footnote{\textit{Bandit based Monte-Carlo Planning} - Levente Kocsis, Csaba Szepesvári, Berlin, Germany, September 18–22, 2006}.\\
+
+Algorytm Monte Carlo Tree Search opiera się na rozbudowywaniu drzewa ze stanami gry, poprzez iteracyjne wykonywanie czterech faz, opisanych poniżej.
+\begin{enumerate}
+	\item \textbf{Faza wyboru} (linia 6 w listingu) - wybranie najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans pomiędzy eksploracją ruchów przeanalizowanych najdokładniej oraz eksploatacją jeszcze niezbadanych.
+	\item \textbf{Faza rozrostu} (linia 7 w listingu) - utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania poprzez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
+	\item \textbf{Faza symulacji} (linia 8 w listingu) - rozegranie losowej rozgrywki ze stanu jednego z utworzonych wierzchołków utworzonych w poprzedniej fazie.
+	\item \textbf{Faza propagacji wstecznej} (linia 9 w listingu) - aktualizacja informacji wierzchołków na ścieżce od wierzchołka, z którego rozpoczęto symulację, do korzenia drzewa.\\
+\end{enumerate}
+
+\begin{lstlisting}[caption={Pseudokod algorytmu Monte Carlo Tree Search}, label=lst:mcts, style=mystyle]
+def find_next_move(curr_state):
+	iterations_counter = 0
+	tree = initialize_tree(curr_state)
+	
+	while iterations_counter < max_iterations_counter:
+		# selection(tree.root) 
+		curr_node = select promising node based on UCT formula      
+		
+		# expansion(node)
+		create child nodes from node
+		
+		# simulation(node)		
+		playout_result = simulate random playout from curr_node     
+		
+		# backpropagation(node, playout_result)
+		update tree according to playout_result                     
+		
+		iterations_counter++
+	
+	best_state = select best child(tree.root) 
+	return best_state
+\end{lstlisting}
 
 \section{Algorytm UCT}
 \textbf{UCT} (Upper Confidence Bound Applied to Trees) - algorytm przeszukujący drzewo stanów rozgrywki w poszukiwaniu najbardziej opłacalnych ruchów. Algorytm stara się zachować równowagę między eksploatacją ruchów po ruchach o wysokiej średniej wygranej a eksploracją tych mało sprawdzonych.
+
 \subsection{Opis algorytmu}
+Moduł \textbf{Algorytm} jest implementacją algorytmu Monte Carlo Tree Search, korzystającą z wariantu UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
+
+W listingu \ref{lst:mcts} operujemy na trzech istotnych zmiennych - \textbf{tree}, \textbf{curr\textunderscore node} i \textbf{curr\textunderscore state}. Odpowiedzialnością struktury opisującej \textbf{tree} jest przechowywanie korzenia drzewa oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \textbf{curr\textunderscore state}. Struktura opisująca \textbf{curr\textunderscore node} przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica.
+
 \subsection{Dodatkowe założenia}
+Aby gra była poprawnie obsłużona przez utworzony system, musi spełniać następujące założenia:
+
+\begin{enumerate}
+	\item Rozgrywka jest prowadzona naprzemiennie przez dwóch graczy.
+	\item Każdy ruch ma jednoznaczny wpływ na dalszą rozgrywkę (rozgrywka jest deterministyczna).
+	\item Każdy z graczy ma dostęp do pełnej informacji o aktualnym stanie gry. \\
+\end{enumerate}
+
 \section{Algorytm wizualizacji drzewa}
 \subsection{Określenie problematyki}
 \subsection{Usprawniony algorytm Walkera}
