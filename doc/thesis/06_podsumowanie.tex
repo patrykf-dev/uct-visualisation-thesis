@@ -1,0 +1,89 @@
+\documentclass[uct_visualisation_thesis.tex]{subfiles}
+
+\section{Uzyskane efekty}
+\section{Kontynuacja pracy}
+\section{Wydajność}
+\section{Testy akceptacyjne}
+Testy akceptacyjne zostały przeprowadzone w celu sprawdzenia, czy aplikacja spełnia założenia opisane w dokumentacji wymagań projektu. Test \ref{tab:test1} konfrontuje założenia modułu \textit{Gry}, test \ref{tab:test2} – modułu \textit{Serializacja}, a pozostałe testy weryfikują założenia modułu \textit{Wizualizacja}.\\
+
+Testy akceptacyjne zostały wykonane na komputerze:
+
+\begin{itemize}
+	\item z zainstalowanym systemem operacyjnym \textit{Windows 10 Education N},
+	\item z zainstalowanym interpreterem języka \textit{Python 3.7.2} i biblioteką \textit{PyQt5},
+	\item wyposażonym w procesor \textit{Intel Core i7-8700k @3.70 GHz},
+	\item wyposażonym w kartę graficzną \textit{NVIDIA GeForce GTX 1060 6GB},
+	\item wyposażonym w 32GB pamięci RAM.
+\end{itemize}
+
+Pierwszy z przeprowadzonych testów dotyczy funkcjonalności modułu \textit{Gry}, a wynik opisany został w tabeli \ref{tab:test1}.
+
+\begin{table}[H]
+	\caption{Raport z pierwszego testu}
+	\label{tab:test1}
+	\centering
+	\begin{tabular}{|c|p{0.6\textwidth}|}
+		\hline
+		Testowane wymaganie & \textit{Użytkownik będzie mógł wybrać jedną z dwóch przykładowych gier, a do wyboru będzie miał trzy tryby rozgrywki.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz opcję \textit{Chess}. \item Z menu głównego aplikacji wybierz opcję \textit{Player vs player} i sprawdź tryb rozgrywki dla dwóch graczy. \item Z menu głównego aplikacji wybierz opcję \textit{Player vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz opcję \textit{PC vs PC} dla różnych ustawień algorytmu UCT. \item Z menu głównego aplikacji wybierz \textit{Mancala} i powtórz kroki 2–5. \end{enumerate} \\ \hline
+		Wynik & Pozytywny. \\ \hline
+	\end{tabular}
+\end{table}
+
+Drugi z przeprowadzonych testów dotyczy funkcjonalności modułu \textit{Serializacja}, a wynik opisany został w tabeli \ref{tab:test2}.
+
+\begin{table}[H]
+	\caption{Raport z drugiego testu}
+	\label{tab:test2}
+	\centering
+	\begin{tabular}{|c|p{0.6\textwidth}|}
+		\hline
+		Testowane wymaganie & \textit{Użytkownik będzie mógł zapisać analizowane drzewa do pliku csv, do pliku binarnego oraz do bitmapy.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z zserializowanym drzewem. \item Naciśnij przycisk \textit{Inspect tree}. \item Naciśnij przycisk \textit{Save to csv file}. \item Naciśnij przycisk \textit{Save to binary file}. \item Naciśnij przycisk \textit{Save to bitmap file}. \item Sprawdź, czy bitmapa wygenerowana w kroku 5 odpowiada drzewu z pliku początkowego. \item Z menu głównego aplikacji wybierz ścieżkę plików wygenerowanych w kroku 3 i 4, żeby sprawdzić, czy zapisane drzewa wizualizowane są tak samo jak w początkowym pliku. \end{enumerate} \\ \hline
+		Wynik & Pozytywny. \\ \hline
+	\end{tabular}
+\end{table}
+
+Trzeci z przeprowadzonych testów dotyczy funkcjonalności modułu \textit{Wizualizacja}, a wynik opisany został w tabeli \ref{tab:test3}.
+
+\begin{table}[H]
+	\caption{Raport z trzeciego testu}
+	\label{tab:test3}
+	\centering
+	\begin{tabular}{|c|p{0.6\textwidth}|}
+		\hline
+		Testowane wymaganie & \textit{Użytkownik będzie mógł wyświetlić informacje związane z wybranym węzłem drzewa, a także przybliżać i oddalać cały graf.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z drzewem. \item Naciśnij przycisk \textit{Inspect tree}. \item Przy użyciu prawego przycisku myszki chwyć za obszar rysowania i poruszaj się po wizualizacji. \item Używając kółka myszki, przybliż i oddal wizualizowane drzewo. \item Kliknij dowolny wierzchołek drzewa lewym przyciskiem myszki i sprawdź, czy panel z prawej strony wyświetla informacje związane z wybranym wierzchołkiem. \end{enumerate} \\ \hline
+		Wynik & Pozytywny. \\ \hline
+	\end{tabular}
+\end{table}
+
+Czwarty z przeprowadzonych testów dotyczy wydajności modułu \textit{Wizualizacja}, a wynik opisany został w tabeli \ref{tab:test4}.
+
+\begin{table}[H]
+	\caption{Raport z czwartego testu}
+	\label{tab:test4}
+	\centering
+	\begin{tabular}{|c|p{0.6\textwidth}|}
+		\hline
+		Testowane wymaganie & \textit{Dla drzew do 100 000 wierzchołków wizualizacja nie powinna zajmować więcej niż 3s.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do pliku \textit{tree\textunderscore 100k.csv}. \item Naciśnij przycisk \textit{Inspect tree}. \end{enumerate} \\ \hline
+		Wynik & Pozytywny – deserializacja, ulepszony algorytm Walkera i wyświetlenie drzewa z pliku zajęło 2.802s. \\ \hline
+	\end{tabular}
+\end{table}
+
+Piąty z przeprowadzonych testów dotyczy wydajności modułu \textit{Wizualizacja}, a wynik opisany został w tabeli \ref{tab:test5}.
+
+\begin{table}[H]
+	\caption{Raport z piątego testu}
+	\label{tab:test5}
+	\centering
+	\begin{tabular}{|c|p{0.6\textwidth}|}
+		\hline
+		Testowane wymaganie & \textit{Dla drzew do 250 000 wierzchołków wizualizacja nie powinna zajmować więcej niż 5s.} \\ \hline
+		Kroki testowe & \begin{enumerate} \item Z menu głównego aplikacji wybierz ścieżkę do pliku \textit{tree\textunderscore 250k.csv}. \item Naciśnij przycisk \textit{Inspect tree}. \end{enumerate} \\ \hline
+		Wynik & Pozytywny – deserializacja, ulepszony algorytm Walkera i wyświetlenie drzewa z pliku zajęło 4.626s. \\ \hline
+	\end{tabular}
+\end{table}
+
+Wszystkie testy akceptacyjne zakończyły się pozytywnie, a więc wymagania zostały spełnione.
