@@ -106,21 +106,38 @@ Aby gra była poprawnie obsłużona przez utworzony system, musi spełniać nast
 \begin{enumerate}
 	\item Rozgrywka jest prowadzona naprzemiennie przez dwóch graczy.
 	\item Każdy ruch ma jednoznaczny wpływ na dalszą rozgrywkę (rozgrywka jest deterministyczna).
-	\item Każdy z graczy ma dostęp do pełnej informacji o aktualnym stanie gry. \\
+	\item Każdy z graczy ma dostęp do pełnej informacji o aktualnym stanie gry.
 \end{enumerate}
 
 \section{Algorytm wizualizacji drzewa}
 \subsection{Określenie problematyki}
+\subsection{Dodatkowe założenia}
+Aby wizualizacja była czytelna, poczyniliśmy następujące założenia:
+\begin{enumerate}
+	\item Krawędzie drzewa nie mogą się przecinać.
+	\item Wierzchołki będą ustawione od góry w rzędach, a przynależność do
+	rzędów będzie zależała od odległości wierzchołków od korzenia.
+	\item Wierzchołki mają być narysowane możliwie najwęziej.
+\end{enumerate}
+
+
 \subsection{Usprawniony algorytm Walkera}
+Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementujemy, został opisany w pracy \textit{Improving Walker's Algorithm to Run in Linear Time}\footnote{\textbf{Improving Walker's Algorithm to Run in Linear Time} - Christop Buchheim, Michael Jünger, Sebastian Leipert, Universität zu Köln, Institut für Informatik, 2002}.
 
 
 % ------------------- 4. IMPLEMENTACJA ---------------------
 \chapter{Implementacja}
 \section{Wykorzystane technologie}
 \section{Architektura i działanie systemu}
-\subsection{Moduły}
-\subsection{Główne komponenty aplikacji}
-\subsection{Interfejs użytkownika}
+Aplikacja będzie podzielona na pięć oddzielnych modułów: \textit{algorytm}, \textit{serializacja}, \textit{wizualizacja}, \textit{gry}, które będą funkcjonować w obrębie nadrzędnego modułu - \textit{aplikacji głównej}. Cele każdego z modułów i zadania powierzone im są przedstawione poniżej.
+\subsection{Algorytm}
+\subsection{Serializacja}
+\subsection{Wizualizacja}
+\subsection{Gry}
+\subsection{Aplikacja główna}
+
+\section{Główne komponenty aplikacji}
+\section{Interfejs użytkownika}
 
 
 % ------------------- 5. INSTRUKCJE ---------------------
