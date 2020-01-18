@@ -3,7 +3,7 @@ import os
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QPen
-from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QColorDialog
+from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QColorDialog, QFrame
 
 from main_application.GUI_utils import get_non_resizable_label, get_radiobutton, get_button, \
     get_line_edit, get_hint_line_edit, TREES_PATH, get_checkbox, show_eror_dialog, get_resizable_button
@@ -112,7 +112,11 @@ class MainApplicationWindowLayout:
         main_layout = QGridLayout()
         self.main_widget.setLayout(main_layout)
         main_layout.addWidget(self._get_first_row(), 0, 0)
-        main_layout.addWidget(self._get_second_row(), 1, 0)
+        self.separator_line = QFrame()
+        self.separator_line.setFrameShape(QFrame.HLine)
+        self.separator_line.setFrameShadow(QFrame.Raised)
+        main_layout.addWidget(self.separator_line, 1, 0)
+        main_layout.addWidget(self._get_second_row(), 2, 0)
 
     def _get_first_row(self):
         rc = QWidget()
@@ -139,10 +143,11 @@ class MainApplicationWindowLayout:
         main_layout = QGridLayout()
         rc.setLayout(main_layout)
         self._set_file_buttons_widget()
-        main_layout.addWidget(get_non_resizable_label("Path:"), 0, 0)
-        main_layout.addWidget(self.tree_path_edit, 0, 1)
-        main_layout.addWidget(self.file_buttons_widget, 0, 2)
-        main_layout.addWidget(self.draw_opengl_button, 1, 0, 1, 3, alignment=QtCore.Qt.AlignCenter)
+        main_layout.addWidget(get_non_resizable_label("Tree analysis", title_font=True), 0, 0)
+        main_layout.addWidget(get_non_resizable_label("Path:"), 1, 0)
+        main_layout.addWidget(self.tree_path_edit, 1, 1)
+        main_layout.addWidget(self.file_buttons_widget, 1, 2)
+        main_layout.addWidget(self.draw_opengl_button, 2, 0, 1, 3, alignment=QtCore.Qt.AlignCenter)
         return rc
 
     def _add_left_panel(self, main_layout):
