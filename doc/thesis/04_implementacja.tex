@@ -1,23 +1,25 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
 \section{Wykorzystane technologie}
-W naszym projekcie zdecydowaliśmy się skorzystać z:
+W naszym projekcie zdecydowaliśmy się skorzystać z technologii wymienionych poniżej.
 \begin{enumerate}
 	\item Języka \textit{Python} w wersji 3.7.2.
 	\item Biblioteki \textit{VisPy} w wersji 0.6.3, która udostępnia komponenty związane z wizualizacją graficzną. Wykorzystujemy tę bibliotekę w połączeniu z \textit{OpenGL} w wersji 2.1. Biblioteka \textit{VisPy} jest stworzona w oparciu o licencję \textit{BSD}, co w kontekście projektu na pracę inżynierską pozwala na modyfikowanie i wykorzystywanie jej.
-	\item Nakładki na bibliotekę Qt - \textit{PyQt5} w wersji 5.9.2. \textit{PyQt5} umożliwia tworzenie interfejsu graficznego. Dla projektów takich jak praca inżynierska, \textit{PyQt} dystrybuowana jest na zasadach \textit{GNU General Public License}.
-	\item Biblioteki \textit{fman build system (fbs)} w wersji 0.8.4, ułatwiającej pakowanie aplikacji w języku \textit{Python} korzystających z biblioteki \textit{PyQt}. To oprogramowanie dystrybuowane jest na zasadach \textit{GNU General Public License}.
-	\item Narzędzia \textit{pdoc} w wersji 0.3.2, służącego do automatycznego generowania dokumentacji aplikacji.
+	\item \textit{Numpy} ???????
+	\item Nakładki na bibliotekę \textit{Qt} - \textit{PyQt} w wersji 5.9.2. \textit{PyQt} umożliwia tworzenie interfejsu graficznego. Dla projektów takich jak praca inżynierska, \textit{PyQt} dystrybuowana jest na zasadach \textit{GNU General Public License}.
+	\item Biblioteki \textit{fman build system (fbs)} w wersji 0.8.4, ułatwiającej pakowanie aplikacji korzystających z biblioteki \textit{PyQt}. To oprogramowanie dystrybuowane jest na zasadach \textit{GNU General Public License}.
+	\item Narzędzia \textit{pdoc} w wersji 0.3.2, służącego do automatycznego generowania dokumentacji aplikacji. Zgodnie z umową licencyjną opisaną przez autorów \textit{pdoc}, można wykorzystywać ich narzędzie bez ograniczeń.
 \end{enumerate}
 
 
 \section{Architektura i działanie systemu}
-Aplikacja będzie podzielona na pięć oddzielnych modułów: \textit{Algorytm}, \textit{Serializacja}, \textit{Wizualizacja}, \textit{Gry}, które będą funkcjonować w obrębie nadrzędnego modułu - \textit{Aplikacji głównej}. Cele każdego z modułów i zadania powierzone im są przedstawione poniżej.
+\subsection{Wstęp}
+Aplikacja jest podzielona na pięć oddzielnych modułów: \textit{Algorytm}, \textit{Serializacja}, \textit{Wizualizacja}, \textit{Gry}, które będą funkcjonować w obrębie nadrzędnego modułu - \textit{Aplikacji głównej}. Cele każdego z modułów i zadania powierzone im są przedstawione poniżej.
 
 \subsection{Algorytm}
-Moduł \textbf{Algorytm} jest implementacją algorytmu Monte Carlo Tree Search, korzystającą z wariantu UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
+Moduł \textit{Algorytm} jest implementacją metody MCTS, korzystającą z wariantu UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
 
-W listingu \ref{lst:mcts} operujemy na trzech istotnych zmiennych - \textbf{tree}, \textbf{curr\textunderscore node} i \textbf{curr\textunderscore state}. Odpowiedzialnością struktury opisującej \textbf{tree} jest przechowywanie korzenia drzewa oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \textbf{curr\textunderscore state}. Struktura opisująca \textbf{curr\textunderscore node} przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica.
+W listingu \ref{lst:mcts}, opisującym zaimplementowany algorytm, operujemy na trzech istotnych zmiennych - \textit{tree}, \textit{curr\textunderscore node} i \textit{curr\textunderscore state}. Odpowiedzialnością struktury opisującej drzewo - \textit{tree} - jest przechowywanie korzenia oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \textit{curr\textunderscore state}. Struktura opisująca wierzchołek - \textit{curr\textunderscore node} - przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica. Dokładne relacje między komponentami zostały opisane na diagramie \ref{rys:umldiagram}.
 
 \subsection{Serializacja}
 \textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub csv. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy zserializować jego korzeń.\\
@@ -74,15 +76,41 @@ Kolejność wierszy opisujących wierzchołki jest analogiczna do odwiedzania wi
 
 
 \subsection{Wizualizacja}
-Moduł \textit{Wizualizacja} udostępnia funkcjonalność wizualizacji dostarczonych drzew. Użytkownik będzie miał również możliwość przybliżania, oddalania oraz poruszania się po wizualizacji. Opisana interaktywność ma na celu umożliwić dokładne zbadanie struktury drzewa oraz poszczególnych wartości w interesujących go wierzchołkach. 
+Moduł \textit{Wizualizacja} udostępnia funkcjonalność wizualizacji dostarczonych drzew. \textit{Wizualizacja} jest jedynym modułem, który korzysta z technologii \textit{VisPy} oraz \textit{NumPy}. Wykorzystanie tych technologii ma na celu odpowiednio wydajne wyświetlenie wizualizacji oraz przechowywanie wektorów z danymi, które będzie można przekazać karcie graficznej. Zadania \textit{Wizualizacji} są wymienione poniżej.
+
+\begin{itemize}
+	\item Przypisanie wierzchołkom drzewa miejsce na płaszczyźnie przy użyciu usprawnionego algorytmu Walkera i przetransformowanie wyznaczonych koordynatów do układu współrzędnych OpenGL.
+	\item Przypisanie krawędziom koloru w zależności od liczby odwiedzin wierzchołka.
+	\item Przypisanie wierzchołkom koloru w zależności od gracza reprezentowanego stanu gry.
+	\item Detekcja kliknięcia wierzchołka przez użytkownika.
+	\item Wyświetlenie drzewa.
+	\item Przybliżanie, oddalanie i poruszanie się po wizualizacji.
+\end{itemize}
 
 \subsection{Gry}
-Aplikacja będzie udostępniała 2 gry planszowe umożliwiające zademonstrowanie efektywności wizualizacji oraz algorytmu.
+Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \textit{Gry}. System został przygotowany z myślą o rozszerzaniu o kolejne gry.
 
 \subsection{Aplikacja główna}
-\textit{Aplikacja główna} jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Obszerny opis projektu aplikacji okienkowej znajduje się w rozdziale ???.
+\textit{Aplikacja główna} jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej.
+
 
 \section{Główne komponenty aplikacji}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\linewidth]{umldiagram}
+	\caption{Diagram UML głównych komponentów aplikacji}
+	\label{rys:umldiagram}
+\end{figure}
+
+Zgodnie z diagramem \ref{rys:umldiagram}, klasy \textit{MonteCarloTreeSearch}, \textit{TreeVisualiser} oraz \textit{Serializator} są pośrednio lub bezpośrednie zależne od klasy \textit{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \textit{Algorytm}, \textit{Wizualizacja} i \textit{Serializacja}. Klasa \textit{MonteCarloNode} przechowuje referencję do swojego rodzica oraz wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa.\\
+
+Metoda \textit{calculate\textunderscore next\textunderscore move} klasy \textit{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Algorytm zapisuje informacje o rozgrywanych playoutach w polach klasy \textit{MonteCarloNodeDetails} analizowanych wierzchołków. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \textit{GameMove} i \textit{GameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \textit{GamePhase}.\\
+
+\textit{TreeVisualiser} jest głównym komponentem modułu \textit{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka, takie jak jego współrzędne czy kolor, zawarte są w polach klasy \textit{MonteCarloVisualisationDetails}.\\
+
+\textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
+
 
 \section{Interfejs użytkownika}
 Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module \textit{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie uruchomienia poszczególnych modułów użytkownikom końcowym.
