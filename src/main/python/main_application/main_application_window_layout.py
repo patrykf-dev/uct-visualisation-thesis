@@ -143,7 +143,7 @@ class MainApplicationWindowLayout:
         main_layout = QGridLayout()
         rc.setLayout(main_layout)
         self._set_file_buttons_widget()
-        main_layout.addWidget(get_non_resizable_label("Tree analysis", title_font=True), 0, 0)
+        main_layout.addWidget(get_non_resizable_label("Tree analysis", title_font=True), 0, 0, 1, 3)
         main_layout.addWidget(get_non_resizable_label("Path:"), 1, 0)
         main_layout.addWidget(self.tree_path_edit, 1, 1)
         main_layout.addWidget(self.file_buttons_widget, 1, 2)
