@@ -1,7 +1,6 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
 \section{Algorytmy MCTS}
-
 \subsection{Opis grupy algorytmów}
 MCTS jest heurystyką, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Najpowszechniejszym wariantem MCTS jest algorytm UCT. MCTS opiera się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w prezentowanym systemie bazują na \cite{banditbased}.
 
@@ -12,6 +11,7 @@ MCTS jest heurystyką, której celem jest podejmowanie decyzji w pewnych zadania
 	\item \textbf{Faza propagacji wstecznej} (linia 13 w listingu) - aktualizacja informacji wierzchołków na ścieżce od wierzchołka, z którego rozpoczęto symulację, do korzenia drzewa.
 \end{enumerate}
 
+\begin{minipage}{\linewidth} % minipage to ensure listing is on seperate page
 \begin{lstlisting}[caption={Pseudokod algorytmu Monte Carlo Tree Search}, label=lst:mcts, style=mystyle]
 def find_next_move(curr_state):
 	iterations_counter = 0
@@ -32,10 +32,10 @@ def find_next_move(curr_state):
 	best_state = select best child(tree.root) 
 	return best_state
 \end{lstlisting}
+\end{minipage}
 
 
 \section{Algorytm UCT}
-
 \subsection{Opis algorytmu}
 UCT jest wariantem metody MCTS, który stara się zachować równowagę między eksploatacją ruchów o wysokiej średniej wygranej a eksploracją tych mało zbadanych. Formuła, która odpowiada za wyznaczenie najbardziej obiecującego wierzchołka w fazie wyboru MCTS jest przedstawiona w wyrażeniu \ref{formula:uct}.
 

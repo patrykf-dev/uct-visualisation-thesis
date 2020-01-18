@@ -1,28 +1,30 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
-\section{Wykorzystane technologie}
+\section{Architektura i działanie systemu}
+\subsection{Wykorzystane technologie}
 W naszym projekcie zdecydowaliśmy się skorzystać z technologii wymienionych poniżej.
 \begin{enumerate}
 	\item Języka \textit{Python} w wersji 3.7.2.
 	\item Biblioteki \textit{VisPy} w wersji 0.6.3, która udostępnia komponenty związane z wizualizacją graficzną. Wykorzystujemy tę bibliotekę w połączeniu z \textit{OpenGL} w wersji 2.1. Biblioteka \textit{VisPy} jest stworzona w oparciu o licencję \textit{BSD}, co w kontekście projektu na pracę inżynierską pozwala na modyfikowanie i wykorzystywanie jej.
-	\item \textit{Numpy} ???????
+	\item Biblioteki \textit{NumPy} w wersji  1.18.1, która odpowiada za wydajne operacje na macierzach. Zgodnie z umową licencyjną opisaną przez autorów \textit{NumPy}, można wykorzystywać ich narzędzie w zakresie pracy naukowej.
 	\item Nakładki na bibliotekę \textit{Qt} - \textit{PyQt} w wersji 5.9.2. \textit{PyQt} umożliwia tworzenie interfejsu graficznego. Dla projektów takich jak praca inżynierska, \textit{PyQt} dystrybuowana jest na zasadach \textit{GNU General Public License}.
 	\item Biblioteki \textit{fman build system (fbs)} w wersji 0.8.4, ułatwiającej pakowanie aplikacji korzystających z biblioteki \textit{PyQt}. To oprogramowanie dystrybuowane jest na zasadach \textit{GNU General Public License}.
 	\item Narzędzia \textit{pdoc} w wersji 0.3.2, służącego do automatycznego generowania dokumentacji aplikacji. Zgodnie z umową licencyjną opisaną przez autorów \textit{pdoc}, można wykorzystywać ich narzędzie bez ograniczeń.
 \end{enumerate}
 
 
-\section{Architektura i działanie systemu}
 \subsection{Wstęp}
-Aplikacja jest podzielona na pięć oddzielnych modułów: \textit{Algorytm}, \textit{Serializacja}, \textit{Wizualizacja}, \textit{Gry}, które będą funkcjonować w obrębie nadrzędnego modułu - \textit{Aplikacji głównej}. Cele każdego z modułów i zadania powierzone im są przedstawione poniżej.
+Aplikacja jest podzielona na pięć oddzielnych modułów: \textit{Algorytm}, \textit{Serializacja}, \textit{Wizualizacja}, \textit{Gry}, które będą funkcjonować w obrębie nadrzędnego modułu - \textit{Aplikacji głównej}. Cele każdego z modułów i zadania powierzone im są przedstawione w rozdziałach \ref{subsec:algorithm} - \ref{subsec:mainapp}.
 
-\subsection{Algorytm}
+
+\subsection{Algorytm} \label{subsec:algorithm}
 Moduł \textit{Algorytm} jest implementacją metody MCTS, korzystającą z wariantu UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
 
 W listingu \ref{lst:mcts}, opisującym zaimplementowany algorytm, operujemy na trzech istotnych zmiennych - \textit{tree}, \textit{curr\textunderscore node} i \textit{curr\textunderscore state}. Odpowiedzialnością struktury opisującej drzewo - \textit{tree} - jest przechowywanie korzenia oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \textit{curr\textunderscore state}. Struktura opisująca wierzchołek - \textit{curr\textunderscore node} - przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica. Dokładne relacje między komponentami zostały opisane na diagramie \ref{rys:umldiagram}.
 
+
 \subsection{Serializacja}
-\textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub csv. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy zserializować jego korzeń.\\
+\textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub csv. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy przekazać odpowiednim komponentom jego korzeń.\\
 
 \textbf{\large Serializacja binarna} \\
 W serializacji binarnej przyjmujemy opisany niżej schemat.
@@ -87,14 +89,17 @@ Moduł \textit{Wizualizacja} udostępnia funkcjonalność wizualizacji dostarczo
 	\item Przybliżanie, oddalanie i poruszanie się po wizualizacji.
 \end{itemize}
 
-\subsection{Gry}
-Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \textit{Gry}. System został przygotowany z myślą o rozszerzaniu o kolejne gry.
 
-\subsection{Aplikacja główna}
-\textit{Aplikacja główna} jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej.
+\subsection{Gry}
+Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \textit{Gry}. System został przygotowany z myślą o rozszerzaniu o kolejne gry. Wymagania, które należy spełnić, dodając kolejną grę, są opisane w rozdziale \ref{subsec:uml}.
+
+
+\subsection{Aplikacja główna} \label{subsec:mainapp}
+\textit{Aplikacja główna} jest modułem łączącym wszystkie pozostałe. Ten moduł skupia się na zaprezentowaniu funkcjonalności wszystkich modułów w formie aplikacji okienkowej. Interfejsy, które udostępnia \textit{Aplikacja główna}, są opisane w rozdziale \ref{sec:ui}.
 
 
 \section{Główne komponenty aplikacji}
+\subsection{Diagram klas} \label{subsec:uml}
 
 \begin{figure}[h!]
 	\centering
@@ -112,7 +117,8 @@ Metoda \textit{calculate\textunderscore next\textunderscore move} klasy \textit{
 \textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
 
 
-\section{Interfejs użytkownika}
+\section{Interfejs użytkownika} \label{sec:ui}
+\subsection{Wstęp}
 Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module \textit{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie uruchomienia poszczególnych modułów użytkownikom końcowym.
 
 \subsection{Menu główne}
