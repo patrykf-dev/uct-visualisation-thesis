@@ -3,13 +3,13 @@
 \section{Algorytmy MCTS}
 
 \subsection{Opis grupy algorytmów}
-MCTS jest heurystyką, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Najpowszechniejszym wariantem MCTS jest algorytm UCT. MCTS opiera się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Pseudokod MCTS jest opisany w listingu \ref{lst:mcts}. Pseudokod oraz implementacja MCTS bazują na \cite{banditbased}.
+MCTS jest heurystyką, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Najpowszechniejszym wariantem MCTS jest algorytm UCT. MCTS opiera się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w prezentowanym systemie bazują na \cite{banditbased}.
 
 \begin{enumerate}
 	\item \textbf{Faza wyboru} (linia 7 w listingu) - wybranie najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans pomiędzy eksploracją ruchów przeanalizowanych najdokładniej oraz eksploatacją jeszcze niezbadanych.
-	\item \textbf{Faza rozrostu} (linia 10 w listingu) - utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania poprzez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
-	\item \textbf{Faza symulacji} (linia 13 w listingu) - rozegranie losowej rozgrywki ze stanu jednego z utworzonych wierzchołków utworzonych w poprzedniej fazie.
-	\item \textbf{Faza propagacji wstecznej} (linia 16 w listingu) - aktualizacja informacji wierzchołków na ścieżce od wierzchołka, z którego rozpoczęto symulację, do korzenia drzewa.
+	\item \textbf{Faza rozrostu} (linia 9 w listingu) - utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania poprzez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
+	\item \textbf{Faza symulacji} (linia 11 w listingu) - rozegranie losowej rozgrywki ze stanu jednego z utworzonych wierzchołków utworzonych w poprzedniej fazie.
+	\item \textbf{Faza propagacji wstecznej} (linia 13 w listingu) - aktualizacja informacji wierzchołków na ścieżce od wierzchołka, z którego rozpoczęto symulację, do korzenia drzewa.
 \end{enumerate}
 
 \begin{lstlisting}[caption={Pseudokod algorytmu Monte Carlo Tree Search}, label=lst:mcts, style=mystyle]
@@ -20,13 +20,10 @@ def find_next_move(curr_state):
 	while iterations_counter < max_iterations_counter:
 		# selection(tree.root) 
 		curr_node = select promising node    
-		
 		# expansion(node)
 		create child nodes from node
-		
 		# simulation(node)		
 		playout_result = simulate random playout from curr_node     
-		
 		# backpropagation(node, playout_result)
 		update tree according to playout_result                     
 		
@@ -40,14 +37,14 @@ def find_next_move(curr_state):
 \section{Algorytm UCT}
 
 \subsection{Opis algorytmu}
-UCT jest algorytmem przeszukujący drzewo stanów rozgrywki w poszukiwaniu najbardziej opłacalnych ruchów. Algorytm stara się zachować równowagę między eksploatacją ruchów o wysokiej średniej wygranej a eksploracją tych mało sprawdzonych. Formuła, która odpowiada za wyznaczenie najbardziej obiecującego wierzchołka w fazie wyboru jest przedstawiona w wyrażeniu \ref{formula:uct}.
+UCT jest wariantem metody MCTS, który stara się zachować równowagę między eksploatacją ruchów o wysokiej średniej wygranej a eksploracją tych mało zbadanych. Formuła, która odpowiada za wyznaczenie najbardziej obiecującego wierzchołka w fazie wyboru MCTS jest przedstawiona w wyrażeniu \ref{formula:uct}.
 
 \begin{equation}\label{formula:uct}
 \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}
 \end{equation}
 
 W wyrażeniu \ref{formula:uct}, indeks $i$ odnosi się do liczby wykonanych przez algorytm iteracji. W pierwszym składniku sumy wyrażenia \ref{formula:uct}, licznik $w_i$ oznacza liczbę wygranych w danym węźle, a mianownik $n_i$ oznacza liczbę rozegranych symulacji. Zatem ułamek ten przyjmuje wartości większe dla ruchów o większej średniej wygranej, co odpowiada ze eksploatację drzewa. Drugi składnik sumy wyrażenia \ref{formula:uct} przyjmuje wartości większe dla wierzchołków, dla których wykonano mniej symulacji; ponieważ $N_i=\sum_i n_i$, a
-$c$ jest parametrem eksploracji, który może być dostosowany do badanego problemu.
+$c$ jest parametrem eksploracji, który może być dostosowany do badanego problemu (najczęściej przyjmuje się $c=\sqrt{2}$).
 
 
 \subsection{Dodatkowe założenia}
@@ -77,4 +74,4 @@ W celu uczynienia wizualizacji jak najbardziej czytelną, poczyniliśmy pewne za
 
 
 \subsection{Usprawniony algorytm Walkera}
-Aby wyznaczyć układ wierzchołków na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementowaliśmy, został opisany w \cite{impwalkers}.
+W celu wyznaczenia układ wierzchołków drzewa na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementowaliśmy, został opisany w \cite{impwalkers}.
