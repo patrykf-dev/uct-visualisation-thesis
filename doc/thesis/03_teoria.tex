@@ -36,13 +36,13 @@ def find_next_move(curr_state):
 
 \section{Algorytm UCT}
 \subsection{Opis algorytmu}
-UCT jest wariantem metody MCTS, który stara się zachować równowagę między eksploatacją ruchów o wysokiej średniej wygranej a eksploracją tych mało zbadanych. Formuła, która odpowiada za wyznaczenie najbardziej obiecującego wierzchołka w fazie wyboru MCTS jest przedstawiona w wyrażeniu \ref{formula:uct}.
+UCT jest wariantem metody MCTS, który stara się zachować równowagę między eksploatacją ruchów o wysokiej średniej wygranej a eksploracją tych mało zbadanych. Formuła, która odpowiada za wyznaczenie najbardziej obiecującego wierzchołka w fazie wyboru MCTS jest przedstawiona jako wyrażenie \ref{formula:uct}.
 
 \begin{equation}\label{formula:uct}
 \frac{w_i}{n_i} + c \sqrt{\frac{\ln N_i}{n_i}}
 \end{equation}
 
-W wyrażeniu \ref{formula:uct}, indeks $i$ odnosi się do liczby wykonanych przez algorytm iteracji. W pierwszym składniku sumy wyrażenia \ref{formula:uct}, licznik $w_i$ oznacza liczbę wygranych w danym węźle, a mianownik $n_i$ oznacza liczbę rozegranych symulacji. Zatem ułamek ten przyjmuje wartości większe dla ruchów o większej średniej wygranej, co odpowiada ze eksploatację drzewa. Drugi składnik sumy wyrażenia \ref{formula:uct} przyjmuje wartości większe dla wierzchołków, dla których wykonano mniej symulacji; ponieważ $N_i=\sum_i n_i$, a
+W wyrażeniu \ref{formula:uct}, indeks $i$ odnosi się do liczby wykonanych przez algorytm iteracji, czyli czterech faz MCTS. W pierwszym składniku sumy wyrażenia \ref{formula:uct}, licznik $w_i$ oznacza liczbę wygranych w danym węźle, a mianownik $n_i$ oznacza liczbę rozegranych symulacji. Zatem ułamek ten przyjmuje wartości większe dla ruchów o większej średniej wygranej, co odpowiada ze eksploatację drzewa. Drugi składnik sumy wyrażenia \ref{formula:uct} przyjmuje wartości większe dla wierzchołków, dla których wykonano mniej symulacji i odpowiada eksploracji drzewa. $N_i=\sum_i n_i$, a
 $c$ jest parametrem eksploracji, który może być dostosowany do badanego problemu (najczęściej przyjmuje się $c=\sqrt{2}$).
 
 
