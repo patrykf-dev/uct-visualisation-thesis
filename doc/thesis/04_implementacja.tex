@@ -142,8 +142,8 @@ Ukazane na rysunku \ref{rys:main_menu} menu główne będzie głównym oknem apl
 	\item \textbf{wybór liczby iteracji algorytmu} -- liczba powtórzeń wykonania przez algorytm czterofazowej tury metody MCTS opisanej w rozdziale 3.3.1,
 	\item \textbf{wybór maksymalnego czasu} -- podany w milisekundach; czas, po którym komputer będzie przerywał obliczenia i wykona ruch,
 	\item \textbf{ustawienie limitu ruchów} -- opcjonalne pole, w którym użytkownik może ustalić maksymalną liczbą ruchów w fazie symulacji algorytmu UCT, w celu wcześniejszego kończenia niepożądanie długich rozgrywek,
-	\item \textbf{ustalenie wartości parametru eksploracji} -- im większy, tym chętniej algorytm UCT będzie wybierał rzadziej odwiedzane ruchy. Domyślnie $\sqrt{2}$,
-	\item \textbf{animowanie rozrostu drzewa} -- wybór tej opcji sprawia, że drzewo stanów algorytmu zostaje wyświetlone nie tylko po każdym wykonanym ruchu przez komputer, ale też po każdej iteracji.
+	\item \textbf{ustalenie wartości parametru eksploracji} -- im większy, tym chętniej algorytm UCT będzie wybierał rzadziej odwiedzane ruchy. Domyślnie $\sqrt{2}$.
+	\item \textbf{animowanie rozrostu drzewa} -- wybór tej opcji sprawia, że drzewo stanów algorytmu zostaje wyświetlone nie tylko po każdym wykonanym ruchu przez komputer, ale też po każdej iteracji. Co więcej, w panelu po prawej stronie dynamicznie aktualizować się też będzie wartość liczby wszystkich wierzchołków drzewa.
 	\item \textbf{wybór kolorów krawędzi drzewa} - po kliknięciu na któryś z widocznych kolorów ukaże się paleta systemowa, z której można wybrać inne kolory krawędzi. Najczęściej i najrzadziej odwiedzane węzły drzewa przyjmą wskazane przez użytkownika kolory, inne zaś --- kolory z ich gradientu, proporcjonalnie do wartości skrajnych licznika odwiedzin.
 \end{itemize}
 
@@ -152,17 +152,23 @@ Można jednocześnie wybierać pliki w formacie CSV i binarnym (.tree), których
 W przypadku wybrania nieprawidłowego katalogu lub niepoprawnych plików, na ekranie użytkownika pojawi się błąd informujący o problemie, który nastąpił.
 
 \subsection{Analiza drzewa}
-W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać wczytane lub wygenerowane drzewa. 
+W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać i analizować drzewa wczytane z plików. 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.57]{okno-analiza}
 	\caption{Okno analizy drzewa}
 	\label{rys:analyze_tree}
 \end{figure}
-
-Kluczową funkcją będzie tutaj możliwość dynamicznego przybliżania i oddalania go (za pomocą przycisków plusa i minusa na ekranie lub scrolla) wraz z możliwością klikania poszczególnych węzłów w celu pozyskania stanu rozgrywki w danym momencie. Widoczna będzie także informacja o tym, ile razy algorytm odwiedził dany węzeł, ile razy doprowadził on do wygranej oraz średnią nagrodę za ruch w danym węźle. Możliwe będzie też wycentrowanie oglądanego drzewa.
-
-W przypadku wczytania większej ilości drzew będzie możliwość przełączania ich za pomocą przycisków ze strzałkami w lewo i w prawo. Zaznaczane wtedy będą różnice w węzłach i krawędziach względem poprzedniego drzewa.
+Ekran podglądu drzewa pozwala w wygodny sposób analizować i porównywać wczytane drzewa oraz udostępnia szereg opcji.
+\begin{enumerate}
+	\item \textbf{Wyświetlenie statystyk węzła} -- po naciśnięciu na węzeł lewym przyciskiem myszy, panel z prawej strony zostaje uzupełniony informacjami, które przechowuje węzeł. Dokładność wykrywania wybranego węzła nie jest zaburzona podczas operowania na przybliżonym lub oddalonym drzewie.
+	\item \textbf{Przybliżanie i oddalanie drzewa} -- należy naprowadzić kursor na szary obszar drzewa, a następnie przewijać środkowym przyciskiem myszy w górę lub w dół. Dzięki zastosowaniu grafiki wektorowej, wierzchołki i krawędzie drzewa zachowują swój rozmiar.
+	\item \textbf{Przesuwanie drzewa} -- gdy kursor znajduje się w obszarze drzewa, należy nacisnąć prawy przycisk myszy, przytrzymać i poruszać nim na boki w celu przesunięcia widoku całego drzewa.
+	\item \textbf{Reset pozycji drzewa} -- pierwotną pozycję i rozmiar drzewa można przywrócić za pomocą przycisku \textit{Reset view} znajdującego się pod widokiem drzewa.
+	\item \textbf{Zmiana drzewa w sekwencji} -- jeżeli wczytane zostało więcej niż jedno drzewo, kluczową funkcją jest opcja wygodnego przełączania się pomiędzy nimi. Można to zrobić na trzy sposoby: używając przycisków \textit{<<} i \textit{>>}, które znajdują się w dolnej części okna; klikając lewy i prawy przycisk myszy na klawiaturze (czasami trzeba ustawić uprzednio fokus, klikając na obszar drzewa) oraz użycie pola tekstowego, pozwalającego na ,,skok'' do wybranego drzewa z listy i kliknięcie przycisku \textit{OK}. W przypadku wyświetlania pierwszego lub ostatniego drzewa w sekwencji odpowiednie przyciski strzałek stają się nieaktywne, a w przypadku pola tekstowego ze skokiem następuje walidacja, czy podany numer drzewa mieści się w zakresie.
+	\item \textbf{Zapis drzewa} - możliwość zapisu wyświetlanego drzewa w jednym z trzech dstępnych formatów: CSV, binarnym lub rastrowym (.png). Opcja ta znajduje się z prawej strony okna, pod panelem zawierającym wartości przechowywane przez węzeł. Podczas eksportu do garfiki rastrowej zadbano o to, aby nie występowały artefakty związane z dużym natężeniem krawędzi. Taka grafika zachowuje też aktualne powiększenie i przesunięcie drzewa -- działa na zasadzie zrzutu ekranu.
+\end{enumerate}
+Co więcej, dla każdego drzewa w sekwencji w panelu dolnym wyświetla się informacja o tym, którym z kolei na liście jest oglądane drzewo oraz jaka jest nazwa pliku, z którego zostało ono wczytane. Dodatkowo, wyświetlana jest liczba wszystkich wczytanych drzew.
 
 \subsection{Rozgrywka}
 Poniżej przedstawiony jest przykładowy interfejs graficzny, do którego użytkownik będzie miał dostęp podczas rozgrywki.
