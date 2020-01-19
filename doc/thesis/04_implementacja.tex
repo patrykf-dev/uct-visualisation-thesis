@@ -171,19 +171,37 @@ Ekran podglądu drzewa pozwala w wygodny sposób analizować i porównywać wczy
 Co więcej, dla każdego drzewa w sekwencji w panelu dolnym wyświetla się informacja o tym, którym z kolei na liście jest oglądane drzewo oraz jaka jest nazwa pliku, z którego zostało ono wczytane. Dodatkowo, wyświetlana jest liczba wszystkich wczytanych drzew.
 
 \subsection{Rozgrywka}
-Poniżej przedstawiony jest przykładowy interfejs graficzny, do którego użytkownik będzie miał dostęp podczas rozgrywki.
+Na rysunku \ref{rys:game_view} przedstawiony jest interfejs graficzny podczas rozgrywki.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{okno-mancala}
-	\caption{Okno rozgrywki}
+	\caption{Okno rozgrywki -- mankala, gracz przeciwko PC}
 	\label{rys:game_view}
 \end{figure}
+Środkową i prawą część okna zajmuje komponent dotyczący analizy drzewa, które zostało opisane powyżej. W związku z tym, wszystkie wyżej opisane funkcjonalności mają zastosowanie również w oknie rozgrywki, poza aspektem dotyczącym sekwencji drzew. Z lewej strony znajduje się plansza z grą --- mankala lub szachy --- w zależności od tego, która opcja została wybrana w menu głównym. Kolejne funkcjonalności okna rozgrywki obejmują:
+\begin{enumerate}
+	\item \textbf{wykonywanie ruchów} przez gracza, kiedy gra przeciwko PC:
+	\begin{enumerate}
+		\item w przypadku szachów - wybierając odpowiednią figurę na szachownicy, a następnie jeden z wyświetlonych dostępnych ruchów. Gracz w tym trybie zawsze gra białymi;
+		\item w przypadku mankali - wybierając pewien niepusty dołek z dolnego rzędu planszy.
+		W przypadku trybu gry PC vs PC, gracz nie może ze skutkiem klikać na obszar gry i wykonywać samodzielnych ruchów. Postęp w rozgrywce może natomiast powodować klikając na przycisk \textit{Make next move} znajdujący się na dole okna po lewej stronie, tak jak jest to pokazane na rysunku \ref{rys:game_view_2}
+	\end{enumerate}
+	\item \textbf{zrestartowanie gry} za pomocą przycisku \textit{Start over} w lewej dolnej części okna,
+	\item \textit{wizualizacja postępu obliczeń} z użyciem dynamicznego paska postępu znajdującego się w górnej części okna.
+\end{enumerate}
 
-Zgodnie z projektem okna przedstawionym na rysunku \ref{rys:game_view}, widok rozgrywki będzie podzielony na dwie części. Gra zawierać się będzie w wyżej pokazanym oknie po lewej stronie. To tutaj użytkownik za pomocą przygotowanego do gier GUI będzie mógł wykonać ruch. W prawej części okna znajdować się będą opcje związane z aktualnym stanem rozgrywki, między innymi:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=1\textwidth]{okno-szachy}
+	\caption{Okno rozgrywki -- szachy, PC przeciwko PC}
+	\label{rys:game_view_2}
+\end{figure}
 
-\begin{itemize}
-	\item informacja o aktualnym stanie gry.
-	\item wykonaj kolejny ruch - wyłącznie w trybie rozgrywki maszyna kontra maszyna. Użytkownik będzie miał możliwość kontrolowania wykonywanych przez komputer ruchów, aby samemu móc powodować postęp w rozgrywce.
-	\item przeanalizuj wygenerowane drzewa - będzie to przycisk otwierający drugie okno z opisaną wcześniej analizą drzewa. Nad przyciskiem znajduje się parametr mówiący ile ruchów wstecz użytkownik ma zamiar analizować. Jedno drzewo będzie odpowiadać jednemu ruchowi komputera, a jako pierwsze wyświetli się drzewo przedstawiające stan z ostatniego ruchu i reszta będzie odpowiednio w kolejności chronologicznej (od końca).
-	\item wyeksportuj drzewo do pliku (csv, png lub binarnego).
-\end{itemize}
+Bezpośrednio pod obszarem gry znajduje się etykieta z napisem dotyczącym obecnego stanu rozgrywki. \textit{Game in progress} oznacza, że gra się toczy i wciąż można wykonywać ruchy. W przypadku zakończenia rozgrywki, obszar gry lub przycisk \textit{Make next move} zostaje dezaktywowany i nie można wykonywać kolejnych ruchów aż do ponowienia gry, a etykieta będzie informować o tym, który gracz zwyciężył, wyświetlając napis \textit{Player 1 wins}, \textit{Player 2 wins} lub \textit{Draw}. Przykładowy stan zakończonej gry pokazany jest na rysunku \ref{rys:game_view_3}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\textwidth]{okno-player-vs-player}
+	\caption{Okno rozgrywki -- szachy, dwóch graczy}
+	\label{rys:game_view_3}
+\end{figure}
