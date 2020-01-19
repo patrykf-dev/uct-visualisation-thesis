@@ -2,13 +2,12 @@
 
 \section{Algorytmy MCTS}
 \subsection{Opis grupy algorytmów}
-MCTS jest heurystyką, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Najpowszechniejszym wariantem MCTS jest algorytm UCT. MCTS opiera się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w prezentowanym systemie bazują na \cite{banditbased}.
-
+Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}.
 \begin{enumerate}
-	\item \textbf{Faza wyboru} (linia 7 w listingu) - wybranie najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans pomiędzy eksploracją ruchów przeanalizowanych najdokładniej oraz eksploatacją jeszcze niezbadanych.
-	\item \textbf{Faza rozrostu} (linia 9 w listingu) - utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania poprzez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
-	\item \textbf{Faza symulacji} (linia 11 w listingu) - rozegranie losowej rozgrywki ze stanu jednego z utworzonych wierzchołków utworzonych w poprzedniej fazie.
-	\item \textbf{Faza propagacji wstecznej} (linia 13 w listingu) - aktualizacja informacji wierzchołków na ścieżce od wierzchołka, z którego rozpoczęto symulację, do korzenia drzewa.
+	\item \textbf{Faza wyboru} (linia 7 w listingu) - wybór najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans pomiędzy eksploatacją ruchów przeanalizowanych najdokładniej oraz eksploracją tych jeszcze niezbadanych. Przez eksploatację wierzchołka powinno rozumieć się powiększanie rozmiaru drzewa tworzonego przez nie, a przez eksplorację --- rozwijanie wierzchołków, które uprzednio nie miały żadnych potomków.
+	\item \textbf{Faza rozrostu} (linia 9 w listingu) - utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka drzewa. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania poprzez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
+	\item \textbf{Faza symulacji} (linia 11 w listingu) - rozegranie partii składającej się z losowych ruchów ze stanu jednego z wierzchołków utworzonych w poprzedniej fazie. Rozgrywana jest ona do końca, czyli do wyłonienia zwycięzcy lub spowodowania remisu, lub jest ucinana po pewnej liczbie ustalonych ruchów i wynik gry jest ewaluowany przez pewną funkcję.
+	\item \textbf{Faza propagacji wstecznej} (linia 13 w listingu) - aktualizacja informacji na temat wierzchołków na ścieżce od wierzchołka-liścia, z którego rozpoczęto symulację, do korzenia drzewa. Główną przekazywaną wartością jest wynik symulacji.
 \end{enumerate}
 
 \begin{minipage}{\linewidth} % minipage to ensure listing is on seperate page
