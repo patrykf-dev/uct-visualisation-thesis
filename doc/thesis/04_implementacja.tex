@@ -130,18 +130,26 @@ Ukazane na rysunku \ref{rys:main_menu} menu główne będzie głównym oknem apl
 	\label{rys:main_menu}
 \end{figure}
 
-\noindent Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej tego przycisku znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji, w tym między innymi:
+\noindent Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji:
 \begin{itemize}
-	\item wybór gry - rozwijana lista, w której znajdować się będą zaimplementowane gry (nasz projekt przewiduje dwa tytuły),
-	\item liczba iteracji (rozgrywek), jaką komputer będzie wykonywał przed wykonaniem ruchu,
-	\item maksymalny czas na wykonanie ruchu - czas, po którym komputer będzie przerywał obliczenia i wykona ruch,
-	\item tryb rozgrywki:
-	\subitem - człowiek kontra człowiek,
-	\subitem - człowiek kontra maszyna,
-	\subitem - maszyna kontra maszyna.
+	\item \textbf{wybór gry} -- do dyspozycji gracza oddane są dwie gry -- szachy i mankala,
+	\item \textbf{wybór trybu rozgrywki} -- użytkownik może wybrać jeden z trzech dostępnych trybów gry:
+	\begin{itemize}
+		\item \textbf{dwóch graczy} -- tryb bez udziału algorytmu UCT, a co za tym idzie, również bez wizualizacji,
+		\item \textbf{gracz przeciwko PC} -- w tym trybie gracz ma okazję zmierzyć się z komputerem, oglądając przy tym generowane drzewa stanów algorytmu UCT,
+		\item \textbf{PC przeciwko PC} -- rozgrywka komputera z samym sobą, z możlwiością analizowania wynikowych drzew stanów algorutmu. Wybór tego trybu oznacza brak możliwości wykonywania samodzielnych ruchów przez użytkownika, jednakże to od niego będzie zależało, kiedy algorytm wykona kolejny ruch -- będzie miał do dyspozycji przycisk, za pomocą którego będzie mógł powodować postęp w rozgrywce. 
+	\end{itemize}
+	\item \textbf{wybór liczby iteracji algorytmu} -- liczba powtórzeń wykonania przez algorytm czterofazowej tury metody MCTS opisanej w rozdziale 3.3.1,
+	\item \textbf{wybór maksymalnego czasu} -- podany w milisekundach; czas, po którym komputer będzie przerywał obliczenia i wykona ruch,
+	\item \textbf{ustawienie limitu ruchów} -- opcjonalne pole, w którym użytkownik może ustalić maksymalną liczbą ruchów w fazie symulacji algorytmu UCT, w celu wcześniejszego kończenia niepożądanie długich rozgrywek,
+	\item \textbf{ustalenie wartości parametru eksploracji} -- im większy, tym chętniej algorytm UCT będzie wybierał rzadziej odwiedzane ruchy. Domyślnie $\sqrt{2}$,
+	\item \textbf{animowanie rozrostu drzewa} -- wybór tej opcji sprawia, że drzewo stanów algorytmu zostaje wyświetlone nie tylko po każdym wykonanym ruchu przez komputer, ale też po każdej iteracji.
+	\item \textbf{wybór kolorów krawędzi drzewa} - po kliknięciu na któryś z widocznych kolorów ukaże się paleta systemowa, z której można wybrać inne kolory krawędzi. Najczęściej i najrzadziej odwiedzane węzły drzewa przyjmą wskazane przez użytkownika kolory, inne zaś --- kolory z ich gradientu, proporcjonalnie do wartości skrajnych licznika odwiedzin.
 \end{itemize}
 
-Analiza drzewa (lub drzew) będzie dostępna po naciśnięciu przycisku \textit{Analyze tree} i uprzedniego wczytania wybranych plików (.tree, .csv).
+Drugą kluczową opcją dostępną z menu głównego aplikacji jest możlwiość przejścia do okna analizy drzewa lub sekwencji drzew. Jest ona dostępna po naciśnięciu przycisku \textit{Inspect trees}. Użytkownik może wczytać pliki z dysku na dwa sposoby: wybierając pliki z folderu bezpośrednio lub wybierając cały katalog, w którym się one znajdują. Do tego celu służą osobno dwa przyciski: \textit{Select files} i \textit{Select directory}, które znajdują się na prawo od pola tekstowego, w którym wyświetlana jest pełna ścieżka do aktualnie wybranego pliku lub katalogu. W przypadku wybrania większej ilości plików, pokazywana jest ich liczba.
+Można jednocześnie wybierać pliki w formacie CSV i binarnym (.tree), których sposób kodowania jest opisany dokładniej w rozdziałach xx i yy.
+W przypadku wybrania nieprawidłowego katalogu lub niepoprawnych plików, na ekranie użytkownika pojawi się błąd informujący o problemie, który nastąpił.
 
 \subsection{Analiza drzewa}
 W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać wczytane lub wygenerowane drzewa. 
