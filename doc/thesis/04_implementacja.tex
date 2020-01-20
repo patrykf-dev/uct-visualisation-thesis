@@ -128,4 +128,67 @@ Zgodnie z diagramami \ref{rys:umldiagram_serialization_visualisation} i \ref{rys
 	\label{rys:umldiagram_serialization_visualisation}
 \end{figure}
 
-Widniejąca na diagramie \ref{rys:umldiagram_serialization_visualisation} klasa \textit{ImprovedWalkersAlgorithm} jest głównym komponentem modułu \textit{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie. Szczegóły związane z przebiegiem algorytmu Walkera i rysowaniem każdego wierzchołka, zawarte są w polach klasy \textit{MonteCarloVisualisationDetails}. \textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
+\textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
+
+
+
+
+
+\subsection{Diagram stanów aplikacji}
+\noindent Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \textit{człowiek kontra maszyna}. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{state_diagram}
+	\caption{Diagram stanów aplikacji}
+	\label{rys:statediagram}
+\end{figure}
+
+\noindent Zgodnie z diagramem, aplikacja po rozpoczęciu rozgrywki przechodzi do obszernego stanu \textit{Rozgrywka}, zawierającego cztery wewnętrzne stany. Będac w stanie \textit{Rozgrywka}, aplikacja może potencjalnie korzystać z każdego modułu aplikacji. \\
+
+\noindent Istotna z punktu widzenia użytkownika jest możliwość serializowania wygenerowanego drzewa lub jego wizualizacja zaraz po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany \textit{Serializacja wygenerowanego drzewa} oraz \textit{Wyświetlanie wygenerowanego drzewa}.
+\clearpage
+
+\subsection{Diagram sekwencji rozgrywki}
+Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \textit{człowiek kontra maszyna}.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{play_with_pc_sequence}
+	\caption{Diagram sekwencji rozgrywki}
+	\label{rys:sequencegame}
+\end{figure}
+
+\noindent Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły \textit{Aplikacja główna}, \textit{Gra} i \textit{Algorytm}. Zgodnie z założeniami, \textit{Aplikacja główna} jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
+
+\noindent Użytkownik końcowy za pomocą menu aplikacji głównej może ustawić parametry gry i następnie włączyć ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC - wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \textit{Algorytm} (i vice versa). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika poprzez okno aplikacji głównej.\\
+
+\noindent Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \textit{Algorytm}, który pobiera stan rozgrywki z modułu \textit{Gra}.
+
+\clearpage
+\subsection{Diagram sekwencji eksportu drzewa}
+Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na rysunku \ref{rys:sequencegame}. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{serialize_sequence}
+	\caption{Diagram sekwencji eksportu drzewa}
+	\label{rys:sequenceserialize}
+\end{figure}
+
+\noindent Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do specjalnego folderu na tego typu pliki i posiada datę wygenerowania.\\
+
+\noindent Jest to diagram dla ustawienia \textit{człowiek kontra maszyna}, jednak w przypadku \textit{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
+
+\clearpage
+\subsection{Diagram sekwencji wizualizacji}
+Rysunek \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i wykonywania ruchów wygląda tak jak na rysunku \ref{rys:sequencegame}. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{visualization_sequence}
+	\caption{Diagram sekwencji wizualizacji}
+	\label{rys:sequencevisualise}
+\end{figure}
+
+\noindent Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Gdy żądanie jest z poziomu rozgrywki, komponent \textit{Aplikacja główna} komunikuje się z komponentem \textit{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi w nowym oknie. \\
+
+\noindent Drugi sposób (żądanie analizy drzewa z menu głównego) wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia - wymaga to komunikacji modułu \textit{Wizualizacja} i \textit{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanym drzewem.\\
+
+\noindent Interakcja wyżej wymienionych komponentów wygląda tak samo również w przypadku, gdy użytkownik poprosi o przeanalizowanie większej ilości drzew za jednym razem.
