@@ -23,7 +23,7 @@ Moduł \textit{Algorytm} jest implementacją metody MCTS, korzystającą z waria
 W listingu \ref{lst:mcts}, opisującym zaimplementowany algorytm, operujemy na trzech istotnych zmiennych - \textit{tree}, \textit{curr\textunderscore node} i \textit{curr\textunderscore state}. Odpowiedzialnością struktury opisującej drzewo - \textit{tree} - jest przechowywanie korzenia oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \textit{curr\textunderscore state}. Struktura opisująca wierzchołek -- \textit{curr\textunderscore node} -- przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica. Dokładne relacje między komponentami zostały opisane na diagramie \ref{rys:umldiagram}.
 
 
-\subsection{Serializacja}
+\subsection{Serializacja} \label{subsec:serialization}
 \textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub CSV. Pliki z drzewami w formacie binarnym mają umowne rozszerzenie \textit{.tree}. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy przekazać odpowiednim komponentom jego korzeń.\\
 
 \textbf{\large Serializacja binarna} \\
@@ -115,93 +115,3 @@ Metoda \textit{calculate\textunderscore next\textunderscore move} klasy \textit{
 \textit{TreeVisualiser} jest głównym komponentem modułu \textit{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka, takie jak jego współrzędne czy kolor, zawarte są w polach klasy \textit{MonteCarloVisualisationDetails}.\\
 
 \textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
-
-
-\section{Interfejs użytkownika} \label{sec:ui}
-\subsection{Wstęp}
-Graficzny interfejs użytkownika składać się będzie z trzech głównych okien, a logika jego działania będzie w całości zawarta w module \textit{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie uruchomienia poszczególnych modułów użytkownikom końcowym.
-
-\subsection{Menu główne}
-Ukazane na rysunku \ref{rys:main_menu} menu główne będzie głównym oknem aplikacji i będzie to pierwsza rzecz, którą zobaczy użytkownik po uruchomieniu programu.
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.55\textwidth]{okno-glowne}
-	\caption{Okno menu głównego}
-	\label{rys:main_menu}
-\end{figure}
-
-\noindent Dwa moduły, do których można przejść z tego okna, to rozgrywka i analiza drzewa.	Żeby rozegrać grę, należy nacisnąć na przycisk \textit{Play}. Powyżej znajdować się będzie szereg opcji, który pozwoli użytkownikowi ustawić parametry gry dostosowane do jego preferencji:
-\begin{itemize}
-	\item \textbf{wybór gry} -- do dyspozycji gracza oddane są dwie gry -- szachy i mankala,
-	\item \textbf{wybór trybu rozgrywki} -- użytkownik może wybrać jeden z trzech dostępnych trybów gry:
-	\begin{itemize}
-		\item \textbf{dwóch graczy} -- tryb bez udziału algorytmu UCT, a co za tym idzie, również bez wizualizacji,
-		\item \textbf{gracz przeciwko PC} -- w tym trybie gracz ma okazję zmierzyć się z komputerem, oglądając przy tym generowane drzewa stanów algorytmu UCT,
-		\item \textbf{PC przeciwko PC} -- rozgrywka komputera z samym sobą, z możlwiością analizowania wynikowych drzew stanów algorutmu. Wybór tego trybu oznacza brak możliwości wykonywania samodzielnych ruchów przez użytkownika, jednakże to od niego będzie zależało, kiedy algorytm wykona kolejny ruch -- będzie miał do dyspozycji przycisk, za pomocą którego będzie mógł powodować postęp w rozgrywce. 
-	\end{itemize}
-	\item \textbf{wybór liczby iteracji algorytmu} -- liczba powtórzeń wykonania przez algorytm czterofazowej tury metody MCTS opisanej w rozdziale 3.3.1,
-	\item \textbf{wybór maksymalnego czasu} -- podany w milisekundach; czas, po którym komputer będzie przerywał obliczenia i wykona ruch,
-	\item \textbf{ustawienie limitu ruchów} -- opcjonalne pole, w którym użytkownik może ustalić maksymalną liczbą ruchów w fazie symulacji algorytmu UCT, w celu wcześniejszego kończenia niepożądanie długich rozgrywek,
-	\item \textbf{ustalenie wartości parametru eksploracji} -- im większy, tym chętniej algorytm UCT będzie wybierał rzadziej odwiedzane ruchy. Domyślnie $\sqrt{2}$.
-	\item \textbf{animowanie rozrostu drzewa} -- wybór tej opcji sprawia, że drzewo stanów algorytmu zostaje wyświetlone nie tylko po każdym wykonanym ruchu przez komputer, ale też po każdej iteracji. Co więcej, w panelu po prawej stronie dynamicznie aktualizować się też będzie wartość liczby wszystkich wierzchołków drzewa.
-	\item \textbf{wybór kolorów krawędzi drzewa} - po kliknięciu na któryś z widocznych kolorów ukaże się paleta systemowa, z której można wybrać inne kolory krawędzi. Najczęściej i najrzadziej odwiedzane węzły drzewa przyjmą wskazane przez użytkownika kolory, inne zaś --- kolory z ich gradientu, proporcjonalnie do wartości skrajnych licznika odwiedzin.
-\end{itemize}
-
-Drugą kluczową opcją dostępną z menu głównego aplikacji jest możlwiość przejścia do okna analizy drzewa lub sekwencji drzew. Jest ona dostępna po naciśnięciu przycisku \textit{Inspect trees}. Użytkownik może wczytać pliki z dysku na dwa sposoby: wybierając pliki z folderu bezpośrednio lub wybierając cały katalog, w którym się one znajdują. Do tego celu służą osobno dwa przyciski: \textit{Select files} i \textit{Select directory}, które znajdują się na prawo od pola tekstowego, w którym wyświetlana jest pełna ścieżka do aktualnie wybranego pliku lub katalogu. W przypadku wybrania większej ilości plików, pokazywana jest ich liczba.
-Można jednocześnie wybierać pliki w formacie CSV i binarnym (.tree), których sposób kodowania jest opisany dokładniej w rozdziałach xx i yy.
-W przypadku wybrania nieprawidłowego katalogu lub niepoprawnych plików, na ekranie użytkownika pojawi się błąd informujący o problemie, który nastąpił.
-
-\subsection{Analiza drzewa}
-W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać i analizować drzewa wczytane z plików. 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[scale=0.57]{okno-analiza}
-	\caption{Okno analizy drzewa}
-	\label{rys:analyze_tree}
-\end{figure}
-Ekran podglądu drzewa pozwala w wygodny sposób analizować i porównywać wczytane drzewa oraz udostępnia szereg opcji.
-\begin{enumerate}
-	\item \textbf{Wyświetlenie statystyk węzła} -- po naciśnięciu na węzeł lewym przyciskiem myszy, panel z prawej strony zostaje uzupełniony informacjami, które przechowuje węzeł. Dokładność wykrywania wybranego węzła nie jest zaburzona podczas operowania na przybliżonym lub oddalonym drzewie.
-	\item \textbf{Przybliżanie i oddalanie drzewa} -- należy naprowadzić kursor na szary obszar drzewa, a następnie przewijać środkowym przyciskiem myszy w górę lub w dół. Dzięki zastosowaniu grafiki wektorowej, wierzchołki i krawędzie drzewa zachowują swój rozmiar.
-	\item \textbf{Przesuwanie drzewa} -- gdy kursor znajduje się w obszarze drzewa, należy nacisnąć prawy przycisk myszy, przytrzymać i poruszać nim na boki w celu przesunięcia widoku całego drzewa.
-	\item \textbf{Reset pozycji drzewa} -- pierwotną pozycję i rozmiar drzewa można przywrócić za pomocą przycisku \textit{Reset view} znajdującego się pod widokiem drzewa.
-	\item \textbf{Zmiana drzewa w sekwencji} -- jeżeli wczytane zostało więcej niż jedno drzewo, kluczową funkcją jest opcja wygodnego przełączania się pomiędzy nimi. Można to zrobić na trzy sposoby: używając przycisków \textit{<<} i \textit{>>}, które znajdują się w dolnej części okna; klikając lewy i prawy przycisk myszy na klawiaturze (czasami trzeba ustawić uprzednio fokus, klikając na obszar drzewa) oraz użycie pola tekstowego, pozwalającego na ,,skok'' do wybranego drzewa z listy i kliknięcie przycisku \textit{OK}. W przypadku wyświetlania pierwszego lub ostatniego drzewa w sekwencji odpowiednie przyciski strzałek stają się nieaktywne, a w przypadku pola tekstowego ze skokiem następuje walidacja, czy podany numer drzewa mieści się w zakresie.
-	\item \textbf{Zapis drzewa} - możliwość zapisu wyświetlanego drzewa w jednym z trzech dstępnych formatów: CSV, binarnym lub rastrowym (.png). Opcja ta znajduje się z prawej strony okna, pod panelem zawierającym wartości przechowywane przez węzeł. Podczas eksportu do garfiki rastrowej zadbano o to, aby nie występowały artefakty związane z dużym natężeniem krawędzi. Taka grafika zachowuje też aktualne powiększenie i przesunięcie drzewa -- działa na zasadzie zrzutu ekranu.
-\end{enumerate}
-Co więcej, dla każdego drzewa w sekwencji w panelu dolnym wyświetla się informacja o tym, którym z kolei na liście jest oglądane drzewo oraz jaka jest nazwa pliku, z którego zostało ono wczytane. Dodatkowo, wyświetlana jest liczba wszystkich wczytanych drzew.
-
-\subsection{Rozgrywka}
-Na rysunku \ref{rys:game_view} przedstawiony jest interfejs graficzny podczas rozgrywki.
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=1\textwidth]{okno-mancala}
-	\caption{Okno rozgrywki -- mankala, gracz przeciwko PC}
-	\label{rys:game_view}
-\end{figure}
-Środkową i prawą część okna zajmuje komponent dotyczący analizy drzewa, które zostało opisane powyżej. W związku z tym, wszystkie wyżej opisane funkcjonalności mają zastosowanie również w oknie rozgrywki, poza aspektem dotyczącym sekwencji drzew. Z lewej strony znajduje się plansza z grą --- mankala lub szachy --- w zależności od tego, która opcja została wybrana w menu głównym. Kolejne funkcjonalności okna rozgrywki obejmują:
-\begin{enumerate}
-	\item \textbf{wykonywanie ruchów} przez gracza, kiedy gra przeciwko PC:
-	\begin{enumerate}
-		\item w przypadku szachów - wybierając odpowiednią figurę na szachownicy, a następnie jeden z wyświetlonych dostępnych ruchów. Gracz w tym trybie zawsze gra białymi;
-		\item w przypadku mankali - wybierając pewien niepusty dołek z dolnego rzędu planszy.
-		W przypadku trybu gry PC vs PC, gracz nie może ze skutkiem klikać na obszar gry i wykonywać samodzielnych ruchów. Postęp w rozgrywce może natomiast powodować klikając na przycisk \textit{Make next move} znajdujący się na dole okna po lewej stronie, tak jak jest to pokazane na rysunku \ref{rys:game_view_2}
-	\end{enumerate}
-	\item \textbf{zrestartowanie gry} za pomocą przycisku \textit{Start over} w lewej dolnej części okna,
-	\item \textit{wizualizacja postępu obliczeń} z użyciem dynamicznego paska postępu znajdującego się w górnej części okna.
-\end{enumerate}
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=1\textwidth]{okno-szachy}
-	\caption{Okno rozgrywki -- szachy, PC przeciwko PC}
-	\label{rys:game_view_2}
-\end{figure}
-
-Bezpośrednio pod obszarem gry znajduje się etykieta z napisem dotyczącym obecnego stanu rozgrywki. \textit{Game in progress} oznacza, że gra się toczy i wciąż można wykonywać ruchy. W przypadku zakończenia rozgrywki, obszar gry lub przycisk \textit{Make next move} zostaje dezaktywowany i nie można wykonywać kolejnych ruchów aż do ponowienia gry, a etykieta będzie informować o tym, który gracz zwyciężył, wyświetlając napis \textit{Player 1 wins}, \textit{Player 2 wins} lub \textit{Draw}. Przykładowy stan zakończonej gry pokazany jest na rysunku \ref{rys:game_view_3}.
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.6\textwidth]{okno-player-vs-player}
-	\caption{Okno rozgrywki -- szachy, dwóch graczy}
-	\label{rys:game_view_3}
-\end{figure}
