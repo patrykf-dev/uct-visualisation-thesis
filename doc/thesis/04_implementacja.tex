@@ -24,9 +24,9 @@ W listingu \ref{lst:mcts}, opisującym zaimplementowany algorytm, operujemy na t
 
 
 \subsection{Serializacja} \label{subsec:serialization}
-\textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub CSV. Pliki z drzewami w formacie binarnym mają umowne rozszerzenie \textit{.tree}. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy przekazać odpowiednim komponentom jego korzeń.\\
+\textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub CSV. Pliki z drzewami w formacie binarnym mają umowne rozszerzenie \textit{.tree}. Oba schematy są rekurencyjne, bo taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy przekazać odpowiednim komponentom jego korzeń.
 
-\textbf{\large Serializacja binarna} \\
+\subsection{Serializacja binarna}
 W serializacji binarnej przyjmujemy opisany niżej schemat.
 
 \begin{itemize}
@@ -37,24 +37,25 @@ W serializacji binarnej przyjmujemy opisany niżej schemat.
 		\item zawartość napisu kodowana w UTF-8.
 	\end{itemize}
 	\item \textbf{liczba zmiennoprzecinkowa} - wartość liczby zakodowanej w IEEE754 na 64 bitach w kolejności little endian.
-	\item \textbf{wierzchołek:}
+\end{itemize}
+
+Schemat serializowania wierzchołka wykorzystuje wymienione powyżej zasady i ma następującą strukturę:
+
+\begin{itemize}
+	\item nazwa stanu \textit{(napis)},
+	\item $m$ - liczba węzłów potomnych \textit{(liczba całkowita)},
+	\item $m$ powtórzeń następującego bytu:
 	\begin{itemize}
-		\item nazwa stanu \textit{(napis)},
-		\item $m$ - liczba węzłów potomnych \textit{(liczba całkowita)},
-		\item $m$ powtórzeń następującego bytu:
-		\begin{itemize}
-			\item nazwa ruchu \textit{(napis)},
-			\item licznik odwiedzin \textit{(liczba całkowita)},
-			\item dodatkowy licznik odwiedzin \textit{(liczba całkowita)},
-			\item średnia wypłata \textit{(liczba zmiennoprzecinkowa)},
-			\item węzeł potomny \textit{(wierzchołek)}.
-		\end{itemize}
+		\item nazwa ruchu \textit{(napis)},
+		\item licznik odwiedzin \textit{(liczba całkowita)},
+		\item dodatkowy licznik odwiedzin \textit{(liczba całkowita)},
+		\item średnia wypłata \textit{(liczba zmiennoprzecinkowa)},
+		\item węzeł potomny \textit{(wierzchołek)}.
 	\end{itemize}
 \end{itemize}
 
-
-\textbf{\large Serializacja do plików csv} \\
-W serializacji do plików csv przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Każdy wierzchołek serializujemy do wiersza postaci:
+\subsection{Serializacja do plików csv}
+W serializacji do plików CSV przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Każdy wierzchołek serializujemy do wiersza postaci:
 
 \begin{center}
 	\textbf{R, O, O2, W, S, D}
