@@ -21,12 +21,32 @@ Okno instalacji powinno przypominać to, ukazane na rysunku \ref{rys:instalacja}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=0.7\textwidth]{instalacja}
-	\caption{Okno instalacji programu}
+	\caption{Okno instalacji programu - Windows}
 	\label{rys:instalacja}
 \end{figure}
 
 \subsection{Instrukcja instalacji Linux}
-todo
+W celu instalacji programu na lokalnym dysku, potrzebne jest uruchomienie pliku \textit{UCTVisualisationSetup.deb}, a następnie kliknięcie przycisku \textit{Install}, tak jak na rysunku \ref{rys:instalacja_linux}. 
+Aplikacja o nazwie \textit{UCT Visualisation} znajduje się w katalogu o takiej samej nazwie i domyślnie zostaje zainstalowana pod ścieżką:
+\begin{lstlisting}[style=mystylenonumbers]
+/opt/"UCT Visualization"
+\end{lstlisting}
+zatem w celu uruchomienia aplikacji należy wpisać na systemowym terminalu następującą komendę:
+\begin{lstlisting}[style=mystylenonumbers]
+/opt/"UCT Visualization"/"UCT Visualization"
+\end{lstlisting}
+lub:
+\begin{lstlisting}[style=mystylenonumbers]
+cd /opt/"UCT Visualization"
+./"UCT Visualization"
+\end{lstlisting}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{ubuntu-installer}
+	\caption{Okno instalacji programu - Ubuntu}
+	\label{rys:instalacja_linux}
+\end{figure}
 
 \section{Mankala}
 \subsection{Wstęp}
