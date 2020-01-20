@@ -100,18 +100,31 @@ Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \texti
 
 \section{Główne komponenty aplikacji}
 \subsection{Diagram klas} \label{subsec:uml}
+Klasa \textit{MonteCarloNode}, zgodnie z diagramem \ref{rys:umldiagram_node}, reprezentuje wierzchołek w drzewie, więc przechowuje referencje do swojego rodzica i wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa. Ponadto zawiera wszystkie informacje związane z przebiegiem algorytmu UCT w polu \textit{details} oraz algorytmu Walkera w polu \textit{vis\textunderscore details}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=\linewidth]{umldiagram}
-	\caption{Diagram UML głównych komponentów aplikacji}
-	\label{rys:umldiagram}
+	\includegraphics[width=0.5\linewidth]{umldiagram_node}
+	\caption{Diagram UML klasy wierzchołka}
+	\label{rys:umldiagram_node}
 \end{figure}
 
-Zgodnie z diagramem \ref{rys:umldiagram}, klasy \textit{MonteCarloTreeSearch}, \textit{TreeVisualiser} oraz \textit{Serializator} są pośrednio lub bezpośrednie zależne od klasy \textit{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \textit{Algorytm}, \textit{Wizualizacja} i \textit{Serializacja}. Klasa \textit{MonteCarloNode} przechowuje referencję do swojego rodzica oraz wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa.\\
+Diagram \ref{rys:umldiagram_algorithm} ukazuje najistotniejsze klasy modułu \textit{Algorytm}. Metoda \textit{calculate\textunderscore next\textunderscore move} klasy \textit{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Algorytm zapisuje informacje o rozgrywanych playoutach w polach klasy \textit{MonteCarloNodeDetails} analizowanych wierzchołków. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \textit{GameMove} i \textit{GameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \textit{GamePhase}.
 
-Metoda \textit{calculate\textunderscore next\textunderscore move} klasy \textit{MonteCarloTreeSearch} odpowiada za wykonanie kolejnych iteracji algorytmu. Algorytm zapisuje informacje o rozgrywanych playoutach w polach klasy \textit{MonteCarloNodeDetails} analizowanych wierzchołków. Ruch oraz stan analizowanej gry są opisane odpowiednio przez klasy \textit{GameMove} i \textit{GameState}. Implementacja metod tych klas daje możliwość łatwego rozszerzenia aplikacji o inne gry. Istotny z punktu widzenia konstrukcji drzewa jest stan rozgrywki, który opisują pola typu wyliczeniowego \textit{GamePhase}.\\
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{umldiagram_algorithm}
+	\caption{Diagram UML dla modułu \textit{Algorytm}}
+	\label{rys:umldiagram_algorithm}
+\end{figure}
 
-\textit{TreeVisualiser} jest głównym komponentem modułu \textit{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie oraz wyświetlenie wygenerowanej wizualizacji. Szczegóły związane z rysowaniem każdego wierzchołka, takie jak jego współrzędne czy kolor, zawarte są w polach klasy \textit{MonteCarloVisualisationDetails}.\\
+Zgodnie z diagramami \ref{rys:umldiagram_serialization_visualisation} i \ref{rys:umldiagram_algorithm}, klasy \textit{MonteCarloTreeSearch}, \textit{ImprovedWalkersAlgorithm} oraz \textit{Serializator} są pośrednio lub bezpośrednie zależne od klasy \textit{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \textit{Algorytm}, \textit{Wizualizacja} i \textit{Serializacja}.
 
-\textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{umldiagram_serialization_visualisation}
+	\caption{Diagram UML dla modułów \textit{Serializacja} i \textit{Wizualizacja}}
+	\label{rys:umldiagram_serialization_visualisation}
+\end{figure}
+
+Widniejąca na diagramie \ref{rys:umldiagram_serialization_visualisation} klasa \textit{ImprovedWalkersAlgorithm} jest głównym komponentem modułu \textit{Wizualizacja}. Jego odpowiedzialnością jest wyznaczenie układu wierzchołków drzewa na płaszczyźnie. Szczegóły związane z przebiegiem algorytmu Walkera i rysowaniem każdego wierzchołka, zawarte są w polach klasy \textit{MonteCarloVisualisationDetails}. \textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.

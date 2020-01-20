@@ -1,0 +1,43 @@
+@startuml
+enum GamePhase {
+    ""IN_PROGRESS""
+    ""PLAYER1_WON""
+    ""PLAYER2_WON""
+    ""DRAW""
+}
+
+
+class MonteCarloTreeSearch {
+    {method} + ""calculate_next_move()""
+    {method} - ""_selection(node)""
+    {method} - ""_expansion(node)""
+    {method} - ""_simulation(node)""
+    {method} - ""_backpropagation(node, playout_result)""
+}
+
+abstract class BaseGameMove {
+    {field} ""int player""
+}
+
+abstract class BaseGameState {
+    {field} ""int current_player""
+    {field} ""GamePhase phase""
+    {method} + ""get_all_possible_moves()""
+    {method} + ""perform_random_move()""
+    {method} + ""apply_moves(moves)""
+    {method} + ""deep_copy()""
+}
+
+class MonteCarloTree {
+    {field} ""MonteCarloNode root""
+    {field} ""BaseGameState game_state""
+}
+
+
+MonteCarloTree o-- BaseGameState
+MonteCarloTree --o MonteCarloTreeSearch 
+
+BaseGameState <-- MonteCarloTreeSearch
+GamePhase <-- BaseGameState
+BaseGameMove <-- MonteCarloTreeSearch
+@enduml

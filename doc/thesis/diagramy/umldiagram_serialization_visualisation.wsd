@@ -1,0 +1,32 @@
+@startuml
+class MonteCarloTree {
+    {field} ""MonteCarloNode root""
+    {field} ""BaseGameState game_state""
+}
+
+class MonteCarloNode {
+    {field} ""int id""
+    {field} ""BaseGameMove move""
+    {field} ""MonteCarloNodeDetails details""
+    {field} ""MonteCarloNodeVisualisationDetails vis_details""
+    {field} ""MonteCarloNode[] children""
+    {field} ""MonteCarloNode parent""
+}
+
+
+class ImprovedWalkersAlgorithm {
+  {method} + ""visualise_tree()""
+}
+
+abstract class BaseSerializator {
+    {field} ""String extension""
+    {method} + ""save_node_to_file(node, file_name)""
+    {method} + ""get_node_from_file(file_name)""
+}
+
+MonteCarloTree --o MonteCarloNode
+BaseSerializator --> MonteCarloNode
+ImprovedWalkersAlgorithm --> MonteCarloTree
+CsvSerializator --|> BaseSerializator
+BinarySerializator --|> BaseSerializator
+@enduml
