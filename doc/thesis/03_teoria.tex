@@ -1,8 +1,16 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
 \section{Algorytmy MCTS}
-\subsection{Opis grupy algorytmów} \label{subsec:mcts_group}
-Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}.
+\subsection{Opis grupy algorytmów}
+Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}. Przykład działania algorytmu ze szczególnym uwzględnieniem kolejnych faz znajduje się na rysunku \ref{rys:mcts_phases}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{mcts_phases.png}
+	\caption{Fazy MCTS}
+	\label{rys:mcts_phases}
+\end{figure}
+
 \begin{enumerate}
 	\item \textbf{Faza wyboru} (linia 7 w listingu) - wybór najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans pomiędzy eksploatacją ruchów przeanalizowanych najdokładniej oraz eksploracją tych jeszcze niezbadanych. Przez eksploatację wierzchołka powinno rozumieć się powiększanie rozmiaru drzewa tworzonego przez nie, a przez eksplorację --- rozwijanie wierzchołków, które uprzednio nie miały żadnych potomków.
 	\item \textbf{Faza rozrostu} (linia 9 w listingu) - utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka drzewa. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania poprzez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
