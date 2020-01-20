@@ -24,11 +24,33 @@ W listingu \ref{lst:mcts}, opisującym zaimplementowany algorytm, operujemy na t
 
 
 \subsection{Ewaluacja rozgrywek}
-W celu usprawnienia działania algorytmu, została dodana funkcjonalność przerywania rozgrywanych playoutów po zadanej liczbie ruchów. Po przerwaniu symulacji, w fazie propagacji wstecznej przekazana zostaje wartość nagrody wyznaczona przez ewaluację. \\
+W celu usprawnienia działania algorytmu, została dodana funkcjonalność przerywania rozgrywanych playoutów po zadanej liczbie ruchów. Po przerwaniu symulacji, w fazie propagacji wstecznej przekazana zostaje wartość nagrody wyznaczona przez ewaluację. Jako że algorytm dla wygranych zwraca $1$, dla remisów $0.5$, a dla przegranych $0$ - funkcja nagrody mu zwracać wartości z przedziału $(0, 1)$. \\
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{XXXXXXXXX}
+	\caption{Wykres funkcji nagrody dla mankali}
+	\label{rys:eval_mancala}
+\end{figure}
 
 W przypadku mankali... \\
 
-W przypadku szachów nagroda jest przyznawana w zależności od różnicy wartości figur. Zdecydowano się na użycie funkcji $\arctan ???$, której wartości w otoczeniu $???$ wraz ze wzrostem argumentów gwałtownie rosną, a wraz ze spadkiem - maleją. Przekłada się to na wierniejsze odzwierciedlenie sytuacji na szachownicy, ponieważ ...
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{XXXXXXXXX}
+	\caption{Wykres funkcji nagrody dla szachów}
+	\label{rys:eval_chess}
+\end{figure}
+
+W przypadku szachów nagroda jest przyznawana w zależności od różnicy wartości figur. Przyjęte wartości figur zostały wymienione poniżej. Zdecydowano się na użycie funkcji $\arctan ???$, której wartości w otoczeniu $???$ wraz ze wzrostem argumentów gwałtownie rosną, a wraz ze spadkiem - maleją. Przekłada się to na wierniejsze odzwierciedlenie sytuacji na szachownicy, ponieważ ...
+
+\begin{itemize}
+	\item Pion - 1 punkt.
+	\item Skoczek - 3 punkty.
+	\item Goniec - 3 punkty.
+	\item Wieża - 3 punkty.
+	\item Hetman - 9 punktów.
+\end{itemize}
 
 
 \subsection{Moduł - Serializacja} \label{subsec:serialization}
