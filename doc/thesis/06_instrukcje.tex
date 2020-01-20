@@ -9,7 +9,7 @@ W celu wykorzystania możliwości, które daje prezentowany system, należy uruc
 	\item Pamięć RAM: 8 GB.
 	\item Karta graficzna: Nvidia GTX 660 2GB / AMD HD 7870 2 GB.
 	\item Miejsce na dysku twardym: 150 MB.
-	\item System operacyjny: Windows Vista / 7 SP1 / 8 / 8.1 64-Bit / 10.
+	\item System operacyjny: Windows 10 / Ubuntu 16.04.
 \end{enumerate}
 
 \subsection{Instrukcja instalacji Windows}
@@ -27,3 +27,22 @@ Okno instalacji powinno przypominać to, ukazane na rysunku \ref{rys:instalacja}
 
 \subsection{Instrukcja instalacji Linux}
 todo
+
+\section{Mankala}
+\subsection{Wstęp}
+Mankala, jako jedna z przykładowych gier modułu \textit{Gry}, jest mniej popularną grą logiczną, więc postanowiono przedstawić instrukcję grania w nią.
+
+Plansza mankali zawiera dwanaście mniejszych pól i dwa większe, nazywane domami. Każdy z graczy ma sześć mniejszych pól leżących przed nim i dom po jego prawej stronie. Na początku gry w każdym z pól znajdują się cztery kamienie. Celem obu graczy jest zebranie w domu jak największej liczby kamieni w ich domach. Gra kończy się, gdy wszystkie pola jednego z graczy są puste. Wtedy pozostałe kamienie przydzielane są drugiemu graczowi.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\textwidth]{mancala.png}
+	\caption{Plansza mankali}
+	\label{rys:mancala}
+\end{figure}
+
+\subsection{Ruch gracza}
+Ruch gracza polega na wyjęciu wszystkich kamieni z wybranego własnego pola i rozdysponowaniu po jednym do kolejnych pól, omijając dom przeciwnika. Rozdysponowanie jest wykonywane w kierunku odwrotnym do ruchu wskazówek zegara. Ponadto, jeśli ostatni kamień wyląduje we własnym domu -- gracz musi wykonać kolejny ruch. Jeśli nie -- następuje ruch przeciwnika.
+
+\subsection{Bicie}
+Ostatnią zasadą mankali jest bicie. Bicie następuje, jeśli po wykonaniu ruchu, ostatni kamień wyląduje na pustym polu gracza. W takiej sytuacji gracz zabiera wszystkie kamienie z przyległego pola po drugiej stronie planszy. Jeżeli w sąsiednim polu nie ma kamieni, żaden kamień nie zostaje zbijany. Tak samo, ruch nie kończy się biciem, jeżeli ostatni kamień wyląduje na pustym polu przeciwnika.
