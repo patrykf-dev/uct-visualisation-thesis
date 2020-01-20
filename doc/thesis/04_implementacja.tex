@@ -141,10 +141,10 @@ Zgodnie z diagramami \ref{rys:umldiagram_serialization_visualisation} i \ref{rys
 
 Zgodnie z diagramem, aplikacja po zainicjowaniu rozgrywki przechodzi do stanu \textit{Rozgrywka} zawierającego cztery stany wewnętrzne. Będąc w stanie \textit{Rozgrywka}, aplikacja może korzysta z modułów \textit{Algorytm} i \textit{Wizualizacja}, a także opcjonalnie z modułu \textit{Serializacja}.\\
 
-Istotna z punktu widzenia użytkownika jest wizualizacja drzewa stanów bezpośrednio po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany \textit{Serializacja wygenerowanego drzewa} oraz \textit{Wyświetlanie wygenerowanego drzewa}, a także możliwość serializacji i zapisania powstałego drzewa -- stan \textit{Serializacja wygenerowanego drzewa}.
+\noindent Istotna z punktu widzenia użytkownika jest wizualizacja drzewa stanów bezpośrednio po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany \textit{Serializacja wygenerowanego drzewa} oraz \textit{Wyświetlanie wygenerowanego drzewa}, a także możliwość serializacji i zapisania powstałego drzewa -- stan \textit{Serializacja wygenerowanego drzewa}.
 
 \subsection{Diagram sekwencji rozgrywki}
-Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \textit{człowiek kontra maszyna}.
+Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \textit{Gracz versus PC}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{play_with_pc_sequence}
@@ -152,15 +152,14 @@ Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \tex
 	\label{rys:sequencegame}
 \end{figure}
 
-\noindent Istotne jest, jak w tej sytuacji komunikują się ze sobą moduły \textit{Aplikacja główna}, \textit{Gra} i \textit{Algorytm}. Zgodnie z założeniami, \textit{Aplikacja główna} jest interfejsem użytkownika do korzystania z pozostałych modułów.\\
+Na diagramie przedstawiona jest istota komunikacji głównych modułów podczas rozgrywania partii w jedną z dwóch gier. \textit{Aplikacja główna}, \textit{Gra} i \textit{Algorytm}.\\
 
-\noindent Użytkownik końcowy za pomocą menu aplikacji głównej może ustawić parametry gry i następnie włączyć ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC - wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \textit{Algorytm} (i vice versa). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika poprzez okno aplikacji głównej.\\
+\noindent Użytkownik końcowy za pomocą menu aplikacji głównej może ustawić parametry gry i uruchomić ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC - wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \textit{Algorytm} (i na odwrót). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika poprzez okno aplikacji głównej. Dodatkowo, po każdym wykonanym ruchu, za pomocą modułu \textit{Wizualizacja} generowane jest drzewo stanów algorytmu UCT, a następnie pokazywane jest ono użytkownikowi.\\
 
 \noindent Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \textit{Algorytm}, który pobiera stan rozgrywki z modułu \textit{Gra}.
 
-\clearpage
 \subsection{Diagram sekwencji eksportu drzewa}
-Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na rysunku \ref{rys:sequencegame}. 
+Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa podczas rozgrywki. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na rysunku \ref{rys:sequencegame}. 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\textwidth]{serialize_sequence}
@@ -168,13 +167,13 @@ Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych ko
 	\label{rys:sequenceserialize}
 \end{figure}
 
-\noindent Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do specjalnego folderu na tego typu pliki i posiada datę wygenerowania.\\
+Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do wybranego przez użytkownika folderu.\\
 
-\noindent Jest to diagram dla ustawienia \textit{człowiek kontra maszyna}, jednak w przypadku \textit{maszyna kontra maszyna} istnieje taka sama funkcjonalność i diagram byłby analogiczny.
+\noindent Jest to diagram dla trybu rozgrywki \textit{Gracz versus PC}, jednak w przypadku ustawienia \textit{PC versus PC} sposób serializacji się nie zmienia i diagram wygląda identycznie.
 
 \clearpage
 \subsection{Diagram sekwencji wizualizacji drzewa}
-Rysunek \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i wykonywania ruchów wygląda tak jak na rysunku \ref{rys:sequencegame}. 
+Rysunek \ref{rys:sequencevisualise} przedstawia proces wyświetlania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i wykonywania ruchów wygląda tak jak na rysunku \ref{rys:sequencegame}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=1\textwidth]{visualization_sequence}
@@ -182,8 +181,6 @@ Rysunek \ref{rys:sequencevisualise} przedstawia proces uruchamiania wizualizacji
 	\label{rys:sequencevisualise}
 \end{figure}
 
-\noindent Ważne jest, że użytkownik może uruchomić wizualizację z poziomu rozgrywki tuż po wygenerowaniu nowego drzewa przez algorytm lub już na etapie menu głównego. Gdy żądanie jest z poziomu rozgrywki, komponent \textit{Aplikacja główna} komunikuje się z komponentem \textit{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi w nowym oknie. \\
+Istotny jest fakt, że użytkownik może oglądać drzewa stanów wybierając pliki drzew z dysku w menu głównym aplikacji, ale też oglądać je bezpośrednio podczas rozgrywki po wykonanym ruchu algorytmu. Gdy żądanie jest z poziomu rozgrywki, komponent \textit{Aplikacja główna} komunikuje się z komponentem \textit{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi na ekranie.\\
 
-\noindent Drugi sposób (żądanie analizy drzewa z menu głównego) wymaga wcześniejszego wczytania drzewa z pliku i odpowiednio jego deserializację w celu wyświetlenia - wymaga to komunikacji modułu \textit{Wizualizacja} i \textit{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanym drzewem.\\
-
-\noindent Interakcja wyżej wymienionych komponentów wygląda tak samo również w przypadku, gdy użytkownik poprosi o przeanalizowanie większej ilości drzew za jednym razem.
+\noindent Drugi sposób, czyli wczytanie plików drzew z menu głównego, wymaga wcześniejszego zdeserializowania ich w celu wyświetlenia - wymaga to komunikacji modułu \textit{Wizualizacja} i \textit{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanymi drzewami.\\
