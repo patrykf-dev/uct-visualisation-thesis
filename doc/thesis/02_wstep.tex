@@ -7,6 +7,37 @@ Algorytm UCT, będący usprawnieniem metody MCTS, jest powszechnie stosowanym al
 \subsection{Cel biznesowy}
 Celem projektu jest stworzenie aplikacji pozwalającej na wizualizację drzewa stanów algorytmu UCT. Aplikacja będzie pozwalała na wizualizowanie drzew generowanych podczas rozgrywania dwóch przykładowych gier. Aplikacja powinna pozwalać na wizualizację drzew lub sekwencji drzew. Powinna istnieć możliwość płynnego przybliżania, oddalania i przesuwania drzewa oraz zapisu aktualnego stanu do pliku graficznego. Innymi słowy, wynikiem powinien być produkt, który pozwoliłby zrozumieć klientowi ideę i sposób działania algorytmu UCT.
 
+\subsection{Harmonogram pracy}
+\begin{table}[h!]
+	\centering
+	\caption{Harmonogram pracy}
+	\label{tab:schedule}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Deadline}   & \textbf{Przygotowane zadania} \\ \hline
+		24.10.2019 	& Serializacja \\
+		& Algorytm  \\
+		& Pierwsza gra \\ \hline
+		7.11.2019  	& Podstawowa wizualizacja \\
+		& Połączenie algorytmu i gry \\ \hline
+		21.11.2019	& Zaawansowana wizualizacja \\
+		& Aplikacja okienkowa \\
+		& Zapis drzew do pliku graficznego \\ \hline
+		5.12.2019 	& Pełna wizualizacja \\
+		& Druga gra \\ \hline
+		19.12.2019 	& Usprawnienia, poprawki\\ \hline
+	\end{tabular}
+\end{table}
+
+Czasowy podział pracy nad projektem opisuje harmonogram z tabeli \ref{tab:schedule}. Tabela nie opisuje zależności między kolejnymi fazami rozwoju projektu, wyznacza jedynie planowe terminy ich zakończenia. Tworząc tabelę, staraliśmy się rozłożyć pracę regularnie na cały zaplanowany czas tworzenia projektu. Ponadto, ze względu na skomplikowanie modułu odpowiedzialnego za wizualizację, wydzieliliśmy w nim trzy odrębne fazy rozwoju, wymienione poniżej.
+
+\begin{itemize}
+	\item Podstawowa wizualizacja - możliwość wyświetlenia wszystkich wierzchołków drzewa. W podstawowej wizualizacji wygląd wierzchołków jest nieistotny.
+	\item Zaawansowana wizualizacja - podstawowa wizualizacja wzbogacona o możliwość analizowania statystyk poszczególnych wierzchołków. Kolor wierzchołków będzie reprezentował aktualnego gracza.
+	\item Pełna wizualizacja - zaawansowana wizualizacja wzbogacona o możliwość przewijania, przybliżania oraz oddalania podglądu drzewa.
+\end{itemize}
+
+
 \section{Założenia projektowe} \label{sec:establishments}
 \subsection{Założenia funkcjonalne}
 Użytkownik korzystający z naszej aplikacji będzie miał do wyboru jedną z dwóch gier i trzy tryby rozgrywki, wymienione poniżej.
