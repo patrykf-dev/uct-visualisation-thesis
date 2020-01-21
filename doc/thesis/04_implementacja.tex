@@ -27,28 +27,39 @@ W listingu \ref{lst:mcts}, opisującym zaimplementowany algorytm, operujemy na t
 Algorytm dla wygranych gier zwraca wartość $1$, dla remisów $0.5$, a dla przegranych $0$.
 W celu usprawnienia działania algorytmu, do fazy symulacji zostala dodana funkcjonalność przerywania rozgrywanych gier po zadanej liczbie ruchów. Po przerwaniu symulacji w fazie propagacji wstecznej przekazana zostaje wartość nagrody wyznaczona przez pewną funkcję, która przyjmuje wartości z przedziału $[0.2, 0.8]$. Funkcja może przyjmować różne wartości, a jej najważniejszą cechą jest, że dla sytuacji neutralnej zwraca wartość $0.5$, tak jak w przypadku remisu.\\
 
-W przypadku mankali za główny czynnik pozwalający określić wypłatę dla gracza przyjęta została różnica pomiędzy punktami tego gracza, a punktami jego przeciwnika. Maksymalną liczbą punktów do uzyskania jest $48$, a minimalną $0$, stąd zakres wypłat wynosi $[-48, 48]$. Zastosowano funkcję liniową, która dla różnicy punktów wynoszącej $0$ przyjmuje wartość $0.5$. Wzór funkcji wyraża się jako: $f(x)=0.00625x + 0.5$, a jej reprezentację graficzną można ujrzeć na wykresie \ref{rys:eval_mancala}.
+W przypadku mankali za główny czynnik pozwalający określić wypłatę dla gracza przyjęta została różnica pomiędzy punktami tego gracza, a punktami jego przeciwnika. Maksymalną liczbą punktów do uzyskania jest $48$, a minimalną $0$, stąd zakres wypłat wynosi $[-48, 48]$. Zastosowano funkcję liniową, która dla różnicy punktów wynoszącej $0$ przyjmuje wartość $0.5$. Wzór funkcji wyraża się jako: 
+$$
+f(x)=0.00625x + 0.5
+$$
+a jej reprezentację graficzną można ujrzeć na wykresie \ref{rys:eval_mancala}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\linewidth]{wykres-mancala}
+	\includegraphics[width=0.7\linewidth]{wykres-mancala}
 	\caption{Wykres funkcji nagrody dla mankali}
 	\label{rys:eval_mancala}
 \end{figure}
 
-W przypadku szachów nagroda jest przyznawana w zależności od różnicy wartości figur. Przyjęte wartości figur zostały wymienione poniżej. Zdecydowano się na użycie funkcji $\arctan ???$, której wartości w otoczeniu $???$ wraz ze wzrostem argumentów gwałtownie rosną, a wraz ze spadkiem - maleją. Przekłada się to na wierniejsze odzwierciedlenie sytuacji na szachownicy, ponieważ ...
-
+W przypadku szachów, podobnie jak w mankali, nagroda jest przyznawana w zależności od różnicy wartości figur. Przyjęte wartości zostały wymienione poniżej.
 \begin{itemize}
-	\item Pion - 1 punkt.
-	\item Skoczek - 3 punkty.
-	\item Goniec - 3 punkty.
-	\item Wieża - 3 punkty.
-	\item Hetman - 9 punktów.
+	\item Pion - $1$ punkt,
+	\item Skoczek - $3$ punkty,
+	\item Goniec - $3$ punkty,
+	\item Wieża - $5$ punków,
+	\item Hetman - $9$ punktów.
 \end{itemize}
+Oznacza to, że wartość początkowej kolekcji figur na szachownicy dla jednego gracza wynosi $39$ punktów. Maksymalna różnica punktów między graczami wynosić może zatem $39$ (lub więcej), zatem przyjęty przedział funkcji wyznaczającej wartość wypłaty dla gracza wynosi $[-39, 39]$. Dla różnicy wartości figur wynoszącej $0$ również przyjęto, że jest to wartość remisowa $0.5$.
+Zamiast funkcji liniowej zdecydowano się na użycie funkcji $\arctan{x}$, której wartości w otoczeniu punktu przegięcia $x=0$ wraz ze wzrostem argumentów znacząco rosną, a wraz ze spadkiem -- znacząco maleją. Celem takiego zabiegu jest wypłacanie względnie wysokiej nagrody już dla małej różnicy w materiale (punktach) graczy.
+Dokładny wzór funkcji przekształcający obraz funkcji $\arctan{x}$ na $[0.2, 0.8]$ prezentuje się następująco:
+$$
+f(x)=
+0.3 \cdot \bigg[\arctan{\bigg(\frac{x}{4}\bigg) \cdot \frac{2}{\pi} + 1}\bigg] + 0.2
+$$
+a jej wykres znajduje się na rysuknu \ref{rys:eval_chess}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\linewidth]{wykres-szachy}
+	\includegraphics[width=0.7\linewidth]{wykres-szachy}
 	\caption{Wykres funkcji nagrody dla szachów}
 	\label{rys:eval_chess}
 \end{figure}
