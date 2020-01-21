@@ -24,22 +24,16 @@ W listingu \ref{lst:mcts}, opisującym zaimplementowany algorytm, operujemy na t
 
 
 \subsection{Ewaluacja rozgrywek}
-W celu usprawnienia działania algorytmu, została dodana funkcjonalność przerywania rozgrywanych playoutów po zadanej liczbie ruchów. Po przerwaniu symulacji, w fazie propagacji wstecznej przekazana zostaje wartość nagrody wyznaczona przez ewaluację. Jako że algorytm dla wygranych zwraca $1$, dla remisów $0.5$, a dla przegranych $0$ - funkcja nagrody mu zwracać wartości z przedziału $(0, 1)$. \\
+Algorytm dla wygranych gier zwraca wartość $1$, dla remisów $0.5$, a dla przegranych $0$.
+W celu usprawnienia działania algorytmu, do fazy symulacji zostala dodana funkcjonalność przerywania rozgrywanych gier po zadanej liczbie ruchów. Po przerwaniu symulacji w fazie propagacji wstecznej przekazana zostaje wartość nagrody wyznaczona przez pewną funkcję, która przyjmuje wartości z przedziału $[0.2, 0.8]$. Funkcja może przyjmować różne wartości, a jej najważniejszą cechą jest, że dla sytuacji neutralnej zwraca wartość $0.5$, tak jak w przypadku remisu.\\
+
+W przypadku mankali za główny czynnik pozwalający określić wypłatę dla gracza przyjęta została różnica pomiędzy punktami tego gracza, a punktami jego przeciwnika. Maksymalną liczbą punktów do uzyskania jest $48$, a minimalną $0$, stąd zakres wypłat wynosi $[-48, 48]$. Zastosowano funkcję liniową, która dla różnicy punktów wynoszącej $0$ przyjmuje wartość $0.5$. Wzór funkcji wyraża się jako: $f(x)=0.00625x + 0.5$, a jej reprezentację graficzną można ujrzeć na wykresie \ref{rys:eval_mancala}.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\linewidth]{XXXXXXXXX}
+	\includegraphics[width=0.6\linewidth]{wykres-mancala}
 	\caption{Wykres funkcji nagrody dla mankali}
 	\label{rys:eval_mancala}
-\end{figure}
-
-W przypadku mankali... \\
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.6\linewidth]{XXXXXXXXX}
-	\caption{Wykres funkcji nagrody dla szachów}
-	\label{rys:eval_chess}
 \end{figure}
 
 W przypadku szachów nagroda jest przyznawana w zależności od różnicy wartości figur. Przyjęte wartości figur zostały wymienione poniżej. Zdecydowano się na użycie funkcji $\arctan ???$, której wartości w otoczeniu $???$ wraz ze wzrostem argumentów gwałtownie rosną, a wraz ze spadkiem - maleją. Przekłada się to na wierniejsze odzwierciedlenie sytuacji na szachownicy, ponieważ ...
@@ -51,6 +45,13 @@ W przypadku szachów nagroda jest przyznawana w zależności od różnicy warto�
 	\item Wieża - 3 punkty.
 	\item Hetman - 9 punktów.
 \end{itemize}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.6\linewidth]{wykres-szachy}
+	\caption{Wykres funkcji nagrody dla szachów}
+	\label{rys:eval_chess}
+\end{figure}
 
 
 \subsection{Moduł - Serializacja} \label{subsec:serialization}
@@ -202,7 +203,6 @@ Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksport
 
 \noindent Jest to diagram dla trybu rozgrywki \textit{Gracz versus PC}, jednak w przypadku ustawienia \textit{PC versus PC} sposób serializacji się nie zmienia i diagram wygląda identycznie.
 
-\clearpage
 \subsection{Diagram sekwencji wizualizacji drzewa}
 Rysunek \ref{rys:sequencevisualise} przedstawia proces wyświetlania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i wykonywania ruchów wygląda tak jak na rysunku \ref{rys:sequencegame}.
 \begin{figure}[h]
