@@ -12,41 +12,27 @@ W celu wykorzystania możliwości, które daje prezentowany system, należy uruc
 	\item System operacyjny: Windows 10 / Ubuntu 16.04.
 \end{enumerate}
 
-\subsection{Instrukcja instalacji Windows}
-Aby zainstalować aplikację na dysku lokalnym, należy uruchomić plik instalacyjny \textit{UCTVisualisationSetup.exe}. Następnie ukaże się okno przeprowadzające użytkownika przez proces instalacji. Należy wybrać folder docelowy i kliknąć przycisk \textit{Install}. Po zakończeniu procesu można zamknąć okno instalacji, zaznaczając przedtem \textit{Run UCT Visualisation}, aby bezpośrednio po zamknięciu instalatora uruchomiła się aplikacja.\\
+\subsection{Instrukcja instalacji}
+W celu zainstalowania aplikacji na dysku lokalnym należy rozpakować jedno z dostarczonych archiwum. Prezentowany system został zbudowany w formie aplikacji przenośnej, więc wszystkie komponenty potrzebne do uruchomienia aplikacji są dostarczone razem z nią. W zależności od systemu operacyjnego urządzenia, należy wybrać odpowiednio:
 
-Zainstalowana aplikacja znajduje się w folderze wskazanym przez użytkownika podczas instalacji w katalogu \textit{UCT Visualisation}. Aby uruchomić aplikację należy w niego wejść i uruchomić plik \textit{UCT Visualisation.exe}.
-Okno instalacji powinno przypominać to, ukazane na rysunku \ref{rys:instalacja}.
+\begin{enumerate}
+	\item dla urządzeń z systemem Windows - \textit{UCTVisualisation-portable.zip},
+	\item dla urządzeń z systemem Linux - \textit{UCTVisualisation-portable.tar}.
+\end{enumerate}
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.7\textwidth]{instalacja}
-	\caption{Okno instalacji programu -- Windows}
-	\label{rys:instalacja}
-\end{figure}
 
-\subsection{Instrukcja instalacji Linux}
-W celu instalacji programu na lokalnym dysku, potrzebne jest uruchomienie pliku \textit{UCTVisualisationSetup.deb}, a następnie kliknięcie przycisku \textit{Install}, tak jak na rysunku \ref{rys:instalacja_linux}. 
+\subsection{Instrukcja uruchamiania}
+Zainstalowana aplikacja znajduje się w rozpakowanym katalogu o nazwie \textit{UCTVisualisation}. Aby uruchomić aplikację uruchomić odpowiedni plik w rozpakowanym katalogu. W zależności od systemu operacyjnego urządzenia, należy wybrać odpowiednio:
+\begin{enumerate}
+	\item  dla urządzeń z systemem Windows - \textit{UCT Visualisation.exe},
+	\item dla urządzeń z systemem Linux - \textit{UCT Visualisation}.
+\end{enumerate}
+
+
+\subsection{Instrukcja uruchamiania na urządzeniach z systemem Linux}
+W celu instalacji programu na lokalnym dysku, potrzebne jest uruchomienie pliku \textit{UCTVisualisationSetup.deb}, a następnie kliknięcie przycisku.
 Aplikacja o nazwie \textit{UCT Visualisation} znajduje się w katalogu o takiej samej nazwie i domyślnie zostaje zainstalowana pod ścieżką:
-\begin{lstlisting}[style=mystylenonumbers]
-/opt/"UCT Visualization"
-\end{lstlisting}
-zatem w celu uruchomienia aplikacji należy wpisać w systemowym terminalu następującą komendę:
-\begin{lstlisting}[style=mystylenonumbers]
-/opt/"UCT Visualization"/"UCT Visualization"
-\end{lstlisting}
-lub:
-\begin{lstlisting}[style=mystylenonumbers]
-cd /opt/"UCT Visualization"
-./"UCT Visualization"
-\end{lstlisting}
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.8\textwidth]{ubuntu-installer}
-	\caption{Okno instalacji programu -- Ubuntu}
-	\label{rys:instalacja_linux}
-\end{figure}
 
 \section{Mankala}
 \subsection{Wstęp}
