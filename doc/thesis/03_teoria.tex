@@ -3,7 +3,6 @@
 \section{Algorytmy MCTS}
 \subsection{Opis grupy algorytmów} \label{subsec:mcts_group}
 Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}. Przykład działania algorytmu ze szczególnym uwzględnieniem kolejnych faz znajduje się na rysunku \ref{rys:mcts_phases}.
-
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{mcts_phases.png}

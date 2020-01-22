@@ -30,7 +30,7 @@ Z poziomu \textit{Menu głównego} użytkownik może przejść do okien \textit{
 	\begin{itemize}
 		\item Gracz versus PC -- w tym trybie gracz ma okazję zmierzyć się z komputerem, oglądając przy tym generowane drzewa stanów algorytmu UCT.
 		\item PC versus PC -- rozgrywka komputera z samym sobą, z możliwością analizowania wynikowych drzew stanów algorytmu. Wybór tego trybu oznacza brak możliwości wykonywania samodzielnych ruchów przez użytkownika, jednakże to od niego będzie zależało, kiedy algorytm wykona kolejny ruch -- będzie miał do dyspozycji przycisk, za pomocą którego będzie mógł powodować postęp w rozgrywce. 
-		\item Gracz versus gracz -- tryb bez udziału algorytmu UCT, a co za tym idzie, również bez wizualizacji.
+		\item Gracz versus Gracz -- tryb bez udziału algorytmu UCT, a co za tym idzie, również bez wizualizacji.
 	\end{itemize}
 
 	\item \textbf{Wybór liczby iteracji algorytmu} -- liczba powtórzeń wykonania przez algorytm czterofazowej iteracji metody MCTS opisanej w rozdziale \ref{subsec:mcts_group}.
@@ -73,8 +73,7 @@ Co więcej, dla każdego drzewa w sekwencji w panelu dolnym wyświetla się info
 	\label{rys:game_view}
 \end{figure}
 
-Na rysunku \ref{rys:game_view} przedstawiony jest interfejs graficzny podczas rozgrywki. Środkową i prawą część okna zajmuje komponent dotyczący analizy drzewa, który został opisany w rozdziale \ref{subsec:treeanalysis}. W związku z tym, wszystkie wyżej opisane funkcjonalności mają zastosowanie również w oknie rozgrywki, poza aspektem dotyczącym sekwencji drzew. Z lewej strony znajduje się panel z wybraną wcześniej grą. Funkcjonalności okna \textit{Rozgrywka} zostały opisane poniżej.
-
+Na rysunkach \ref{rys:game_view}  \footnote{Źródło grafik użytych w mankali: \url{https://www.wpclipart.com/} -- na zasadzie \textit{free use}} i \ref{rys:game_view_2} \footnote{Źródło grafik figur wykorzystanych w szachach: \url{https://icons8.com/} -- na zasadzie \textit{free use}} przedstawiony jest interfejs graficzny podczas rozgrywki. Środkową i prawą część okna zajmuje komponent dotyczący analizy drzewa, który został opisany w rozdziale \ref{subsec:treeanalysis}. W związku z tym, wszystkie wyżej opisane funkcjonalności mają zastosowanie również w oknie rozgrywki, poza aspektem dotyczącym sekwencji drzew. Z lewej strony znajduje się panel z wybraną wcześniej grą. Funkcjonalności okna \textit{Rozgrywka} zostały opisane poniżej.
 \begin{enumerate}
 	\item \textbf{Wykonywanie ruchów} przez gracza, kiedy gra przeciwko PC:
 	\begin{itemize}
