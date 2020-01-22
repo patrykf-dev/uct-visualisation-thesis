@@ -73,9 +73,9 @@ a jej wykres znajduje się na rysunku \ref{rys:eval_chess}.
 W serializacji binarnej przyjmujemy opisany niżej schemat.
 
 \begin{itemize}
-	\item \textbf{liczba całkowita} - wartość liczby zakodowanej w U2 na 4 bajtach. Bajty liczby w kolejności little endian.
+	\item \textbf{liczba całkowita} - wartość liczby zakodowanej w U2 z użyciem 4 bajtów. Bajty liczby w kolejności little endian.
 	\item \textbf{napis} - liczba bajtów w napisie \textit{(liczba całkowita)} i następnie zawartość napisu kodowana w UTF-8.
-	\item \textbf{liczba zmiennoprzecinkowa} - wartość liczby zakodowanej w IEEE754 na 64 bitach w kolejności little endian.
+	\item \textbf{liczba zmiennoprzecinkowa} - wartość liczby zakodowanej w IEEE754 z użyciem 64 bitów w kolejności little endian.
 \end{itemize}
 
 Schemat serializowania wierzchołka wykorzystuje wymienione powyżej zasady i ma następującą strukturę:
