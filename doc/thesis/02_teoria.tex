@@ -1,7 +1,6 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
-\section{Algorytmy MCTS}
-\subsection{Opis grupy algorytmów} \label{subsec:mcts_group}
+\section{Algorytmy MCTS} \label{subsec:mcts_group}
 Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}. Przykład działania algorytmu ze szczególnym uwzględnieniem kolejnych faz znajduje się na rysunku \ref{rys:mcts_phases}.
 \begin{figure}[h]
 	\centering
@@ -41,8 +40,7 @@ def find_next_move(curr_state):
 \end{minipage}
 
 
-\section{Algorytm UCT}
-\subsection{Opis algorytmu} \label{subsec:uct}
+\subsection{Algorytm UCT}
 UCT jest wariantem metody MCTS, który stara się zachować równowagę między eksploatacją ruchów o wysokiej średniej wygranej a eksploracją tych mało zbadanych. Formuła, która odpowiada za wyznaczenie najbardziej obiecującego wierzchołka w fazie wyboru MCTS jest przedstawiona jako wyrażenie \ref{formula:uct}.
 
 \begin{equation}\label{formula:uct}
@@ -50,10 +48,8 @@ UCT jest wariantem metody MCTS, który stara się zachować równowagę między 
 \end{equation}
 
 W wyrażeniu \ref{formula:uct}, indeks $i$ odnosi się do liczby wykonanych przez algorytm iteracji, czyli czterech faz MCTS. W pierwszym składniku sumy wyrażenia \ref{formula:uct}, licznik $w_i$ oznacza liczbę wygranych w danym węźle, a mianownik $n_i$ oznacza liczbę rozegranych symulacji. Zatem ułamek ten przyjmuje wartości większe dla ruchów o większej średniej wygranej, co odpowiada ze eksploatację drzewa. Drugi składnik sumy wyrażenia \ref{formula:uct} przyjmuje wartości większe dla wierzchołków, dla których wykonano mniej symulacji i odpowiada eksploracji drzewa. $N_i=\sum_i n_i$, a
-$c$ jest parametrem eksploracji, który może być dostosowany do badanego problemu (najczęściej przyjmuje się $c=\sqrt{2}$).
+$c$ jest parametrem eksploracji, który może być dostosowany do badanego problemu (najczęściej przyjmuje się $c=\sqrt{2}$).\\
 
-
-\subsection{Dodatkowe założenia}
 Stworzone przez nas rozwiązanie dodaje pewne założenia do algorytmu UCT. Dodanie założeń pozwoliło nam na stworzenie rozwiązania bardziej uniwersalnego i niezależnego od zasad i logiki badanych gier. 
 
 \begin{enumerate}
@@ -65,10 +61,8 @@ Stworzone przez nas rozwiązanie dodaje pewne założenia do algorytmu UCT. Doda
 
 \section{Algorytm wizualizacji drzewa}
 
-\subsection{Określenie problematyki}
-Celem prezentowanego rozwiązania jest wizualizacja drzewa w sposób najbardziej przejrzysty dla użytkownika. Ma to ułatwić użytkownikowi poznanie struktury drzewa i zależności między wierzchołkami. Jako że zaprojektowanie układu wierzchołków przy pewnych założeniach jest problemem NP-zupełnym nawet dla drzew binarnych, co zostało opisane w \cite{treelayout}, w prezentowanym rozwiązaniu posłużymy się heurystyką.
+Celem prezentowanego rozwiązania jest wizualizacja drzewa w sposób najbardziej przejrzysty dla użytkownika. Ma to ułatwić użytkownikowi poznanie struktury drzewa i zależności między wierzchołkami. Jako że zaprojektowanie układu wierzchołków przy pewnych założeniach jest problemem NP-zupełnym nawet dla drzew binarnych, co zostało opisane w \cite{treelayout}, w prezentowanym rozwiązaniu posłużymy się heurystyką.\\
 
-\subsection{Założenia}
 W celu uczynienia wizualizacji jak najbardziej czytelną, poczyniliśmy pewne założenia w kontekście układu wierzchołków i krawędzi wizualizowanych drzew. Zostały one wymienione poniżej. 
 
 \begin{enumerate}
@@ -78,6 +72,4 @@ W celu uczynienia wizualizacji jak najbardziej czytelną, poczyniliśmy pewne za
 	\item Wierzchołki mają być narysowane możliwie najwęziej.
 \end{enumerate}
 
-
-\subsection{Usprawniony algorytm Walkera}
 W celu wyznaczenia układ wierzchołków drzewa na płaszczyźnie, spełniając powyższe 3 założenia, skorzystamy z usprawnionego algorytmu Walkera, który działa w czasie liniowym względem liczby wierzchołków. Algorytm, który zaimplementowaliśmy, został opisany w \cite{impwalkers}.

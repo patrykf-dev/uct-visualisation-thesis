@@ -1,10 +1,9 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
-\section{Opis dostępnych okien} \label{sec:ui}
-\subsection{Wstęp}
+\section{Wstęp}
 Graficzny interfejs użytkownika składa się z trzech głównych okien, a logika jego działania jest w całości zawarta w module \textit{Aplikacja główna}. Zadaniem graficznego interfejsu jest umożliwienie uruchomienia poszczególnych modułów użytkownikom końcowym.
 
-\subsection{Menu główne}
+\section{Menu główne}
 Ukazane na rysunku \ref{rys:main_menu} menu główne jest głównym oknem aplikacji i jest to pierwsze okno ukazywane użytkownikowi po uruchomieniu programu.
 
 \begin{figure}[h!]
@@ -44,7 +43,7 @@ Z poziomu \textit{Menu głównego} użytkownik może przejść do okien \textit{
 Drugą kluczową opcją dostępną z menu głównego aplikacji jest możliwość przejścia do okna analizy drzewa lub sekwencji drzew. Jest ona dostępna po naciśnięciu przycisku \textit{Inspect trees}. Użytkownik może wczytać pliki z dysku na dwa sposoby: wybierając pliki z folderu bezpośrednio lub wybierając cały katalog, w którym się one znajdują. Do tego celu służą osobno dwa przyciski: \textit{Select files} i \textit{Select directory}, które znajdują się na prawo od pola tekstowego, w którym wyświetlana jest pełna ścieżka do aktualnie wybranego pliku lub katalogu. W przypadku wybrania większej liczby plików, pokazywana jest ich liczność. Można jednocześnie wybierać pliki w formacie CSV i binarnym (.tree), których schemat serializacji został opisany w rozdziale \ref{subsec:serialization}. W przypadku wybrania nieprawidłowego katalogu lub niepoprawnych plików, na ekranie użytkownika pojawi się błąd informujący o problemie, który nastąpił.
 
 
-\subsection{Analiza drzewa} \label{subsec:treeanalysis}
+\section{Analiza drzewa} \label{subsec:treeanalysis}
 W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać i analizować drzewa wczytane z plików. Ekran podglądu drzewa pozwala w wygodny sposób analizować i porównywać wczytane drzewa oraz udostępnia opcje wymienione poniżej.
 
 \begin{figure}[h!]
@@ -65,7 +64,7 @@ W oknie ukazanym na rysunku \ref{rys:analyze_tree} będziemy mogli oglądać i a
 
 Co więcej, dla każdego drzewa w sekwencji w panelu dolnym wyświetla się informacja o tym, którym z kolei na liście jest oglądane drzewo oraz jaka jest nazwa pliku, z którego zostało ono wczytane. Dodatkowo, wyświetlana jest liczba wszystkich wczytanych drzew.
 
-\subsection{Rozgrywka}
+\section{Rozgrywka}
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=1\textwidth]{okno-mancala}
