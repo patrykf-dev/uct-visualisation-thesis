@@ -1,5 +1,7 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
+W celu poprawnego działania aplikacji niezbędna jest efektywna komunikacja między jej komponentami. Niniejszy rozdział poświęcony jest opisowi procesu komunikacji komponentów, który jest odzwierciedleniem implementacji architektury programu.
+
 \section{Diagram klas} \label{subsec:uml}
 Klasa \textit{MonteCarloNode}, zgodnie z Rysunkiem \ref{rys:umldiagram_node}, reprezentuje wierzchołek w drzewie, więc przechowuje referencje do swojego rodzica i wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa. Ponadto zawiera wszystkie informacje związane z przebiegiem algorytmu UCT w polu \textit{details} oraz algorytmu Walkera w polu \textit{vis\textunderscore details}.
 
