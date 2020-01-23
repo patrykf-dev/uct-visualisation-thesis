@@ -20,7 +20,7 @@ Aplikacja jest podzielona na pięć oddzielnych modułów: \textit{Algorytm}, \t
 \subsection{Moduł -- Algorytm} \label{subsec:algorithm}
 Moduł \textit{Algorytm} jest implementacją metody MCTS, korzystającą z wariantu UCT. Odpowiedzialnością tego modułu jest wyznaczanie kolejnego ruchu na podstawie dostarczonego stanu gry. Opisywany moduł będzie odpowiadał za iteracyjne tworzenie drzewa stanów i przeszukiwanie go w celu wyznaczenia najbardziej korzystnego ruchu. Użytkownik będzie miał możliwość zmiany liczby iteracji algorytmu albo ograniczenie czasowe jego działania.\\
 
-W listingu \ref{lst:mcts} opisującym zaimplementowany algorytm operujemy na trzech istotnych zmiennych: \textit{tree}, \textit{curr\textunderscore node} i \textit{curr\textunderscore state}. Odpowiedzialnością struktury opisującej drzewo \textit{tree} jest przechowywanie korzenia oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \textit{curr\textunderscore state}. Struktura opisująca wierzchołek \textit{curr\textunderscore node} przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica. Dokładne relacje między komponentami zostały opisane na diagramie \ref{rys:umldiagram_algorithm}.
+W listingu \ref{lst:mcts} opisującym zaimplementowany algorytm operujemy na trzech istotnych zmiennych: \textit{tree}, \textit{curr\textunderscore node} i \textit{curr\textunderscore state}. Odpowiedzialnością struktury opisującej drzewo \textit{tree} jest przechowywanie korzenia oraz stanu wyjściowego rozgrywki, który jest tej samej struktury co zmienna \textit{curr\textunderscore state}. Struktura opisująca wierzchołek \textit{curr\textunderscore node} przechowuje wszystkie informacje na temat wierzchołka drzewa, wraz z referencjami do wierzchołków potomnych i rodzica. Dokładne relacje między komponentami zostały opisane na Rysunku \ref{rys:umldiagram_algorithm}.
 
 
 \subsection{Ewaluacja rozgrywek}
@@ -121,7 +121,7 @@ Kolejność wierszy opisujących wierzchołki jest analogiczna do odwiedzania wi
 Moduł \textit{Wizualizacja} udostępnia funkcjonalność wyświetlania dostarczonych drzew. \textit{Wizualizacja} jest jedynym modułem, który korzysta z technologii \textit{VisPy} oraz \textit{NumPy}. Wykorzystanie tych technologii ma na celu odpowiednio wydajne wyświetlenie wizualizacji oraz przechowywanie wektorów z danymi, które będzie można przekazać procesorowi graficznemu. Zadania \textit{Wizualizacji} są wymienione poniżej.
 
 \begin{itemize}
-	\item Przypisanie wierzchołkom drzewa miejsca na płaszczyźnie przy użyciu usprawnionego algorytmu Walkera i przetransformowanie wyznaczonych koordynatów do układu współrzędnych OpenGL.
+	\item Przypisanie wierzchołkom drzewa miejsca na płaszczyźnie przy użyciu usprawnionego algorytmu Walkera i przetransformowanie wyznaczonych współrzędnych do układu współrzędnych OpenGL.
 	\item Przypisanie krawędziom koloru w zależności od liczby odwiedzin wierzchołka.
 	\item Przypisanie wierzchołkom koloru w zależności od gracza reprezentowanego stanu gry.
 	\item Detekcja kliknięcia wierzchołka przez użytkownika.
@@ -140,7 +140,7 @@ Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \texti
 
 \section{Główne komponenty aplikacji}
 \subsection{Diagram klas} \label{subsec:uml}
-Klasa \textit{MonteCarloNode}, zgodnie z diagramem \ref{rys:umldiagram_node}, reprezentuje wierzchołek w drzewie, więc przechowuje referencje do swojego rodzica i wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa. Ponadto zawiera wszystkie informacje związane z przebiegiem algorytmu UCT w polu \textit{details} oraz algorytmu Walkera w polu \textit{vis\textunderscore details}.
+Klasa \textit{MonteCarloNode}, zgodnie z Rysunkiem \ref{rys:umldiagram_node}, reprezentuje wierzchołek w drzewie, więc przechowuje referencje do swojego rodzica i wierzchołków potomnych, aby zachować rekurencyjną strukturę drzewa. Ponadto zawiera wszystkie informacje związane z przebiegiem algorytmu UCT w polu \textit{details} oraz algorytmu Walkera w polu \textit{vis\textunderscore details}.
 
 \begin{figure}[h!]
 	\centering
@@ -158,7 +158,7 @@ Diagram \ref{rys:umldiagram_algorithm} ukazuje najistotniejsze klasy modułu \te
 	\label{rys:umldiagram_algorithm}
 \end{figure}
 
-Zgodnie z diagramami \ref{rys:umldiagram_serialization_visualisation} i \ref{rys:umldiagram_algorithm}, klasy \textit{MonteCarloTreeSearch}, \textit{ImprovedWalkersAlgorithm} oraz \textit{Serializator} są pośrednio lub bezpośrednie zależne od klasy \textit{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \textit{Algorytm}, \textit{Wizualizacja} i \textit{Serializacja}.
+Zgodnie z Rysunkami \ref{rys:umldiagram_serialization_visualisation} i \ref{rys:umldiagram_algorithm}, klasy \textit{MonteCarloTreeSearch}, \textit{ImprovedWalkersAlgorithm} oraz \textit{Serializator} są pośrednio lub bezpośrednie zależne od klasy \textit{MonteCarloNode}, opisującej wierzchołek w drzewie. Jest to część wspólna modułów \textit{Algorytm}, \textit{Wizualizacja} i \textit{Serializacja}.
 
 \begin{figure}[h!]
 	\centering
