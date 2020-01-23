@@ -39,7 +39,8 @@ W przypadku mankali za główny czynnik pozwalający określić wypłatę dla gr
 	\label{rys:eval_mancala}
 \end{figure}
 
-W przypadku szachów, podobnie jak w mankali, nagroda jest przyznawana w zależności od różnicy wartości figur. Przyjęte wartości zostały wymienione poniżej.
+W przypadku szachów, podobnie jak w mankali, wartość nagrody jest zależna od różnicy materiału graczy. Różnicą względem rozwiązania ewaluacji w mankali jest rozróżnienie wartości figur. Przyjęte wartości zostały wymienione poniżej.
+
 \begin{itemize}
 	\item Pion -- $1$ punkt,
 	\item Skoczek -- $3$ punkty,
@@ -47,6 +48,7 @@ W przypadku szachów, podobnie jak w mankali, nagroda jest przyznawana w zależn
 	\item Wieża -- $5$ punków,
 	\item Hetman -- $9$ punktów.
 \end{itemize}
+
 Oznacza to, że wartość początkowej kolekcji figur na szachownicy dla jednego gracza wynosi $39$ punktów. Maksymalna różnica punktów między graczami wynosić może zatem $39$ (lub więcej), zatem przyjęty przedział funkcji wyznaczającej wartość wypłaty dla gracza wynosi $[-39, 39]$. Dla różnicy wartości figur wynoszącej $0$ również przyjęto, że jest to wartość remisowa $0.5$.
 Zamiast funkcji liniowej zdecydowano się na użycie funkcji $\arctan{x}$, której wartości w otoczeniu punktu przegięcia $x=0$ wraz ze wzrostem argumentów znacząco rosną, a wraz ze spadkiem -- znacząco maleją. Celem takiego zabiegu jest wypłacanie względnie wysokiej nagrody już dla małej różnicy w materiale (punktach) graczy.
 Dokładny wzór funkcji przekształcający obraz funkcji $\arctan{x}$ na $[0.2, 0.8]$ prezentuje się następująco:
@@ -54,7 +56,7 @@ $$
 f(x)=
 0.3 \cdot \bigg[\arctan{\bigg(\frac{x}{4}\bigg) \cdot \frac{2}{\pi} + 1}\bigg] + 0.2
 $$
-a jej wykres znajduje się na rysunku \ref{rys:eval_chess}.
+a jej wykres znajduje się na Rysunku \ref{rys:eval_chess}.
 
 \begin{figure}[h!]
 	\centering
@@ -122,7 +124,7 @@ Moduł \textit{Wizualizacja} udostępnia funkcjonalność wyświetlania dostarcz
 \begin{itemize}
 	\item Przypisanie wierzchołkom drzewa miejsca na płaszczyźnie przy użyciu usprawnionego algorytmu Walkera i przetransformowanie wyznaczonych współrzędnych do układu współrzędnych OpenGL.
 	\item Przypisanie krawędziom koloru w zależności od liczby odwiedzin wierzchołka.
-	\item Przypisanie wierzchołkom koloru w zależności od gracza reprezentowanego stanu gry.
+	\item Przypisanie wierzchołkom odpowiedniego koloru. W pracy przyjęto, że jeśli w stanie gry reprezentowanym przez wierzchołek podejmuje decyzję pierwszy gracz, to wierzchołkowi zostanie przypisany kolor biały. Natomiast jeśli wierzchołek będzie odpowiadał stanowi, w którym następuje ruch gracza drugiego, wierzchołkowi zostanie przypisany kolor czarny.
 	\item Detekcja kliknięcia wierzchołka przez użytkownika.
 	\item Wyświetlenie drzewa.
 	\item Przybliżanie, oddalanie i poruszanie się po wizualizacji.
@@ -132,10 +134,10 @@ Moduł \textit{Wizualizacja} udostępnia funkcjonalność wyświetlania dostarcz
 \section{Moduł -- Gry}
 Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \textit{Gry}. System został przygotowany z myślą o rozszerzaniu o kolejne gry. Wymagania, które należy spełnić, dodając kolejną grę, są opisane w rozdziale \ref{subsec:uml}.
 
-\subsection{Instrukcja gry mankala}
+\subsection{Zasady gry w mankalę}
 Mankala, jako jedna z przykładowych gier modułu \textit{Gry}, jest mniej popularną grą logiczną od szachów, więc postanowiono przedstawić instrukcję rozgrywki.\\
 
-Plansza mankali zawiera dwanaście mniejszych pól i dwa większe, nazywane domami lub bazami. Każdemu z graczy przypisane jest sześć mniejszych pól leżących przed nim i dom po jego prawej stronie. Na początku gry w każdym z pól znajdują się cztery kamienie. Celem obu graczy jest zebranie jak największej liczby kamieni w ich domach. Gra kończy się, gdy wszystkie pola jednego z graczy są puste -- wtedy pozostałe kamienie przydzielane są drugiemu graczowi.\\
+Plansza mankali, ukazana na schemacie na Rysunku \ref{rys:mancala}, zawiera dwanaście mniejszych pól i dwa większe, nazywane domami lub bazami. Każdemu z graczy przypisane jest sześć mniejszych pól leżących przed nim i dom po jego prawej stronie. Na początku gry w każdym z pól znajdują się cztery kamienie. Celem obu graczy jest zebranie jak największej liczby kamieni w ich domach. Gra kończy się, gdy wszystkie pola jednego z graczy są puste -- wtedy pozostałe kamienie przydzielane są drugiemu graczowi.\\
 
 \begin{figure}[h!]
 	\centering
