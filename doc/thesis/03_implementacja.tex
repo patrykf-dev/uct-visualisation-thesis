@@ -27,7 +27,7 @@ W celu usprawnienia działania algorytmu, do fazy symulacji została dodana funk
 W przypadku mankali za główny czynnik pozwalający określić wypłatę dla gracza przyjęta została różnica pomiędzy punktami tego gracza, a punktami jego przeciwnika. Maksymalną liczbą punktów do uzyskania jest $48$, a minimalną $0$, stąd zakres wypłat wynosi $[-48, 48]$. Zastosowano funkcję liniową, która dla różnicy punktów wynoszącej $0$ przyjmuje wartość $0.5$. Wzór funkcji został przedstawiony we wzorze \ref{formula:mancala}, a jej reprezentację graficzną można ujrzeć na wykresie \ref{rys:eval_mancala}.
 
 \begin{equation}\label{formula:mancala}
-	f(x)=0.00625x + 0.5
+	f(x) = \frac{1}{160} x + \frac{1}{2}
 \end{equation}
 
 \begin{figure}[h!]
@@ -50,9 +50,9 @@ W przypadku szachów, podobnie jak w mankali, wartość nagrody jest zależna od
 Oznacza to, że wartość początkowej kolekcji figur na szachownicy dla jednego gracza wynosi $39$ punktów. Maksymalna różnica punktów między graczami wynosić może zatem $39$ (lub więcej), zatem przyjęty przedział funkcji wyznaczającej wartość wypłaty dla gracza wynosi $[-39, 39]$. Dla różnicy wartości figur wynoszącej $0$ również przyjęto, że jest to wartość remisowa $0.5$.
 Zamiast funkcji liniowej zdecydowano się na użycie funkcji $\arctan{x}$, której wartości w otoczeniu punktu przegięcia $x=0$ wraz ze wzrostem argumentów znacząco rosną, a wraz ze spadkiem -- znacząco maleją. Celem takiego zabiegu jest wypłacanie względnie wysokiej nagrody już dla małej różnicy w materiale (punktach) graczy.
 Dokładny wzór funkcji przekształcający obraz funkcji $\arctan{x}$ na $[0.2, 0.8]$ prezentuje się następująco:
+
 $$
-f(x)=
-0.3 \cdot \bigg[\arctan{\bigg(\frac{x}{4}\bigg) \cdot \frac{2}{\pi} + 1}\bigg] + 0.2
+f(x)= 0.3 \cdot \bigg[\arctan{\bigg(\frac{x}{4}\bigg) \cdot \frac{2}{\pi} + 1}\bigg] + 0.2
 $$
 a jej wykres znajduje się na Rysunku \ref{rys:eval_chess}.
 
