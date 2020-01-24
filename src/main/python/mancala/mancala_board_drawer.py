@@ -1,4 +1,3 @@
-import os
 import random
 from math import sqrt
 
@@ -6,6 +5,7 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import QRect, Qt, QPoint
 from PyQt5.QtGui import QPainter, QImage, QColor, QFontMetrics, QBrush
 
+from main_application.resources_container import ResourcesContainer
 from mancala.mancala_board import MancalaBoard
 
 
@@ -41,9 +41,8 @@ class MancalaBoardDrawer:
         painter.fillRect(background, QColor(160, 160, 160))
 
     def draw_holes(self, painter: QPainter):
-        from main import APP_CONTEXT
-        pixmap = QtGui.QPixmap.fromImage(QImage(APP_CONTEXT.get_resource("hole.png")))
-        pixmap_selected = QtGui.QPixmap.fromImage(QImage(APP_CONTEXT.get_resource("hole_selected.png")))
+        pixmap = QtGui.QPixmap.fromImage(QImage(ResourcesContainer.inst.get_resource_path("hole")))
+        pixmap_selected = QtGui.QPixmap.fromImage(QImage(ResourcesContainer.inst.get_resource_path("hole_selected")))
         pixmap.detach()
         pixmap_selected.detach()
         start_x = 3 * self.hole_radius + self.hole_padding + self.left_padding
@@ -65,9 +64,7 @@ class MancalaBoardDrawer:
                 y = self.top_padding
 
     def draw_stores(self, painter: QPainter):
-        from main import APP_CONTEXT
-        path = APP_CONTEXT.get_resource("store.png")
-        image = QImage(path)
+        image = QImage(ResourcesContainer.inst.get_resource_path("store"))
         pixmap = QtGui.QPixmap.fromImage(image)
         pixmap.detach()
         stores_x = self.left_padding

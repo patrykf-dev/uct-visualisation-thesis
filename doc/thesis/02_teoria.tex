@@ -1,5 +1,7 @@
 \documentclass[uct_visualisation_thesis.tex]{subfiles}
 
+Prezentowany system, poza tytułowym algorytmem UCT, wykorzystuje również usprawniony algorytm Walkera do wizualizacji drzew. W rozdziałach \ref{subsec:uct} i \ref{subsec:tree_vis} zostały przedstawione zagadnienia teoretyczne z zakresu obu algorytmów.
+
 \section{Algorytmy MCTS} \label{subsec:mcts_group}
 Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry poprzez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w Listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}. Przykład działania algorytmu ze szczególnym uwzględnieniem kolejnych faz znajduje się na Rysunku \ref{rys:mcts_phases}, pochodzącym z \cite{mctsanalysis}.
 
@@ -41,7 +43,7 @@ def find_next_move(curr_state):
 \end{minipage}
 
 
-\subsection{Algorytm UCT}
+\subsection{Algorytm UCT} \label{subsec:uct}
 UCT jest wariantem metody MCTS, który stara się zachować równowagę między eksploatacją ruchów o wysokiej średniej wygranej a eksploracją tych mało zbadanych. Formuła, która odpowiada za wyznaczenie najbardziej obiecującego wierzchołka w fazie wyboru MCTS jest przedstawiona jako wyrażenie (\ref{formula:uct}).
 
 \begin{equation}\label{formula:uct}
@@ -60,7 +62,7 @@ Stworzone przez nas rozwiązanie dodaje pewne założenia do algorytmu UCT. Doda
 \end{enumerate}
 
 
-\section{Algorytm wizualizacji drzew}
+\section{Algorytm wizualizacji drzew} \label{subsec:tree_vis}
 Celem prezentowanego rozwiązania jest wizualizacja drzew w sposób najbardziej przejrzysty dla użytkownika. Ma to ułatwić użytkownikowi poznanie struktury drzew i zależności między ich wierzchołkami. Jako że zaprojektowanie układu wierzchołków przy pewnych założeniach jest problemem NP-zupełnym nawet dla drzew binarnych, co zostało wykazane w \cite{treelayout}, w prezentowanym rozwiązaniu posłużymy się heurystyką.\\
 
 W celu uczynienia wizualizacji jak najbardziej czytelną, poczyniliśmy pewne założenia w kontekście układu wierzchołków i krawędzi wizualizowanych drzew. Zostały one wymienione poniżej. 

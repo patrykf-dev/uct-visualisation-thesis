@@ -1,22 +1,15 @@
 from os import path
 
+from main_application.resources_container import ResourcesContainer
+
 
 class ShaderReader:
     def __init__(self):
-        from main import APP_CONTEXT
-        self.shaders_path = APP_CONTEXT.get_resource()
-
-    def get_vertices_vshader(self):
-        return self._get_shader("vertex_shader_vertices")
-
-    def get_vertices_fshader(self):
-        return self._get_shader("fragment_shader_vertices")
-
-    def get_edges_vshader(self):
-        return self._get_shader("vertex_shader_edges")
-
-    def get_edges_fshader(self):
-        return self._get_shader("fragment_shader_edges")
+        self.shaders_path = ResourcesContainer.inst.base_path
+        self.vertives_vshader = self._get_shader("vertex_shader_vertices")
+        self.vertives_fshader = self._get_shader("fragment_shader_vertices")
+        self.edges_vshader = self._get_shader("vertex_shader_edges")
+        self.edges_fshader = self._get_shader("fragment_shader_edges")
 
     def _get_shader(self, name):
         with open(path.join(self.shaders_path, name + ".c")) as f:

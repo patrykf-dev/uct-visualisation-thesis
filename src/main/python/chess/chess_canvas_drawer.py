@@ -4,6 +4,8 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import QRect, Qt, QPoint
 from PyQt5.QtGui import QColor, QImage, QBrush
 
+from main_application.resources_container import ResourcesContainer
+
 
 class ChessCanvasDrawer:
     def __init__(self, width, height, chess_manager):
@@ -41,8 +43,7 @@ class ChessCanvasDrawer:
 
     def _draw_figure(self, figure, tile_pos, painter):
         if figure:
-            from main import APP_CONTEXT
-            path = APP_CONTEXT.get_resource(figure.image_file)
+            path = ResourcesContainer.inst.get_resource_path(figure.image_file)
             image = QImage(path)
             pixmap = QtGui.QPixmap.fromImage(image)
             pixmap.detach()

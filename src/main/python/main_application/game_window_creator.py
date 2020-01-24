@@ -9,6 +9,7 @@ from main_application.enums import Game, GameMode
 from main_application.game_window import GameWindow
 from main_application.gui_settings import MonteCarloSettings, DisplaySettings
 from main_application.mc_window_manager import MonteCarloWindowManager
+from main_application.resources_container import ResourcesContainer
 from main_application.window_machine_vs_machine import MachineVsMachineWindow
 from main_application.window_player_vs_machine import PlayerVsMachineWindow
 from main_application.window_player_vs_player import PlayerVsPlayerWindow
@@ -46,12 +47,12 @@ def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode,
         window = MachineVsMachineWindow(parent, manager, display_settings)
 
     if game == Game.Chess:
-        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "chess-icon.png")
-        window.setWindowIcon(QIcon(icon_path))
+        icon_path = ResourcesContainer.inst.get_resource_path("chess-icon")
         window.setWindowTitle("Chess")
-    elif game == Game.Mancala:
-        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "mancala-icon.png")
-        window.setWindowIcon(QIcon(icon_path))
+    else:
+        icon_path = ResourcesContainer.inst.get_resource_path("mancala-icon")
         window.setWindowTitle("Mancala")
+
+    window.setWindowIcon(QIcon(icon_path))
 
     return window
