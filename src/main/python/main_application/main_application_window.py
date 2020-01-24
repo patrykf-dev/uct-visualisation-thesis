@@ -9,6 +9,7 @@ from main_application.GUI_utils import TREES_PATH, amend_window_position_on_scre
 from main_application.game_window_creator import create_proper_window
 from main_application.main_application_window_layout import MainApplicationWindowLayout
 from main_application.mc_tree_window import MonteCarloTreeWindow
+from main_application.resources_container import ResourcesContainer
 from main_application.utils import extract_serializable_files_from
 
 
@@ -24,8 +25,7 @@ class MainApplicationWindow(QMainWindow):
     def _setup_window(self):
         self.setMinimumWidth(500)
         self.setWindowTitle('UCT Visualizer')
-        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icons", "tree_icon.png")
-        self.setWindowIcon(QIcon(icon_path))
+        self.setWindowIcon(QIcon(ResourcesContainer.inst.get_resource_path("tree_icon")))
         self.layout = MainApplicationWindowLayout()
         self.setCentralWidget(self.layout.main_widget)
         self.layout.play_button.clicked.connect(self._handle_play_button)

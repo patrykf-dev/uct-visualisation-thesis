@@ -27,6 +27,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.tree_index = 0
         self.binary_serializator = BinarySerializator()
         self.csv_serializator = CsvSerializator()
+        self.shader_reader = ShaderReader()
         self._smooth_enabled = True
         self._setup_widget()
         if self.tree:
@@ -100,14 +101,13 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
         self.program_vertices["u_radius_multiplier"] = self.view_matrix_manager.scale
 
     def _bind_shaders(self):
-        shader_reader = ShaderReader()
-        self.program_vertices = vispy.gloo.Program(shader_reader.get_vertices_vshader(),
-                                                   shader_reader.get_vertices_fshader())
+        self.program_vertices = vispy.gloo.Program(self.shader_reader.vertives_vshader,
+                                                   self.shader_reader.vertives_fshader)
         self.program_vertices["u_radius_multiplier"] = 3
         self.program_vertices["u_antialias"] = 1
         self.program_vertices.bind(self.vertices_buffer)
 
-        self.program_edges = vispy.gloo.Program(shader_reader.get_edges_vshader(), shader_reader.get_edges_fshader())
+        self.program_edges = vispy.gloo.Program(self.shader_reader.edges_vshader, self.shader_reader.edges_fshader)
         self.program_edges.bind(self.edges_buffer)
 
     def _bind_buffers(self):
