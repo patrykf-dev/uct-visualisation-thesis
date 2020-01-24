@@ -4,36 +4,6 @@ Algorytm UCT, będący usprawnieniem metody MCTS, jest powszechnie stosowanym al
 
 W celu umożliwienia głębszego zrozumienia idei opisywanego zagadnienia postanowiono stworzyć aplikację, która stanowiłaby wygodne narzędzie dla użytkownika zainteresowanego tą tematyką. Pozwalałaby ona na wizualizację drzew stanów algorytmu UCT generowanych podczas rozgrywki w dwie przykładowe gry, co stanowi cel biznesowy projektu.
 
-\section{Harmonogram pracy}
-\begin{table}[h!]
-	\centering
-	\caption{Harmonogram pracy}
-	\label{tab:schedule}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Deadline}   & \textbf{Przygotowane zadania} \\ \hline
-		24.10.2019 	& Serializacja \\
-		& Algorytm  \\
-		& Pierwsza gra \\ \hline
-		7.11.2019  	& Podstawowa wizualizacja \\
-		& Połączenie algorytmu i gry \\ \hline
-		21.11.2019	& Zaawansowana wizualizacja \\
-		& Aplikacja okienkowa \\
-		& Zapis drzew do pliku graficznego \\ \hline
-		5.12.2019 	& Pełna wizualizacja \\
-		& Druga gra \\ \hline
-		19.12.2019 	& Usprawnienia, poprawki\\ \hline
-	\end{tabular}
-\end{table}
-
-Czasowy podział pracy nad projektem opisany jest za pomocą harmonogramu w Tabeli \ref{tab:schedule}. Tabela nie opisuje zależności między kolejnymi fazami rozwoju projektu, wyznacza jedynie planowe terminy ich zakończenia. Tworząc tabelę, staraliśmy się rozłożyć pracę regularnie na cały zaplanowany czas tworzenia projektu. Ponadto, ze względu na skomplikowanie modułu odpowiedzialnego za wizualizację, wydzieliliśmy w nim trzy odrębne fazy rozwoju, wymienione poniżej.
-
-\begin{itemize}
-	\item Podstawowa wizualizacja -- możliwość wyświetlenia wszystkich wierzchołków drzewa. W podstawowej wizualizacji wygląd wierzchołków jest nieistotny.
-	\item Zaawansowana wizualizacja -- podstawowa wizualizacja wzbogacona o możliwość analizowania statystyk poszczególnych wierzchołków. Kolor wierzchołków będzie reprezentował aktualnego gracza.
-	\item Pełna wizualizacja -- zaawansowana wizualizacja wzbogacona o możliwość przewijania, przybliżania oraz oddalania podglądu drzewa.
-\end{itemize}
-
 \section{Założenia funkcjonalne}
 Użytkownik korzystający z naszej aplikacji ma do wyboru jedną z dwóch gier i trzy tryby rozgrywki, wymienione poniżej.
 
@@ -70,3 +40,55 @@ Wymagania niefunkcjonalne opisane są w Tabeli \ref{tab:urps}. Zawiera ona opis 
 		Wsparcie       & Aplikacja jest przeznaczona dla komputerów z systemami operacyjnymi Windows oraz Linux opartymi o dystrybucję Debian, na przykład Ubuntu. \\ \hline
 	\end{tabular}
 \end{table}
+
+
+\section{Harmonogram i podział pracy}
+\begin{table}[h!]
+	\centering
+	\caption{Podział pracy}
+	\label{tab:workdivision}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Osoba odpowiedzialna}   & \textbf{Zaimplementowany komponent} \\ \hline
+		Patryk Fijałkowski 
+		& Algorytm UCT \\
+		& Mankala \\
+		& Serializacja \\
+		& Wyświetlanie drzew \\ \hline
+		
+		Grzegorz Kacprowicz
+		& Usprawniony algorytm Walkera \\
+		& Szachy \\
+		& Graficzny interfejs użytkownika \\
+		& Połączenie algorytmu UCT z grami \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\caption{Harmonogram pracy}
+	\label{tab:schedule}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Deadline}   & \textbf{Przygotowane zadania} \\ \hline
+		24.10.2019 	& Serializacja \\
+		& Algorytm  \\
+		& Pierwsza gra \\ \hline
+		7.11.2019  	& Podstawowa wizualizacja \\
+		& Połączenie algorytmu i gry \\ \hline
+		21.11.2019	& Zaawansowana wizualizacja \\
+		& Aplikacja okienkowa \\
+		& Zapis drzew do pliku graficznego \\ \hline
+		5.12.2019 	& Pełna wizualizacja \\
+		& Druga gra \\ \hline
+		19.12.2019 	& Usprawnienia, poprawki\\ \hline
+	\end{tabular}
+\end{table}
+
+Podział zaimplementowanych komponentów pomiędzy autorów systemu opisuje harmonogram z tabeli \ref{tab:workdivision}, a czasowy podział pracy -- harmonogram z tabeli \ref{tab:schedule}. Tabela \ref{tab:schedule} nie opisuje zależności między kolejnymi fazami rozwoju projektu, wyznacza jedynie planowe terminy ich zakończenia. Tworząc czasowy podział pracy, autorzy pracy rozłożyli pracę regularnie na cały zaplanowany czas tworzenia projektu. Ponadto, ze względu na skomplikowanie modułu odpowiedzialnego za wizualizację, wydzielono w nim trzy odrębne fazy rozwoju, wymienione poniżej.
+
+\begin{itemize}
+	\item Podstawowa wizualizacja -- możliwość wyświetlenia wszystkich wierzchołków drzewa. W podstawowej wizualizacji wygląd wierzchołków jest nieistotny.
+	\item Zaawansowana wizualizacja -- podstawowa wizualizacja wzbogacona o możliwość analizowania statystyk poszczególnych wierzchołków. Kolor wierzchołków będzie reprezentował aktualnego gracza.
+	\item Pełna wizualizacja -- zaawansowana wizualizacja wzbogacona o możliwość przewijania, przybliżania oraz oddalania podglądu drzewa.
+\end{itemize}

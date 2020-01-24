@@ -65,16 +65,18 @@ a jej wykres znajduje się na Rysunku \ref{rys:eval_chess}.
 
 
 \section{Moduł -- Serializacja} \label{subsec:serialization}
-\textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub CSV. Pliki z drzewami w formacie binarnym mają umowne rozszerzenie \textit{.tree}. Oba schematy są rekurencyjne, ponieważ taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy przekazać odpowiednim komponentom jego korzeń.
+\textit{Serializacja} jest modułem odpowiadającym za zapisywanie drzew do plików formacie binarnym lub CSV. Pliki z drzewami w formacie binarnym mają umowne rozszerzenie \textit{.tree}. Oba schematy są rekurencyjne, ponieważ taka jest również struktura generowanych przez aplikację drzew. To oznacza, że w celu zapisania całego drzewa, wystarczy przekazać odpowiednim komponentom jego korzeń. \\
+
+Prezentowany system ma wizualizować również drzewa z licznikami długoterminowymi i krótkoterminowymi generowanymi przez wariant metody MCTS przedstawiony w \cite{mctspatrolling}. Licznik krótkoterminowy będzie w rozdziałach \ref{sec:serbinary} i \ref{sec:sercsv}  nazywany ,,dodatkowym licznikiem odwiedzin''. 
 
 
-\section{Serializacja binarna}
+\section{Serializacja binarna} \label{sec:serbinary}
 W serializacji binarnej przyjmujemy opisany niżej schemat.
 
 \begin{itemize}
-	\item \textbf{liczba całkowita} -- wartość liczby zakodowanej w U2 z użyciem 4 bajtów. Bajty liczby w kolejności little endian.
-	\item \textbf{napis} -- liczba bajtów w napisie \textit{(liczba całkowita)} i następnie zawartość napisu kodowana w UTF-8.
-	\item \textbf{liczba zmiennoprzecinkowa} -- wartość liczby zakodowanej w IEEE754 z użyciem 64 bitów w kolejności little endian.
+	\item \textbf{Liczba całkowita} -- wartość liczby zakodowanej w U2 z użyciem 4 bajtów. Bajty liczby w kolejności little endian.
+	\item \textbf{Napis} -- liczba bajtów w napisie \textit{(liczba całkowita)} i następnie zawartość napisu kodowana w UTF-8.
+	\item \textbf{Liczba zmiennoprzecinkowa} -- wartość liczby zakodowanej w IEEE754 z użyciem 64 bitów w kolejności little endian.
 \end{itemize}
 
 Schemat serializowania wierzchołka wykorzystuje wymienione powyżej zasady i ma następującą strukturę:
@@ -92,7 +94,7 @@ Schemat serializowania wierzchołka wykorzystuje wymienione powyżej zasady i ma
 	\end{itemize}
 \end{itemize}
 
-\section{Serializacja do plików csv}
+\section{Serializacja do plików csv} \label{sec:sercsv}
 W serializacji do plików CSV przyjmujemy, że każdy kolejny wiersz odpowiada kolejnemu wierzchołkowi drzewa, a kolejne wartości opisujące wierzchołek oddzielamy przecinkami. Ostatnią wartością jest liczba wierzchołków potomnych. Każdy wierzchołek serializujemy do wiersza postaci:
 
 \begin{center}
@@ -130,7 +132,7 @@ Moduł \textit{Wizualizacja} udostępnia funkcjonalność wyświetlania dostarcz
 
 
 \section{Moduł -- Gry}
-Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \textit{Gry}. System został przygotowany z myślą o rozszerzaniu o kolejne gry. Wymagania, które należy spełnić, dodając kolejną grę, są opisane w rozdziale \ref{subsec:uml}.
+Prezentowane rozwiązanie udostępnia dwie gry planszowe w ramach modułu \textit{Gry} -- szachy oraz mankalę. System został przygotowany z myślą o rozszerzaniu o kolejne gry. Wymagania, które należy spełnić, dodając kolejną grę, są opisane w rozdziale \ref{subsec:uml}.
 
 \subsection{Zasady gry w mankalę}
 Mankala, jako jedna z przykładowych gier modułu \textit{Gry}, jest mniej popularną grą logiczną od szachów, więc postanowiono przedstawić instrukcję rozgrywki.\\
