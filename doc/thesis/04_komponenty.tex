@@ -56,7 +56,7 @@ Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \tex
 	\label{rys:sequencegame}
 \end{figure}
 
-Użytkownik końcowy za pomocą menu aplikacji głównej może ustawić parametry gry i uruchomić ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC -- wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \textit{Algorytm} (i na odwrót). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika poprzez okno aplikacji głównej. Dodatkowo, po każdym wykonanym ruchu, za pomocą modułu \textit{Wizualizacja} generowane jest drzewo stanów algorytmu UCT, a następnie pokazywane jest ono użytkownikowi.\\
+Użytkownik końcowy przy użyciu menu aplikacji głównej może ustawić parametry gry i uruchomić ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC -- wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \textit{Algorytm} (i na odwrót). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika w oknie aplikacji głównej. Dodatkowo, po każdym wykonanym ruchu, przy użyciu modułu \textit{Wizualizacja} generowane jest drzewo stanów algorytmu UCT, a następnie pokazywane jest ono użytkownikowi.\\
 
 Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \textit{Algorytm}, który pobiera stan rozgrywki z modułu \textit{Gra}.
 

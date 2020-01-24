@@ -27,7 +27,7 @@ Z poziomu \textit{Menu głównego} użytkownik może przejść do okien \textit{
 	
 	\begin{itemize}
 		\item Gracz versus PC -- w tym trybie gracz ma okazję zmierzyć się z komputerem, oglądając przy tym generowane drzewa stanów algorytmu UCT.
-		\item PC versus PC -- rozgrywka komputera z samym sobą, z możliwością analizowania wynikowych drzew stanów algorytmu. Wybór tego trybu oznacza brak możliwości wykonywania samodzielnych ruchów przez użytkownika, jednakże to od niego będzie zależało, kiedy algorytm wykona kolejny ruch -- będzie miał do dyspozycji przycisk, za pomocą którego będzie mógł powodować postęp w rozgrywce. 
+		\item PC versus PC -- rozgrywka komputera z samym sobą, z możliwością analizowania wynikowych drzew stanów algorytmu. Wybór tego trybu oznacza brak możliwości wykonywania samodzielnych ruchów przez użytkownika, jednakże to od niego będzie zależało, kiedy algorytm wykona kolejny ruch -- będzie miał do dyspozycji przycisk, przy użyciu którego będzie mógł powodować postęp w rozgrywce. 
 		\item Gracz versus Gracz -- tryb bez udziału algorytmu UCT, a co za tym idzie, również bez wizualizacji.
 	\end{itemize}
 
@@ -57,7 +57,7 @@ W oknie ukazanym na Rysunku \ref{rys:analyze_tree} będziemy mogli oglądać i a
 	\item \textbf{Przybliżanie i oddalanie widoku} -- należy naprowadzić kursor na szary obszar drzewa, a następnie przewijać środkowym przyciskiem myszy w górę lub w dół.
 	\item \textbf{Przesuwanie drzewa} -- gdy kursor znajduje się w obszarze drzewa, należy nacisnąć prawy przycisk myszy, przytrzymać i poruszać nim na boki w celu przesunięcia widoku całego drzewa.
 	\item \textbf{Reset pozycji drzewa} -- pierwotną pozycję i rozmiar drzewa można przywrócić za pomocą przycisku \textit{Reset view} znajdującego się pod widokiem drzewa.
-	\item \textbf{Zmiana drzewa w sekwencji} -- jeżeli wczytane zostało więcej niż jedno drzewo, kluczową funkcją jest opcja wygodnego przełączania się pomiędzy nimi. Można to zrobić na trzy sposoby: używając przycisków ,,<<'' i ,,>>'', które znajdują się w dolnej części okna; klikając lewy i prawy przycisk myszy na klawiaturze (czasami trzeba ustawić uprzednio uaktywnić obszar drzewa, klikając na niego) oraz użycie pola tekstowego, pozwalającego na zmianę aktualnie wyświetlanego drzewa i kliknięcie przycisku \textit{OK}. W przypadku wyświetlania pierwszego lub ostatniego drzewa w sekwencji odpowiednie przyciski strzałek stają się nieaktywne, a w przypadku pola tekstowego ze skokiem następuje walidacja, czy podany numer drzewa mieści się w zakresie.
+	\item \textbf{Zmiana drzewa w sekwencji} -- jeżeli wczytane zostało więcej niż jedno drzewo, kluczową funkcją jest opcja wygodnego przełączania się między nimi. Można to zrobić na trzy sposoby: używając przycisków ,,<<'' i ,,>>'', które znajdują się w dolnej części okna; klikając lewy i prawy przycisk myszy na klawiaturze (czasami trzeba ustawić uprzednio uaktywnić obszar drzewa, klikając na niego) oraz użycie pola tekstowego, pozwalającego na zmianę aktualnie wyświetlanego drzewa i kliknięcie przycisku \textit{OK}. W przypadku wyświetlania pierwszego lub ostatniego drzewa w sekwencji odpowiednie przyciski strzałek stają się nieaktywne, a w przypadku pola tekstowego ze skokiem następuje walidacja, czy podany numer drzewa mieści się w zakresie.
 	\item \textbf{Zapis drzewa} -- możliwość zapisu wyświetlanego drzewa w jednym z trzech dostępnych formatów: CSV, binarnym lub rastrowym (.png). Opcja ta znajduje się z prawej strony okna, pod panelem zawierającym wartości przechowywane przez węzeł. Podczas eksportu do grafiki rastrowej zadbano o to, aby nie występowały artefakty związane z dużym zagęszczeniem krawędzi. Taka grafika zachowuje też aktualne powiększenie i przesunięcie drzewa -- działa na zasadzie zrzutu ekranu.
 \end{enumerate}
 
@@ -78,8 +78,8 @@ Na Rysunkach\footnote{Źródło grafik wykorzystanych w mankali: \url{https://ww
 		\item w przypadku szachów -- wybierając odpowiednią figurę na szachownicy, a następnie jeden z wyświetlonych dostępnych ruchów. Gracz w tym trybie zawsze gra białymi,
 		\item w przypadku mankali -- wybierając pewien niepusty dołek z dolnego rzędu planszy.
 	\end{itemize}
-	\item \textbf{Zrestartowanie gry} za pomocą przycisku \textit{Start over} w lewej dolnej części okna,
-	\item \textbf{Zapisanie drzewa do pliku} za pomocą przycisku \textit{Save tree}. Format zapisywanego pliku wybierany jest poprzez zaznaczenie odpowiedniej opcji w liście znajdującej się na lewo od przycisku \textit{Save tree}.
+	\item \textbf{Zrestartowanie gry} przy użyciu przycisku \textit{Start over} w lewej dolnej części okna,
+	\item \textbf{Zapisanie drzewa do pliku} przy użyciu przycisku \textit{Save tree}. Format zapisywanego pliku wybierany jest przez zaznaczenie odpowiedniej opcji w liście znajdującej się na lewo od przycisku \textit{Save tree}.
 \end{enumerate}
 
 \begin{figure}[h!]
