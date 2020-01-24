@@ -13,10 +13,10 @@ Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w
 \end{figure}
 
 \begin{enumerate}
-	\item \textbf{Faza selekcji} (linia 7 w listingu) -- wybór najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans między eksploatacją ruchów przeanalizowanych najdokładniej oraz eksploracją tych jeszcze niezbadanych. Przez eksploatację powinno rozumieć się analizowanie bardziej obiecujących rejonów drzewa, z kolei przez eksplorację --- tych rzadko odwiedzanych.
-	\item \textbf{Faza ekspansji} (linia 9 w listingu) -- utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka drzewa. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania przez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
-	\item \textbf{Faza symulacji} (linia 11 w listingu) -- rozegranie partii składającej się z losowych ruchów ze stanu jednego z wierzchołków utworzonych w poprzedniej fazie. Rozgrywana jest ona do końca, czyli do wyłonienia zwycięzcy lub spowodowania remisu, lub jest ucinana po pewnej liczbie ustalonych ruchów i wynik gry jest ewaluowany przez pewną funkcję.
-	\item \textbf{Faza propagacji wstecznej} (linia 13 w listingu) -- aktualizacja informacji na temat wierzchołków na ścieżce od wierzchołka-liścia, z którego rozpoczęto symulację, do korzenia drzewa. Główną przekazywaną wartością jest wynik symulacji.
+	\item \textbf{Faza selekcji} (wiersz 7 w listingu) -- wybór najbardziej obiecującego wierzchołka do rozrostu drzewa. Istotny w tej fazie jest balans między eksploatacją ruchów przeanalizowanych najdokładniej oraz eksploracją tych jeszcze niezbadanych. Przez eksploatację powinno rozumieć się analizowanie bardziej obiecujących rejonów drzewa, z kolei przez eksplorację --- tych rzadko odwiedzanych.
+	\item \textbf{Faza ekspansji} (wiersz 9 w listingu) -- utworzenie wierzchołków potomnych dla najbardziej obiecującego wierzchołka drzewa. Tworzone wierzchołki odpowiadają stanom możliwym do uzyskania przez wykonanie jednego ruchu ze stanu wierzchołka obiecującego.
+	\item \textbf{Faza symulacji} (wiersz 11 w listingu) -- rozegranie partii składającej się z losowych ruchów ze stanu jednego z wierzchołków utworzonych w poprzedniej fazie. Rozgrywana jest ona do końca, czyli do wyłonienia zwycięzcy lub spowodowania remisu, lub jest ucinana po pewnej liczbie ustalonych ruchów i wynik gry jest ewaluowany przez pewną funkcję.
+	\item \textbf{Faza propagacji wstecznej} (wiersz 13 w listingu) -- aktualizacja informacji na temat wierzchołków na ścieżce od wierzchołka-liścia, z którego rozpoczęto symulację, do korzenia drzewa. Główną przekazywaną wartością jest wynik symulacji.
 \end{enumerate}
 
 \begin{minipage}{\linewidth} % minipage to ensure listing is on seperate page

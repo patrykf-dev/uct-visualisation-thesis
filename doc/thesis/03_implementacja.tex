@@ -6,7 +6,7 @@ Aplikacja jest podzielona na pięć oddzielnych modułów: \textit{Algorytm}, \t
 W naszym projekcie zdecydowaliśmy się skorzystać z technologii wymienionych poniżej.
 \begin{enumerate}
 	\item Języka \textit{Python} w wersji 3.7.2, który jest udostępniany na licencji \textit{GNU General Public License}.
-	\item Biblioteki \textit{VisPy} w wersji 0.6.3, która udostępnia komponenty związane z wizualizacją graficzną. Wykorzystujemy tę bibliotekę w połączeniu z \textit{OpenGL} w wersji 2.1. Biblioteka \textit{VisPy} jest stworzona w oparciu o licencję \textit{BSD}, co w kontekście projektu na pracę inżynierską pozwala na modyfikowanie i wykorzystywanie jej.
+	\item Biblioteki \textit{VisPy} w wersji 0.6.3, która udostępnia komponenty związane z wizualizacją graficzną. Wykorzystujemy tę bibliotekę w połączeniu z \textit{OpenGL} w wersji 2.1. Biblioteka \textit{VisPy} jest stworzona na podstawie licencji \textit{BSD}, co w kontekście projektu na pracę inżynierską pozwala na modyfikowanie i wykorzystywanie jej.
 	\item Biblioteki \textit{NumPy} w wersji  1.18.1, która odpowiada za wydajne operacje na macierzach. Zgodnie z umową licencyjną opisaną przez autorów \textit{NumPy}, można wykorzystywać ich narzędzie w zakresie pracy naukowej.
 	\item Nakładki na bibliotekę \textit{Qt} -- \textit{PyQt} w wersji 5.9.2. \textit{PyQt} umożliwia tworzenie interfejsu graficznego. Dla projektów takich jak praca inżynierska, \textit{PyQt} dystrybuowana jest na zasadach \textit{GNU General Public License}.
 	\item Biblioteki \textit{fman build system (fbs)} w wersji 0.8.4, ułatwiającej pakowanie aplikacji korzystających z biblioteki \textit{PyQt} w celu stworzenia pliku instalacyjnego. To oprogramowanie dystrybuowane jest na zasadach \textit{GNU General Public License}.
@@ -74,9 +74,9 @@ Prezentowany system ma wizualizować również drzewa z licznikami długotermino
 W serializacji binarnej przyjmujemy opisany niżej schemat.
 
 \begin{itemize}
-	\item \textbf{Liczba całkowita} -- wartość liczby zakodowanej w U2 z użyciem 4 bajtów. Bajty liczby w kolejności little endian.
+	\item \textbf{Liczba całkowita} -- wartość liczby zakodowanej w U2 przy użyciu 4 bajtów. Bajty liczby w kolejności little endian.
 	\item \textbf{Napis} -- liczba bajtów w napisie \textit{(liczba całkowita)} i następnie zawartość napisu kodowana w UTF-8.
-	\item \textbf{Liczba zmiennoprzecinkowa} -- wartość liczby zakodowanej w IEEE754 z użyciem 64 bitów w kolejności little endian.
+	\item \textbf{Liczba zmiennoprzecinkowa} -- wartość liczby zakodowanej w IEEE754 przy użyciu 64 bitów w kolejności little endian.
 \end{itemize}
 
 Schemat serializowania wierzchołka wykorzystuje wymienione powyżej zasady i ma następującą strukturę:
