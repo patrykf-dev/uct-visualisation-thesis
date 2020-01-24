@@ -92,7 +92,7 @@ class Pawn(Figure):
 
         # pawn at the end - should not happen
         if self.position[0] == move_setup["last_line"]:
-            print('! Pawn should not be allowed to stay in the end line')
+            pass
         else:
             pos = move_setup["step_forward"](self.position[0], 1), self.position[1]
             figure = figures.get_figure_at(pos)
@@ -345,7 +345,6 @@ class King(Figure):
                 if figure.color == self.color:
                     continue
                 elif figure.figure_type == FigureType.KING:
-                    print('! Two kings cannot stand next to each other')
                     continue
             if not self.check_mask[position_being_checked]:
                 possible_moves.append(ChessMove(position_being_checked, self.position, MoveType.NORMAL))

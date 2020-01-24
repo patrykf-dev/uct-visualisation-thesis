@@ -42,7 +42,6 @@ class MancalaCanvas(GameCanvas):
         if not extra_turn and player_moved or self.board.phase != GamePhase.IN_PROGRESS:
             player = 1 if self.board.current_player == 2 else 2
             player_move = MancalaMove(copy.deepcopy(self.moves_sequence), player)
-            print(f"PLAYER WENT FOR {player_move}")
             self.moves_sequence.clear()
             move_info = {"move": player_move, "phase": self.board.phase}
             self.player_move_performed.fire(self, earg=move_info)
