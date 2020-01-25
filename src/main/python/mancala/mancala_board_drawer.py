@@ -34,7 +34,6 @@ class MancalaBoardDrawer:
         if self.initial_draw:
             self.stones_centers = [[] for i in range(14)]
             self.generate_stones_centers(board)
-            self.generate_store_stones_centers(board)
             self.initial_draw = False
 
         self.draw_stones(painter)
@@ -75,7 +74,7 @@ class MancalaBoardDrawer:
         self.store1_rectangle = QRect(stores_x, stores_y, self.hole_radius * 3, self.hole_radius * 5)
         painter.drawPixmap(self.store1_rectangle, pixmap)
         self.store2_rectangle = QRect(15 * self.hole_radius + 7 * self.hole_padding + stores_x, stores_y,
-                      self.hole_radius * 3, self.hole_radius * 5)
+                                      self.hole_radius * 3, self.hole_radius * 5)
         painter.drawPixmap(self.store2_rectangle, pixmap)
 
     def draw_numbers(self, painter: QPainter, board: MancalaBoard):
@@ -119,7 +118,6 @@ class MancalaBoardDrawer:
             if sqrt(x_dist * x_dist + y_dist * y_dist) <= self.hole_radius:
                 if self.selected_hole_index == i:
                     self.selected_hole_index = -1
-                    # self.stones_centers = []
                     return True, self.draw_index_to_board_index(i)
                 else:
                     self.selected_hole_index = i
@@ -133,33 +131,29 @@ class MancalaBoardDrawer:
         else:
             return 18 - i
 
-    def generate_stones_centers(self, board: MancalaBoard):
+    def _get_stone_coordinates(self, i):
         max_span = self.hole_radius - self.stone_radius - 2
+        hole_x = self.hole_centers[i][0]
+        hole_y = self.hole_centers[i][1]
+        x_diff = random.uniform(-max_span, max_span)
+        max_y = int(sqrt(abs(max_span * max_span - x_diff * x_diff)))
+        y_diff = random.uniform(-max_y, max_y)
+        x = hole_x + x_diff
+        y = hole_y + y_diff
+        return x, y
 
+    def _get_store_stones_coordinates(self, store):
+        padding = 20
+        random_x = random.uniform(store.left() + padding, store.right() - padding)
+        random_y = random.uniform(store.top() + padding, store.bottom() - padding)
+        return random_x, random_y
+
+    def generate_stones_centers(self, board: MancalaBoard):
         for i in range(len(self.hole_centers)):
             board_index = self.draw_index_to_board_index(i)
             for j in range(board.board_values[board_index]):
-                hole_x = self.hole_centers[i][0]
-                hole_y = self.hole_centers[i][1]
-                x_diff = random.uniform(-max_span, max_span)
-                max_y = int(sqrt(abs(max_span * max_span - x_diff * x_diff)))
-                y_diff = random.uniform(-max_y, max_y)
-                x = hole_x + x_diff
-                y = hole_y + y_diff
+                x, y = self._get_stone_coordinates(i)
                 self.stones_centers[board_index].append((x, y))
-
-    def generate_store_stones_centers(self, board: MancalaBoard):
-        padding = 20
-        store = self.store2_rectangle
-        for i in range(board.board_values[6]):
-            random_x = random.uniform(store.left() + padding, store.right() - padding)
-            random_y = random.uniform(store.top() + padding, store.bottom() - padding)
-            self.stones_centers.append((random_x, random_y))
-        store = self.store1_rectangle
-        for i in range(board.board_values[13]):
-            random_x = random.uniform(store.left() + padding, store.right() - padding)
-            random_y = random.uniform(store.top() + padding, store.bottom() - padding)
-            self.stones_centers.append((random_x, random_y))
 
     def draw_stones(self, painter):
         brush = QBrush(QColor(0, 180, 100, 150), Qt.SolidPattern)
@@ -170,35 +164,19 @@ class MancalaBoardDrawer:
                 painter.drawEllipse(QPoint(*stone), self.stone_radius * 2, self.stone_radius * 2)
 
     def update_stones_positions(self, board: MancalaBoard, old_board_values):
-        max_span = self.hole_radius - self.stone_radius - 2
         for i, value in enumerate(board.board_values):
             draw_index = self.draw_index_to_board_index(i)
             old_value = old_board_values[i]
             difference = value - old_value
             if difference > 0:
-                if i == 6:
-                    padding = 20
-                    store = self.store2_rectangle
+                if i == 6 or i == 13:
+                    store = self.store2_rectangle if i == 6 else self.store1_rectangle
                     for j in range(difference):
-                        random_x = random.uniform(store.left() + padding, store.right() - padding)
-                        random_y = random.uniform(store.top() + padding, store.bottom() - padding)
-                        self.stones_centers[i].append((random_x, random_y))
-                elif i == 13:
-                    padding = 20
-                    store = self.store1_rectangle
-                    for j in range(difference):
-                        random_x = random.uniform(store.left() + padding, store.right() - padding)
-                        random_y = random.uniform(store.top() + padding, store.bottom() - padding)
-                        self.stones_centers[i].append((random_x, random_y))
+                        x, y = self._get_store_stones_coordinates(store)
+                        self.stones_centers[i].append((x, y))
                 else:
                     for j in range(difference):
-                        hole_x = self.hole_centers[draw_index][0]
-                        hole_y = self.hole_centers[draw_index][1]
-                        x_diff = random.uniform(-max_span, max_span)
-                        max_y = int(sqrt(abs(max_span * max_span - x_diff * x_diff)))
-                        y_diff = random.uniform(-max_y, max_y)
-                        x = hole_x + x_diff
-                        y = hole_y + y_diff
+                        x, y = self._get_stone_coordinates(draw_index)
                         self.stones_centers[i].append((x, y))
             elif difference < 0:
                 for j in range(-difference):
