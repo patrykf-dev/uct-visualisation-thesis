@@ -145,8 +145,8 @@ class MancalaBoard:
                 copied_board.get_player_moves(i, move, moves)
         else:
             move = MancalaMove(prev_move.moves_sequence + [hole_index], self.current_player)
-            move.description = str(f"player {move.player} went: {move.moves_sequence}")
-            moves.append(move)
+            move.description = str(f"Player {move.player} performed: {move.moves_sequence}")
+            moves.append((move, f"Current player: {copied_board.current_player}"))
             return
 
     def is_the_hole_of_current_player(self, index):

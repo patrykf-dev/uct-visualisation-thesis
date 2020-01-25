@@ -16,7 +16,7 @@ class MancalaState(BaseGameState):
         all_possible_moves = self.get_all_possible_moves()
         random_number = RandomUtils.get_random_int(0, len(all_possible_moves))
         move = all_possible_moves[random_number]
-        self.board.perform_move(move)
+        self.board.perform_move(move[0])
         self.switch_current_player()
         self.phase = self.board.phase
 
@@ -44,7 +44,3 @@ class MancalaState(BaseGameState):
         rc.phase = self.phase
         rc.current_player = self.board.current_player
         return rc
-
-    def generate_description(self):
-        status = str(self.phase).split(".")[1]
-        return f"{status}, player1 value: {self.board.get_win_score(1)}, player2 value: {self.board.get_win_score(2)}"

@@ -69,7 +69,7 @@ class MainApplicationWindow(QMainWindow):
         When multiple files were chosen, the user will see "Multiple files chosen" in the edit line.
         """
         res_path = ResourcesContainer.inst.trees_path
-        paths, _ = QFileDialog.getOpenFileNames(self, "Open a tree file", res_path,
+        paths, _ = QFileDialog.getOpenFileNames(self, "Open tree file(s)", res_path,
                                                 "Tree files (*.csv *.tree)")
         if len(paths) == 1:
             self.layout.tree_path_edit.setText(paths[0])

@@ -68,12 +68,13 @@ def get_all_possible_moves(board: Chessboard):
         figure_moves = figures_list[i].check_moves(board.figures)
         reduce_move_range_when_check(board, figures_list[i], figure_moves)
 
-        for move in figure_moves:
+        for j, move in enumerate(figure_moves):
             move.player = get_player_from_color(board.current_player_color)
-
             f_color = str(copied_figure.color).split(".")[1].lower()
             f_type = str(copied_figure.figure_type).split(".")[1].lower()
             move.description = f"{f_color} {f_type} {move.real_position_from()} -> {move.real_position_to()}"
+            s_state = str(board.game_status).split(".")[1].lower()
+            figure_moves[j] = (move, s_state)
 
         if figure_moves:
             all_possible_moves.extend(figure_moves)
