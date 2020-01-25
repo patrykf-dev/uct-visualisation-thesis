@@ -90,7 +90,7 @@ class MonteCarloTreeSearch:
         node_state = self.tree.retrieve_node_game_state(node)
         possible_moves = node_state.get_all_possible_moves()
         for move in possible_moves:
-            node.add_child_by_move(move)
+            node.add_child_by_move(move[0], state_desc=move[1])
 
     def _simulation(self, leaf) -> MonteCarloSimulationResult:
         """

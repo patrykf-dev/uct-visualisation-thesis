@@ -18,8 +18,10 @@ class MonteCarloNode:
         self.left_most_sibling = None
         self.number = 1
 
-    def add_child_by_move(self, move):
+    def add_child_by_move(self, move, state_desc=""):
         child = MonteCarloNode._create_instance(move)
+        if state_desc != "":
+            child.details.state_name = state_desc
         child.parent = self
         child.vis_details.y = self.vis_details.y + 1
         self.children.append(child)

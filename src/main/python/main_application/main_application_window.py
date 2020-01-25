@@ -68,7 +68,8 @@ class MainApplicationWindow(QMainWindow):
         When one file is chosen, its name will appear in the edit line.
         When multiple files were chosen, the user will see "Multiple files chosen" in the edit line.
         """
-        paths, _ = QFileDialog.getOpenFileNames(self, "Open a tree file", TREES_PATH,
+        res_path = ResourcesContainer.inst.trees_path
+        paths, _ = QFileDialog.getOpenFileNames(self, "Open tree file(s)", res_path,
                                                 "Tree files (*.csv *.tree)")
         if len(paths) == 1:
             self.layout.tree_path_edit.setText(paths[0])
@@ -83,7 +84,8 @@ class MainApplicationWindow(QMainWindow):
         All trees from the selected directory (non recursively) will be loaded to the application.
         User can choose a directory, and its path will be shown on the textfield.
         """
-        path = QFileDialog.getExistingDirectory(self, "Open a directory with tree files", TREES_PATH, QFileDialog.ShowDirsOnly)
+        res_path = ResourcesContainer.inst.app_path
+        path = QFileDialog.getExistingDirectory(self, "Open a directory with tree files", res_path, QFileDialog.ShowDirsOnly)
         if not path:
             return
         files = extract_serializable_files_from(path)

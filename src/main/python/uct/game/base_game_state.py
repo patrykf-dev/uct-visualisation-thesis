@@ -28,10 +28,6 @@ class BaseGameState(abc.ABC):
     def deep_copy(self):
         pass
 
-    @abc.abstractmethod
-    def generate_description(self):
-        pass
-
     def switch_current_player(self):
         if self.current_player == 1:
             self.current_player = 2

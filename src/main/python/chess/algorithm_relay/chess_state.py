@@ -41,7 +41,7 @@ class ChessState(BaseGameState):
         all_possible_moves = ChessUtils.get_all_possible_moves(self.board)
         random_number = RandomUtils.get_random_int(0, len(all_possible_moves))
         move = all_possible_moves[random_number]
-        self.board.perform_legal_move(move)
+        self.board.perform_legal_move(move[0])
         self.switch_current_player()
         self.phase = ChessState.cast_chess_phase_to_abstract_phase(self.board.game_status)
 
@@ -51,11 +51,6 @@ class ChessState(BaseGameState):
         rc.phase = self.phase
         rc.current_player = ChessUtils.get_player_from_color(self.board.current_player_color)
         return rc
-
-    def generate_description(self):
-        status = str(self.board.game_status).split(".")[1]
-        return f"{status}, {len(self.board.figures.figures_list)} figures left on board," \
-               f" player1 value: {self.board.figures.player1_value}, player2 value: {self.board.figures.player2_value}"
 
     def apply_moves(self, moves):
         for move in moves:

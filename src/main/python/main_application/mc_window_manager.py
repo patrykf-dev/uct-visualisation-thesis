@@ -34,7 +34,6 @@ class MonteCarloWindowManager:
             self.mc_manager.perform_previous_move()
 
     def _handle_player_move_performed(self, sender, move_info):
-        print(f"Player move performed in {self.game_mode}!")
         if self.game_mode == GameMode.PLAYER_VS_PC and move_info["phase"] == GamePhase.IN_PROGRESS:
             self.mc_manager.notify_move_performed(move_info["move"])
             self.perform_algorithm_move()
