@@ -170,43 +170,36 @@ class MancalaBoardDrawer:
                 painter.drawEllipse(QPoint(*stone), self.stone_radius * 2, self.stone_radius * 2)
 
     def update_stones_positions(self, board: MancalaBoard, old_board_values):
-        # max_span = self.hole_radius - self.stone_radius - 2
-
-        # for i in range(len(self.hole_centers)):
-        #     board_index = self.draw_index_to_board_index(i)
-        #     for value in range(board.board_values[board_index]):
-        #         old_value = old_board_values[board_index]
-        #         difference = value - old_value
-        #         if difference > 0:
-        #             hole_x = self.hole_centers[i][0]
-        #             hole_y = self.hole_centers[i][1]
-        #             x_diff = random.uniform(-max_span, max_span)
-        #             max_y = int(sqrt(abs(max_span * max_span - x_diff * x_diff)))
-        #             y_diff = random.uniform(-max_y, max_y)
-        #             x = hole_x + x_diff
-        #             y = hole_y + y_diff
-        #             self.stones_centers.append((x, y))
-        #         elif difference < 0:
-        #             for j in range(difference):
-        #                 board.board_values[i].pop()
-
         max_span = self.hole_radius - self.stone_radius - 2
         for i, value in enumerate(board.board_values):
-            if i == 6 or i == 13:
-                continue
             draw_index = self.draw_index_to_board_index(i)
             old_value = old_board_values[i]
             difference = value - old_value
             if difference > 0:
-                for j in range(difference):
-                    hole_x = self.hole_centers[draw_index][0]
-                    hole_y = self.hole_centers[draw_index][1]
-                    x_diff = random.uniform(-max_span, max_span)
-                    max_y = int(sqrt(abs(max_span * max_span - x_diff * x_diff)))
-                    y_diff = random.uniform(-max_y, max_y)
-                    x = hole_x + x_diff
-                    y = hole_y + y_diff
-                    self.stones_centers[i].append((x, y))
+                if i == 6:
+                    padding = 20
+                    store = self.store2_rectangle
+                    for j in range(difference):
+                        random_x = random.uniform(store.left() + padding, store.right() - padding)
+                        random_y = random.uniform(store.top() + padding, store.bottom() - padding)
+                        self.stones_centers[i].append((random_x, random_y))
+                elif i == 13:
+                    padding = 20
+                    store = self.store1_rectangle
+                    for j in range(difference):
+                        random_x = random.uniform(store.left() + padding, store.right() - padding)
+                        random_y = random.uniform(store.top() + padding, store.bottom() - padding)
+                        self.stones_centers[i].append((random_x, random_y))
+                else:
+                    for j in range(difference):
+                        hole_x = self.hole_centers[draw_index][0]
+                        hole_y = self.hole_centers[draw_index][1]
+                        x_diff = random.uniform(-max_span, max_span)
+                        max_y = int(sqrt(abs(max_span * max_span - x_diff * x_diff)))
+                        y_diff = random.uniform(-max_y, max_y)
+                        x = hole_x + x_diff
+                        y = hole_y + y_diff
+                        self.stones_centers[i].append((x, y))
             elif difference < 0:
                 for j in range(-difference):
                     self.stones_centers[i].pop()
