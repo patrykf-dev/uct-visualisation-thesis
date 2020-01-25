@@ -51,7 +51,7 @@ class MancalaCanvas(GameCanvas):
 
     def perform_algorithm_move(self, move: MancalaMove):
         super().perform_algorithm_move(move)
+        old_board_values = copy.deepcopy(self.board.board_values)
         self.board.perform_move(move)
-
-        self.board_drawer.stones_centers = []  # TODO get rid of this
+        self.board_drawer.update_stones_positions(self.board, old_board_values)
         self.repaint()

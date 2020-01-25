@@ -12,7 +12,6 @@ class MancalaBoard:
 
     def __init__(self):
         self.board_values = [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0]
-        # self.board = [0, 0, 0, 0, 0, 1, 24, 0, 1, 1, 1, 0, 1, 18]
         self.current_player = 1
         self.phase = GamePhase.IN_PROGRESS
 
