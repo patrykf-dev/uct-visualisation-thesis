@@ -35,7 +35,9 @@ class MancalaCanvas(GameCanvas):
                 self.board_drawer.selected_hole_index = -1
         extra_turn = False
         if player_moved:
+            old_board_values = copy.deepcopy(self.board.board_values)
             extra_turn = self.board.perform_move_internal(moved_index, self.board.current_player)
+            self.board_drawer.update_stones_positions(self.board, old_board_values)
             self.moves_sequence.append(moved_index)
         self.repaint()
 
