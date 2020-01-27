@@ -34,7 +34,7 @@ Zgodnie z Rysunkami \ref{rys:umldiagram_algorithm} i \ref{rys:umldiagram_seriali
 
 \textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
 
-\section{Struktura stanów rozgrywki}
+\section{Struktura stanów rozgrywki} \label{subsec:stany}
 Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \textit{Gracz versus PC}. Zgodnie z diagramem, aplikacja po zainicjowaniu rozgrywki przechodzi do stanu \textit{Rozgrywka} zawierającego cztery stany wewnętrzne. Będąc w stanie \textit{Rozgrywka}, aplikacja może korzysta z modułów \textit{Algorytm} i \textit{Wizualizacja}, a także opcjonalnie z modułu \textit{Serializacja}.\\
 
 \begin{figure}[h!]
@@ -46,7 +46,7 @@ Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku roz
 
 Istotna z punktu widzenia użytkownika jest wizualizacja drzewa stanów bezpośrednio po ruchu wyznaczonym przez algorytm, co powoduje przejście aplikacji odpowiednio w stany \textit{Serializacja wygenerowanego drzewa} oraz \textit{Wyświetlanie wygenerowanego drzewa}, a także możliwość serializacji i zapisania powstałego drzewa -- stan \textit{Serializacja wygenerowanego drzewa}.
 
-\section{Struktura sekwencji rozgrywki}
+\section{Struktura sekwencji rozgrywki} \label{subsec:seq_roz}
 
 \begin{figure}[h!]
 	\centering
@@ -76,7 +76,7 @@ Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych ko
 Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do wybranego przez użytkownika folderu.
 
 
-\section{Struktura sekwencji wizualizacji drzewa}
+\section{Struktura sekwencji wizualizacji drzewa} \label{subsec:seq_vis}
 
 \begin{figure}[h!]
 	\centering
