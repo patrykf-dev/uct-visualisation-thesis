@@ -2,6 +2,9 @@ import os
 
 
 class ResourcesContainer:
+    """
+    Class enables resources usage, given path.
+    """
     inst = None
 
     def __init__(self, cntxt):
@@ -11,4 +14,8 @@ class ResourcesContainer:
         ResourcesContainer.inst = self
 
     def get_resource_path(self, name):
+        """
+        :param name: string, name of the file
+        :return: string, path of resource
+        """
         return os.path.join(self.base_path, name)

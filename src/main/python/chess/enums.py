@@ -52,6 +52,13 @@ class TileMarkType(Enum):
 
 
 class TileMarkArgs:
+    """
+    CLass contains information about tile-marking type and its position.
+    Tile can be:
+    - selected, when a figure is selected
+    - marked as check
+    - marked as a past move
+    """
     def __init__(self, pos, tile_mark_type: TileMarkType):
         self.pos = pos
         self.tile_mark_type = tile_mark_type

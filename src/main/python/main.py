@@ -22,6 +22,9 @@ def redefine_exceptions():
 
 
 class UCTVisualisationAppContext(ApplicationContext):
+    """
+    Class enables resources usage for UCT app.
+    """
     def run(self):
         ResourcesContainer(self)
         window = MainApplicationWindow()
@@ -31,7 +34,7 @@ class UCTVisualisationAppContext(ApplicationContext):
 
 if __name__ == '__main__':
     """
-    Application entry point
+    Application entry point.
     """
     redefine_exceptions()
     context = UCTVisualisationAppContext()
