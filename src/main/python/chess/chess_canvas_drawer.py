@@ -8,6 +8,9 @@ from main_application.resources_container import ResourcesContainer
 
 
 class ChessCanvasDrawer:
+    """
+    Class is responsible for drawing chessboard: figures, tiles and possible moves.
+    """
     def __init__(self, width, height, chess_manager):
         self.tiles_count = 8
         self.height = height
@@ -17,6 +20,13 @@ class ChessCanvasDrawer:
         self.icons_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), "icons")
 
     def grid_click_to_tile(self, x, y):
+        """
+        Transforms mouse click coordinates to tile number.
+        Example: click (85, 15) -> tile (7, 1) for height and width = 75
+        :param x: x-coordinate of a mouse click
+        :param y: y-coordinate of a mouse click
+        :return: tuple describing a chessboard's tile
+        """
         if y == 0:
             y = 1
         return (x // self.tile_width, (self.height - y) // self.tile_height)[::-1]
@@ -25,6 +35,11 @@ class ChessCanvasDrawer:
         return [(x[1] * self.tile_width, x[0] * self.tile_height) for x in positions]
 
     def draw_board(self, painter):
+        """
+        Draws figures, tiles and possible moves.
+        :param painter: QPainter object from PyQt library that enables drawing e.g. rectangles
+        :return: None
+        """
         font = painter.font()
         font.setPixelSize(14)
         painter.setFont(font)

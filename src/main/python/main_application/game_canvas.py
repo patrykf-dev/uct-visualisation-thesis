@@ -25,4 +25,9 @@ class GameCanvas(QWidget):
         pass
 
     def set_player_can_click(self, value: bool):
+        """
+        Setter. If set false, player cannot click on canvas.
+        :param value: bool
+        :return: None
+        """
         self.player_can_click = value

@@ -8,6 +8,10 @@ from main_application.mc_window_manager import MonteCarloWindowManager
 
 
 class MachineVsMachineWindow(GameVisualizationWindow):
+    """
+    Class responsible for PC vs PC game window creation. It expands its parent by "Make next move" button,
+    which allows user to push the play forward, because in this mode user cannot click on canvas to make moves by itself.
+    """
     def __init__(self, parent: QMainWindow, manager: MonteCarloWindowManager, display_settings: DisplaySettings):
         self.main_layout = QGridLayout()
         self.next_move_button = get_button("Make next move")

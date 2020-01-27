@@ -9,22 +9,13 @@ class GamePhase(Enum):
 
 
 def get_player_win(player):
+    """
+    :param player: player number, 1 or 2
+    :return: GamePhase.PLAYER1_WON for player 1, GamePhase.PLAYER2_WON for player 2. Raises exception for other numbers.
+    """
     if player == 1:
         return GamePhase.PLAYER1_WON
     elif player == 2:
         return GamePhase.PLAYER2_WON
-    else:
-        raise Exception("Unknown player index")
-
-
-def get_opponent_win(player):
-    return get_player_win(get_opponent(player))
-
-
-def get_opponent(player):
-    if player == 1:
-        return 2
-    elif player == 2:
-        return 1
     else:
         raise Exception("Unknown player index")

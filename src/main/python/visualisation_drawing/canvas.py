@@ -36,7 +36,7 @@ class MonteCarloTreeCanvas(VispyApp.Canvas):
     def use_tree_data(self, tree: MonteCarloTree):
         self.tree = tree
         alg = ImprovedWalkersAlgorithm(self.tree)
-        alg.buchheim_algorithm()
+        alg.buchheim_junger_leipert_algorithm()
         self._bind_buffers()
         self._bind_shaders()
         self._setup_matrices()

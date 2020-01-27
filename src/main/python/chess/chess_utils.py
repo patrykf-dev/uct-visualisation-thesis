@@ -6,6 +6,9 @@ from chess.figures import *
 
 
 class PastMove:
+    """
+    CLass is responsible for keeping information about moves already done.
+    """
     def __init__(self, position_to, was_check, figure_moved, was_capture, position_from):
         self.position_to = position_to
         self.was_check = was_check
@@ -18,20 +21,41 @@ class PastMove:
 
 
 def do_pawn_double_move(board: Chessboard, move: ChessMove, figure_moved):
+    """
+    Function makes a pawn do double move and exposes it to be captured en passant.
+    :param board: Chessboard object
+    :param move: ChessMove object
+    :param figure_moved: Figure object
+    :return: None
+    """
     figure_moved.set_can_be_captured_en_passant(True)
     # figure_moved.move(move.position_to)
     board.figures.move_figure_to(figure_moved, move.position_to)
 
 
 def do_en_passant_move(board: Chessboard, move: ChessMove, figure_moved: Figure):
+    """
+    Function does an en passant pawn capture. It uses 'opponent-pawn-pos' key from move.help_dict.
+    :param board: Chessboard object
+    :param move: ChessMove object
+    :param figure_moved: Figure object
+    :return: None
+    """
     # figure_moved.move(move.position_to)
     board.figures.move_figure_to(figure_moved, move.position_to)
     Figure.remove_figure_on_position(board.figures, move.help_dict['opponent-pawn-pos'])
 
 
 def do_castling(board: Chessboard, move: ChessMove, figure_moved: Figure):
+    """
+    Function does long or short castling. It uses 'rook' and 'rook-end-pos' keys from move.help_dict.
+    :param board: Chessboard object
+    :param move: ChessMove object
+    :param figure_moved: Figure object
+    :return: None
+    """
     # figure_moved.move(move.position_to)
-    board.figures.move_figure_to(figure_moved, move.position_to)  # TODO to or from?
+    board.figures.move_figure_to(figure_moved, move.position_to)
     rook = move.help_dict['rook']
     board.figures.move_figure_to(rook, move.help_dict['rook-end-pos'])
     figure_moved.set_is_able_to_castle(False)
@@ -39,6 +63,12 @@ def do_castling(board: Chessboard, move: ChessMove, figure_moved: Figure):
 
 
 def is_fifty_move_rule(board: Chessboard):
+    """
+    Checks whether the fifty-move rule has occurred. This is a situation, where in the 50 past moves not happened a move
+    that would push the game forward, e.g. capture, pawn move. This situation means a draw.
+    :param board: Chessboard object
+    :return: bool
+    """
     if len(board.past_moves) < 100:
         return False
     for past_move in board.past_moves[::-1][:100]:
@@ -48,6 +78,13 @@ def is_fifty_move_rule(board: Chessboard):
 
 
 def is_there_a_draw(board: Chessboard):
+    """
+    Checks whether the game ended in draw if:
+    - there are no figures left that are capable of checkmate
+    - fifty-move rule occurred
+    :param board: Chessboard object
+    :return: bool
+    """
     if not are_the_figures_left_capable_of_checkmate(board):
         board.game_status = GameStatus.DRAW
         return True
@@ -58,6 +95,12 @@ def is_there_a_draw(board: Chessboard):
 
 
 def get_all_possible_moves(board: Chessboard):
+    """
+    The function extracts all the possible moves from each figure of current moving player.
+    Each move gets description and player assigned.
+    :param board: Chessboard object
+    :return: list of all possible moves (ChessMove objects)
+    """
     all_possible_moves = []
     figures_list = board.figures.figures_list
     copied_figures_list = copy.deepcopy(board.figures.figures_list)
@@ -83,6 +126,13 @@ def get_all_possible_moves(board: Chessboard):
 
 
 def take_off_potential_figure(board: Chessboard, move: ChessMove):
+    """
+    Takes of figure from chessboard by given move position. If the move was en passant capture - it takes off the
+    captured pawn.
+    :param board: Chessboard object
+    :param move: ChessMove object
+    :return: tuple of 2 values: removed figure, index in figure list where it was placed
+    """
     figure = board.figures.get_figure_at(move.position_to)
     list_index = 0
     if figure:
@@ -95,11 +145,27 @@ def take_off_potential_figure(board: Chessboard, move: ChessMove):
 
 
 def put_back_potential_figure(board: Chessboard, figure: Figure, figure_index):
+    """
+    Puts a figure back into the chessboard's figures list at given figure_index.
+    :param board: Chessboard object
+    :param figure: Figure object
+    :param figure_index: index of the figure's previous position in the figures list in chessboard
+    :return: None
+    """
     if figure:
         board.figures.add_figure(figure, figure_index)
 
 
 def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
+    """
+    Reduces moves from the given list that cannot be executed, e.g. they uncover the king and put it at risk.
+    Foreach move in moves of figure makes the move and check if it puts king at risk. If it does, it gets erased from
+    the moves list.
+    :param board: Chessboard object
+    :param figure: Figure object
+    :param moves: list of figure's possible moves
+    :return: None
+    """
     bad_moves = []
     figs = board.figures
     king = figs.get_king(board.current_player_color)
@@ -119,15 +185,34 @@ def reduce_move_range_when_check(board: Chessboard, figure: Figure, moves):
 
 
 def is_king_selected_to_move_in_check(board: Chessboard, selected_tile):
+    """
+    Check if the figure selected is the king that is already put under check.
+    :param board: Chessboard object
+    :param selected_tile: tuple indicating selected tile
+    :return: bool
+    """
     figure = board.figures.get_figure_at(selected_tile)
     return figure and figure.figure_type == FigureType.KING and figure.color == board.current_player_color and board.check
 
 
 def get_king_position(board: Chessboard, color: Color):
+    """
+    Return king's position of given color.
+    :param board: Chessboard object
+    :param color: Color enum object
+    :return: king of given color
+    """
     return board.figures.get_king_position(color)
 
 
 def do_normal_move(board: Chessboard, move, figure_moved: Figure):
+    """
+    Executes normal chess move. It sets ability to castle to false if the figure moved was king or rook.
+    :param board: Chessboard object
+    :param move: ChessMove object
+    :param figure_moved: Figure object
+    :return: None
+    """
     if (figure_moved.figure_type == FigureType.KING or figure_moved.figure_type == FigureType.ROOK) and \
             figure_moved.is_able_to_castle:
         figure_moved.set_is_able_to_castle(False)
@@ -139,29 +224,30 @@ def do_normal_move(board: Chessboard, move, figure_moved: Figure):
 
 
 def do_promotion(board: Chessboard, move, figure_moved: Figure):
-    # TODO: Grzesiek, extract it from game logic
-    # while True:
-    #     figure_type_chosen = input("Choose figure: (Q)ueen, (R)ook, (K)night, (B)ishop\n").lower()
-    #     if figure_type_chosen in ["q", "r", "k", "b"]:
-    #         break
-    figure_type_chosen = "q"
+    """
+    Makes promotion move - when pawn reaches last line. It automatically assumes that the player chooses queen.
+    :param board: Chessboard object
+    :param move: ChessMove object
+    :param figure_moved: Figure object
+    :return: None
+    """
     do_normal_move(board, move, figure_moved)
     pos = figure_moved.position
     Figure.remove_figure(board.figures, figure_moved)
-    if figure_type_chosen == "q":
-        new_figure = Queen
-    elif figure_type_chosen == "r":
-        new_figure = Rook
-    elif figure_type_chosen == "k":
-        new_figure = Knight
-    elif figure_type_chosen == "b":
-        new_figure = Bishop
-    else:
-        new_figure = Queen
-    board.figures.add_figure(new_figure(board.current_player_color, pos))
+    board.figures.add_figure(Queen(board.current_player_color, pos))
 
 
 def are_the_figures_left_capable_of_checkmate(board: Chessboard):
+    """
+    It check whether there is still checkmate possible depending on the figures left. It is impossible (returns True)
+    when there are only:
+    - two sole kings,
+    - king versus king and bishop,
+    - king versus king and knight,
+    - king and bishop versus king and bishop and bishops are moving on the same tile color.
+    :param board: Chessboard object
+    :return: bool
+    """
     figures_left_count = len(board.figures.figures_list)
     if figures_left_count > 4:
         return True
@@ -180,6 +266,11 @@ def are_the_figures_left_capable_of_checkmate(board: Chessboard):
 
 
 def is_there_any_possible_move(board: Chessboard):
+    """
+    Check if current moving player has any possible move left.
+    :param board: Chessboard object
+    :return: bool
+    """
     for figure in board.figures.figures_list:
         if figure.color != board.current_player_color:
             continue
@@ -192,4 +283,8 @@ def is_there_any_possible_move(board: Chessboard):
 
 
 def get_player_from_color(color: Color):
+    """
+    :param color: Color enum object
+    :return: 1 for Color.WHITE, 2 for Color.BLACK
+    """
     return 1 if color == Color.WHITE else 2

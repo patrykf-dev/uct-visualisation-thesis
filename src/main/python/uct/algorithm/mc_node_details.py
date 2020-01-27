@@ -1,4 +1,7 @@
 class MonteCarloNodeDetails:
+    """
+    Class is responsible for storing information about Monte Carlo Tree Search properties of the node.
+    """
     def __init__(self):
         self.state_name = ""
         self.move_name = ""
@@ -8,8 +11,17 @@ class MonteCarloNodeDetails:
         self.average_prize = 0
 
     def add_score(self, amount):
+        """
+        Adds given amount to the win score.
+        :param amount: numeric value
+        :return: None
+        """
         self.win_score = self.win_score + amount
         self.average_prize = self.win_score / self.visits_count
 
     def mark_visit(self):
+        """
+        Increments counter of visits.
+        :return: None
+        """
         self.visits_count = self.visits_count + 1

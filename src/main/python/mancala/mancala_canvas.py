@@ -11,6 +11,9 @@ from uct.algorithm.enums import GamePhase
 
 
 class MancalaCanvas(GameCanvas):
+    """
+    Class represents mancala GUI.
+    """
     def __init__(self):
         super().__init__()
         self.board_drawer = MancalaBoardDrawer(self.WIDTH, self.HEIGHT)
@@ -18,12 +21,23 @@ class MancalaCanvas(GameCanvas):
         self.board = MancalaBoard()
 
     def paintEvent(self, event: QtGui.QPaintEvent):
+        """
+        Repaints game area. Overrides the base class.
+        :param event: QtGui.QPaintEvent object, event that caused the repaint
+        :return: None
+        """
         super().paintEvent(event)
         painter = QPainter(self)
         painter.setRenderHint(QPainter.HighQualityAntialiasing)
         self.board_drawer.draw_board(painter, self.board)
 
     def mousePressEvent(self, event):
+        """
+        Handler to player's click event. Checks if player can move - if a valid move was chosen, it is executed then.
+        Overrides the base class.
+        :param event: QtGui.QMouseEvent with information about click
+        :return: None
+        """
         if not self.player_can_click:
             return
         super().mousePressEvent(event)
@@ -49,6 +63,11 @@ class MancalaCanvas(GameCanvas):
             self.player_move_performed.fire(self, earg=move_info)
 
     def perform_algorithm_move(self, move: MancalaMove):
+        """
+        Performs PC's move and causes a game area repaint.
+        :param move: MancalaMove object
+        :return: None
+        """
         super().perform_algorithm_move(move)
         old_board_values = copy.deepcopy(self.board.board_values)
         self.board.perform_move(move)

@@ -3,6 +3,9 @@ from uct.algorithm.mc_node_details import MonteCarloNodeDetails
 
 
 class MonteCarloNode:
+    """
+    Class is responsible for storing information about a single node in Monte Carlo tree.
+    """
     _node_counter = 0
 
     def __init__(self):
@@ -19,6 +22,11 @@ class MonteCarloNode:
         self.number = 1
 
     def add_child_by_move(self, move, state_desc=""):
+        """
+        Adds child node to the node. New node represents given move.
+        :param move: BaseGameMove object
+        :return: None
+        """
         child = MonteCarloNode._create_instance(move)
         if state_desc != "":
             child.details.state_name = state_desc
@@ -28,16 +36,27 @@ class MonteCarloNode:
         child.number = len(self.children)
 
     def add_child_by_node(self, child):
+        """
+        Adds child node to the node.
+        :param child: MonteCarloNode object
+        :return: None
+        """
         child.parent = self
         child.vis_details.y = self.vis_details.y + 1
         self.children.append(child)
         child.number = len(self.children)
 
     def has_children(self):
+        """
+        :return: bool informing if node has any children nodes
+        """
         return len(self.children) > 0
 
     @staticmethod
     def create_root():
+        """
+        :return: MonteCarloNode object representing root node (has no move assigned)
+        """
         return MonteCarloNode._create_instance(None)
 
     @staticmethod
@@ -55,12 +74,16 @@ class MonteCarloNode:
 
     @staticmethod
     def generate_next_id():
+        """
+        :return: int, unique id for a node (starts from 1)
+        """
         MonteCarloNode._node_counter = MonteCarloNode._node_counter + 1
         return MonteCarloNode._node_counter
 
     def left(self):
         """
-        :rtype: MonteCarloNode
+        Needed for Improved Walker's Algorithm.
+        :return: MonteCarloNode object, leftmost child or thread of the node
         """
         if self.has_children():
             rc = self.children[0]
@@ -70,7 +93,8 @@ class MonteCarloNode:
 
     def right(self):
         """
-        :rtype: MonteCarloNode
+        Needed for Improved Walker's Algorithm.
+        :return: MonteCarloNode object, rightmost child or thread of the node
         """
         if self.has_children():
             rc = self.children[-1]
@@ -79,16 +103,23 @@ class MonteCarloNode:
         return rc
 
     def left_sibling(self):
+        """
+        Needed for Improved Walker's Algorithm.
+        :return: MonteCarloNode object, left sibling of the node
+        """
         left_node = None
         if self.parent:
             for node in self.parent.children:
                 if node == self:
                     return left_node
-                else:
-                    left_node = node
+                left_node = node
         return left_node
 
     def leftmost_sibling(self):
+        """
+        Needed for Improved Walker's Algorithm.
+        :return: MonteCarloNode object, leftmost sibling of the node
+        """
         if not self.left_most_sibling and self.parent and self != self.parent.children[0]:
             self.left_most_sibling = self.parent.children[0]
         return self.left_most_sibling

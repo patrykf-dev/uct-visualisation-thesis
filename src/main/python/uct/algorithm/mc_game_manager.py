@@ -7,6 +7,9 @@ from utils.custom_event import CustomEvent
 
 
 class MonteCarloGameManager:
+    """
+    CLass is responsible for performing UCT algorithm moves and keeping information about game state and settings.
+    """
     def __init__(self, game_state: BaseGameState, settings: MonteCarloSettings):
         self.current_state = game_state
         self.tree = MonteCarloTree(self.current_state)
@@ -17,6 +20,12 @@ class MonteCarloGameManager:
         self.iteration_performed = CustomEvent()
 
     def notify_move_performed(self, move: BaseGameMove):
+        """
+        Updates tree's nodes after player's move. It this is not the first move, it firstly updates the information
+        after last algorithm's move to keep consistency.
+        :param move: BaseGameMove object
+        :return: None
+        """
         if self.first_move:
             self.first_move = False
             return
@@ -26,10 +35,19 @@ class MonteCarloGameManager:
             self.previous_move_calculated = None
 
     def perform_previous_move(self):
+        """
+        Updates tree's nodes after last algorithm's move.
+        :return: None
+        """
         self.tree.perform_move_on_root(self.previous_move_calculated)
         self.previous_move_calculated = None
 
     def calculate_next_move(self):
+        """
+        Calculates algorithm's move with UCT algorithm.
+        Information about chosen move is stored after execution.
+        :return: calculated move, BaseGameMove object
+        """
         mcts = MonteCarloTreeSearch(self.tree, self.settings)
         mcts.iteration_performed += self._handle_iteration_performed
         move, state, best_node = mcts.calculate_next_move()

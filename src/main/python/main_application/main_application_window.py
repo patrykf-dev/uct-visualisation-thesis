@@ -17,7 +17,6 @@ class MainApplicationWindow(QMainWindow):
     """
     CLass is responsible for displaying the main window of the application.
     """
-
     def __init__(self):
         super().__init__()
         self._setup_window()

@@ -9,6 +9,11 @@ from visualisation_drawing.canvas_widget import MonteCarloTreeCanvasWidget
 
 
 class GameVisualizationWindow(GameWindow):
+    """
+    Class that expands game window by UCT visualization.
+    It adds visualization canvas, node information panel, tree-save buttons, center tree buttons and iteration progress
+    bar.
+    """
     def __init__(self, parent: QMainWindow, manager: MonteCarloWindowManager, display_settings: DisplaySettings,
                  main_layout: QGridLayout):
         super(GameVisualizationWindow, self).__init__(parent, manager, main_layout)

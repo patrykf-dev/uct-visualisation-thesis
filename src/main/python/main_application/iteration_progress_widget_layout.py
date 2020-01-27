@@ -5,7 +5,6 @@ class IterationProgressWidgetLayout:
     """
     Class is responsible for the layout of visualization iteration progress bar.
     """
-
     def __init__(self, main_widget):
         self.progress_bar = QProgressBar()
         self._create_layout(main_widget)
