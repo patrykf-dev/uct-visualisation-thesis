@@ -1,6 +1,4 @@
-import os
-
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioButton, QCheckBox, QMessageBox
 
 DEFAULT_FONT = QtGui.QFont("Helvetica", 10)
@@ -28,13 +26,15 @@ def amend_window_position_on_screen(window, top_padding=40):
     center_point.setY(int(bounds.height() / 2) + top_padding)
     bounds.moveCenter(center_point)
     window.move(bounds.topLeft())
+    window.setMaximumSize(window.size())
+    window.setMinimumSize(window.size())
 
 
 def get_box_background_stylesheet(color=(160, 200, 150)):
     """
-        :param color: tuple of RGB values
-        :return: string with css-like settings
-        """
+    :param color: tuple of RGB values
+    :return: string with css-like settings
+    """
     return "QWidget#box{background-color: rgb" + str(color) + "; margin:2px; border-radius: 10px}"
 
 
