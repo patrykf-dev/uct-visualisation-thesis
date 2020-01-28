@@ -71,8 +71,23 @@ W celu sprawienia, aby wizualizacja była jak najbardziej czytelna, poczyniono p
 	\item Wierzchołki mają być narysowane możliwie najwęziej.
 \end{enumerate}
 
-W celu wyznaczenia układu wierzchołków drzewa na płaszczyźnie, który spełnia powyższe 3 założenia, skorzystano z usprawnionego algorytmu Walkera, którego złożoność czasowa jest liniowa względem liczby wierzchołków. Algorytm ten został zaimplementowany, a opisany jest dokładnie w \cite{impwalkers}. Jest on dość obszerny, jednak jego główna idea sprowadza się do podwójnego przejścia po drzewie -- tak zwanego \textit{first walk} i \textit{second walk}.
+W celu wyznaczenia układu wierzchołków drzewa na płaszczyźnie, który spełnia powyższe 3 założenia, skorzystano z usprawnionego algorytmu Walkera, którego złożoność czasowa jest liniowa względem liczby wierzchołków. Algorytm ten został zaimplementowany, a opisany jest dokładnie w \cite{impwalkers}, a grafiki użyte w tym podrozdziale również pochodzą z tego dokumentu. Algorytm jest dość obszerny, jednak jego główna idea sprowadza się do podwójnego przejścia po drzewie -- tak zwanego \textit{first walk} i \textit{second walk}.
 \begin{enumerate}
-	\item \textit{First walk} jest przejściem po drzewie za pomocą strategii \textit{bottom-up}, a jego głównym celem jest obliczenie wstępnej współrzędnej $x$ każdego węzła. Funkcja wywołana na korzeniu drzewa wywoływana jest rekursywnie dla jego dzieci, wykonując przy tym funkcję \textit{apportion}. Następnie dzieci rozmieszczane są (współrzędna $x$) za pomocą metody \textit{execute shifts}, tak aby spełniały założenia wizualizacji, a na koniec rodzic jest umieszczany na środku w stosunku do swoich dzieci (średnia ze współrzędnych $x$ dziecka oddalonego najbardziej na lewo i na prawo). \\Metoda \textit{apportion}, kluczowa dla algorytmu, odpowiada za łączenie nowego poddrzewa z już istniejącym poddrzewem, co jest opisane dokładniej w sekcji 3. w \cite{impwalkers}. Porównywane są  wewnętrzne kontury lewego i prawego poddrzewa, czyli wierzchołki na ścieżce od korzenia do liścia, najbardziej na lewo (lub prawo) dla danego poziomu, tak jak na rysunku Rys. . Jeżeli występuje między nimi konflikt, czyli nie spełniają któregoś z wcześniej wymienionych założeń, prawe poddrzewo przesuwane jest odpowiednio za pomocą metody \textit{move subtree}. Metody \textit{execute shifts} i \textit{move subtree} aktualizują wstępnie wyliczane współrzędne $x$ wierzchołków oraz modyfikatory -- informacje o tym, o ile dany wierzchołek powinien być dodatkowo przesunięty w prawo na osi $x$, co dokładniej opisane jest w sekcji 5. w \cite{impwalkers}.
+	\item \textit{First walk} jest przejściem po drzewie za pomocą strategii \textit{bottom-up}, a jego głównym celem jest obliczenie wstępnej współrzędnej $x$ każdego węzła. Funkcja wywołana na korzeniu drzewa wywoływana jest rekursywnie dla jego dzieci, wykonując przy tym funkcję \textit{apportion}. Następnie dzieci rozmieszczane są (współrzędna $x$) za pomocą metody \textit{execute shifts}, tak aby spełniały założenia wizualizacji, a na koniec rodzic jest umieszczany na środku w stosunku do swoich dzieci (średnia ze współrzędnych $x$ dziecka oddalonego najbardziej na lewo i na prawo). \\Metoda \textit{apportion}, kluczowa dla algorytmu, odpowiada za łączenie nowego poddrzewa z już istniejącym poddrzewem, co jest opisane dokładniej w sekcji 3. w \cite{impwalkers}. Porównywane są wewnętrzne kontury lewego i prawego poddrzewa, czyli wierzchołki na ścieżce od korzenia do liścia, najbardziej na lewo (lub prawo) dla danego poziomu, tak jak na Rysunku \ref{rys:kontury}. Jeżeli występuje między nimi konflikt, czyli nie spełniają któregoś z wcześniej wymienionych założeń, prawe poddrzewo przesuwane jest odpowiednio za pomocą metody \textit{move subtree}. Metody \textit{execute shifts} i \textit{move subtree} aktualizują wstępnie wyliczane współrzędne $x$ wierzchołków oraz modyfikatory -- informacje o tym, o ile dany wierzchołek powinien być dodatkowo przesunięty w prawo na osi $x$, co dokładniej opisane jest w sekcji 5. w \cite{impwalkers}.
 	\item \textit{Second walk} przechodzi po drzewie za pomocą strategii \textit{top-down} i rekursywnie aplikuje wyliczone końcowe współrzędne $x$ wierzchołków, sumując ich wstępnie wyliczone $x$ wraz z wyliczonymi modyfikatorami. Dodatkowo, każdy poziom rekursji oznacza poziom wierzchołka w drzewie, więc współrzędna $y$ dla każdego wierzchołka również jest zapisywana przy tym przejściu.
 \end{enumerate}
+Sposób rozmieszczania wierzchołków przez algorytm Walkera i końcowy efekt ilustruje Rysunek \ref{rys:spacing}.
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[width=0.3\textwidth]{kontury.png}
+	\caption{Drzewo i jego kontury}
+	\label{rys:kontury}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[width=1\textwidth]{walker-spacing.png}
+	\caption{Sposób rozmieszczania wierzchołków poddrzewa}
+	\label{rys:spacing}
+\end{figure}
