@@ -2,6 +2,12 @@
 % KOMPILOWAĆ ZA POMOCĄ pdfLaTeXa, PRZEZ XeLaTeXa MOŻE NIE BYĆ POLSKICH ZNAKÓW
 
 \usepackage{subfiles}
+\usepackage{afterpage}
+\newcommand\blankpage{%
+	\null
+	\thispagestyle{empty}%
+	\addtocounter{page}{-1}%
+	\newpage}
 % -------------- Kodowanie znaków, język polski -------------
 
 %\usepackage[utf8]{inputenc}
@@ -9,6 +15,7 @@
 %\usepackage[T1]{fontenc}
 \usepackage[OT4]{fontenc}
 \usepackage[english,polish]{babel}
+
 
 
 \usepackage{amsmath, amsfonts, amsthm, latexsym} % głównie symbole matematyczne, środowiska twierdzeń
@@ -325,7 +332,7 @@ Oświadczenie
 \tableofcontents
 \thispagestyle{empty}
 
-\newpage % JEŻELI SPIS TREŚCI MA PARZYSTĄ LICZBĘ STRON, ZAKOMENTOWAĆ
+%\newpage % JEŻELI SPIS TREŚCI MA PARZYSTĄ LICZBĘ STRON, ZAKOMENTOWAĆ
 % ALBO JAK KTOŚ WOLI WTEDY DWIE STRONY ODSTĘPU, DODAĆ \null\newpage
 
 % -------------- 5. ZASADNICZA CZĘŚĆ PRACY --------------------
@@ -337,8 +344,12 @@ Oświadczenie
 \chapter*{Wykaz najważniejszych oznaczeń i skrótów}
 \subfile{00_slowniczek}
 
+\afterpage{\blankpage}
+
 \chapter{Wstęp} \label{chap:wstep}
 \subfile{000_wstep}
+
+\afterpage{\blankpage}
 
 \chapter{Założenia projektowe} \label{chap:zal_pr}
 \subfile{01_wstep}
@@ -346,11 +357,17 @@ Oświadczenie
 \chapter{Teoria} \label{chap:teoria}
 \subfile{02_teoria}
 
+\afterpage{\blankpage}
+
 \chapter{Implementacja} \label{chap:impl}
 \subfile{03_implementacja}
 
+\afterpage{\blankpage}
+
 \chapter{Główne komponenty aplikacji} \label{chap:glowne_komp}
 \subfile{04_komponenty}
+
+\afterpage{\blankpage}
 
 \chapter{Interfejs użytkownika} \label{chap:ui}
 \subfile{05_interfejs}
@@ -358,8 +375,12 @@ Oświadczenie
 \chapter{Instrukcja instalacji} \label{chap:insr_instalacji}
 \subfile{06_instrukcje}
 
+\afterpage{\blankpage}
+
 \chapter{Podsumowanie i ocena} \label{chap:podsumowanie}
 \subfile{07_podsumowanie}
+
+\afterpage{\blankpage}
 
 \chapter{Wnioski} \label{chap:wnioski}
 \subfile{08_wnioski}
