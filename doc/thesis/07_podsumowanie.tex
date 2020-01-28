@@ -34,13 +34,13 @@ Poniżej przedstawiony jest opis pięciu testów wraz z uzyskanymi wynikami.
 	\item 
 	\begin{itemize}
 		\item \textbf{Testowany moduł}: \textit{Serializacja}
-		\item \textbf{Testowane wymaganie}: Użytkownik będzie mógł zapisać analizowane drzewa do pliku csv, do pliku binarnego oraz do bitmapy.
+		\item \textbf{Testowane wymaganie}: Użytkownik będzie mógł zapisać analizowane drzewa do pliku CSV, do pliku binarnego oraz do bitmapy.
 		\item \textbf{Kroki testowe}:
 		\begin{itemize} 
 			\item Z menu głównego aplikacji wybierz ścieżkę do dowolnego pliku z zserializowanym drzewem. 
-			\item Naciśnij przycisk \textit{Inspect tree}. \item Naciśnij przycisk \textit{Save to csv file}. 
-			\item Naciśnij przycisk \textit{Save to binary file}. 
-			\item Naciśnij przycisk \textit{Save to bitmap file}. 
+			\item Naciśnij przycisk \textit{Inspect tree}. \item Naciśnij przycisk \textit{Save as csv file}. 
+			\item Naciśnij przycisk \textit{Save as binary file}. 
+			\item Naciśnij przycisk \textit{Save as bitmap}. 
 			\item Sprawdź, czy bitmapa wygenerowana w kroku 5 odpowiada drzewu z pliku początkowego. 
 			\item Z menu głównego aplikacji wybierz ścieżkę plików wygenerowanych w kroku 3 i 4, żeby sprawdzić, czy zapisane drzewa wizualizowane są tak samo jak w początkowym pliku.
 		\end{itemize}
@@ -87,13 +87,13 @@ Poniżej przedstawiony jest opis pięciu testów wraz z uzyskanymi wynikami.
 Wszystkie testy akceptacyjne zakończyły się pozytywnie, a więc wymagania zostały spełnione.
 
 \section{Kontynuacja pracy} \label{sec:kontynuacja}
-Aplikacja spełnia wszystkie początkowe wymagania określone w rozdziale \ref{sec:establishments}, jednak w przyszłości mogą zostać do niej dodane usprawnienia. W celu dalszej poprawy jakości i zwiększenia liczby możliwych opcji, obecny produkt można rozszerzyć o następujące funkcjonalności:
+Aplikacja spełnia wszystkie początkowe wymagania określone w rozdziale \ref{chap:zal_pr}, jednak w przyszłości mogą zostać do niej dodane usprawnienia. W celu dalszej poprawy jakości i zwiększenia liczby możliwych opcji, obecny produkt można rozszerzyć o następujące funkcjonalności:
 
 \begin{enumerate}
 	\item \textbf{Dodanie kolejnych gier} -- obecna architektura projektu umożliwia rozszerzenie aplikacji o kolejne gry logiczne, które spełniają założenia algorytmu UCT. Zwiększenie liczby dostępnych gier poszerzyłoby możliwości dokładniejszego badania algorytmu UCT.
 	\item \textbf{Usprawnienie i zrównoleglenie symulacji szachów} -- symulacja ruchu szachowego przez komputer zajmuje dużo więcej czasu w przypadku szachów niż mankali. Zrównoleglenie pewnych obliczeń szachowych, które zajmują najwięcej czasu, poprawiłoby jakość decyzji podejmowanych przez algorytm w jednostce czasu.
 	\item \textbf{Dodanie otwarć szachowych} -- algorytm UCT dla niewielkiej liczby iteracji ma tendencję do wybierania ruchów dających natychmiastowe wynagrodzenie, tym samym ignorując ruchy, które niebezpośrednio prowadzą do lepszych, złożonych zagrań. To oznacza, że algorytm podejmuje lepsze decyzje w końcowym stadium rozgrywki, niż w początkowym --- szczególnie dobrze widać to w przypadku rozgrywki szachowej. Możliwe byłoby zatem wprowadzenie usprawnienia w postaci zbioru sprawdzonych szachowych rozwiązań dotyczących rozpoczęcia rozgrywki, z których korzystałby komputer przy wyznaczaniu początkowych ruchów.
-	\item \textbf{Lepsza ewaluacja wartości figur w szachach} -- sposób wartościowania figur jest miejscem, w którym można znacznie rozwinąć potencjał decyzji podejmowanych przez algorytm UCT. Na ten moment każda figura ma arbitralnie ustaloną wartość, bez względu na swoje położenie na szachownicy. Tymczasem, wartość danej figury może zależeć od wielu czynników, między innymi od pozycji, w której się znajduje. Na przykład, skoczek w centrum planszy będzie miał większy potencjał od takiego, który umieszczony jest w rogu. Tak samo pion, który jest bliżej ostatniego rzędu pól, ma większą wartość od piona na swojej początkowej pozycji, a pion zdublowany prawdopodobnie jeszcze mniej. Liczba konfiguracji i czynników wpływających na potencjał figury w danym miejscu na szachownicy wykracza poza temat tej pracy, jednak potencjalne rozwinięcie lepiej przemyślanej ewaluacji figur wpłynęło by korzystnie na zdolność algorytmu do podejmowania bardziej obiecujących ruchów.
+	\item \textbf{Lepsza ewaluacja wartości figur w szachach} -- sposób wartościowania figur jest miejscem, w którym można znacznie rozwinąć potencjał decyzji podejmowanych przez algorytm UCT. Na ten moment każda figura ma arbitralnie ustaloną wartość, bez względu na swoje położenie na szachownicy. Tymczasem, wartość danej figury może zależeć od wielu czynników, między innymi od pozycji, w której się znajduje. Na przykład, skoczek w centrum planszy będzie miał większy potencjał od takiego, który umieszczony jest w rogu. Tak samo pion, który jest bliżej ostatniego rzędu pól, ma większą wartość od piona na swojej początkowej pozycji, a pion zdublowany prawdopodobnie jeszcze mniej. Liczba konfiguracji i czynników wpływających na potencjał figury w danym miejscu na szachownicy wykracza poza temat tej pracy, jednak potencjalne rozwinięcie lepiej przemyślanej ewaluacji figur wpłynęłoby korzystnie na zdolność algorytmu do podejmowania bardziej obiecujących ruchów.
 	\item \textbf{Inteligentne przydzielanie pamięci dla drzew w sekwencji} -- podczas przełączania się między kolejnymi drzewami w sekwencji, za każdym razem następuje wczytanie do pamięci podręcznej wartości i pozycji wszystkich węzłów danego drzewa. Oznacza to, że jeśli użytkownik analizuje dwa kolejne drzewa i przełącza między nimi na zmianę, za każdym razem te same drzewa są wczytywane do pamięci podręcznej na nowo. Usprawnieniem tego procesu byłoby przechowywanie wcześniej już wczytanych drzew, jednocześnie automatycznie kontrolując ilość wykorzystanych zasobów. Co więcej, program mógłby wczytywać od razu pewną liczbę kolejnych drzew z wyprzedzeniem. Takie operacje zaoszczędziłyby czas użytkownika, zwłaszcza podczas wczytywania drzew z dużą ilością węzłów.
 \end{enumerate}
 

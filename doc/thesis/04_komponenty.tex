@@ -71,7 +71,7 @@ Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z o
 	\label{rys:sequenceserialize}
 \end{figure}
 
-Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa podczas rozgrywki. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na Rysunku \ref{rys:sequencegame}. Jest to diagram dla trybu rozgrywki \textit{Gracz versus PC}, jednak w przypadku ustawienia \textit{PC versus PC} sposób serializacji się nie zmienia i diagram wygląda identycznie.\\
+Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa podczas rozgrywki. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na Rysunku \ref{rys:sequencegame}. Jest to diagram dla trybu rozgrywki \textit{Gracz versus PC}, jednak w przypadku ustawienia \textit{PC versus PC} sposób serializacji się nie zmienia i diagram wyglądałby podobnie.\\
 
 Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do wybranego przez użytkownika folderu.
 
