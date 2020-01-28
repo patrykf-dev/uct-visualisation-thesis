@@ -12,7 +12,7 @@ Ukazane na Rysunku \ref{rys:main_menu} menu główne jest głównym oknem aplika
 	\label{rys:main_menu}
 \end{figure}
 
-Z poziomu \textit{Menu głównego} użytkownik może przejść do okien \textit{Rozgrywka} i \textit{Analiza drzewa}. W celu rozegrania gry, należy nacisnąć przycisk \textit{Play}. Powyżej przycisku \textit{Play} znajdują się opcje, które pozwolą użytkownikowi ustawić parametry gry dostosowane do jego preferencji.
+Z poziomu \textit{Menu głównego} użytkownik może przejść do okien \textit{Rozgrywka} i \textit{Analiza drzewa}. W~celu rozegrania gry, należy nacisnąć przycisk \textit{Play}. Powyżej przycisku \textit{Play} znajdują się opcje, które pozwolą użytkownikowi ustawić parametry gry dostosowane do jego preferencji.
 
 \begin{figure}[h!]
 	\centering
@@ -36,14 +36,14 @@ Z poziomu \textit{Menu głównego} użytkownik może przejść do okien \textit{
 	\item \textbf{Ustawienie limitu ruchów} -- opcjonalne pole, w którym użytkownik może ustalić maksymalną liczbą ruchów w fazie symulacji algorytmu UCT, w celu wcześniejszego kończenia niepożądanie długich rozgrywek.
 	\item \textbf{Ustawienie wartości parametru eksploracji} -- pole, w którym użytkownik może ustalić wartość parametru eksploracji algorytmu UCT. Wpływ parametru na działanie algorytmu został opisany w rozdziale \ref{subsec:uct}.
 	\item \textbf{Animowanie rozrostu drzewa} -- wybór tej opcji sprawia, że drzewo stanów algorytmu zostaje wyświetlone nie tylko po każdym wykonanym ruchu przez komputer, ale też po każdej iteracji. Co więcej, w panelu po prawej stronie dynamicznie aktualizować się też będzie wartość liczby wszystkich wierzchołków drzewa.
-	\item \textbf{Wybór kolorów krawędzi drzewa} -- po kliknięciu na któryś z widocznych kolorów ukaże się paleta systemowa, z której można wybrać inne kolory krawędzi. Najczęściej i najrzadziej odwiedzane węzły drzewa przyjmą wskazane przez użytkownika kolory, inne zaś --- kolory z ich gradientu --- proporcjonalnie do wartości skrajnych licznika odwiedzin.
+	\item \textbf{Wybór kolorów krawędzi drzewa} -- po kliknięciu na któryś z widocznych kolorów ukaże się paleta systemowa, z której można wybrać inne kolory krawędzi. Najczęściej i~najrzadziej odwiedzane węzły drzewa przyjmą wskazane przez użytkownika kolory, inne zaś --- kolory z ich gradientu --- proporcjonalnie do wartości skrajnych licznika odwiedzin.
 \end{itemize}
 
 Drugą kluczową opcją dostępną z menu głównego aplikacji jest możliwość przejścia do okna analizy drzewa lub sekwencji drzew. Jest ona dostępna po naciśnięciu przycisku \textit{Inspect trees}. Użytkownik może wczytać pliki z dysku na dwa sposoby: wybierając pliki z folderu bezpośrednio lub wybierając cały katalog, w którym się one znajdują. Do tego celu służą osobno dwa przyciski: \textit{Select files} i \textit{Select directory}, które znajdują się na prawo od pola tekstowego, w którym wyświetlana jest pełna ścieżka do aktualnie wybranego pliku lub katalogu. W przypadku wybrania większej liczby plików, pokazywana jest ich liczność. Można jednocześnie wybierać pliki w formacie CSV i binarnym (.tree), których schemat serializacji został opisany w rozdziale \ref{subsec:serialization}. W przypadku wybrania nieprawidłowego katalogu lub niepoprawnych plików, na ekranie użytkownika pojawi się błąd informujący o problemie, który nastąpił.
 
 
 \section{Analiza drzewa} \label{subsec:treeanalysis}
-W oknie ukazanym na Rysunku \ref{rys:analyze_tree} będziemy mogli oglądać i analizować drzewa wczytane z plików. Ekran podglądu drzewa pozwala w wygodny sposób analizować i porównywać wczytane drzewa oraz udostępnia opcje wymienione poniżej.
+W oknie ukazanym na Rysunku \ref{rys:analyze_tree} będziemy mogli oglądać i analizować drzewa wczytane z~plików. Ekran podglądu drzewa pozwala w wygodny sposób analizować i porównywać wczytane drzewa oraz udostępnia opcje wymienione poniżej.
 
 \begin{figure}[h!]
 	\centering
@@ -71,7 +71,7 @@ Co więcej, dla każdego drzewa w sekwencji w panelu dolnym wyświetla się info
 	\label{rys:game_view}
 \end{figure}
 
-Na Rysunkach\footnote{Źródło grafik wykorzystanych w mankali: \url{https://www.wpclipart.com/} i w szachach: \url{https://icons8.com/}.} \ref{rys:game_view} i \ref{rys:game_view_2} przedstawiony jest interfejs graficzny podczas rozgrywki. Środkową i prawą część okna zajmuje komponent dotyczący analizy drzewa, który został opisany w rozdziale \ref{subsec:treeanalysis}. W związku z tym, wszystkie wyżej opisane funkcjonalności mają zastosowanie również w oknie rozgrywki, poza aspektem dotyczącym sekwencji drzew. Z lewej strony znajduje się panel z wybraną wcześniej grą. \\
+Na Rysunkach\footnote{Źródło grafik wykorzystanych w mankali: \url{https://www.wpclipart.com/} i w szachach: \url{https://icons8.com/}.} \ref{rys:game_view} i \ref{rys:game_view_2} przedstawiony jest interfejs graficzny podczas rozgrywki. Środkową i~prawą część okna zajmuje komponent dotyczący analizy drzewa, który został opisany w~rozdziale \ref{subsec:treeanalysis}. W związku z tym, wszystkie wyżej opisane funkcjonalności mają zastosowanie również w oknie rozgrywki, poza aspektem dotyczącym sekwencji drzew. Z lewej strony znajduje się panel z wybraną wcześniej grą. \\
 
 \clearpage
 

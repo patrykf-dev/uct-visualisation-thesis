@@ -35,7 +35,7 @@ Zgodnie z Rysunkami \ref{rys:umldiagram_algorithm} i \ref{rys:umldiagram_seriali
 \textit{Serializator} jest klasą opisującą funkcjonalności, które mają udostępnić właściwe implementacje serializatorów, czyli serializowanie drzew do plików oraz deserializację z plików.
 
 \section{Struktura stanów rozgrywki} \label{subsec:stany}
-Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \textit{Gracz versus PC}. Zgodnie z diagramem, aplikacja po zainicjowaniu rozgrywki przechodzi do stanu \textit{Rozgrywka} zawierającego cztery stany wewnętrzne. Będąc w stanie \textit{Rozgrywka}, aplikacja może korzysta z modułów \textit{Algorytm} i \textit{Wizualizacja}, a także opcjonalnie z modułu \textit{Serializacja}.\\
+Rysunek \ref{rys:statediagram} ukazuje diagram stanów aplikacji w przypadku rozgrywki w trybie \textit{Gracz versus PC}. Zgodnie z diagramem, aplikacja po zainicjowaniu rozgrywki przechodzi do stanu \textit{Rozgrywka} zawierającego cztery stany wewnętrzne. Będąc w stanie \textit{Rozgrywka}, aplikacja może korzysta z~modułów \textit{Algorytm} i \textit{Wizualizacja}, a także opcjonalnie z modułu \textit{Serializacja}.\\
 
 \begin{figure}[h!]
 	\centering
@@ -55,9 +55,9 @@ Istotna z punktu widzenia użytkownika jest wizualizacja drzewa stanów bezpośr
 	\label{rys:sequencegame}
 \end{figure}
 
-Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \textit{Gracz versus PC}. Na diagramie przedstawiona jest istota komunikacji głównych modułów podczas rozgrywania partii w jedną z dwóch gier. \textit{Aplikacja główna}, \textit{Gra} i \textit{Algorytm}.\\
+Rysunek \ref{rys:sequencegame} ukazuje diagram sekwencji rozgrywki w trybie \textit{Gracz versus PC}. Na diagramie przedstawiona jest istota komunikacji głównych modułów podczas rozgrywania partii w jedną z~dwóch gier. \textit{Aplikacja główna}, \textit{Gra} i \textit{Algorytm}.\\
 
-Użytkownik końcowy przy użyciu menu aplikacji głównej może ustawić parametry gry i uruchomić ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC -- wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \textit{Algorytm} (i na odwrót). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika w oknie aplikacji głównej. Dodatkowo, po każdym wykonanym ruchu, przy użyciu modułu \textit{Wizualizacja} generowane jest drzewo stanów algorytmu UCT, a następnie pokazywane jest ono użytkownikowi.\\
+Użytkownik końcowy przy użyciu menu aplikacji głównej może ustawić parametry gry i~uruchomić ją. Inicjalizowana jest wówczas rozgrywka w komponencie \textit{Gra}. Następnie, dopóki gra trwa i możliwe jest wykonanie ruchu, wykonywane są na zmianę ruchy gracza i PC -- wymaga to komunikacji odpowiednio użytkownika z aplikacją główną, aplikacji głównej z grą i gry z modułem \textit{Algorytm} (i na odwrót). Po zakończeniu rozgrywki gra zwraca swój stan, który jest możliwy do zobaczenia przez użytkownika w oknie aplikacji głównej. Dodatkowo, po każdym wykonanym ruchu, przy użyciu modułu \textit{Wizualizacja} generowane jest drzewo stanów algorytmu UCT, a następnie pokazywane jest ono użytkownikowi.\\
 
 Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z odpowiedzią od modułu \textit{Algorytm}, który pobiera stan rozgrywki z modułu \textit{Gra}.
 
@@ -73,7 +73,7 @@ Diagram ukazuje, że w tym trybie każdy ruch gracza jest ściśle związany z o
 
 Rysunek \ref{rys:sequenceserialize} przedstawia proces współpracy różnych komponentów aplikacji w celu wyeksportowania wygenerowanego przez algorytm drzewa podczas rozgrywki. Proces uruchamiania gry i wykonywania ruchów jest analogiczny do tego na Rysunku \ref{rys:sequencegame}. Jest to diagram dla trybu rozgrywki \textit{Gracz versus PC}, jednak w przypadku ustawienia \textit{PC versus PC} sposób serializacji się nie zmienia i diagram wyglądałby podobnie.\\
 
-Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do wybranego przez użytkownika folderu.
+Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksportować drzewo w~dowolnym momencie rozgrywki (po każdym ruchu przeciwnika). Żądanie takiej operacji przez użytkownika przesyłane jest do aplikacji głównej, która następnie komunikuje się z modułem odpowiedzialnym za serializację, który zapisuje drzewo do pliku. Plik drzewa zapisywany jest do wybranego przez użytkownika folderu.
 
 
 \section{Struktura sekwencji wizualizacji drzewa} \label{subsec:seq_vis}
@@ -85,8 +85,8 @@ Istotną cechą zaprojektowanego rozwiązania jest to, że gracz może wyeksport
 	\label{rys:sequencevisualise}
 \end{figure}
 
-Rysunek \ref{rys:sequencevisualise} przedstawia proces wyświetlania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i wykonywania ruchów wygląda tak jak na Rysunku \ref{rys:sequencegame}.\\
+Rysunek \ref{rys:sequencevisualise} przedstawia proces wyświetlania wizualizacji drzewa przez użytkownika jako współpracę poszczególnych komponentów aplikacji. Ponownie, proces uruchamiania gry i~wykonywania ruchów wygląda tak jak na Rysunku \ref{rys:sequencegame}.\\
 
-Istotny jest fakt, że użytkownik może oglądać drzewa stanów wybierając pliki drzew z dysku w menu głównym aplikacji, ale też oglądać je bezpośrednio podczas rozgrywki po wykonanym ruchu algorytmu. Gdy żądanie jest z poziomu rozgrywki, komponent \textit{Aplikacja główna} komunikuje się z komponentem \textit{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi na ekranie.\\
+Istotny jest fakt, że użytkownik może oglądać drzewa stanów wybierając pliki drzew z~dysku w menu głównym aplikacji, ale też oglądać je bezpośrednio podczas rozgrywki po wykonanym ruchu algorytmu. Gdy żądanie jest z poziomu rozgrywki, komponent \textit{Aplikacja główna} komunikuje się z komponentem \textit{Wizualizacja}, który generuje aktualne drzewo i pokazuje je użytkownikowi na ekranie.\\
 
-Drugi sposób, czyli wczytanie plików drzew z menu głównego, wymaga wcześniejszego zdeserializowania ich w celu wyświetlenia -- wymaga to komunikacji modułu \textit{Wizualizacja} i \textit{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanymi drzewami.\\
+Drugi sposób, czyli wczytanie plików drzew z menu głównego, wymaga wcześniejszego zdeserializowania ich w celu wyświetlenia -- wymaga to komunikacji modułu \textit{Wizualizacja} i~\textit{Serializacja}, gdzie ten drugi będzie zwracał wynik deserializacji temu pierwszemu. Następnie, analogicznie, użytkownik będzie mógł zobaczyć okno z wygenerowanymi drzewami.\\
