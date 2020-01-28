@@ -3,12 +3,12 @@
 Prezentowany system, poza tytułowym algorytmem UCT, wykorzystuje również usprawniony algorytm Walkera do wizualizacji drzew. W rozdziałach \ref{subsec:uct} i \ref{subsec:tree_vis} zostały przedstawione zagadnienia teoretyczne z zakresu obu algorytmów.
 
 \section{Algorytmy MCTS} \label{subsec:mcts_group}
-Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry przez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w Listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}. Przykład działania algorytmu ze szczególnym uwzględnieniem kolejnych faz znajduje się na Rysunku \ref{rys:mcts_phases}, pochodzącym z \cite{mctsanalysis}.
+Monte-Carlo Tree Search to heurystyka, której celem jest podejmowanie decyzji w pewnych zadaniach sztucznej inteligencji, na przykład wybieranie ruchów w grach. Metoda jest oparta na przeszukiwaniu możliwych stanów gry zapisanych w wierzchołkach drzewa i losowym symulowaniu rozgrywek. Algorytmy MCTS opierają się na rozbudowywaniu drzewa ze stanami gry przez iteracyjne wykonywanie czterech faz. Jednym z najpowszechniejszych wariantów MCTS jest algorytm UCT. Pseudokod opisany w Listingu \ref{lst:mcts} oraz implementacja MCTS w projekcie bazują na \cite{banditbased}. Przykład działania algorytmu ze szczególnym uwzględnieniem kolejnych faz znajduje się na Rysunku \ref{rys:mcts_phases}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{mcts_phases_pl.png}
-	\caption{Fazy MCTS}
+	\caption{Fazy MCTS, źródło: \cite{mctsanalysis}}
 	\label{rys:mcts_phases}
 \end{figure}
 
