@@ -1,0 +1,7 @@
+\documentclass[uct_visualisation_thesis.tex]{subfiles}
+
+Algorytm UCT, będący usprawnieniem metody MCTS, jest powszechnie stosowanym algorytmem w sztucznej inteligencji. Analizuje on obiecujące ruchy na podstawie generowanego drzewa, równoważąc eksploatację najbardziej zbadanych z eksploracją mniej zbadanych decyzji. Każdemu wierzchołkowi drzewa odpowiada pewien stan rozgrywki, z którego algorytm rozgrywa losowe symulacje, rozszerzając potem drzewo o kolejne możliwe stany. Sposób w jaki rozrasta się opisywane drzewo, jest kluczowy dla podejmowania przez algorytm obiecujących decyzji. \\
+
+W celu umożliwienia głębszego zrozumienia idei opisywanego zagadnienia postanowiono stworzyć aplikację, która stanowiłaby wygodne narzędzie dla użytkownika zainteresowanego tą tematyką. Pozwalałaby ona na wizualizację drzew stanów algorytmu UCT generowanych podczas rozgrywki w dwie przykładowe gry, co stanowi jednocześnie cel biznesowy projektu.\\
+
+Istnieje wiele metod pozwalających na przejrzystą wizualizację struktur danych, jakimi są drzewa. Przykładami mogą być tak zwane drzewa ukorzenione (ang.\textit{rooted trees}), promieniowe (ang. \textit{radial trees}), czy też mapy drzew. Ze względu na chęć ukazania w sposób czytelny dla użytkownika poszczególnych ruchów graczy jako kolejne poziomy drzewa zanjdujące się w jednej linii, w prezentowanym rozwiązaniu zdecydowano się użyć drzew ukorzenionych jako podstawę wizualizacji.
