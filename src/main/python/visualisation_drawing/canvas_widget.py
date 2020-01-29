@@ -1,6 +1,7 @@
 import os
 
-from PyQt5.QtWidgets import QWidget, QFileDialog
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QFileDialog, QApplication
 
 from main_application.GUI_utils import TREES_PATH, PYQT_KEY_CODE_RIGHT, PYQT_KEY_CODE_LEFT
 from main_application.GUI_utils import show_eror_dialog
@@ -81,25 +82,32 @@ class MonteCarloTreeCanvasWidget(QWidget):
         self.layout.fill_tree_details_panel_info(tree.data.vertices_count)
 
     def _handle_left_arrow_button_clicked_event(self):
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         tree_changed = self.canvas.make_previous_tree_as_root()
         if tree_changed:
             self.change_tree_in_sequence()
+        QApplication.restoreOverrideCursor()
 
     def _handle_right_arrow_button_clicked_event(self):
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         tree_changed = self.canvas.make_next_tree_as_root()
         if tree_changed:
             self.change_tree_in_sequence()
+        QApplication.restoreOverrideCursor()
 
     def _handle_jump_to_button_clicked_event(self):
         index = self.layout.jump_edit_line.text()
         if not index.isdigit():
             show_eror_dialog("Invalid tree number!")
             return
+
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         tree_changed = self.canvas.make_selected_tree_as_root(int(index) - 1)
         if tree_changed:
             self.change_tree_in_sequence()
         else:
             show_eror_dialog("Invalid tree number!")
+        QApplication.restoreOverrideCursor()
 
     def _make_arrow_buttons_enabled_or_disabled(self):
         current_tree_index = self.canvas.tree_index

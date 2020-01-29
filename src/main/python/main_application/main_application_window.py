@@ -2,8 +2,9 @@ import os
 import sys
 
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QApplication
 
 from main_application.GUI_utils import TREES_PATH, amend_window_position_on_screen, show_eror_dialog
 from main_application.game_window_creator import create_proper_window
@@ -104,6 +105,10 @@ class MainApplicationWindow(QMainWindow):
             show_eror_dialog(f"Please choose a valid path!")
             return
         _, display_settings = self.layout.get_settings()
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         window = MonteCarloTreeWindow(self, display_settings=display_settings,
                                       trees_paths=self.layout.chosen_trees_paths)
         window.show()
+        QApplication.restoreOverrideCursor()
+
+
