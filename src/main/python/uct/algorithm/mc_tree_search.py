@@ -162,6 +162,8 @@ class MonteCarloTreeSearch:
             tmp_state.perform_random_move()
             tmp_phase = tmp_state.phase
             moves_counter = moves_counter + 1
+            if self.settings.limit_moves and moves_counter >= self.settings.max_moves_per_iteration:
+                break
         return MonteCarloSimulationResult(tmp_state)
 
     def _backpropagation(self, leaf, simulation_result: MonteCarloSimulationResult):
