@@ -1,3 +1,4 @@
+
 import os
 
 from PyQt5 import QtCore, QtGui
@@ -51,8 +52,10 @@ class MainApplicationWindowLayout:
     def get_chosen_game(self):
         """
         Chooses game depending on the game radiobutton checked.
-        :return: Game enum object: Chass or Mancala
-        """
+
+		Returns:
+			Game enum object: Chass or Mancala        
+		"""
         if self.mancala_button.isChecked():
             return Game.Mancala
         else:
@@ -61,8 +64,10 @@ class MainApplicationWindowLayout:
     def get_chosen_game_mode(self):
         """
         Chooses game mode depending on the game mode radiobutton checked.
-        :return: GameMode enum object: PC vs PC, player vs PC or player vs player
-        """
+
+		Returns:
+			GameMode enum object: PC vs PC, player vs PC or player vs player        
+		"""
         if self.pc_vs_pc_button.isChecked():
             return GameMode.PC_VS_PC
         elif self.player_vs_player_button.isChecked():
@@ -75,8 +80,10 @@ class MainApplicationWindowLayout:
     def get_settings(self) -> (MonteCarloSettings, DisplaySettings):
         """
         Retrieve settings from values passed by the user to the main layout (including buttons checked).
-        :return: tuple: MonteCarloSettings, DisplaySettings or None
-        """
+
+		Returns:
+			tuple: MonteCarloSettings, DisplaySettings or None        
+		"""
         mc_settings = MonteCarloSettings()
         mc_settings.limit_moves = self.limit_moves_check.isChecked()
         mc_settings.limit_iterations = self.max_iterations_button.isChecked()
@@ -278,3 +285,4 @@ class MainApplicationWindowLayout:
                                           "stopped. This can result in better algorithm's performance.")
         self.exploration_parameter_label.setToolTip("UCT exploration parameter indicates how much should\n"
                                                     "algorithm explore moves with lower visit rate.")
+

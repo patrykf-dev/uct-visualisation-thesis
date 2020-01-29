@@ -1,3 +1,4 @@
+
 import random
 from math import sqrt
 
@@ -31,10 +32,14 @@ class MancalaBoardDrawer:
     def draw_board(self, painter: QPainter, board: MancalaBoard):
         """
                 Draws board, stones, holes and points.
-                :param painter: QPainter object from PyQt library that enables drawing e.g. rectangles
-                :param board: MancalaBoard object with game data
-                :return: None
-                """
+
+		Args:
+			painter:  QPainter object from PyQt library that enables drawing e.g. rectangles
+			board:  MancalaBoard object with game data
+
+		Returns:
+			None                
+		"""
         self.fill_background(painter)
         self.draw_holes(painter)
         self.draw_stores(painter)
@@ -50,18 +55,26 @@ class MancalaBoardDrawer:
     def fill_background(self, painter: QPainter):
         """
                 Fills game area background with gray color (160, 160, 160).
-                :param painter: QPainter object
-                :return: None
-                """
+
+		Args:
+			painter:  QPainter object
+
+		Returns:
+			None                
+		"""
         background = QRect(0, 0, self.canvas_width, self.canvas_height)
         painter.fillRect(background, QColor(160, 160, 160))
 
     def draw_holes(self, painter: QPainter):
         """
                 Draws holes using png images.
-                :param painter: QPainter object
-                :return: None
-                """
+
+		Args:
+			painter:  QPainter object
+
+		Returns:
+			None                
+		"""
         pixmap = QtGui.QPixmap.fromImage(QImage(ResourcesContainer.inst.get_resource_path("hole")))
         pixmap_selected = QtGui.QPixmap.fromImage(QImage(ResourcesContainer.inst.get_resource_path("hole_selected")))
         pixmap.detach()
@@ -87,9 +100,13 @@ class MancalaBoardDrawer:
     def draw_stores(self, painter: QPainter):
         """
                 Draws stores (hole-bases) using png image.
-                :param painter: QPainter object
-                :return: None
-                """
+
+		Args:
+			painter:  QPainter object
+
+		Returns:
+			None                
+		"""
         image = QImage(ResourcesContainer.inst.get_resource_path("store"))
         pixmap = QtGui.QPixmap.fromImage(image)
         pixmap.detach()
@@ -104,10 +121,14 @@ class MancalaBoardDrawer:
     def draw_numbers(self, painter: QPainter, board: MancalaBoard):
         """
                 Draws numbers representing points/stones in each hole.
-                :param painter: QPainter object
-                :param board: MancalaBoard object
-                :return: None
-                """
+
+		Args:
+			painter:  QPainter object
+			board:  MancalaBoard object
+
+		Returns:
+			None                
+		"""
         font = painter.font()
         font.setPixelSize(30)
         font.setFamily("Consolas")
@@ -144,11 +165,14 @@ class MancalaBoardDrawer:
     def detect_click(self, x, y):
         """
                 Given x, y coordinates tells if
-                :param x: x-coordinate of the game area
-                :param y: y-coordinate of the game area
-                :return: tuple of 2 values: bool informing if the coordinates correspond to a currently moving player's hole and
-                         index of selected hole (-1 if no hole was selected)
-                """
+
+		Args:
+			x:  x-coordinate of the game area
+			y:  y-coordinate of the game area
+
+		Returns:
+			tuple of 2 values: bool informing if the coordinates correspond to a currently moving player's hole and                         index of selected hole (-1 if no hole was selected)                
+		"""
         for i in range(len(self.hole_centers)):
             x_dist = x - self.hole_centers[i][0]
             y_dist = y - self.hole_centers[i][1]
@@ -165,9 +189,13 @@ class MancalaBoardDrawer:
     def draw_index_to_board_index(self, i):
         """
                 Transforms drawing index to board index.
-                :param i: given hole drawing index
-                :return: hole board index
-                """
+
+		Args:
+			i:  given hole drawing index
+
+		Returns:
+			hole board index                
+		"""
         if i < 6:
             return i
         else:
@@ -193,9 +221,13 @@ class MancalaBoardDrawer:
     def generate_stones_centers(self, board: MancalaBoard):
         """
         Generates stones' position inside holes. Stores list of lists of values in 'stones_centers' variable.
-        :param board: MancalaBoard object
-        :return: None
-        """
+
+		Args:
+			board:  MancalaBoard object
+
+		Returns:
+			None        
+		"""
         for i in range(len(self.hole_centers)):
             board_index = self.draw_index_to_board_index(i)
             for j in range(board.board_values[board_index]):
@@ -205,10 +237,14 @@ class MancalaBoardDrawer:
     def draw_stones(self, painter):
         """
         Draws small green stones on the board.
-        :param painter: QPainter object
-        :param board: MancalaBoard object
-        :return: None
-        """
+
+		Args:
+			painter:  QPainter object
+			board:  MancalaBoard object
+
+		Returns:
+			None        
+		"""
         brush = QBrush(QColor(0, 180, 100, 150), Qt.SolidPattern)
         painter.setBrush(brush)
         painter.setRenderHint(QPainter.Antialiasing, True)
@@ -219,10 +255,14 @@ class MancalaBoardDrawer:
     def update_stones_positions(self, board: MancalaBoard, old_board_values):
         """
         Generates new positions for just moved stones and keeps the positions of not moved stones.
-        :param board: MancalaBoard object
-        :param old_board_values: list of ints: holes values
-        :return: None
-        """
+
+		Args:
+			board:  MancalaBoard object
+			old_board_values:  list of ints
+
+		Returns:
+			None        
+		"""
         for i, value in enumerate(board.board_values):
             draw_index = self.draw_index_to_board_index(i)
             old_value = old_board_values[i]
@@ -240,3 +280,4 @@ class MancalaBoardDrawer:
             elif difference < 0:
                 for j in range(-difference):
                     self.stones_centers[i].pop()
+

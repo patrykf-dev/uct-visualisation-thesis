@@ -1,3 +1,4 @@
+
 class MonteCarloSettings:
     """
     Class is responsible for Monte Carlo algorithm settings.
@@ -16,8 +17,10 @@ class MonteCarloSettings:
         - moves per iteration in range [10; 100k]
         - max iterations in range [1; 10k]
         - max time per move in range [1000 ms; 30k ms]
-        :return: Message or empty string
-        """
+
+		Returns:
+			Message or empty string        
+		"""
         if self.limit_moves and (self.max_moves_per_iteration < 10 or self.max_moves_per_iteration > 100000):
             return "Invalid moves limit. Should be between 10 and 100000."
         if self.limit_iterations and (self.max_iterations < 1 or self.max_iterations > 10000):
@@ -40,3 +43,4 @@ class DisplaySettings:
         self.animate = False
         self.most_visited_color = (0, 255, 0, 255)
         self.least_visited_color = (255, 0, 0, 255)
+

@@ -1,3 +1,4 @@
+
 import os
 
 from PyQt5 import QtGui
@@ -23,10 +24,14 @@ class ChessCanvasDrawer:
         """
         Transforms mouse click coordinates to tile number.
         Example: click (85, 15) -> tile (7, 1) for height and width = 75
-        :param x: x-coordinate of a mouse click
-        :param y: y-coordinate of a mouse click
-        :return: tuple describing a chessboard's tile
-        """
+
+		Args:
+			x:  x-coordinate of a mouse click
+			y:  y-coordinate of a mouse click
+
+		Returns:
+			tuple describing a chessboard's tile        
+		"""
         if y == 0:
             y = 1
         return (x // self.tile_width, (self.height - y) // self.tile_height)[::-1]
@@ -37,9 +42,13 @@ class ChessCanvasDrawer:
     def draw_board(self, painter):
         """
         Draws figures, tiles and possible moves.
-        :param painter: QPainter object from PyQt library that enables drawing e.g. rectangles
-        :return: None
-        """
+
+		Args:
+			painter:  QPainter object from PyQt library that enables drawing e.g. rectangles
+
+		Returns:
+			None        
+		"""
         font = painter.font()
         font.setPixelSize(14)
         painter.setFont(font)
@@ -81,3 +90,4 @@ class ChessCanvasDrawer:
             y = self.height - move[1] - self.tile_height // 2
             painter.drawEllipse(QPoint(x, y), 15, 15)
         painter.setPen(prev_pen)
+

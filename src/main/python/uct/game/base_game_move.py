@@ -1,3 +1,4 @@
+
 import abc
 
 
@@ -12,7 +13,11 @@ class BaseGameMove(abc.ABC):
     @abc.abstractmethod
     def move_equal(self, move) -> bool:
         """
-        :param move: BaseGameMove object
-        :return: checks move equality
-        """
+		Args:
+			move:  BaseGameMove object
+
+		Returns:
+			checks move equality        
+		"""
         pass
+

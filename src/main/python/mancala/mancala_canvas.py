@@ -1,3 +1,4 @@
+
 import copy
 
 from PyQt5 import QtGui
@@ -23,9 +24,13 @@ class MancalaCanvas(GameCanvas):
     def paintEvent(self, event: QtGui.QPaintEvent):
         """
         Repaints game area. Overrides the base class.
-        :param event: QtGui.QPaintEvent object, event that caused the repaint
-        :return: None
-        """
+
+		Args:
+			event:  QtGui.QPaintEvent object, event that caused the repaint
+
+		Returns:
+			None        
+		"""
         super().paintEvent(event)
         painter = QPainter(self)
         painter.setRenderHint(QPainter.HighQualityAntialiasing)
@@ -35,9 +40,13 @@ class MancalaCanvas(GameCanvas):
         """
         Handler to player's click event. Checks if player can move - if a valid move was chosen, it is executed then.
         Overrides the base class.
-        :param event: QtGui.QMouseEvent with information about click
-        :return: None
-        """
+
+		Args:
+			event:  QtGui.QMouseEvent with information about click
+
+		Returns:
+			None        
+		"""
         if not self.player_can_click:
             return
         super().mousePressEvent(event)
@@ -65,11 +74,16 @@ class MancalaCanvas(GameCanvas):
     def perform_algorithm_move(self, move: MancalaMove):
         """
         Performs PC's move and causes a game area repaint.
-        :param move: MancalaMove object
-        :return: None
-        """
+
+		Args:
+			move:  MancalaMove object
+
+		Returns:
+			None        
+		"""
         super().perform_algorithm_move(move)
         old_board_values = copy.deepcopy(self.board.board_values)
         self.board.perform_move(move)
         self.board_drawer.update_stones_positions(self.board, old_board_values)
         self.repaint()
+

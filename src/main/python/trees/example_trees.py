@@ -1,3 +1,4 @@
+
 import random
 
 from uct.algorithm.mc_node import MonteCarloNode
@@ -40,8 +41,10 @@ def create_canvas_tree():
 def create_sample_tree_1():
     """
     Small binary tree
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     left = create_node("left", "asd")
     right = create_node("right", "asd")
@@ -57,8 +60,10 @@ def create_sample_tree_1():
 def create_sample_tree_2():
     """
     Small full ternary tree
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     prevs = [root]
     for i in range(3):
@@ -75,8 +80,10 @@ def create_sample_tree_2():
 def create_sample_tree_3():
     """
     Small non full ternary tree
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     prevs = [root]
     for i in range(4):
@@ -96,8 +103,10 @@ def create_sample_tree_3():
 def create_sample_tree_4():
     """
     Left-grown tree (most of parent vertices are on the left)
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     parent_vertex = root
     for i in range(7):
@@ -113,8 +122,10 @@ def create_sample_tree_4():
 def create_sample_tree_5():
     """
     Weird tree, described below
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     aa = create_node("aa", "")
     bb = create_node("bb", "x")
     cc = create_node("cc", "y")
@@ -157,8 +168,10 @@ def create_sample_tree_5():
 def create_sample_tree_6():
     """
     A rather broad tree, but more random than 8
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     prevs = [root]
     for i in range(4):
@@ -178,8 +191,10 @@ def create_sample_tree_6():
 def create_sample_tree_7():
     """
     Totally random tree
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     addable = [root]
     for i in range(500):
@@ -194,8 +209,10 @@ def create_sample_tree_7():
 def create_sample_tree_8():
     """
     Creates broad tree - every non-leaf vertrex contains a lot of children
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     addable = [root]
     for i in range(100):
@@ -211,8 +228,10 @@ def create_sample_tree_8():
 def create_sample_tree_09():
     """
     Creates kind of "chain" tree - a lot of narrow paths
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     addable = [root]
     for i in range(20):
@@ -229,8 +248,10 @@ def create_sample_tree_09():
 def create_sample_tree_10():
     """
     Most UCT-like tree
-    :return: root of the tree
-    """
+
+		Returns:
+			root of the tree    
+		"""
     root = create_node("root", "asd")
     prevs = [root]
     for i in range(5):
@@ -247,3 +268,4 @@ def create_sample_tree_10():
 
         prevs = new_prevs
     return root
+
