@@ -1,3 +1,4 @@
+
 from PyQt5 import QtGui
 from PyQt5.QtGui import QPainter
 
@@ -17,18 +18,26 @@ class ChessCanvas(GameCanvas):
     def paintEvent(self, event: QtGui.QPaintEvent):
         """
         Repaints board. Overrides the base class.
-        :param event: QtGui.QPaintEvent object, event that caused the repaint
-        :return: None
-        """
+
+		Args:
+			event:  QtGui.QPaintEvent object, event that caused the repaint
+
+		Returns:
+			None        
+		"""
         super().paintEvent(event)
         self.chess_manager.canvas_drawer.draw_board(QPainter(self))
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         """
         Handler to player's click event. Overrides the base class.
-        :param event: QtGui.QMouseEvent with information about click
-        :return: None
-        """
+
+		Args:
+			event:  QtGui.QMouseEvent with information about click
+
+		Returns:
+			None        
+		"""
         if not self.player_can_click:
             return
         super().mousePressEvent(event)
@@ -39,9 +48,13 @@ class ChessCanvas(GameCanvas):
     def perform_algorithm_move(self, move):
         """
         Performs PC's move and causes a board repaint.
-        :param move: ChessMove object
-        :return: None
-        """
+
+		Args:
+			move:  ChessMove object
+
+		Returns:
+			None        
+		"""
         self.chess_manager.deselect_last_moved()
         self.chess_manager.deselect_king()
         self.chess_manager.board.perform_legal_move(move)
@@ -53,10 +66,14 @@ class ChessCanvas(GameCanvas):
         """
         Reacts to player's click on chessboard based on its coordinates.
         If a move was made - it notifies the move handler.
-        :param x: x-coordinate of a click
-        :param y: y-coordinate of a click
-        :return: None
-        """
+
+		Args:
+			x:  x-coordinate of a click
+			y:  y-coordinate of a click
+
+		Returns:
+			None        
+		"""
         grid_pos = self.chess_manager.canvas_drawer.grid_click_to_tile(x, y)
         player_moved, player_move = self.chess_manager.react_to_tile_click(grid_pos)
         self.repaint()
@@ -65,4 +82,5 @@ class ChessCanvas(GameCanvas):
             move_info = {"move": player_move,
                          "phase": ChessState.cast_chess_phase_to_abstract_phase(self.chess_manager.board.game_status)}
             self.player_move_performed.fire(self, earg=move_info)
+
 

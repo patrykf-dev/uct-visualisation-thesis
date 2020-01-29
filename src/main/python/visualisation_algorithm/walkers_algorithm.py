@@ -1,3 +1,4 @@
+
 from uct.algorithm.mc_tree import MonteCarloTree
 
 from uct.algorithm.mc_node import MonteCarloNode
@@ -19,8 +20,10 @@ class ImprovedWalkersAlgorithm:
         """
                 Executes Improved Walker's Algorithm and calculates positions of each node in the tree. Result is stored inside
                 'tree' field.
-                :return: None
-                """
+
+		Returns:
+			None                
+		"""
         self.tree.data.reset_to_defaults()
         self._first_walk(self.tree.root)
         self._second_walk(self.tree.root)
@@ -117,3 +120,4 @@ class ImprovedWalkersAlgorithm:
             return node.parent
         else:
             return default_ancestor
+

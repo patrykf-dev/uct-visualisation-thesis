@@ -1,3 +1,4 @@
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
@@ -32,8 +33,10 @@ class MonteCarloWindowManager:
         - game status label
         - chosen node info.
         It also informs whether the game is still in progress. If not, player cannot click and needs to start over.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         alg_move = self.mc_manager.calculate_next_move()
         self.canvas.perform_algorithm_move(alg_move)
         if self.game == Game.Chess:
@@ -60,3 +63,4 @@ class MonteCarloWindowManager:
         if move_info["phase"] != GamePhase.IN_PROGRESS:
             self.canvas.set_player_can_click(False)
             self.canvas.game_ended = True
+

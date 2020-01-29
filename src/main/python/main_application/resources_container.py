@@ -1,3 +1,4 @@
+
 import os
 
 
@@ -15,7 +16,11 @@ class ResourcesContainer:
 
     def get_resource_path(self, name):
         """
-        :param name: string, name of the file
-        :return: string, path of resource
-        """
+		Args:
+			name:  string, name of the file
+
+		Returns:
+			string, path of resource        
+		"""
         return os.path.join(self.base_path, name)
+

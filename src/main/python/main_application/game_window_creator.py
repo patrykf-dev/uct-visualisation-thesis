@@ -1,3 +1,4 @@
+
 import os
 
 from PyQt5.QtGui import QIcon
@@ -21,13 +22,17 @@ def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode,
                          mc_settings: MonteCarloSettings, display_settings: DisplaySettings) -> GameWindow:
     """
     Based on user decisions, function creates a proper window with game and visualization, applying chosen settings.
-    :param parent: main window object
-    :param game: game chosen by user by radiobutton (chess, mancala etc.)
-    :param game_mode: game mode chosen by user by radiobutton (player vs PC etc.)
-    :param mc_settings: settings given by user by values in text fields (max iterations etc.)
-    :param display_settings: settings connected with displaying algorithm's progress
-    :return: QMainWindow object
-    """
+
+		Args:
+			parent:  main window object
+			game:  game chosen by user by radiobutton (chess, mancala etc.)
+			game_mode:  game mode chosen by user by radiobutton (player vs PC etc.)
+			mc_settings:  settings given by user by values in text fields (max iterations etc.)
+			display_settings:  settings connected with displaying algorithm's progress
+
+		Returns:
+			QMainWindow object    
+		"""
     if game == Game.Chess:
         canvas = ChessCanvas()
         start_state = ChessState(canvas.chess_manager.board)
@@ -56,3 +61,4 @@ def create_proper_window(parent: QMainWindow, game: Game, game_mode: GameMode,
     window.setWindowIcon(QIcon(icon_path))
 
     return window
+

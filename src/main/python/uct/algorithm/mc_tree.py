@@ -1,3 +1,4 @@
+
 from uct.algorithm.mc_node import MonteCarloNode
 from uct.game.base_game_move import BaseGameMove
 from uct.game.base_game_state import BaseGameState
@@ -20,9 +21,13 @@ class MonteCarloTree:
         """
         Returns game state after the move from the given node was executed. This is an optimization to save memory and
         to not keep track of every game state from every possible move.
-        :param node: MonteCarloNode object
-        :return: BaseGameState object, deep copy of the state with applied moves from the root to the given node
-        """
+
+		Args:
+			node:  MonteCarloNode object
+
+		Returns:
+			BaseGameState object, deep copy of the state with applied moves from the root to the given node        
+		"""
         tmp_node = node
         moves = []
         while tmp_node != self.root:
@@ -37,9 +42,13 @@ class MonteCarloTree:
         """
         Moves the root to the node with newly executed move.
         If the node was absent, even though it was chosen by the algorithm, it is artificially added.
-        :param move: BaseGameMove object with move to be performed
-        :return: None
-        """
+
+		Args:
+			move:  BaseGameMove object with move to be performed
+
+		Returns:
+			None        
+		"""
         next_root = None
         for child in self.root.children:
             if move.move_equal(child.move):
@@ -56,8 +65,10 @@ class MonteCarloTree:
     def reset_vis_data(self):
         """
         Resets visualization data of all nodes of the tree.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         self._reset_vis_data_internal(self.root)
 
     def _reset_vis_data_internal(self, node: MonteCarloNode, depth=0):
@@ -89,9 +100,13 @@ class TreeData:
     def update_tree_visual_data(self, node: MonteCarloNode):
         """
         Increments counter of vertices and edge coordinates values.
-        :param node: MonteCarloNode object
-        :return: None
-        """
+
+		Args:
+			node:  MonteCarloNode object
+
+		Returns:
+			None        
+		"""
         self.vertices_count += 1
         x = node.vis_details.x
         y = node.vis_details.y
@@ -103,10 +118,14 @@ class TreeData:
     def update_tree_visits_data(self, node: MonteCarloNode, depth):
         """
         Updates the value of the most visited node at the given depth of the tree.
-        :param node: MonteCarloNode object
-        :param depth: level of the tree that is being considered
-        :return: None
-        """
+
+		Args:
+			node:  MonteCarloNode object
+			depth:  level of the tree that is being considered
+
+		Returns:
+			None        
+		"""
         if len(self.max_visits) <= self.max_y + 1:
             self.max_visits.append(0)
         self.max_visits[depth] = max(self.max_visits[depth], node.details.visits_count)
@@ -114,11 +133,14 @@ class TreeData:
     def reset_to_defaults(self):
         """
         Resets all data associated with the tree.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         self.min_x = 0
         self.max_x = 0
         self.min_y = 0
         self.max_y = 0
         self.vertices_count = 0
         self.max_visits = [-1]
+

@@ -1,3 +1,4 @@
+
 from PyQt5.QtWidgets import QMainWindow, QGridLayout, QWidget
 
 from main_application.GUI_utils import amend_window_position_on_screen
@@ -25,8 +26,13 @@ class MonteCarloTreeWindow(QMainWindow):
     def showEvent(self, event):
         """
         Overrides base class. Shows window and centers it in relation to parent window.
-        :param event: QShowEvent, information about window-showing event
-        :return: None
-        """
+
+		Args:
+			event:  QShowEvent, information about window-showing event
+
+		Returns:
+			None        
+		"""
         super().showEvent(event)
         amend_window_position_on_screen(self)
+

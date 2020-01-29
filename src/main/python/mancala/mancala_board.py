@@ -1,3 +1,4 @@
+
 from mancala.algorithm_relay.mancala_move import MancalaMove
 from uct.algorithm.enums import GamePhase
 
@@ -19,9 +20,13 @@ class MancalaBoard:
     def perform_move(self, move: MancalaMove, print_moves=True):
         """
         For each move in internal moves sequence perform internal move, which makes for a single whole move.
-        :param move: MancalaMove object
-        :return: None
-        """
+
+		Args:
+			move:  MancalaMove object
+
+		Returns:
+			None        
+		"""
         for hole_index in move.moves_sequence:
             self.perform_move_internal(hole_index, move.player, print_moves)
 
@@ -29,10 +34,14 @@ class MancalaBoard:
         """
         Performs mancala move. It is called internal, because a whole single move can be a sequence of such moves.
         This method calculates values of holes after the move and updates them.
-        :param hole_index: index of the chosen hole, from which the move executes
-        :param player: player issuing the move
-        :return: bool informing if the whole move was made and the turn changes
-        """
+
+		Args:
+			hole_index:  index of the chosen hole, from which the move executes
+			player:  player issuing the move
+
+		Returns:
+			bool informing if the whole move was made and the turn changes        
+		"""
         if (0 <= hole_index <= 5 and self.current_player == 2) or (7 <= hole_index <= 12 and self.current_player == 1):
             raise PermissionError("ILLEGAL MOVE!!!")
         if player != self.current_player:
@@ -86,8 +95,10 @@ class MancalaBoard:
     def determine_winner(self):
         """
         Updates game phase by calculating which player collected more points.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         player1_points = self.board_values[6]
         player2_points = self.board_values[13]
         if player1_points > player2_points:
@@ -101,8 +112,10 @@ class MancalaBoard:
         """
         Checks if the game ended i.e. there are no stones left on one side. If the game has ended, the winner is
         determined.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         game_ended = False
         if not any(self._get_player_holes(1)):
             self.board_values[13] += sum(self._get_player_holes(2))
@@ -117,10 +130,12 @@ class MancalaBoard:
 
     def get_win_score(self, player):
         """
-        :param player: 1 - first player / 2 - second player
-        :return: difference between points collected in bases of two players. The score is negative when given 'player'
-                 has less points than the rival.
-        """
+		Args:
+			player:  1 - first player / 2 - second player
+
+		Returns:
+			difference between points collected in bases of two players. The score is negative when given 'player'                 has less points than the rival.        
+		"""
         if player == 1:
             return self.board_values[6] - self.board_values[13]
         else:
@@ -134,8 +149,9 @@ class MancalaBoard:
 
     def deep_copy(self):
         """
-        :return: Deep copy of MancalaBoard object
-        """
+		Returns:
+			Deep copy of MancalaBoard object        
+		"""
         rc = MancalaBoard()
         rc.current_player = self.current_player
         for i in range(14):
@@ -151,8 +167,9 @@ class MancalaBoard:
 
     def find_all_moves(self):
         """
-        :return: All possible moves of currently moving player
-        """
+		Returns:
+			All possible moves of currently moving player        
+		"""
         all_moves = []
         for i in self.possible_player_moves():
             self.get_player_moves(i, MancalaMove([], self.current_player), all_moves)
@@ -161,8 +178,10 @@ class MancalaBoard:
     def possible_player_moves(self):
         """
         Generates possible moves of current moving player.
-        :return: yields hole index if a move from that hole is possible
-        """
+
+		Returns:
+			yields hole index if a move from that hole is possible        
+		"""
         for i, a in enumerate(self._get_player_holes(self.current_player)):
             if a > 0:
                 yield i
@@ -175,11 +194,15 @@ class MancalaBoard:
         the result would be:
         [[0], [4, 0], [4, 5], [5, 0], [5, 4, 0], [5, 4, 5, 0]] - these are the all possible moves
         (sequences ob sub-moves). Result is stored in moves variable, that is passed as an argument.
-        :param hole_index: index of
-        :param prev_move: MancalaMove of previous move
-        :param moves: list of MancalaMove objects that is recursively filled
-        :return: None
-        """
+
+		Args:
+			hole_index:  index of
+			prev_move:  MancalaMove of previous move
+			moves:  list of MancalaMove objects that is recursively filled
+
+		Returns:
+			None        
+		"""
         hole_index = self._get_hole_index(hole_index)
         copied_board = self.deep_copy()
         player_pre_move = copied_board.current_player
@@ -200,9 +223,13 @@ class MancalaBoard:
         Player 1: 0-5
         Player 2: 7-12.
         Indexes 6 and 13 are stores and the result is False.
-        :param index: index of hole that is being checked
-        :return: bool value
-        """
+
+		Args:
+			index:  index of hole that is being checked
+
+		Returns:
+			bool value        
+		"""
         if index in range(0, 6) and self.current_player == 1:
             return True
         if index in range(7, 13) and self.current_player == 2:
@@ -211,15 +238,21 @@ class MancalaBoard:
 
     def is_hole_empty(self, index):
         """
-        :param index: index of hole
-        :return: bool informing if the hole has no stones inside
-        """
+		Args:
+			index:  index of hole
+
+		Returns:
+			bool informing if the hole has no stones inside        
+		"""
         return self.board_values[index] == 0
 
     def is_hole_valid(self, index):
         """
-        :param index: index of hole
-        :return: bool informing if the hole belongs to the currently moving player and is empty (so that the move can
-                 be executed)
-        """
+		Args:
+			index:  index of hole
+
+		Returns:
+			bool informing if the hole belongs to the currently moving player and is empty (so that the move can                 be executed)        
+		"""
         return self.is_the_hole_of_current_player(index) and not self.is_hole_empty(index)
+

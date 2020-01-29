@@ -1,3 +1,4 @@
+
 import abc
 
 from uct.algorithm.enums import GamePhase
@@ -14,8 +15,9 @@ class BaseGameState(abc.ABC):
     @abc.abstractmethod
     def get_all_possible_moves(self):
         """
-        :return: all possible moves of currently moving player
-        """
+		Returns:
+			all possible moves of currently moving player        
+		"""
         pass
 
     @abc.abstractmethod
@@ -29,31 +31,41 @@ class BaseGameState(abc.ABC):
     def apply_moves(self, moves):
         """
         Apply all moves in the queue.
-        :param moves: list of moves implementing BaseGameMove
-        """
+
+		Args:
+			moves:  list of moves implementing BaseGameMove
+
+		"""
         pass
 
     @abc.abstractmethod
     def get_win_score(self, player):
         """
-        :param player: player number
-        :return: score of given player
-        """
+		Args:
+			player:  player number
+
+		Returns:
+			score of given player        
+		"""
         pass
 
     @abc.abstractmethod
     def deep_copy(self):
         """
-        :return: deep copy of the state
-        """
+		Returns:
+			deep copy of the state        
+		"""
         pass
 
     def switch_current_player(self):
         """
         Switches turn between two players.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         if self.current_player == 1:
             self.current_player = 2
         else:
             self.current_player = 1
+

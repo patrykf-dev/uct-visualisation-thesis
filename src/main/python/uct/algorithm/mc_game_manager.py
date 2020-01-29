@@ -1,3 +1,4 @@
+
 from main_application.gui_settings import MonteCarloSettings
 from uct.algorithm.mc_tree import MonteCarloTree
 from uct.algorithm.mc_tree_search import MonteCarloTreeSearch
@@ -23,9 +24,13 @@ class MonteCarloGameManager:
         """
         Updates tree's nodes after player's move. It this is not the first move, it firstly updates the information
         after last algorithm's move to keep consistency.
-        :param move: BaseGameMove object
-        :return: None
-        """
+
+		Args:
+			move:  BaseGameMove object
+
+		Returns:
+			None        
+		"""
         if self.first_move:
             self.first_move = False
             return
@@ -37,8 +42,10 @@ class MonteCarloGameManager:
     def perform_previous_move(self):
         """
         Updates tree's nodes after last algorithm's move.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         self.tree.perform_move_on_root(self.previous_move_calculated)
         self.previous_move_calculated = None
 
@@ -46,8 +53,10 @@ class MonteCarloGameManager:
         """
         Calculates algorithm's move with UCT algorithm.
         Information about chosen move is stored after execution.
-        :return: calculated move, BaseGameMove object
-        """
+
+		Returns:
+			calculated move, BaseGameMove object        
+		"""
         mcts = MonteCarloTreeSearch(self.tree, self.settings)
         mcts.iteration_performed += self._handle_iteration_performed
         move, state, best_node = mcts.calculate_next_move()
@@ -57,3 +66,4 @@ class MonteCarloGameManager:
 
     def _handle_iteration_performed(self, sender, earg):
         self.iteration_performed.fire(self, earg)
+

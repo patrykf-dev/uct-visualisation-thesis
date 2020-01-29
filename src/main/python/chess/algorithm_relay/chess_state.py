@@ -1,3 +1,4 @@
+
 from math import pi, atan
 
 import chess.chess_utils as ChessUtils
@@ -25,9 +26,13 @@ class ChessState(BaseGameState):
         Function used - atan(0.25*x), curved in the middle. It was used instead of linear function, to make a capture's
         reward relatively higher.
         diff - difference between figures' values on board. Range: [-39; 39]
-        :param player: number 1 (white player) or 2 (black player)
-        :return: value from range [0.2; 0.8] (middle value is 0.5 - treated like a draw)
-        """
+
+		Args:
+			player:  number 1 (white player) or 2 (black player)
+
+		Returns:
+			value from range [0.2; 0.8] (middle value is 0.5 - treated like a draw)        
+		"""
         player1_value = min(39, self.board.figures.player1_value)
         player2_value = min(39, self.board.figures.player2_value)
         if player == 1:
@@ -40,16 +45,19 @@ class ChessState(BaseGameState):
 
     def get_all_possible_moves(self):
         """
-        :return: All possible moves of currently moving player. List of ChessMove objects.
-        """
+		Returns:
+			All possible moves of currently moving player. List of ChessMove objects.        
+		"""
         return ChessUtils.get_all_possible_moves(self.board)
 
     def perform_random_move(self):
         """
         Function chooses on of the all possible moves of currently moving player and performs it, changing the current
         player afterwards. Game phase is saved after the performed move.
-        :return: None
-        """
+
+		Returns:
+			None        
+		"""
         all_possible_moves = ChessUtils.get_all_possible_moves(self.board)
         random_number = RandomUtils.get_random_int(0, len(all_possible_moves))
         move = all_possible_moves[random_number]
@@ -59,8 +67,9 @@ class ChessState(BaseGameState):
 
     def deep_copy(self):
         """
-        :return: Deep copy of ChessState object.
-        """
+		Returns:
+			Deep copy of ChessState object.        
+		"""
         new_board = self.board.deep_copy()
         rc = ChessState(new_board)
         rc.phase = self.phase
@@ -69,8 +78,9 @@ class ChessState(BaseGameState):
 
     def apply_moves(self, moves):
         """
-        :return: Deep copy of ChessState object.
-        """
+		Returns:
+			Deep copy of ChessState object.        
+		"""
         for move in moves:
             self.board.perform_legal_move(move)
         self.phase = ChessState.cast_chess_phase_to_abstract_phase(self.board.game_status)
@@ -83,9 +93,13 @@ class ChessState(BaseGameState):
         checkmate black -> player 2 won
         draw/stalemate/fifty move rule -> draw
         game in progress -> game in progress
-        :param chess_phase: ChessPhase object
-        :return: GamePhase object
-        """
+
+		Args:
+			chess_phase:  ChessPhase object
+
+		Returns:
+			GamePhase object        
+		"""
         switcher = {
             ChessPhase.IN_PROGRESS: AbstractPhase.IN_PROGRESS,
             ChessPhase.CHECKMATE_WHITE: AbstractPhase.PLAYER1_WON,
@@ -97,3 +111,4 @@ class ChessState(BaseGameState):
             ChessPhase.FIFTY_MOVE_RULE: AbstractPhase.DRAW
         }
         return switcher.get(chess_phase)
+

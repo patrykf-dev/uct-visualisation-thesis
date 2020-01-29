@@ -1,3 +1,4 @@
+
 from PyQt5.QtWidgets import QWidget
 
 from uct.game.base_game_move import BaseGameMove
@@ -27,7 +28,12 @@ class GameCanvas(QWidget):
     def set_player_can_click(self, value: bool):
         """
         Setter. If set false, player cannot click on canvas.
-        :param value: bool
-        :return: None
-        """
+
+		Args:
+			value:  bool
+
+		Returns:
+			None        
+		"""
         self.player_can_click = value
+

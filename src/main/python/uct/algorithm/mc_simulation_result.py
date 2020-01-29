@@ -1,3 +1,4 @@
+
 from uct.game.base_game_state import BaseGameState
 
 
@@ -12,10 +13,14 @@ class MonteCarloSimulationResult:
 
     def get_reward(self, leaf_player):
         """
-        :param leaf_player: player 1 or 2
-        :return: reward of the game
-        """
+		Args:
+			leaf_player:  player 1 or 2
+
+		Returns:
+			reward of the game        
+		"""
         if leaf_player == 1:
             return self.player1_reward
         else:
             return self.player2_reward
+

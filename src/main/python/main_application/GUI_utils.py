@@ -1,3 +1,4 @@
+
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QLabel, QSizePolicy, QPushButton, QLineEdit, QRadioButton, QCheckBox, QMessageBox
 
@@ -17,9 +18,12 @@ def amend_window_position_on_screen(window, top_padding=40):
     """
     Function is responsible for centering X of the given window on the screen.
     Y position is default 40, can be changed with the parameter 'top_padding'
-    :param window: window we are going to center
-    :param top_padding: number of pixels the window will be under the upper bound of the screen
-    """
+
+		Args:
+			window:  window we are going to center
+			top_padding:  number of pixels the window will be under the upper bound of the screen
+
+		"""
     bounds = window.frameGeometry()
     screen = QtWidgets.QApplication.desktop().screenNumber(QtWidgets.QApplication.desktop().cursor().pos())
     center_point = QtWidgets.QApplication.desktop().screenGeometry(screen).center()
@@ -32,9 +36,12 @@ def amend_window_position_on_screen(window, top_padding=40):
 
 def get_box_background_stylesheet(color=(160, 200, 150)):
     """
-    :param color: tuple of RGB values
-    :return: string with css-like settings
-    """
+		Args:
+			color:  tuple of RGB values
+
+		Returns:
+			string with css-like settings    
+		"""
     return "QWidget#box{background-color: rgb" + str(color) + "; margin:2px; border-radius: 10px}"
 
 
@@ -54,14 +61,18 @@ def get_non_resizable_label(caption="", title_font=False):
 def get_button(caption="", padding_width=50, padding_height=0, enabled=True, width=None, height=None):
     """
     Returns PyQt button with given parameters.
-    :param caption: text on button
-    :param padding_width:
-    :param padding_height:
-    :param enabled: bool, is button initially enabled
-    :param width: button width, if None - default Qt-button width is used
-    :param height: button height, if None - default Qt-button height is used
-    :return: customized button
-    """
+
+		Args:
+			caption:  text on button
+			padding_width: 
+			padding_height: 
+			enabled:  bool, is button initially enabled
+			width:  button width, if None - default Qt-button width is used
+			height:  button height, if None - default Qt-button height is used
+
+		Returns:
+			customized button    
+		"""
     rc = QPushButton(caption, enabled=enabled)
     rc.setFont(DEFAULT_FONT)
     rc.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
@@ -79,11 +90,15 @@ def get_button(caption="", padding_width=50, padding_height=0, enabled=True, wid
 def get_resizable_button(caption="", padding_width=50, padding_height=0):
     """
     Returns PyQt resizable button with given parameters. It means it fills its parent-layout entirely.
-    :param caption: text on button
-    :param padding_width:
-    :param padding_height:
-    :return: customized button
-    """
+
+		Args:
+			caption:  text on button
+			padding_width: 
+			padding_height: 
+
+		Returns:
+			customized button    
+		"""
     rc = QPushButton(caption)
     rc.setFont(DEFAULT_FONT)
     rc.setMinimumWidth(rc.sizeHint().width() + padding_width)
@@ -162,3 +177,4 @@ def show_dialog(message):
     msg.setWindowTitle("Confirm")
     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     return msg.exec_()
+
