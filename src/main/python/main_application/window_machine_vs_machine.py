@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QGridLayout, QApplication
 from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 
 from main_application.GUI_utils import get_button
 from main_application.game_visualization_window import GameVisualizationWindow
@@ -21,6 +22,8 @@ class MachineVsMachineWindow(GameVisualizationWindow):
 
     def handle_next_move_button(self, sender):
         if not self.manager.canvas.game_ended:
+            QApplication.setOverrideCursor(Qt.WaitCursor)
             self.manager.perform_algorithm_move()
+            QApplication.restoreOverrideCursor()
         if self.manager.canvas.game_ended:
             self.next_move_button.setEnabled(False)
