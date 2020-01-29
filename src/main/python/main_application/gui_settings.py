@@ -13,9 +13,10 @@ class MonteCarloSettings:
     def validate(self):
         """
         Validate if user introduces acceptable values:
-        - moves per iteration in range [10; 100k]
         - max iterations in range [1; 10k]
-        - max time per move in range [1000 ms; 30k ms]
+        - max time per move in range [1000 ms; 120k ms]
+        - moves per iteration in range [10; 100k]
+        - exploration parameter in range [0; 20]
         :return: Message or empty string
         """
         if self.limit_moves and (self.max_moves_per_iteration < 10 or self.max_moves_per_iteration > 100000):
