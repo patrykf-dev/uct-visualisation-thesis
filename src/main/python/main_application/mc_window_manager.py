@@ -1,3 +1,6 @@
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication
+
 from chess.algorithm_relay.chess_state import ChessState
 from main_application.enums import GameMode, Game
 from main_application.game_canvas import GameCanvas
@@ -46,7 +49,9 @@ class MonteCarloWindowManager:
     def _handle_player_move_performed(self, sender, move_info):
         if self.game_mode == GameMode.PLAYER_VS_PC and move_info["phase"] == GamePhase.IN_PROGRESS:
             self.mc_manager.notify_move_performed(move_info["move"])
+            QApplication.setOverrideCursor(Qt.WaitCursor)
             self.perform_algorithm_move()
+            QApplication.restoreOverrideCursor()
         elif move_info["phase"] != GamePhase.IN_PROGRESS:
             self.canvas.set_player_can_click(False)
             self.canvas.game_ended = True
