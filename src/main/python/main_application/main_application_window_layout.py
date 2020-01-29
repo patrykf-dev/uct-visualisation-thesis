@@ -23,6 +23,7 @@ class MainApplicationWindowLayout:
         self.tree_path_edit = get_hint_line_edit()
         self.tree_path_edit.textChanged[str].connect(
             lambda: self.draw_opengl_button.setEnabled(self.tree_path_edit.text() != ""))
+        self.tree_path_edit.setReadOnly(True)
         self.chosen_trees_paths = []
         self.select_tree_path_button_files = get_resizable_button("Select files")
         self.select_tree_path_button_directories = get_resizable_button("Select directory")
